@@ -1,0 +1,16 @@
+{
+  "name": "attrep",
+  "version": "1.0.0",
+  "description": "An app that helps create attendance report. To be used at SAINTS COMMUNITY CHURCH.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Foluso Ogunfile",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.6.11"
+  }
+}
