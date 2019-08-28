@@ -17,7 +17,7 @@ module.exports = {
         console.log(newWorker);
         db.Worker.create(newWorker)
             .then((worker) => {
-                res.json({message: "Worker created successfully!"});
+                res.status(201).json(newWorker);
             })
             .catch((err) => {
                 console.log(err);

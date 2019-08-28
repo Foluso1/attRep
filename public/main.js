@@ -1,8 +1,12 @@
 $(document).ready(function () {
     $.getJSON("/api/workers")
-        .then((workers) => {
-            appendWorkers(workers);
-        });
+        .then(appendWorkers);
+
+    $("#addNewWorker").keypress(function (event) {
+        if (event.which == 13) {
+            createWorker();
+        }
+    });
 
         /*Had to use this, prior to using 
         $(".list").on("click", "li", function (todon) {
@@ -23,14 +27,31 @@ $(document).ready(function () {
     })
 });
 
+
 function appendWorkers(workers){
     workers.forEach((worker) => {
-        let workerList = $(`<li>${worker.name}</li>`);
-        $(worker).data("id", worker._id);
-        let workerId = $(worker).data("id");
-        $(".list").append(workerList);
+        appendOne(worker);
     })
 }
+
+function appendOne(worker){
+    let workerList = $(`<li>${worker.name}</li>`);
+    $(worker).data("id", worker._id);
+    $(".list").append(workerList);
+}
+
+function createWorker(worker) {
+    let usrInput = $("#addNewWorker").val();
+    $.post("/api/workers", { name: usrInput })
+        .then(function (newWorker) {
+            appendOne(newWorker);
+            $("#addNewWorker").val("");
+        })
+        .catch(function (err) {
+            console.log(err);
+        })
+}
+
 
 function removeWorker(worker){
     worker.remove();

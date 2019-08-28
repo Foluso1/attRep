@@ -20,17 +20,18 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-    // res.send("you hit the post route!");
-    let newWorker = {name: req.body.name}
-    console.log(newWorker);
-    Worker.create(newWorker)
-        .then((worker) => {
-            res.redirect("/");
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-    // console.log(req.body);
+    res.redirect("/api/workers");
+    // // res.send("you hit the post route!");
+    // let newWorker = {name: req.body.name}
+    // console.log(newWorker);
+    // Worker.create(newWorker)
+    //     .then((worker) => {
+    //         res.redirect("/ap");
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //     })
+    // // console.log(req.body);
 });
 
 
