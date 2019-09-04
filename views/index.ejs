@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<head>
+    <title>Attendance Report App</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <link id="cdn" rel="stylesheet" type="text/css" href="<%= cdn %>" >
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Modak&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Baloo&display=swap" rel="stylesheet">
+
+    <!-- Local fallback -->
+    <!-- <script>
+        if (!$.fn.modal) {
+            document.write('<script src="http://localhost/bootstrap/bootstrap-4.1.3/js/bootstrap.min.js">');
+    document.write('
+        <link rel="stylesheet" href="http://localhost/bootstrap/bootstrap-4.1.3/css/bootstrap.min.css">');
+    } -->
+    </script>
+</head>
+<body>
+<section class="container">
+    <div class="heading">
+        <h1>Attendance <span>Report</span> Generator</h1>
+        <h2 class="head">An app to simplify generating attendance reports</h2>
+        <p></p>
+        <p>Add new Worker to database:<input class="form-control input-class" type="text" id="addNewWorker" name="name"
+                placeholder="Add new worker to database" /></p>
+        <p></p>
+    </div>
+
+    <main class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="list-workers">
+                <h2>List of <span id="present">All</span> Workers</h2>
+                <ol class="list">
+                </ol>
+            </div>
+            <p></p>
+            <button class="btn btn-primary" id="export">Export Data</button>
+            <p></p>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="list-workers">
+                <h2>List of Absent Workers</h2>
+                    <ol class="absent">
+                    </ol>
+            </div>
+        </div>
+    </main>
+    <p></p>
+    <textarea id="presentWorkers" val="" name="name" placeholder="Present workers appear here" rows="8"
+        cols="100"></textarea>
+    <br />
+    <button class="btn btn-success" id="copier">Copy Text</button>
+</section>
+
+
+    <script type="text/javascript" src="main.js"></script>
+</body>
+</html>

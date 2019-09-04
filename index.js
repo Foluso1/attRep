@@ -5,35 +5,28 @@ const       express     =   require("express"),
             workerRouter=   require("./routes/workers")
             ;
 
+
 const PORT = process.env.PORT;
 const IP = process.env.IP;
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/views"));
 app.use(express.static(__dirname + "/public"));
-app.set("view engine", "html");
+app.set("view engine", "ejs");
 
 app.use("/api/workers", workerRouter);
+app.use(function(req, res, next){
+    res.locals.cdn = process.env.css_cdn;
+    next();
+})
 
 app.get("/", (req, res) => {
     res.render("index");
 });
 
-app.post("/", (req, res) => {
-    res.redirect("/api/workers");
-    // // res.send("you hit the post route!");
-    // let newWorker = {name: req.body.name}
-    // console.log(newWorker);
-    // Worker.create(newWorker)
-    //     .then((worker) => {
-    //         res.redirect("/ap");
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //     })
-    // // console.log(req.body);
-});
 
 
+app.listen(PORT, IP, () => console.log(`The server is listening at ${PORT}`));
 
-app.listen(PORT, IP, () => {console.log(`The server is listening at ${PORT}`)});
+
