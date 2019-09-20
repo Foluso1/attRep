@@ -15,3 +15,11 @@
 
 <body>
     <section class="container">
+        <div>
+            <% if(loggedInWorker){ %>
+                <a href="">Welcome <%= loggedInWorker.username %></a>
+                <a href="/logout">Logout</a>
+            <% } else { %>
+                <a href="/login">Login</a>
+            <% } %>
+        </div>
