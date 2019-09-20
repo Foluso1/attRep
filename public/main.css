@@ -20,12 +20,17 @@ h2.head {
     text-align: left;
 }
 
-
 h2 {
     color: #7e6227;
     font-family: 'Baloo', cursive;
     font-size: 200%;
     text-align: center;
+}
+
+button {
+    width: 100%;
+    max-width: 200px;
+    margin: 10px;
 }
 
 .heading {
@@ -43,7 +48,7 @@ h2 {
 }
 
 .list, .absent {
-    width: 200px;
+    width: 300px;
     padding: 20px;
 }
 

@@ -1,5 +1,5 @@
-const   Worker  =   require("../models/worker"),
-        db      =   require("../models")
+// const   Worker  =   require("../models/worker"),
+//         db      =   require("../models/index")
                 ;
 
 module.exports = {

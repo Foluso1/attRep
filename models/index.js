@@ -1,9 +1,10 @@
 require("dotenv").config();
 const   mongoose    =   require("mongoose");
 mongoose.set("debug", true);
+mongoose.set('useCreateIndex', true);
 
-mongoose.connect(process.env.DB_workers, { useNewUrlParser: true });
+mongoose.connect(process.env.DB_workers, { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.Promise = Promise;
 
-module.exports.Worker = require("../models/worker");
+module.exports.db = require("./worker");

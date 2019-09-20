@@ -3,8 +3,8 @@ const express   =   require("express"),
          helper =   require("../helper/workers")
          ;
 
-router.route("/")
-    .get(helper.getWorker)
-    .post(helper.createWorker);
+// router.route("/")
+//     .get(helper.getWorker)
+//     .post(helper.createWorker);
 
 module.exports = router;
