@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    $.getJSON("/api/workers")
+    // $.getJSON("https://crossorigin.me/http://localhost:27017/workers_scc")
+    $.getJSON("localhost:27017/workers_scc")
         .then(appendWorkers);
 
     $("#addNewWorker").keypress(function (event) {
@@ -35,6 +36,7 @@ $(document).ready(function () {
 
 
 function appendWorkers(workers){
+    console.log(workers);
     workers.forEach((worker) => {
         appendOne(worker);
     })
