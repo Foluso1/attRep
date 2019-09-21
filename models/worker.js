@@ -1,5 +1,7 @@
 const                   mongoose    =   require("mongoose")
         ,   passportLocalMongoose   =   require("passport-local-mongoose")
+        ,   sundayReport            =   require("./sundayReport")
+        ;
 
 workerSchema = new mongoose.Schema({
     username: {
@@ -21,7 +23,8 @@ workerSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
-    }
+    },
+    disciples: [sundayReportSchema]
 });
 
 workerSchema.plugin(passportLocalMongoose);

@@ -3,18 +3,22 @@
     <h1>Attendance <span>Report</span> Generator</h1>
     <h2 class="head">An app to simplify generating attendance reports</h2>
     <p></p>
-    <p>You are logged in as <span><b><%= loggedInWorker.username %></b></span>:<input class="form-control input-class" type="text" id="addNewWorker" name="name"
-            placeholder="Add new worker to database" /></p>
+    <!-- <p>You are logged in as <span><b><%= loggedInWorker.username %></b></span>:<input class="form-control input-class" type="text" id="addNewWorker" name="name"
+            placeholder="Add new worker to database" /></p> -->
+    <a class="btn btn-primary btn-sm" href="/report/new">Add New Disciple</a>
 </div>
 
 <main class="row">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="list-workers">
-            <h2>List of <span id="present">All</span> Workers</h2>
+            <h2>List of <span id="present">All</span> Disciples</h2>
             <ol class="list">
+                <% disciples.forEach((disciple) => { %>
+                    <li><%= disciple.disciple %></li>
+                <% }); %>
             </ol>
         </div>
-        <button class="btn btn-primary" id="export">Export Data</button>
+        <button class="btn btn-primary" id="export">Submit Report</button>
         <p></p>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">

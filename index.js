@@ -2,6 +2,7 @@ require("dotenv").config();
 const       express                 =   require("express"),
             app                     =   express(),
             Worker                  =   require("./models/worker")
+            sundayReport            =   require("./models/sundayReport")
         ,   flash                   =   require("connect-flash")
         // ,   LocalStrategy           =   require('passport-local').Strategy
         ,   db                      =   require("./models")
@@ -57,15 +58,47 @@ app.get("/register", (req, res) => {
 });
 
 app.get("/report", isLoggedIn, (req, res) => {
-    res.render("report");
+    let worker = {
+        _id: req.user.id
+    }
+    Worker.findById(worker)//.populate("disciples").exec()
+        .then((thisDisc) => {
+            let disciples = thisDisc.disciples;
+            res.render("report", { disciples });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 });
 
 app.post("/report", isLoggedIn, (req, res) => {
-    res.send("post route for reports");
+    // res.send("post route for reports");
+    const data = {
+        disciple: req.body.disciple
+    }
+    let worker = {
+        _id: req.user.id
+    }
+    Worker.findById(worker)
+        .then( (foundWorker) => {
+            console.log(foundWorker.disciples);
+            foundWorker.disciples.push(data);
+            foundWorker.save()
+                .then((worker) => {
+                    console.log(worker);
+                    res.redirect("/report");
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        })
+        .catch( (err) => {
+            console.log(err);
+        });
 });
 
 app.get("/report/new", isLoggedIn, (req, res) => {
-    res.send("report form here!");
+    res.render("new");
 });
 
 app.post("/register", function (req, res) {
