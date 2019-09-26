@@ -1,6 +1,7 @@
 const                   mongoose    =   require("mongoose")
         ,   passportLocalMongoose   =   require("passport-local-mongoose")
-        ,   sundayReport            =   require("./sundayReport")
+        ,   Report                  =   require("./report")
+        ,   Disciple                =   require("./disciple")
         ;
 
 workerSchema = new mongoose.Schema({
@@ -16,6 +17,21 @@ workerSchema = new mongoose.Schema({
         type: String,
         required: "You have to specify this"
     },
+
+    disciples: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Disciple'
+        }
+    ],
+
+    reports: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Report'
+        }
+    ],
+    // reports: [discipleSchema],
     // level: {
     //     type: String,
     //     required: "You have to specify this"
@@ -23,8 +39,7 @@ workerSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
-    },
-    disciples: [sundayReportSchema]
+    }
 });
 
 workerSchema.plugin(passportLocalMongoose);

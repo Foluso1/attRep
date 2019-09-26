@@ -1,6 +1,21 @@
 $(document).ready(function () {
-    $.getJSON("/api/workers")
-        .then(appendWorkers);
+    // $.getJSON("/api/workers")
+        // .then(appendWorkers);
+
+    // $.ajax("/report")
+    //     .then(appendWorkers);
+    // $.ajax({
+    //     url: "/report",
+    //     type: "POST",
+    //     data: [postData],
+    //     success: function (data, textStatus, jqXHR) {
+    //         alert('Success!');
+    //     },
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //         alert('Error occurred!');
+    //     }
+
+    // });
 
     $("#addNewWorker").keypress(function (event) {
         if (event.which == 13) {
@@ -83,9 +98,35 @@ function splitText(presWorkers){
 }
 
 function exporter(){
-    let list = document.getElementsByClassName("list");
-    let lister = list[0].innerText
-    $("#presentWorkers").val(lister);
+    var idsArray = [];
+    // var _id = {};
+
+    let list = document.getElementsByClassName("list")[0];    
+    let lister = Array.from(list.children);
+    lister.forEach((item) => {
+        let ids = item.getAttribute("id");
+        console.log(ids);
+        objIds = { "_id": ids };
+        idsArray.push(objIds);
+        // console.log(idsArray)
+        // return objIds;
+    });
+    $.post("/report", {ids: idsArray});
+        /* you can use e.id instead of $(e).attr('id') */
+        // idsArray.push($(e).attr('id'));
+    // });
+    // let list = document.getElementsByClassName("list")[0];    
+    // let lister = list.innerText;
+    // console.log(lister);
+    // let each = lister.split("\n");
+    // console.log(each);
+    // console.log(each[0]);
+    // $.post("/report", { name: usrInput })
+    // $('.list').map(function (index) { //var ids = 
+    //     // this callback function will be called once for each matching element
+    //     console.log(this.id);
+    // });
+    // $("#presentWorkers").val(lister);
 }
 
 function copyAll() {

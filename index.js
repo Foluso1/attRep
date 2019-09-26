@@ -2,7 +2,8 @@ require("dotenv").config();
 const       express                 =   require("express"),
             app                     =   express(),
             Worker                  =   require("./models/worker")
-            sundayReport            =   require("./models/sundayReport")
+            Report                  =   require("./models/report")
+            Disciple                =   require("./models/disciple")
         ,   flash                   =   require("connect-flash")
         // ,   LocalStrategy           =   require('passport-local').Strategy
         ,   db                      =   require("./models")
@@ -57,47 +58,201 @@ app.get("/register", (req, res) => {
     res.render("register");
 });
 
+
+//Good to Go
+// app.get("/report", isLoggedIn, (req, res) => {
+//     let worker = {
+//         _id: req.user.id
+//     }
+//     Worker.findById(worker).populate("disciples")
+//         .then((thisWorker) => {
+//             let allDisciples = thisWorker.disciples
+//             res.render("report", {allDisciples});
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         });
+// });
+
 app.get("/report", isLoggedIn, (req, res) => {
     let worker = {
         _id: req.user.id
     }
-    Worker.findById(worker)//.populate("disciples").exec()
-        .then((thisDisc) => {
-            let disciples = thisDisc.disciples;
-            res.render("report", { disciples });
+    Worker.findById(worker).
+    populate('reports')
+        .then((presentWorkers) => {
+            let reports = presentWorkers.reports;
+            let dayWeek = [];
+            reports.forEach((report) => {
+                let arrDay = [[1, "Monday"], [2, "Tuesday"], [3, "Wednesday"], [4, "Thursday"], [5, "Friday"], [6, "Saturday"], [7, "Sunday"]]
+                let j = report.date.getDay();
+                let reportDay = arrDay[j-1];
+                dayWeek.push(reportDay[1]);
+            })
+            res.render("report", { reports, dayWeek });
         })
         .catch((err) => {
             console.log(err);
         });
 });
 
+
+
+//Good to Go Sir
 app.post("/report", isLoggedIn, (req, res) => {
-    // res.send("post route for reports");
-    const data = {
-        disciple: req.body.disciple
-    }
+    console.log("START////////////")
+    let ids = req.body.ids;
     let worker = {
         _id: req.user.id
     }
-    Worker.findById(worker)
-        .then( (foundWorker) => {
-            console.log(foundWorker.disciples);
-            foundWorker.disciples.push(data);
-            foundWorker.save()
-                .then((worker) => {
-                    console.log(worker);
-                    res.redirect("/report");
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
+    const delay = () => new Promise(rel => setTimeout(() => rel(), 2000));
+    let cur = Promise.resolve()
+    Report.create(new Report)
+        .then((newReport) => {
+    ids.forEach((id) => {
+        cur = cur.then(() => {
+            console.log("finding");
+            Disciple.findById(id)
+            .then((foundDisciple) => {
+                newReport.disciples.push(foundDisciple);
+            return delay().then(() => {
+                console.log("saving");
+                newReport.save().then((here)=> console.log(here)).catch((err)=> console.log(err));
+                return delay().catch(err => console.error(err))  
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+            })
+            .catch((err) => {
+                console.log(err);
+            }) 
         })
-        .catch( (err) => {
+        .catch((err) => {
+            console.log(err);
+        });
+        
+    })
+    Worker.findById(worker)
+        .then((foundWorker) => {
+            foundWorker.reports.push(newReport);
+            foundWorker.save();
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    .catch((err) => {
+        console.log(err);
+    });
+    });
+    res.redirect("/report");
+    /////////////
+    // Report.create(new Report)
+    // .then((newReport) => {
+    // let i = 0; 
+    // i < ids.length;
+    //     Disciple.findById(ids[i])
+    //     .then((foundDisciple) => {
+    //         console.log("///////");
+    //         console.log(ids[i]);
+    //         newReport.save()
+    //         .then((good) => {
+    //             newReport.disciples.push(foundDisciple);
+    //         // newReport.save()
+    //             console.log(good);
+    //             good.save();
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         });
+    //     }) 
+    //     .catch ((err) => {
+    //         console.log(err);
+    //     })  
+    // ids.forEach((id, i) => {
+        // })
+    // }    
+    // })
+        // Worker.findById(worker)
+        //     .then((foundWorker) => {
+        //         foundWorker.reports.push(newReport);
+        //         foundWorker.save()
+        //         res.redirect("/report");
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //     })
+    // })
+    // .catch((err) => {
+    //     console.log(err);
+    // })
+});
+
+
+
+//Good to Go Sir
+app.get("/report/new", isLoggedIn, (req, res) => {
+    let worker = {
+        _id: req.user.id
+    }
+    Worker.findById(worker).populate("disciples")
+        .then((thisWorker) => {
+            let allDisciples = thisWorker.disciples
+            res.render("report_new", { allDisciples });
+        })
+        .catch((err) => {
             console.log(err);
         });
 });
 
-app.get("/report/new", isLoggedIn, (req, res) => {
+
+
+app.get("/disciple", isLoggedIn, (req, res) => {
+   console.log("Disciple page");
+    // let worker = {
+    //     _id: req.user.id
+    // }
+    // Worker.Reports.find()//.populate("disciples").exec()
+    //     .then((thisDisc) => {
+    //         let reports = thisDisc.report;
+    //         // console.log(worker)
+    //         // console.log("////////////////")
+    //         console.log(thisDisc);
+            res.render("disciple");
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //     });
+});
+
+
+//Good to Go
+app.post("/disciple", isLoggedIn, (req, res) => {
+    let idWorker = {
+        _id: req.user.id
+    }
+    let data = {
+        name: req.body.name
+    }
+    Disciple.create(data)
+    .then((disciple) => {
+        Worker.findById(idWorker)
+        .then((worker) => {
+            worker.disciples.push(disciple)
+            worker.save();
+            res.redirect("/report/new");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+});
+
+
+app.get("/disciple/new", isLoggedIn, (req, res) => {
     res.render("new");
 });
 
@@ -128,12 +283,12 @@ app.get("/logout", function (req, res) {
 });
 
 
-app.get("/:id", isLoggedIn, (req, res) => {
+app.get("/report/:id", isLoggedIn, (req, res) => {
     let id = req.params.id;
     console.log(req.params.id)
     Worker.findById({ _id: id })
         .then((foundWorker) => {
-            res.render("report");
+            // res.render("report");
             // res.redirect(`$`);
         })
         .catch((err) => {

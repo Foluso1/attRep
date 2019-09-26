@@ -1,8 +1,8 @@
 const                   mongoose    =   require("mongoose")
         ,   passportLocalMongoose   =   require("passport-local-mongoose")
 
-sundayReportSchema = new mongoose.Schema({
-    disciple: {
+discipleSchema = new mongoose.Schema({
+    name: {
         type: String,
     },
     date: {
@@ -11,4 +11,4 @@ sundayReportSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("sundayReport", sundayReportSchema);
+module.exports = mongoose.model("Disciple", discipleSchema);

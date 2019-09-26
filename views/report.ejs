@@ -3,38 +3,45 @@
     <h1>Attendance <span>Report</span> Generator</h1>
     <h2 class="head">An app to simplify generating attendance reports</h2>
     <p></p>
-    <!-- <p>You are logged in as <span><b><%= loggedInWorker.username %></b></span>:<input class="form-control input-class" type="text" id="addNewWorker" name="name"
+    <!-- <p>You are logged in as <span><b><%= //loggedInWorker.username %></b></span>:<input class="form-control input-class" type="text" id="addNewWorker" name="name"
             placeholder="Add new worker to database" /></p> -->
-    <a class="btn btn-primary btn-sm" href="/report/new">Add New Disciple</a>
+    <a class="btn btn-primary btn-sm" href="/disciple/new">Add New Disciple</a>
+    <a class="btn btn-success btn-sm" href="/report/new">Write New Report</a>
 </div>
 
 <main class="row">
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="col-md-12">
         <div class="list-workers">
-            <h2>List of <span id="present">All</span> Disciples</h2>
-            <ol class="list">
-                <% disciples.forEach((disciple) => { %>
-                    <li><%= disciple.disciple %></li>
-                <% }); %>
-            </ol>
+        <% for(i = reports.length-1; i >= 0; i--){ %>
+        <% let day = dayWeek[i] %>
+        <h3>Report <%= i+1 %></h3>
+        <p class="date"><i><%= day %>,&nbsp;&nbsp;<%= reports[i].date.getDate() %>/<%= reports[i].date.getMonth() %>/<%= reports[i].date.getFullYear() %>&nbsp;&nbsp;<%= reports[i].date.getHours() %>:<%= reports[i].date.getMinutes() %>:<%= reports[i].date.getSeconds() %></i></p>
+        <% let disciples = reports[i].disciples; %>
+        <ol>
+            <% disciples.forEach((disciple) => { %>
+            <li><%= disciple.name %></li>
+            <% }); %>
+        </ol>
+        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-10">
+            <% let dateReport = reports[i].date.getTime(); %>
+            <% let date = Date.now(); %>
+            <% let diffDate = date - dateReport; %>
+            <% if(!(diffDate > 604800000)){ %>
+                <button class="btn btn-md btn-primary m-2">Submit</button>
+            <% }; %>
         </div>
-        <button class="btn btn-primary" id="export">Submit Report</button>
         <p></p>
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="list-workers">
-            <h2>List of Absent Workers</h2>
-            <ol class="absent">
-            </ol>
+        <hr />
+        <p></p>
+        </br>
+        <% } %>
         </div>
+        <p></p>
     </div>
     <div>
 
     </div>
 </main>
 <p></p>
-<textarea class="form-control" id="presentWorkers" val="" name="name" placeholder="Present workers appear here"
-    rows="8"></textarea>
-<button class="btn btn-success" id="copier">Copy Text</button>
 <p></p>
 <% include partials/footer %>
