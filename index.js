@@ -14,22 +14,7 @@ const       express                 =   require("express")
 const PORT = process.env.PORT;
 const IP = process.env.IP;
 
-app.use((req, res, next) => {
-    console.log("////////////////At res.locals");
-    console.log(req.isAuthenticated());
-    console.log("////////////////@@@@@@");
-    console.log(res.locals);
-    let user = req.user;
-    console.log(user);
-    res.locals.authenticated = req.user;
-    res.locals.loggedInWorker = req.user;
-    res.locals.cdn = process.env.css_cdn;
-    console.log("~~~~~~~~~~~~");
-    console.log(res.locals);
-    next();
-    console.log("lllllllllllllllllllllll");
-    console.log(res.locals);
-})
+
 
 app.use(flash());
 app.use(express.urlencoded({ extended: true }));
@@ -52,10 +37,16 @@ passport.deserializeUser(Worker.deserializeUser());
 
 
 
-
 app.use('/report', isLoggedIn, reportRouter);
 app.use('/disciple', isLoggedIn, discipleRouter);
 // app.use("/api/workers", workerRouter);
+app.use((req, res, next) => {
+    res.locals.authenticated = req.user;
+    res.locals.loggedInWorker = req.user;
+    res.locals.cdn = process.env.css_cdn;
+    next();
+})
+
 
 
 app.get("/", (req, res) => {
@@ -100,19 +91,13 @@ app.get("/logout", function (req, res) {
 
 
 
-function isLoggedIn(req, res, next) {
-    console.log("////////////////At isloggedin");
-    console.log(req.isAuthenticated());
-    console.log(req)
-    
-    // if (res.locals.authenticated) {
-    // if (req.isAuthenticated()) {
-    //     console.log(res.locals.authenticated);
+function isLoggedIn (req, res, next) {
+    if(req.isAuthenticated()) {
         return next()
-    // }
-    // console.log(res.locals);
-    // res.redirect("/login");
+    }
+    res.redirect("/login");
 };
+
 
 app.listen(PORT, IP, () => console.log(`The server is listening at ${PORT}`));
 

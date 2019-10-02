@@ -1,6 +1,19 @@
-const   Worker  =   require("../models/worker")
+const   express =   require("express")
+    ,   app     =   express()
+    ,   Worker  =   require("../models/worker")
     ,   Report  =   require("../models/report")
+    ,   passport = require("passport")
+    ,   passportLocal = require("passport-local")
                 ;
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new passportLocal(Worker.authenticate()));
+passport.serializeUser(Worker.serializeUser());
+passport.deserializeUser(Worker.deserializeUser());
+
+
 
 module.exports = {
     getReports: (req, res) => {
