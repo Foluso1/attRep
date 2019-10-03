@@ -1,4 +1,5 @@
 const   Worker  =   require("../models/worker")
+    ,   Disciple  =   require("../models/disciple")
     ,   Report  =   require("../models/report")
                 ;
 
@@ -6,10 +7,10 @@ module.exports = {
     getReports: (req, res) => {
         console.log(req.user)
         let worker = {
-            _id: req.id
+            _id: req.user.id
         }
         Worker.findById(worker).
-            populate('reports')
+            populate({path: 'reports', populate: { path: 'disciples' }})
             .then((presentWorkers) => {
                 let reports = presentWorkers.reports;
                 let dayWeek = [];
@@ -32,7 +33,7 @@ module.exports = {
         let worker = {
             _id: req.user.id
         }
-        const delay = () => new Promise(rel => setTimeout(() => rel(), 2000));
+        const delay = () => new Promise(res => setTimeout(() => res(), 2000));
         let cur = Promise.resolve()
         Report.create(new Report)
             .then((newReport) => {
@@ -43,7 +44,7 @@ module.exports = {
                             .then((foundDisciple) => {
                                 newReport.disciples.push(foundDisciple);
                                 return delay().then(() => {
-                                    console.log("saving");
+                                    // console.log("saving");
                                     newReport.save().then((here) => console.log(here)).catch((err) => console.log(err));
                                     return delay().catch(err => console.error(err))
                                 })
@@ -71,6 +72,7 @@ module.exports = {
                         console.log(err);
                     });
             });
+        setTimeout(() => console.log("Hello"), 500);
         res.redirect("/report");
     },
 

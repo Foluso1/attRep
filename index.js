@@ -1,6 +1,7 @@
 require("dotenv").config();
 const       express                 =   require("express")
         ,   app                     =   express()
+        ,   db                      =   require("./models")
         ,   Worker                  =   require("./models/worker")
         ,   flash                   =   require("connect-flash")
         ,   passport                =   require("passport")
@@ -13,23 +14,6 @@ const       express                 =   require("express")
 
 const PORT = process.env.PORT;
 const IP = process.env.IP;
-
-app.use((req, res, next) => {
-    console.log("////////////////At res.locals");
-    console.log(req.isAuthenticated());
-    console.log("////////////////@@@@@@");
-    console.log(res.locals);
-    let user = req.user;
-    console.log(user);
-    res.locals.authenticated = req.user;
-    res.locals.loggedInWorker = req.user;
-    res.locals.cdn = process.env.css_cdn;
-    console.log("~~~~~~~~~~~~");
-    console.log(res.locals);
-    next();
-    console.log("lllllllllllllllllllllll");
-    console.log(res.locals);
-})
 
 app.use(flash());
 app.use(express.urlencoded({ extended: true }));
@@ -51,15 +35,17 @@ passport.serializeUser(Worker.serializeUser());
 passport.deserializeUser(Worker.deserializeUser());
 
 
+app.use((req, res, next) => {
+    res.locals.loggedInWorker = req.user;
+    res.locals.cdn = process.env.css_cdn;
+    next();
+})
 
-
-app.use('/report', isLoggedIn, reportRouter);
-app.use('/disciple', isLoggedIn, discipleRouter);
-// app.use("/api/workers", workerRouter);
+app.use('/report', reportRouter);
+app.use('/disciple', discipleRouter);
 
 
 app.get("/", (req, res) => {
-    console.log(req.worker);
     res.render("index");
 });
 
@@ -97,22 +83,6 @@ app.get("/logout", function (req, res) {
     res.redirect("/");
 });
 
-
-
-
-function isLoggedIn(req, res, next) {
-    console.log("////////////////At isloggedin");
-    console.log(req.isAuthenticated());
-    console.log(req)
-    
-    // if (res.locals.authenticated) {
-    // if (req.isAuthenticated()) {
-    //     console.log(res.locals.authenticated);
-        return next()
-    // }
-    // console.log(res.locals);
-    // res.redirect("/login");
-};
 
 app.listen(PORT, IP, () => console.log(`The server is listening at ${PORT}`));
 

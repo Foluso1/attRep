@@ -4,7 +4,12 @@ const                   mongoose    =   require("mongoose")
 
 //Schema
 const reportSchema = new mongoose.Schema({
-    disciples: [discipleSchema],
+    disciples: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Disciple'
+        }
+    ],
     date: {
         type: Date,
         default: Date.now
