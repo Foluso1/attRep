@@ -15,7 +15,7 @@
         <% for(i = reports.length-1; i >= 0; i--){ %>
         <% let day = dayWeek[i] %>
         <h3>Report <%= i+1 %></h3>
-        <p class="date"><i><%= day %>,&nbsp;&nbsp;<%= reports[i].date.getDate() %>/<%= reports[i].date.getMonth() %>/<%= reports[i].date.getFullYear() %>&nbsp;&nbsp;<%= reports[i].date.getHours() %>:<%= reports[i].date.getMinutes() %>:<%= reports[i].date.getSeconds() %></i></p>
+        <p class="date"><i><%= day %>,&nbsp;&nbsp;<%= reports[i].date.getDate() %>/<%= month[i] %>/<%= reports[i].date.getFullYear() %>&nbsp;&nbsp;<%= reports[i].date.getHours() %>:<%= reports[i].date.getMinutes() %>:<%= reports[i].date.getSeconds() %></i></p>
         <% let disciples = reports[i].disciples; %>
         <ol>
             <% disciples.forEach((disciple) => { %>

@@ -14,13 +14,14 @@ module.exports = {
             .then((presentWorkers) => {
                 let reports = presentWorkers.reports;
                 let dayWeek = [];
+                let month = [];
+                let arrDay = [[0, "Sunday"], [1, "Monday"], [2, "Tuesday"], [3, "Wednesday"], [4, "Thursday"], [5, "Friday"], [6, "Saturday"]];
                 reports.forEach((report) => {
-                    let arrDay = [[1, "Monday"], [2, "Tuesday"], [3, "Wednesday"], [4, "Thursday"], [5, "Friday"], [6, "Saturday"], [7, "Sunday"]]
                     let j = report.date.getDay();
-                    let reportDay = arrDay[j - 1];
-                    dayWeek.push(reportDay[1]);
+                    let reportDay = arrDay[j];
+                    month.push(report.date.getMonth() + 1);
                 })
-                res.render("report", { reports, dayWeek });
+                res.render("report", { reports, dayWeek, month });
             })
             .catch((err) => {
                 console.log(err);
