@@ -89,7 +89,7 @@ module.exports = {
                 let year = fullDate.getFullYear();
                 let arrDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
                 let arrMonth = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                let shortDate = `${arrDay[day]}, ${arrMonth[month + 1]} ${date}, ${year}`;
+                let shortDate = `${arrDay[day]}, ${arrMonth[month]} ${date}, ${year}`;
                 return shortDate;
             };
 
@@ -109,6 +109,7 @@ module.exports = {
                 let weekNum2 = Math.ceil(remWeek - 52);
                 return weekNum2;
             }
+            
             let refYear2 = 1483228800000;// Jan 1, 2017
             let diffYear = Date.now() - refYear2;
             let fracWeek = diffYear / week;
@@ -117,11 +118,13 @@ module.exports = {
             let mult52 = abc * 52;
             let remWeek = fracWeek - mult52;
             let weekNum2 = Math.ceil(remWeek - 52);
+
             let allWeekNum2 = [];
             let allWeekSpan = [];
             let allWeekPrayed = [];
             let allPrayed = [];
             let arrWeek = [];
+
             for(let i = weekNum2; i >= 1; i--){
                 let j = weekNum2 - i;
                 allWeekNum2[i-1] = i;
