@@ -1,0 +1,50 @@
+<% include partials/header %>
+<div class="heading">
+    <h1>Attendance <span>Report</span> Generator</h1>
+    <h2 class="head">An app to simplify generating attendance reports</h2>
+    <p></p>
+    <!-- <p>You are logged in as <span><b><%= //loggedInWorker.username %></b></span>:<input class="form-control input-class" type="text" id="addNewWorker" name="name"
+            placeholder="Add new worker to database" /></p> -->
+    <a class="btn btn-primary btn-sm" href="#">Set / Change Prayer Group</a>
+    <!-- <a class="btn btn-success btn-sm" href="/report/new">Write New Report</a> -->
+</div>
+
+<main class="row">
+    <div class="col-md-12">
+        <!-- MakeUp -->
+        <h3>Make Up Prayer</h3>
+        <form action="/prayer" method="POST">
+            <select name="dayPrayed">
+                <!-- List all Possible Days -->
+                <% let arrDay = [[0, "Sunday"], [1, "Monday"], [2, "Tuesday"], [3, "Wednesday"], [4, "Thursday"], [5, "Friday"], [6,
+                    "Saturday"]]; %>
+                <% let arrMonth = [[0, "Jan"], [1, "Feb"], [2, "Mar"], [3, "Apr"], [4, "May"], [5, "Jun"], [6,
+                                "Jul"], [7, "Aug"], [8, "Sep"], [9, "Oct"], [10, "Nov"], [11, "Dec"],]; %>
+
+                <% for(let i = 0; i < 7; i++) { %>
+                <h3> <%= [i] %> </h3>
+                <% let a = Date.now(); %>
+                <% let b = a - (86400000 * i); %>
+                <% let c = new Date(b); %>
+                <% let d = new Date(); %>
+
+                <% if(i === 0 && d.getHours() < 21 ){  %>
+                <% } else {  %>
+                    <option value="<%= c %>"><%= arrDay[c.getDay()][1] %> <%= arrMonth[c.getMonth()][1] %> <%= c.getDate() %>, <%= c.getFullYear() %></option>
+                <% }; %>
+                <p></p>
+                <% }; %>
+            </select>
+            <div class="col-lg-2 col-md-4 col-sm-6 col-xs-8">
+                <% if(lastReport >= lastSunday){ %>
+                    <a href="#">You have reported for the Week</a>
+                <% } else { %>
+                    <button class="btn btn-sm btn-success">Submit</button>
+                <% }; %>
+            </div>
+        </form>
+    </div>
+</main>
+<p></p>
+<p></p>
+<% include partials/footer %>

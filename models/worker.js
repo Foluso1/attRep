@@ -2,6 +2,7 @@ const                   mongoose    =   require("mongoose")
         ,   passportLocalMongoose   =   require("passport-local-mongoose")
         ,   Report                  =   require("./report")
         ,   Disciple                =   require("./disciple")
+        ,   Prayer                  =   require("./prayer")
         ;
 
 workerSchema = new mongoose.Schema({
@@ -22,6 +23,13 @@ workerSchema = new mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Disciple'
+        }
+    ],
+
+    prayerReport: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Prayer'
         }
     ],
 
