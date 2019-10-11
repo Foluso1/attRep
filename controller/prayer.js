@@ -168,7 +168,13 @@ module.exports = {
         .populate('prayerReport')
         .then((foundWorker) => {
             let allDates = foundWorker.prayerReport;
-            let lastReport = allDates[allDates.length - 1].date.getTime(); //Last reported time in database
+            let lastReport = 0;
+            console.log(allDates);
+            if (allDates && allDates.length === 0) {
+                lastReport = 0;
+            } else {
+                lastReport = allDates[allDates.length - 1].date.getTime(); //Last reported time in database
+            }
             let lastSunday = lastSundayfunction(Date.now()) //refSunday + (week * Math.floor(diffWeek)); // 
             res.render("prayerNew", { lastReport, lastSunday });
         })

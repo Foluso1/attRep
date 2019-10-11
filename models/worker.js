@@ -10,14 +10,18 @@ workerSchema = new mongoose.Schema({
         type: String,
         required: "You have to specify this"
     },
-    // lastname: {
-    //     type: String,
-    //     required: "You have to specify this"
-    // },
+    
     password: {
         type: String,
         required: "You have to specify this"
     },
+
+    workers: [ 
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Worker'
+        }
+    ],
 
     disciples: [
         {
@@ -39,11 +43,7 @@ workerSchema = new mongoose.Schema({
             ref: 'Report'
         }
     ],
-    // reports: [discipleSchema],
-    // level: {
-    //     type: String,
-    //     required: "You have to specify this"
-    // },
+ 
     date: {
         type: Date,
         default: Date.now
