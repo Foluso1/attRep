@@ -2,20 +2,6 @@ $(document).ready(function () {
     // $.getJSON("/api/workers")
         // .then(appendWorkers);
 
-    // $.ajax("/report")
-    //     .then(appendWorkers);
-    // $.ajax({
-    //     url: "/report",
-    //     type: "POST",
-    //     data: [postData],
-    //     success: function (data, textStatus, jqXHR) {
-    //         alert('Success!');
-    //     },
-    //     error: function (jqXHR, textStatus, errorThrown) {
-    //         alert('Error occurred!');
-    //     }
-
-    // });
 
     $("#addNewWorker").keypress(function (event) {
         if (event.which == 13) {
@@ -32,6 +18,34 @@ $(document).ready(function () {
         $("#present").text("Present");
         // let ch = document.gets
     })
+
+
+    $(".worker-list").on("click", function (e) {
+        e.preventDefault();
+        console.log("To Add Worker");
+        console.log(e);
+        let form = $(this);
+        console.log(form);
+        let btn = $(this).children("button");
+        btn.removeClass("btn-primary").addClass("btn-danger");
+        btn.text("Remove Worker");
+        console.log(btn)// e.attr("_id", id);
+        let id = btn.attr("_id"); 
+        let data = { "_id": id };
+        console.log(data);
+        $.post("/lma", data);
+        if (form.hasClass("worker-list")) {
+            form.removeClass("worker-list").addClass("worker-list-remove");
+            form.off('click').on('click', rmaSubWorker);
+        }
+    })
+
+
+    $(".worker-list-remove").on("click", function (e) {
+        e.preventDefault();
+        rmSubWorker($(this));
+    })
+
 
     $(".absent").on("click", "li", function (worker) {
         // console.log($(this));
@@ -108,26 +122,83 @@ function exporter(){
         console.log(ids);
         objIds = { "_id": ids };
         idsArray.push(objIds);
-        // console.log(idsArray)
-        // return objIds;
     });
     $.post("/report", {ids: idsArray});
-        /* you can use e.id instead of $(e).attr('id') */
-        // idsArray.push($(e).attr('id'));
-    // });
-    // let list = document.getElementsByClassName("list")[0];    
-    // let lister = list.innerText;
-    // console.log(lister);
-    // let each = lister.split("\n");
-    // console.log(each);
-    // console.log(each[0]);
-    // $.post("/report", { name: usrInput })
-    // $('.list').map(function (index) { //var ids = 
-    //     // this callback function will be called once for each matching element
-    //     console.log(this.id);
-    // });
-    // $("#presentWorkers").val(lister);
 }
+
+function rmSubWorker(e) {
+    console.log("To remove worker");
+    let form = $(e);
+    console.log(e);
+    let btn = form.children("button");
+    console.log("Form Parent")
+    console.log(form.get(0));
+    let id = $(".worker-list-remove").children("button").attr("_id");
+    console.log(id);
+    let data = { "_id": id };
+    console.log(data);
+    btn.removeClass("btn-danger").addClass("btn-primary")
+    btn.text("Add Worker");
+    $.ajax({
+        url: "/lma",
+        data: data,
+        type: "PUT",
+        success: function (data) {
+            console.log(data)
+        }
+    })
+    if (form.hasClass("worker-list-remove")) {
+        form.removeClass("worker-list-remove").addClass("worker-list");
+        form.off('click').on('click', subWorker);
+    }
+}
+
+function subWorker(e) {
+    e.preventDefault();
+    console.log("TO ADD WORKER");
+    console.log($(this));
+    let form = $(this);
+    let btn = $(this).children("button");
+    console.log(btn);
+    btn.text("Remove Worker");
+    let id = btn.attr("_id");
+    let data = { "_id": id };
+    console.log(data);
+    $.post("/lma", data);
+    btn.removeClass("btn-primary").addClass("btn-danger");
+    if (form.hasClass("worker-list")) {
+        form.removeClass("worker-list").addClass("worker-list-remove");
+        form.off('click').on('click', rmaSubWorker);
+    }
+}
+
+function rmaSubWorker(worker) {
+    worker.preventDefault();
+    console.log("TO REMOVE WORKER!!");
+    let workerThis = worker[0];
+    let id = $(this).children("button").attr("_id");//workerThis = worker[0];
+    let btn = $(this).children("button");
+    console.log($(this).children("button"));
+    let formData = { "_id": id };
+    let formAction = "/lma";
+    console.log(formData);
+    console.log(formAction);
+    $.ajax({
+        url: formAction,
+        data: formData,
+        type: "PUT",
+        success: function (data) {
+            console.log("Successfully Removed!")
+        }
+    })
+    btn.removeClass("btn-danger").addClass("btn-primary");
+    if ($(this).hasClass("worker-list-remove")) {
+        $(this).removeClass("worker-list-remove").addClass("worker-list");
+        btn.text("Add Worker");
+        $(this).off('click').on('click', subWorker);
+    }
+}
+
 
 function copyAll() {
     let copyText = document.getElementById("presentWorkers");
