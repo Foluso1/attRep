@@ -38,10 +38,7 @@ module.exports = {
             .catch((err) => {
                 console.log(err);
             })
-            // console.log(foundWorker)
-            // console.log(foundWorkers);
         })
-        // res.send("Well done!");
     },
 
     newWorker: (req, res) => {

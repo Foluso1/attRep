@@ -8,6 +8,7 @@
     <a class="btn btn-primary btn-sm" href="/disciple/new">Add New Disciple</a>
     <a class="btn btn-success btn-sm" href="/report/new">Write New Report</a>
     <a class="btn btn-success btn-sm" href="/prayer">Prayer Report</a>
+    <a class="btn btn-success btn-sm" href="/prayerchain">Prayer Chain Report</a>
     <a class="btn btn-success btn-sm" href="/lma/new">Add Worker</a>
 </div>
 
@@ -17,7 +18,7 @@
             <h3></h3>
             <ol>
                 <% subWorkers.forEach((foundWorker) => { %>
-                    <li style="display: flex; justify-content: space-between;" _id="<%= foundWorker._id %>" > <%= foundWorker.username %> <form action="/lma" method="POST"><input style="display: none" type="text" name="id" value="<%= foundWorker._id %>" ></form> </li> 
+                    <li style="display: flex; justify-content: space-between;" _id="<%= foundWorker._id %>" > <%= foundWorker.username %> <form action="/lma" method="POST"><input style="display: none" type="text" name="id" value="<%= foundWorker._id %>" ></form><a class="btn btn-sm btn-primary" href="/lma/report/<%= foundWorker._id %>"><%= foundWorker.username %>'s Report</a><a class="btn btn-sm btn-success" href="/lma/prayer/<%= foundWorker._id %>"><%= foundWorker.username %>'s Prayer Report</a></li>
                     <hr>
                 <% });  %>
             </ol>

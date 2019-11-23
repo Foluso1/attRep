@@ -9,6 +9,7 @@ const       express                 =   require("express")
         ,   reportRouter            =   require("./routes/report")
         ,   discipleRouter          =   require("./routes/disciple")
         ,   prayerRouter            =   require("./routes/prayer")
+        ,   prayerChainRouter       =   require("./routes/prayerChain")
         ,   lmaRouter               =   require("./routes/lma")
         ,   methodOverride          =   require("method-override")
         ,   expressSession          =   require("express-session")
@@ -47,6 +48,7 @@ app.use((req, res, next) => {
 app.use('/report', reportRouter);
 app.use('/disciple', discipleRouter);
 app.use('/prayer', prayerRouter);
+app.use('/prayerchain', prayerChainRouter);
 app.use('/lma', lmaRouter);
 app.use(methodOverride("_method"));
 

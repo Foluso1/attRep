@@ -43,6 +43,11 @@ workerSchema = new mongoose.Schema({
             ref: 'Report'
         }
     ],
+
+    isLMA: {
+        type: Boolean,
+        default: false
+    },
  
     date: {
         type: Date,

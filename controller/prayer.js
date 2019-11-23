@@ -45,7 +45,8 @@ module.exports = {
             .catch((err) => {
                 console.log(err);
             })
-        res.render("prayer", { dayer });
+        // res.render("prayer", { dayer });
+        res.redirect("/prayer");
     },
 
     getPrayerReports: (req, res) => {

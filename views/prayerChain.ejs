@@ -1,0 +1,74 @@
+<% include partials/header %>
+<div class="heading">
+    <!-- <h1>Attendance <span>Report</span> Generator</h1>
+    <h2 class="head">An app to simplify generating attendance reports</h2> -->
+    <p></p>
+    <!-- <p>You are logged in as <span><b><%= //loggedInWorker.username %></b></span>:<input class="form-control input-class" type="text" id="addNewWorker" name="name"
+            placeholder="Add new worker to database" /></p> -->
+    <a class="btn btn-primary btn-sm" href="#">Set / Change Prayer Group</a>
+    <a class="btn btn-primary btn-sm" href="/prayerchain/new">New Prayer Chain Report</a>
+    <!-- <a class="btn btn-success btn-sm" href="/report/new">Write New Report</a> -->
+</div>
+
+<main class="row">
+    <div class="col-md-12">
+        <h3>Welcome <%= loggedInWorker.username %></h3>
+
+        <br>
+        <h3>Week 45</h3>
+        <h4>Prayer Ratio: 7/7</h4>
+        <table>
+            <tr>
+                <td><b>Day</b></td>
+                <td><b>Start Time</b></td>
+                <td><b>End Time</b></td>
+                <td><b>Prayed</b></td>
+            </tr>
+            <tr>
+                <td>Sunday</td>
+                <td>4:30am</td>
+                <td>5:30am</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>Monday</td>
+                <td>4:30am</td>
+                <td>5:30am</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>Tuesday</td>
+                <td>4:30am</td>
+                <td>5:30am</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>Wednesday</td>
+                <td>4:30am</td>
+                <td>5:30am</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>Thursday</td>
+                <td>4:30am</td>
+                <td>5:30am</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>Friday</td>
+                <td>4:30am</td>
+                <td>5:30am</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>Saturday</td>
+                <td>4:30am</td>
+                <td>5:30am</td>
+                <td>Yes</td>
+            </tr>
+        </table>
+    </div>
+</main>
+<p></p>
+<p></p>
+<% include partials/footer %>

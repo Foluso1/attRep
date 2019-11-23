@@ -8,7 +8,10 @@
     <a class="btn btn-primary btn-sm" href="/disciple/new">Add New Disciple</a>
     <a class="btn btn-success btn-sm" href="/report/new">Write New Report</a>
     <a class="btn btn-success btn-sm" href="/prayer">Prayer Report</a>
-    <a class="btn btn-success btn-sm" href="/lma">LMA Admin</a>
+    <% if(loggedInWorker.isLMA) { %>
+        <!-- <a class="btn btn-success btn-sm" href="/lma/new">Add Worker</a> -->
+        <a class="btn btn-success btn-sm" href="/lma">LMA Admin</a>
+    <% } %>
 </div>
 
 <main class="row">
