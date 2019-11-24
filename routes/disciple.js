@@ -1,6 +1,7 @@
 const       express         =   require("express")
         ,   discipleRouter  =   express.Router()
         ,   helper          =   require("../controller/disciple")
+        ,   middleware      =   require("../middleware")
         ;
 
 discipleRouter.use("/disciple", (req, res, next) => {
@@ -10,7 +11,7 @@ discipleRouter.use("/disciple", (req, res, next) => {
 
 discipleRouter.route("/")
     .get(helper.getDisciples)
-    .post(helper.postDisciple);
+    .post(middleware.isLoggedIn, helper.postDisciple);
 
 
 discipleRouter.route("/new")

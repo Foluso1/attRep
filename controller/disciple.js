@@ -30,20 +30,21 @@ module.exports = {
             name: req.body.name
         }
         Disciple.create(data)
-            .then((disciple) => {
-                Worker.findById(idWorker)
-                    .then((worker) => {
-                        worker.disciples.push(disciple)
-                        worker.save();
-                        res.redirect("/report/new");
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
+        .then((disciple) => {
+            return disciple; 
+        })
+        .then((disciple) => {
+        Worker.findById(idWorker)
+            .then((worker) => {
+                worker.disciples.push(disciple)
+                worker.save();
+                res.redirect("/report/new");
             })
-            .catch((err) => {
-                console.log(err);
-            })
+        })
+    
+        .catch((err) => {
+            console.log(err);
+        })
     },
 
     createNewDiscple: (req, res) => {
