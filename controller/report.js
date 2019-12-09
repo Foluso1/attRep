@@ -28,54 +28,91 @@ module.exports = {
             });
     },
     
-    postReport: (req, res) => {
+    postReport: async (req, res) => {
         console.log("START////////////")
         let ids = req.body.ids;
         let worker = {
             _id: req.user.id
         }
-        const delay = () => new Promise(res => setTimeout(() => res(), 2000));
-        let cur = Promise.resolve()
-        Report.create(new Report)
-            .then((newReport) => {
-                ids.forEach((id) => {
-                    cur = cur.then(() => {
-                        console.log("finding");
-                        Disciple.findById(id)
-                            .then((foundDisciple) => {
-                                newReport.disciples.push(foundDisciple);
-                                return delay().then(() => {
-                                    // console.log("saving");
-                                    newReport.save().then((here) => console.log(here)).catch((err) => console.log(err));
-                                    return delay().catch(err => console.error(err))
-                                })
-                                    .catch((err) => {
-                                        console.log(err);
-                                    })
-                            })
-                            .catch((err) => {
-                                console.log(err);
-                            })
-                    })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                })
-                Worker.findById(worker)
-                    .then((foundWorker) => {
-                        foundWorker.reports.push(newReport);
-                        foundWorker.save();
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            });
-        setTimeout(() => console.log("Hello"), 500);
+
+        let newReport = await Report.create(new Report)
+
+        try {
+            setTimeout(() => {
+                ids.forEach(async (id) => {
+                    console.log("finding");
+                    let foundDisciple = await Disciple.findById(id)
+                    newReport.disciples.push(foundDisciple);
+                }, 2000)
+                // let savedReport = await 
+                newReport.save()
+                // savedReport;
+                console.log("Saved Report")
+                // console.log(savedReport);
+            })
+        } catch (error) {
+            console.log(error)
+        }
+
+        Worker.findById(worker)
+        .then((foundWorker) => {
+            foundWorker.reports.push(newReport);
+            foundWorker.save();
+        })
+        .catch((err) => {
+            console.log(err);
+        })
         res.redirect("/report");
     },
+
+    // postReport: (req, res) => {
+    //     console.log("START////////////")
+    //     let ids = req.body.ids;
+    //     let worker = {
+    //         _id: req.user.id
+    //     }
+    //     const delay = () => new Promise(res => setTimeout(() => res(), 2000));
+    //     let cur = Promise.resolve()
+    //     Report.create(new Report)
+    //         .then((newReport) => {
+    //             ids.forEach((id) => {
+    //                 cur = cur.then(() => {
+    //                     console.log("finding");
+    //                     Disciple.findById(id)
+    //                         .then((foundDisciple) => {
+    //                             newReport.disciples.push(foundDisciple);
+    //                             return delay().then(() => {
+    //                                 // console.log("saving");
+    //                                 newReport.save().then((here) => console.log(here)).catch((err) => console.log(err));
+    //                                 return delay().catch(err => console.error(err))
+    //                             })
+    //                                 .catch((err) => {
+    //                                     console.log(err);
+    //                                 })
+    //                         })
+    //                         .catch((err) => {
+    //                             console.log(err);
+    //                         })
+    //                 })
+    //                     .catch((err) => {
+    //                         console.log(err);
+    //                     });
+    //             })
+    //             Worker.findById(worker)
+    //                 .then((foundWorker) => {
+    //                     foundWorker.reports.push(newReport);
+    //                     foundWorker.save();
+    //                 })
+    //                 .catch((err) => {
+    //                     console.log(err);
+    //                 })
+    //                 .catch((err) => {
+    //                     console.log(err);
+    //                 });
+    //         });
+    //     setTimeout(() => console.log("Hello"), 500);
+    //     res.redirect("/report");
+    // },
 
     newReport: (req, res) => {
         let worker = {

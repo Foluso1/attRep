@@ -6,45 +6,26 @@ const           Worker      =   require("../models/worker")
 module.exports = {
     getDisciples: (req, res) => {
         console.log("Disciple page");
-        // let worker = {
-        //     _id: req.user.id
-        // }
-        // Worker.Reports.find()//.populate("disciples").exec()
-        //     .then((thisDisc) => {
-        //         let reports = thisDisc.report;
-        //         // console.log(worker)
-        //         // console.log("////////////////")
-        //         console.log(thisDisc);
         res.render("disciple");
-        //     })
-        //     .catch((err) => {
-        //         console.log(err);
-        //     });
     },
 
-    postDisciple: (req, res) => {
+    postDisciple: async (req, res) => {
         let idWorker = {
             _id: req.user.id
         }
         let data = {
             name: req.body.name
         }
-        Disciple.create(data)
-        .then((disciple) => {
-            return disciple; 
-        })
-        .then((disciple) => {
-        Worker.findById(idWorker)
-            .then((worker) => {
-                worker.disciples.push(disciple)
-                worker.save();
-                res.redirect("/report/new");
-            })
-        })
-    
-        .catch((err) => {
-            console.log(err);
-        })
+
+        try {
+            let disc1 = await Disciple.create(data)
+            let worker2 = await Worker.findById(idWorker)
+            worker2.disciples.push(disc1);
+            worker2.save();
+            res.redirect("/report/new");
+        } catch (error) {
+            console.log(error);
+        }
     },
 
     createNewDiscple: (req, res) => {
