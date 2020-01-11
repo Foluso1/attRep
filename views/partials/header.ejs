@@ -23,3 +23,17 @@
                 <a href="/login">Login</a>
             <% } %>
         </div>
+        <div class="container">
+        <% if( error.length === 0 && success.length === 0 ) { %>
+                <% } else if (error) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                <% } else if (success) { %>
+                    <div class="alert alert-success" role="alert">
+                        <p>Hi success</p>
+                    </div>
+                <% } else { %>
+                        <p>Hello</p>
+                <% } %>
+        </div>

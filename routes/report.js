@@ -2,36 +2,29 @@ const    express         =   require("express")
     ,    reportRouter    =   express.Router()
     ,    helper          =   require("../controller/report")
     ,    middleware      =   require("../middleware")
-         ;
+    ,    methodOverride  =   require("method-override")
+    ;
 
 reportRouter.use(express.urlencoded({ extended: true }));
-
-// reportRouter.use(expressSession({
-//     secret: "The workers application",
-//     resave: false,
-//     saveUninitialized: false
-// }));
-// reportRouter.use(flash());
-// reportRouter.use(passport.initialize());
-// reportRouter.use(passport.session());
-
-// passport.use(new passportLocal(User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
-
-// reportRouter.use("/report");
+reportRouter.use(methodOverride("_method"));
 
 
 reportRouter.route("/")
     .get(middleware.isLoggedIn, helper.getReports)
-    .post(middleware.isLoggedIn, helper.postReport);
-
+    .post(middleware.isLoggedIn, helper.postNewReport);
 
 reportRouter.route("/new")
-    .get(middleware.isLoggedIn, helper.newReport);
+    .get(middleware.isLoggedIn, helper.newReport)
+    .delete(middleware.isLoggedIn, helper.removeDisciple);
 
 reportRouter.route("/:id")
-    .get(middleware.isLoggedIn, helper.getOneReport);
+    .get(middleware.isLoggedIn, helper.getOneReport)
+    // .put(middleware.isLoggedIn, helper.editReport)
+    .delete(middleware.isLoggedIn, helper.deleteReport);
 
+reportRouter.route("/:id/edit")
+    .get(middleware.isLoggedIn, helper.editOneReport)
+    .post(middleware.isLoggedIn, helper.addDisciple)
+    .delete(middleware.isLoggedIn, helper.removeDisciple);
 
 module.exports = reportRouter;

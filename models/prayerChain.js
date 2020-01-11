@@ -2,14 +2,15 @@ const mongoose = require("mongoose")
     ;
 
 //Schema
-const prayerSchema = new mongoose.Schema({
-    prayerChainStart: {
-        type: Boolean,
-        required: true
+const prayerChainSchema = new mongoose.Schema({
+    start: {
+        type: Date,
+        default: Date.now
     },
 
-    prayerChainEnd: {
-        type: Date
+    end: {
+        type: Date,
+        required: true
     },
     
     date: {
@@ -19,4 +20,4 @@ const prayerSchema = new mongoose.Schema({
 });
 
 //Model and Export
-module.exports = mongoose.model("Prayer", prayerSchema);
+module.exports = mongoose.model("PrayerChain", prayerChainSchema);

@@ -3,6 +3,7 @@ const                   mongoose    =   require("mongoose")
         ,   Report                  =   require("./report")
         ,   Disciple                =   require("./disciple")
         ,   Prayer                  =   require("./prayer")
+        ,   PrayerChain             =   require("./prayerChain")
         ;
 
 workerSchema = new mongoose.Schema({
@@ -12,6 +13,16 @@ workerSchema = new mongoose.Schema({
     },
     
     password: {
+        type: String,
+        required: "You have to specify this"
+    },
+
+    church: {
+        type: String, 
+        required: "You have to specify this"
+    },
+
+    fellowship: {
         type: String,
         required: "You have to specify this"
     },
@@ -34,6 +45,13 @@ workerSchema = new mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Prayer'
+        }
+    ],
+
+    prayerChainReport: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'PrayerChain'
         }
     ],
 

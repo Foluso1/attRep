@@ -16,10 +16,22 @@ function lastSundayfunction(msDate) {
 };
 
 module.exports = {
-    postPrayerReport: (req, res) => {
+    postPrayerReport: async (req, res) => {
         let currentWorker = req.user.id;
         console.log(req.body);
-        res.send("Post Prayer Chain Report");
+        //Jan 1, 2020
+        refTimeMs = 1577833200;
+        
+        startString = req.body.starttime;
+        let data = {
+            start: req.body.starttime,
+            end: req.body.endtime
+        }
+        let newPrayerChain = await PrayerChain.create(data);
+        let foundWorker = await Worker.findById(currentWorker);
+        foundWorker.prayerChainReport.push(newPrayerChain)
+        foundWorker.save();
+        res.json(newPrayerChain);
     },
 
     getPrayerReports: (req, res) => {

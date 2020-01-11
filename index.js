@@ -11,7 +11,7 @@ const       express                 =   require("express")
         ,   prayerRouter            =   require("./routes/prayer")
         ,   prayerChainRouter       =   require("./routes/prayerChain")
         ,   lmaRouter               =   require("./routes/lma")
-        ,   methodOverride          =   require("method-override")
+        // ,   methodOverride          =   require("method-override")
         ,   expressSession          =   require("express-session")
             ;
 
@@ -42,6 +42,8 @@ passport.deserializeUser(Worker.deserializeUser());
 app.use((req, res, next) => {
     res.locals.loggedInWorker = req.user;
     res.locals.cdn = process.env.css_cdn;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 })
 
@@ -50,7 +52,8 @@ app.use('/disciple', discipleRouter);
 app.use('/prayer', prayerRouter);
 app.use('/prayerchain', prayerChainRouter);
 app.use('/lma', lmaRouter);
-app.use(methodOverride("_method"));
+app.use(flash());
+// app.use(methodOverride("_method"));
 
 
 app.get("/", (req, res) => {
@@ -74,6 +77,20 @@ app.post("/register", function (req, res) {
             res.redirect("/login");
         })
         .catch( (err) => {
+            console.log(err);
+            if (err.name === "UserExistsError") {
+                req.flash("error", "User Already Exists");
+                res.redirect("/login");
+            } else if (password === "") {
+                req.flash("error", "Please, provide a password")
+                res.redirect("/register");
+            } else if (username === "") {
+                req.flash("error", "Please, provide a username")
+                res.redirect("/register");
+            } else {
+                req.flash("error", "Try a different username or password")
+                res.redirect("/register");
+            }
             console.log(err)
         })
 });

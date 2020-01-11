@@ -1,12 +1,44 @@
 <% include partials/header %>
 <section class="container">
     <div class="row justify-content-center">
+        <div class="container">
+            <p><%= error %></p>
+        </div>
         <div class="m-5 col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light">
             <h1 class="text-center">Create Account</h1>
             <h5 class="m-2 text-center">...so, you are able to send your reports</h5>
             <form class="text-center p-2" action="/register" method="POST">
-                <input class="form-control m-2" type="text" name="username" placeholder="Firstname">
-                <input class="form-control m-2" type="password" name="password" placeholder="password">
+                <fieldset class="m-4">
+                    <legend>Login Credentials</legend>
+                    <hr>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="username">Username:</label>
+                        <input class="m-1 float-left form-control" type="text" id="username" name="username" placeholder="Firstname">
+                    </div>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="username">Password:</label>
+                        <input class="m-1 form-control" type="password" id="password" name="password" placeholder="Password">
+                    </div>
+                </fieldset>
+                <fieldset class="m-4">
+                    <legend>Church Details</legend>
+                    <hr>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="church">Church:</label>
+                        <select class="m-1 form-control" id="church">
+                            <option value="Nil">--Select an Option</option>
+                            <option value="Yabatech">Yaba</option>
+                        </select>
+                    </div>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="fellowship">Fellowship:</label>
+                        <select class="m-1 form-control" id="fellowship">
+                            <option value="Nil">--Select an Option</option>
+                            <option value="Yabatech">Yabatech</option>
+                            <option value="New Garage">New Garage</option>
+                        </select>
+                    </div>
+                </fieldset>
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
                         <button class="btn btn-md btn-primary btn-block m-2">Submit</button>

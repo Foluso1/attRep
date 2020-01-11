@@ -3,6 +3,7 @@ module.exports = {
         if (req.isAuthenticated()) {
             return next()
         }
+        req.flash("error", "You have to log in first");
         res.redirect("/login");
     },
     isLMA: (req, res, next) => {
@@ -10,6 +11,7 @@ module.exports = {
             return next()
         }
         console.log("Access Denied!")
+        req.flash("error", "Access denied. You have to be in the LMA to do this");
         res.send("Not in LMA!");
     }
 }
