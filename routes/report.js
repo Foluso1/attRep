@@ -3,9 +3,12 @@ const    express         =   require("express")
     ,    helper          =   require("../controller/report")
     ,    middleware      =   require("../middleware")
     ,    methodOverride  =   require("method-override")
+    ,    flash           =   require("connect-flash")
     ;
 
 reportRouter.use(express.urlencoded({ extended: true }));
+reportRouter.use(flash());
+
 reportRouter.use(methodOverride("_method"));
 
 

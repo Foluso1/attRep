@@ -3,6 +3,8 @@ const   Worker  =   require("../models/worker")
     ,   Report  =   require("../models/report")
                 ;
 
+
+
 module.exports = {
     getReports: (req, res) => {
         console.log(req.user)
@@ -77,6 +79,12 @@ module.exports = {
             }
         } catch (error) {
             console.log(error)
+            // if (error) {
+                // console.log("error.name//////", error.name);
+                // req.flash("error", "You must complete your profile first");
+                // res.status(422).json(error);
+                res.json("message: profile");
+            // }
         }
     },
 

@@ -10,8 +10,9 @@ const       express                 =   require("express")
         ,   discipleRouter          =   require("./routes/disciple")
         ,   prayerRouter            =   require("./routes/prayer")
         ,   prayerChainRouter       =   require("./routes/prayerChain")
+        ,   middleWare              =   require("./middleware/index")
         ,   lmaRouter               =   require("./routes/lma")
-        // ,   methodOverride          =   require("method-override")
+        ,   methodOverride          =   require("method-override")
         ,   expressSession          =   require("express-session")
             ;
 
@@ -50,10 +51,10 @@ app.use((req, res, next) => {
 app.use('/report', reportRouter);
 app.use('/disciple', discipleRouter);
 app.use('/prayer', prayerRouter);
-app.use('/prayerchain', prayerChainRouter);
+app.use('/prayerChain', prayerChainRouter);
 app.use('/lma', lmaRouter);
 app.use(flash());
-// app.use(methodOverride("_method"));
+app.use(methodOverride("_method"));
 
 
 app.get("/", (req, res) => {
@@ -108,6 +109,42 @@ app.get("/logout", function (req, res) {
     res.redirect("/");
 });
 
+
+app.get("/profile", middleWare.isLoggedIn, async (req, res) => {
+    try {
+        let foundWorker = await Worker.findById({ _id: req.user._id })
+        let profile = {
+            username: foundWorker.username,
+            church: foundWorker.church,
+            fellowship: foundWorker.fellowship,
+            department: foundWorker.department,
+            prayerGroup: foundWorker.prayerGroup
+        }
+        res.render("profile", { profile });
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+app.put("/profile", middleWare.isLoggedIn, async (req, res) => {
+    console.log("PUT");
+    console.log("req.body////////////");
+    console.log(req.body)
+    let profile = {
+        username: req.body.username,
+        church: req.body.church,
+        fellowship: req.body.fellowship,
+        department: req.body.department,
+        prayerGroup: req.body.prayerGroup
+    }
+    try {
+        await Worker.findByIdAndUpdate({_id: req.user._id}, profile)
+        req.logout();
+        res.redirect("/login");
+    } catch (err) {
+        console.log(err);
+    }
+});
 
 app.listen(PORT, IP, () => console.log(`The server is listening at ${PORT}`));
 

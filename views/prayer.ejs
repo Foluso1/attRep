@@ -1,12 +1,10 @@
 <% include partials/header %>
 <div class="heading">
-    <!-- <h1>Attendance <span>Report</span> Generator</h1>
-    <h2 class="head">An app to simplify generating attendance reports</h2> -->
+
     <p></p>
-    <!-- <p>You are logged in as <span><b><%= //loggedInWorker.username %></b></span>:<input class="form-control input-class" type="text" id="addNewWorker" name="name"
-            placeholder="Add new worker to database" /></p> -->
-    <a class="btn btn-primary btn-sm" href="#">Set / Change Prayer Group</a>
-    <a class="btn btn-primary btn-sm" href="/prayer/new">New Prayer Report</a>
+   
+    <h3>Your prayer group is: <%= loggedInWorker.prayerGroup%> </h3>
+    <a class="btn btn-primary btn-sm" href="/prayer/new">New Prayer Group Report</a>
     <!-- <a class="btn btn-success btn-sm" href="/report/new">Write New Report</a> -->
 </div>
 
@@ -18,14 +16,28 @@
                 <td><b>Week</b></td>
                 <td><b>Week: Sunday to Saturday</b></td>
                 <td><b>Day Prayed</b></td>
-                <td><b>Prayed</b></td>
+                <td><b>Prayed?</b></td>
             </tr>
             <% for(let i = weekNum2; i > 0; i--) { %>
                 <tr>
-                    <td>Week <%= arrWeek[i] %></i></td>
+                    <% if (!arrWeek[i]) { %>
+                        <td>Week <%= [arrWeek.length] %></i></td>
+                    <% } else { %>
+                        <td>Week <%= arrWeek[i] %></i></td>
+                    <% }; %>
                     <td><%= allWeekPrayed[i] %></i></td>
                     <td><%= allShortDate[i] %> </i></td>
-                    <td><%= allPrayed[i] %></td>
+                    <% if (allShortDate[i] === "Nil") { %>
+                        <td>No</td>
+                    <% } else if (allShortDate[i] === allShortDate[allShortDate.length]) { %>
+                        <% if (typeof allWeekPrayed[i] === String) { %>
+                            <td>Yes</td>
+                        <% } else { %>
+                            <td>--</td>
+                        <% } %>
+                    <% } else { %>
+                        <td>Yes</td>
+                    <% } %>
                 </tr>
             <% }; %>
         </table>

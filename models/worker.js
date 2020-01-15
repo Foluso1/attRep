@@ -27,6 +27,16 @@ workerSchema = new mongoose.Schema({
         required: "You have to specify this"
     },
 
+    department: {
+        type: String,
+        required: "You have to specify this"
+    },
+
+    prayerGroup: {
+        type: String,
+        required: "You have to specify this"
+    },
+
     workers: [ 
         {
             type: mongoose.Schema.Types.ObjectId,

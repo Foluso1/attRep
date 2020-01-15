@@ -5,15 +5,15 @@
             <p><%= error %></p>
         </div>
         <div class="m-5 col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light">
-            <h1 class="text-center">Create Account</h1>
-            <h5 class="m-2 text-center">...so, you are able to send your reports</h5>
-            <form class="text-center p-2" action="/register" method="POST">
+            <h1 class="text-center">Your Profile</h1>
+            <h5 class="m-2 text-center">Welcome <%= loggedInWorker.username %></h5>
+            <form class="text-center p-2" action="/profile?_method=PUT" method="POST">
                 <fieldset class="m-4">
                     <legend>Login Credentials</legend>
                     <hr>
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="username">Username:</label>
-                        <input class="m-1 float-left form-control" type="text" id="username" name="username" placeholder="Firstname">
+                        <input class="m-1 float-left form-control" type="text" id="username" name="username" value="<%= profile.username %>" placeholder="Firstname">
                     </div>
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="username">Password:</label>
@@ -26,14 +26,14 @@
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="church">Church:</label>
                         <select class="m-1 form-control" name="church" id="church">
-                            <option value="Nil">--Select an Option</option>
-                            <option value="Yabatech">Yaba</option>
+                            <option value="<%= profile.church %>"><%= profile.church %></option>
+                            <option value="Yaba">Yaba</option>
                         </select>
                     </div>
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="fellowship">Fellowship:</label>
                         <select class="m-1 form-control" name="fellowship" id="fellowship">
-                            <option value="Nil">--Select an Option</option>
+                            <option value="<%= profile.fellowship %>"><%= profile.fellowship %></option>
                             <option value="Yabatech">Yabatech</option>
                             <option value="New Garage">New Garage</option>
                         </select>
@@ -41,7 +41,7 @@
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="department">Department:</label>
                         <select class="m-1 form-control" name="department" id="department">
-                            <option value="Nil">--Select an Option</option>
+                            <option value="<%= profile.department %>"><%= profile.department %></option>
                             <option value="Technical Team">Technical Team</option>
                             <option value="Display Team">Display Team</option>
                             <option value="Guest Ministries">Guest Ministries</option>
@@ -56,7 +56,7 @@
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="prayerGroup">Prayer Group:</label>
                         <select class="m-1 form-control" name="prayerGroup" id="prayerGroup">
-                            <option value="<%= Nil %>">--Select an Option</option>
+                            <option value="<%= profile.prayerGroup %>"><%= profile.prayerGroup %></option>
                             <option value="Sunday">Sunday</option>
                             <option value="Monday">Monday</option>
                             <option value="Tuesday">Tuesday</option>
@@ -66,15 +66,14 @@
                             <option value="Saturday Evening">Saturday Evening</option>
                         </select>
                     </div>
-                </fieldset>
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
-                        <button class="btn btn-md btn-primary btn-block m-2">Submit</button>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
+                            <input type="submit" class="btn btn-md btn-primary btn-block m-2"></input>
+                        </div>
                     </div>
-                </div>
+                </fieldset>
             </form>
-            <hr>
-            <p class="text-center">Already a member? <a href="/login">Login</a></p>
+            
         </div>
     </div>
 </section>

@@ -17,8 +17,10 @@
     <section class="container">
         <div>
             <% if(loggedInWorker){ %>
-                <a href="">Welcome <%= loggedInWorker.username %></a>
-                <a href="/logout">Logout</a>
+                <a class="btn btn-sm">Welcome <%= loggedInWorker.username %></a>
+                <a class="btn btn-sm" href="/logout">Logout</a>
+                <a class="btn btn-sm" href="/report">Homepage</a>
+                <a class="btn btn-sm" href="/profile">My Profile</a>
             <% } else { %>
                 <a href="/login">Login</a>
             <% } %>

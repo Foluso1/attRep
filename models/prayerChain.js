@@ -5,7 +5,7 @@ const mongoose = require("mongoose")
 const prayerChainSchema = new mongoose.Schema({
     start: {
         type: Date,
-        default: Date.now
+        required: true
     },
 
     end: {
