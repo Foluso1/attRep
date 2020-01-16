@@ -1,9 +1,6 @@
 <% include partials/header %>
 <section class="container">
     <div class="row justify-content-center">
-        <div class="container">
-            <p><%= error %></p>
-        </div>
         <div class="m-5 col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light">
             <h1 class="text-center">Create Account</h1>
             <h5 class="m-2 text-center">...so, you are able to send your reports</h5>
@@ -13,7 +10,15 @@
                     <hr>
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="username">Username:</label>
-                        <input class="m-1 float-left form-control" type="text" id="username" name="username" placeholder="Firstname">
+                        <input class="m-1 float-left form-control" type="text" id="username" name="username" placeholder="Username">
+                    </div>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="surname">Firstname:</label>
+                        <input class="m-1 float-left form-control" type="text" id="firstname" name="firstname" placeholder="Firstname">
+                    </div>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="surname">Surname:</label>
+                        <input class="m-1 float-left form-control" type="text" id="surname" name="surname" placeholder="Surname">
                     </div>
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="username">Password:</label>
@@ -25,23 +30,23 @@
                     <hr>
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="church">Church:</label>
-                        <select class="m-1 form-control" name="church" id="church">
-                            <option value="Nil">--Select an Option</option>
+                        <select class="m-1 form-control" name="church" id="church" required>
+                            <option value="">Select an option</option>
                             <option value="Yabatech">Yaba</option>
                         </select>
                     </div>
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="fellowship">Fellowship:</label>
-                        <select class="m-1 form-control" name="fellowship" id="fellowship">
-                            <option value="Nil">--Select an Option</option>
+                        <select class="m-1 form-control" name="fellowship" id="fellowship" required>
+                            <option value="">Select an option</option>
                             <option value="Yabatech">Yabatech</option>
                             <option value="New Garage">New Garage</option>
                         </select>
                     </div>
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="department">Department:</label>
-                        <select class="m-1 form-control" name="department" id="department">
-                            <option value="Nil">--Select an Option</option>
+                        <select class="m-1 form-control" name="department" id="department" required>
+                            <option value="">Select an option</option>
                             <option value="Technical Team">Technical Team</option>
                             <option value="Display Team">Display Team</option>
                             <option value="Guest Ministries">Guest Ministries</option>
@@ -55,8 +60,8 @@
                     </div>
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="prayerGroup">Prayer Group:</label>
-                        <select class="m-1 form-control" name="prayerGroup" id="prayerGroup">
-                            <option value="Nil">--Select an Option</option>
+                        <select class="m-1 form-control" name="prayerGroup" id="prayerGroup" required>
+                            <option value="">Select an option</option>
                             <option value="Sunday">Sunday</option>
                             <option value="Monday">Monday</option>
                             <option value="Tuesday">Tuesday</option>

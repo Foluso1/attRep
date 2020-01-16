@@ -1,12 +1,9 @@
 <% include partials/header %>
 <section class="container">
     <div class="row justify-content-center">
-        <div class="container">
-            <p><%= error %></p>
-        </div>
-        <div class="m-5 col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light">
+        <div class="m-3 col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light">
             <h1 class="text-center">Your Profile</h1>
-            <h5 class="m-2 text-center">Welcome <%= loggedInWorker.username %></h5>
+            <h5 class="m-2 text-center">Welcome <%= loggedInWorker.firstname %>&nbsp;<%= loggedInWorker.surname %></h5>
             <form class="text-center p-2" action="/profile?_method=PUT" method="POST">
                 <fieldset class="m-4">
                     <legend>Login Credentials</legend>
@@ -14,6 +11,14 @@
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="username">Username:</label>
                         <input class="m-1 float-left form-control" type="text" id="username" name="username" value="<%= profile.username %>" placeholder="Firstname">
+                    </div>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="firstname">Firstname:</label>
+                        <input class="m-1 float-left form-control" type="text" id="firstname" name="firstname" value="<%= profile.firstname %>" placeholder="Firstname">
+                    </div>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="surname">Surname:</label>
+                        <input class="m-1 float-left form-control" type="text" id="surname" name="surname" value="<%= profile.surname %>" placeholder="Surname">
                     </div>
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="username">Password:</label>

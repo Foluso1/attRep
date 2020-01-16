@@ -11,6 +11,16 @@ workerSchema = new mongoose.Schema({
         type: String,
         required: "You have to specify this"
     },
+
+    firstname: {
+        type: String,
+        required: "You have to specify this"
+    },
+
+    surname: {
+        type: String,
+        required: "You have to specify this"
+    },
     
     password: {
         type: String,

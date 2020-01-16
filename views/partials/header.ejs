@@ -17,15 +17,16 @@
     <section class="container">
         <div>
             <% if(loggedInWorker){ %>
-                <a class="btn btn-sm">Welcome <%= loggedInWorker.username %></a>
-                <a class="btn btn-sm" href="/logout">Logout</a>
-                <a class="btn btn-sm" href="/report">Homepage</a>
-                <a class="btn btn-sm" href="/profile">My Profile</a>
+                <a class="btn btn-md">Welcome <%= loggedInWorker.username %></a>
+                <a class="btn btn-md" href="/logout">Logout</a>
+                <a class="btn btn-md" href="/report">Homepage</a>
+                <a class="btn btn-md" href="/profile">My Profile</a>
             <% } else { %>
-                <a href="/login">Login</a>
-                <a href="/register">Register</a>
+                <a class="btn btn-md p-2" href="/login">Login</a>
+                <a class="btn btn-md p-2" href="/register">Register</a>
             <% } %>
         </div>
+        <br>
         <div class="container">
         <% if( error.length === 0 && success.length === 0 ) { %>
                 <% } else if (error) { %>
@@ -34,7 +35,7 @@
                     </div>
                 <% } else if (success) { %>
                     <div class="alert alert-success" role="alert">
-                        <p>Hi success</p>
+                        <p><%= success %></p>
                     </div>
                 <% } else { %>
                         <p>Hello</p>

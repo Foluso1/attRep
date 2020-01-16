@@ -48,12 +48,12 @@ app.use((req, res, next) => {
     next();
 })
 
+app.use(flash());
 app.use('/report', reportRouter);
 app.use('/disciple', discipleRouter);
 app.use('/prayer', prayerRouter);
 app.use('/prayerChain', prayerChainRouter);
 app.use('/lma', lmaRouter);
-app.use(flash());
 app.use(methodOverride("_method"));
 
 
@@ -69,31 +69,27 @@ app.get("/register", (req, res) => {
     res.render("register");
 });
 
-app.post("/register", function (req, res) {
-    Worker.register(new Worker({ 
-        username: req.body.username,
-        password: req.body.password
-     }), req.body.password)
-        .then((user) => {
-            res.redirect("/login");
-        })
-        .catch( (err) => {
-            console.log(err);
-            if (err.name === "UserExistsError") {
-                req.flash("error", "User Already Exists");
-                res.redirect("/login");
-            } else if (password === "") {
-                req.flash("error", "Please, provide a password")
-                res.redirect("/register");
-            } else if (username === "") {
-                req.flash("error", "Please, provide a username")
-                res.redirect("/register");
-            } else {
-                req.flash("error", "Try a different username or password")
-                res.redirect("/register");
-            }
+app.post("/register", async (req, res) => {
+    try {
+        if (!req.body.username) throw {name: "Error", message: "Please provide your firstname"};
+        if (!req.body.password) throw {name: "Error", message: "Please provide a password"};
+        if (!req.body.surname) throw {name: "Error", message: "Please provide your surname"};
+
+        await Worker.register(new Worker({
+            username: req.body.username,
+            password: req.body.password,
+            firstname: req.body.firstname,
+            surname: req.body.surname,
+            church: req.body.church,
+            fellowship: req.body.fellowship,
+            department: req.body.department,
+            prayerGroup: req.body.prayerGroup
+        }), req.body.password)
+    } catch (err) {
             console.log(err)
-        })
+            req.flash("error", err.message);
+            res.redirect("/register");
+    }
 });
 
 app.post("/login", passport.authenticate("local", {
@@ -101,6 +97,7 @@ app.post("/login", passport.authenticate("local", {
         failureRedirect: "/login",
         failureFlash: true
     }), (req, res) => {
+
 })
 
 
@@ -115,6 +112,8 @@ app.get("/profile", middleWare.isLoggedIn, async (req, res) => {
         let foundWorker = await Worker.findById({ _id: req.user._id })
         let profile = {
             username: foundWorker.username,
+            firstname: foundWorker.firstname,
+            surname: foundWorker.surname,
             church: foundWorker.church,
             fellowship: foundWorker.fellowship,
             department: foundWorker.department,
@@ -132,6 +131,8 @@ app.put("/profile", middleWare.isLoggedIn, async (req, res) => {
     console.log(req.body)
     let profile = {
         username: req.body.username,
+        firstname: req.body.firstname,
+        surname: req.body.surname,
         church: req.body.church,
         fellowship: req.body.fellowship,
         department: req.body.department,

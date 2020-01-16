@@ -1,7 +1,8 @@
 const   Worker  =   require("../models/worker")
     ,   Disciple  =   require("../models/disciple")
     ,   Report  =   require("../models/report")
-                ;
+    , flash = require("connect-flash")
+    ;
 
 
 
@@ -11,6 +12,7 @@ module.exports = {
         let worker = {
             _id: req.user.id
         }
+        
         Worker.findById(worker).
             populate({path: 'reports', populate: { path: 'disciples' }})
             // populate("disciples")
@@ -52,11 +54,11 @@ module.exports = {
             
             let i = 0;
             while (!(arr.length === ids.length)) {
-                let id = ids[i]
+                let id = ids[i];
                 console.log("finding");
-                let foundDisciple = await Disciple.findById(id)
+                let foundDisciple = await Disciple.findById(id);
                 newReport.disciples.push(foundDisciple);
-                let yesSaved = await newReport.save()
+                let yesSaved = await newReport.save();
                 // yesSaved;
                 console.log("////yesSaved////");
                 console.log(yesSaved);
@@ -67,8 +69,8 @@ module.exports = {
                 }
             }
             // if (id) {
-            console.log("Saved Report")
-            let foundWorker = await Worker.findById(worker)
+            console.log("Saved Report");
+            let foundWorker = await Worker.findById(worker);
             foundWorker.reports.push(newReport);
             let savedWorker = await foundWorker.save();
             if (savedWorker) {
@@ -79,12 +81,8 @@ module.exports = {
             }
         } catch (error) {
             console.log(error)
-            // if (error) {
-                // console.log("error.name//////", error.name);
-                // req.flash("error", "You must complete your profile first");
-                // res.status(422).json(error);
-                res.json("message: profile");
-            // }
+            req.flash("error", "You must complete your profile first");
+            res.redirect("/register");
         }
     },
 

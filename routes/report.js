@@ -8,12 +8,12 @@ const    express         =   require("express")
 
 reportRouter.use(express.urlencoded({ extended: true }));
 reportRouter.use(flash());
-
 reportRouter.use(methodOverride("_method"));
 
 
 reportRouter.route("/")
-    .get(middleware.isLoggedIn, helper.getReports)
+    // .get(middleware.isLoggedIn, helper.getReports)
+    .get(middleware.isLoggedIn, middleware.validator, helper.getReports)
     .post(middleware.isLoggedIn, helper.postNewReport);
 
 reportRouter.route("/new")
