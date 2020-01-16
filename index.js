@@ -85,6 +85,8 @@ app.post("/register", async (req, res) => {
             department: req.body.department,
             prayerGroup: req.body.prayerGroup
         }), req.body.password)
+        req.flash("success", "Successfully Registered! Now login");
+        res.redirect("/login");
     } catch (err) {
             console.log(err)
             req.flash("error", err.message);

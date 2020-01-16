@@ -28,16 +28,14 @@
         </div>
         <br>
         <div class="container">
-        <% if( error.length === 0 && success.length === 0 ) { %>
-                <% } else if (error) { %>
+        <% if(success && success.length !== 0 ) { %>
+                    <div class="alert alert-success" role="alert">
+                        <%= success %>
+                    </div>
+        <% } else if (error && error.length !== 0) { %>
                     <div class="alert alert-danger" role="alert">
                         <%= error %>
                     </div>
-                <% } else if (success) { %>
-                    <div class="alert alert-success" role="alert">
-                        <p><%= success %></p>
-                    </div>
                 <% } else { %>
-                        <p>Hello</p>
                 <% } %>
         </div>
