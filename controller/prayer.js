@@ -221,7 +221,7 @@ module.exports = {
             console.log("allWeekPrayed/////");
             console.log(allWeekPrayed);
             
-            res.render("prayer", { allShortDate, arrWeek, allWeekPrayed, allPrayed, weekNum2 });
+            res.render("prayer", { allShortDate, arrWeek, mapped, allWeekPrayed, allPrayed, weekNum2 });
         })
         .catch((err) => {
             console.log(err);

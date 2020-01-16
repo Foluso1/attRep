@@ -20,10 +20,10 @@
             </tr>
             <% for(let i = weekNum2; i > 0; i--) { %>
                 <tr>
-                    <% if (!arrWeek[i]) { %>
-                        <td>Week <%= [arrWeek.length] %></i></td>
+                    <% if (i === weekNum2.length - 1) { %>
+                        <td>Week <%= mapped.length %></i></td>
                     <% } else { %>
-                        <td>Week <%= arrWeek[i] %></i></td>
+                        <td>Week <%= i %></i></td>
                     <% }; %>
                     <td><%= allWeekPrayed[i] %></i></td>
                     <td><%= allShortDate[i] %> </i></td>
