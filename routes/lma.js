@@ -47,3 +47,9 @@ lmaRouter.get("/report/:id", (req, res) => {
 })
 
 module.exports = lmaRouter;
+
+// Do a looop
+// find the worker
+// populate the prayer report
+// Get the "yes" of the array
+// 
