@@ -28,7 +28,7 @@
                 <% }); %>
                 <% addWorker.forEach((foundWorker) => { %>
                     <li style="display: flex; justify-content: space-between;" _id="<%= foundWorker._id %>">
-                        <%= foundWorker.username %>
+                        <%= foundWorker.firstname %>&nbsp;<%= foundWorker.surname %>
                         <form action="/lma" method="POST" class="worker-list">
                             <input style="display: none" type="text" name="id" value="<%= foundWorker._id %>">
                             <button class="btn btn-sm btn-primary" _id="<%= foundWorker._id %>">Add Worker</button>

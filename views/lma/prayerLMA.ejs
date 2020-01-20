@@ -1,16 +1,16 @@
-<% include partials/header %>
+<% include ../partials/header %>
 <div class="heading">
 
     <p></p>
    
-    <h3>Your prayer group is: <%= loggedInWorker.prayerGroup%> </h3>
+    <h3><%= currentWorker.firstname %>&nbsp;<%= currentWorker.surname %>'s prayer group is: <%= currentWorker.prayerGroup%> </h3>
     <a class="btn btn-primary btn-sm" href="/prayer/new">New Prayer Group Report</a>
     <!-- <a class="btn btn-success btn-sm" href="/report/new">Write New Report</a> -->
 </div>
 
 <main class="row">
     <div class="col-md-12">
-        <h3>Welcome <%= loggedInWorker.username %></h3>
+        <h3>Welcome <%= currentWorker.firstname %>&nbsp;<%= currentWorker.surname %></h3>
         <table border="1" >
             <tr>
                 <td><b>Week</b></td>
@@ -19,19 +19,16 @@
                 <td><b>Prayed?</b></td>
             </tr>
             <% weekNumPrDb.forEach((elem) => { %>
+            <tr>
                 <td>Week <%= elem[0] %></td>
                 <td><%= elem[2] %></td>
                 <td><%= elem[1] %></td>
                 <td>Yes</td>
+            </tr>
             <% }); %>
-
-
-            
-                </tr>
-            <% }; %>
         </table>
     </div>
 </main>
 <p></p>
 <p></p>
-<% include partials/footer %>
+<% include ../partials/footer %>
