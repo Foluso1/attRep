@@ -3,9 +3,11 @@ const       express         =   require("express")
         ,   Prayer          =   require("../models/prayer")
         ,   controller      =   require("../controller/prayer")
         ,   middleware      =   require("../middleware")
+        ,   flash           =   require("connect-flash")
         ;
 
     
+prayerRouter.use(flash());
 
 
 prayerRouter.route("/new")

@@ -14,8 +14,29 @@ function lastMondayfunction(msDate) {
     return msLastMonday;
 };
 
+function refWeekFromMonfunction(msDate) {
+    let lastMonday = lastMondayfunction(msDate)
+    let a = new Date(lastMonday);
+    let weekMonth = a.getMonth();
+    let weekDate = a.getDate();
+    let weekYear = a.getFullYear();
+    let b = new Date(sixDaysAfter(lastMonday));
+    let plusWeekMonth = b.getMonth();
+    let plusWeekYear = b.getFullYear();
+    let plusWeekDate = b.getDate();
+    console.log("plusWeekDate///////");
+    console.log(plusWeekDate);
+    let startWeek = `${weekDate}/${weekMonth + 1}/${weekYear} - ${plusWeekDate}/${plusWeekMonth + 1}/${plusWeekYear}`;
+    return startWeek;
+};
+
+function sixDaysAfter(msDate) {
+    let msSun = msDate + 541740000 - 12600000;
+    return msSun;
+};
+
 module.exports = {
-    postPrayerReport: (req, res) => {
+    postPrayerReport: async (req, res) => {
         let currentWorker = req.user.id;
         console.log(req.body);
         let day = new Date(req.body.dayPrayed);
@@ -28,25 +49,60 @@ module.exports = {
             prayed: yesOrNo
         };
         let dayer = day.toString();
-        Prayer.create(data)
-            .then((oneReport) => {
-                console.log(oneReport);
-                Worker.findById({ _id: currentWorker })
-                    .then((foundWorker) => {
-                        console.log("found worker is " + foundWorker);
-                        foundWorker.prayerReport.push(oneReport);
-                        foundWorker.save();
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        console.log("err.name//////", err.name);
-                    })
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        // res.render("prayer", { dayer });
-        res.redirect("/prayer");
+
+        try {
+            // Find ref week of reported day
+            let refWeekDay = refWeekFromMonfunction(day.getTime());
+            console.log("refWeekDay", refWeekDay);
+            
+            let foundWorker = await Worker.findById({ _id: currentWorker }).populate("prayerReport");
+            let prayerReports = foundWorker.prayerReport;
+            const arrPrayerReports = [];
+            prayerReports.forEach((e) => {
+                // Find refWeek of previous reports
+                let elem = e.datePrayed;
+                console.log("elem", elem);
+                arrPrayerReports.push(refWeekFromMonfunction(elem.getTime()));
+            });          
+            console.log("arrPrayerReports", arrPrayerReports);
+
+            // let abc = See if ref week of reported day tallies with refWeek of previous reports
+            let ifFoundIndex = arrPrayerReports.indexOf(refWeekDay);
+            if (ifFoundIndex === -1) {
+                let createPrayer = await Prayer.create(data);
+                foundWorker.prayerReport.push(createPrayer);
+                foundWorker.save();
+                res.redirect("/prayer");
+            } else {
+                req.flash("error", "You have already reported for that week");
+                res.redirect("/prayer");
+            }
+            
+            // If abc is true alert (you have already prayed on that week);
+
+
+        } catch (error) {
+            console.log(error);
+        }
+        // Prayer.create(data)
+        //     .then((oneReport) => {
+        //         console.log(oneReport);
+        //         Worker.findById({ _id: currentWorker })
+        //             .then((foundWorker) => {
+        //                 console.log("found worker is " + foundWorker);
+        //                 foundWorker.prayerReport.push(oneReport);
+        //                 foundWorker.save();
+        //             })
+        //             .catch((err) => {
+        //                 console.log(err);
+        //                 console.log("err.name//////", err.name);
+        //             })
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //     })
+        // // res.render("prayer", { dayer });
+        // res.redirect("/prayer");
     },
 
     getPrayerReports: (req, res) => {
@@ -59,24 +115,10 @@ module.exports = {
 
             // Defines six days added to beginning of the Week
             function sixDaysAfter(msDate){
-                let msSat = msDate + 541740000 - 12600000;
-                return msSat;
+                let msSun = msDate + 541740000 - 12600000;
+                return msSun;
             };
 
-            function refWeekfunction(msDate){
-                let a = new Date(msDate);
-                let weekMonth = a.getMonth();
-                let weekDate = a.getDate();
-                let weekYear = a.getFullYear();
-                let b = new Date(sixDaysAfter(msDate));
-                let plusWeekMonth = b.getMonth();
-                let plusWeekYear = b.getFullYear();
-                let plusWeekDate = b.getDate();
-                console.log("plusWeekDate///////");
-                console.log(plusWeekDate);
-                let startWeek = `${weekDate}/${weekMonth + 1}/${weekYear} - ${plusWeekDate}/${plusWeekMonth + 1}/${plusWeekYear}`;
-                return startWeek;
-            };
 
             function dMDYYYY(fullDate) {
                 let month = fullDate.getMonth();
@@ -128,23 +170,10 @@ module.exports = {
                 //Divide abc by number of weeks and add 1 to it
                 return Math.ceil((diffMondays / week) + 1);
             }
-            let weekNum2 = findWeekNumber(); // Math.ceil(remWeek - 52);
-
-            let allWeekNum2 = [];
-            let allWeekSpan = [];
-            let allWeekPrayed = [];
-            let allPrayed = [];
+            
             let arrWeek = [];
 
-            // for(let i = weekNum2; i >= 1; i--){
-            for(let i = findWeekNumber() + 1; i >= 1; i--){
-                let j = findWeekNumber() - i - 1;
-                console.log("findWeekNumber()//////////", findWeekNumber())
-                allWeekNum2[i-1] = i;
-                allWeekSpan[i] = refWeekfunction(firstMondayOftheYear() - (week * j))
-                console.log("///allWeekSpan///", allWeekSpan);
-            };
-            allWeekPrayed = allWeekSpan;
+            
          
 
             const weekNumPrDb = [];
@@ -157,7 +186,7 @@ module.exports = {
                 console.log("datePrayed/////");
                 console.log(datePrayed);
                 arrWeek[i] = i;
-                let refWeek = refWeekfunction(mslastMon);
+                let refWeek = refWeekFromMonfunction(mslastMon);
 
                 // let mslstMon = lastMondayfunction(datePrayed.getTime());
                 if (datePrayed.getFullYear() === new Date().getFullYear()) {
@@ -177,10 +206,7 @@ module.exports = {
             })
             console.log("allShortDate", allShortDate);
             
-            console.log("allWeekPrayed/////");
-            console.log(allWeekPrayed);
-            
-            res.render("prayer", { allShortDate, arrWeek, weekNumPrDb, allWeekPrayed, allPrayed, weekNum2 });
+            res.render("prayer", { weekNumPrDb });
         })
         .catch((err) => {
             console.log(err);
@@ -212,3 +238,12 @@ module.exports = {
     }
 
 }
+
+
+// Find last report
+// find refWeek of last report
+
+// Find ref week of reported day
+// Find refWeek of previous reports
+// let abc = See if ref week of reported day tallies with refWeek of previous reports
+// If abc is true alert (you have already prayed on that week);
