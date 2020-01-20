@@ -9,15 +9,19 @@
 </div>
 
 <main class="row">
-    <div class="col-md-12">
-        <h3>Welcome <%= loggedInWorker.username %></h3>
+    <div class="col-md-12" style="overflow-x:auto;">
+        <br>
+        <h3 class="p-3">Welcome <%= loggedInWorker.username %></h3>
         <table border="1" >
-            <tr>
-                <td><b>Week</b></td>
-                <td><b>Week: Sunday to Saturday</b></td>
-                <td><b>Day Prayed</b></td>
-                <td><b>Prayed?</b></td>
-            </tr>
+            <thead>
+                <tr>
+                    <th><b>Week</b></th>
+                    <th><b>Week: Monday to Sunday</b></th>
+                    <th><b>Day Prayed</b></th>
+                    <th><b>Prayed?</b></th>
+                </tr>
+            </thead>
+            <tbody>
             <% weekNumPrDb.forEach((elem) => { %>
                 <tr>
                     <td>Week <%= elem[0] %></td>
@@ -26,6 +30,7 @@
                     <td>Yes</td>
                 </tr>
             <% }); %>
+            </tbody>
         </table>
     </div>
 </main>

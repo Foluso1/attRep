@@ -1,19 +1,14 @@
 <% include partials/header %>
-<div class="heading">
-    <!-- <h1>Attendance <span>Report</span> Generator</h1> -->
-    <!-- <h2 class="head">An app to simplify generating attendance reports</h2> -->
-    <p></p>
-    <!-- <p>You are logged in as <span><b><%= //loggedInWorker.username %></b></span>:<input class="form-control input-class" type="text" id="addNewWorker" name="name"
-            placeholder="Add new worker to database" /></p> -->
-    <a class="btn btn-primary btn-sm" href="/disciple/new">Add New Disciple</a>
-    <a class="btn btn-success btn-sm" href="/report/new">Write New Report</a>
-    <a class="btn btn-success btn-sm" href="/prayer">Prayer Group Report</a>
-    <a class="btn btn-success btn-sm" href="/prayerchain">Prayer Chain Report</a>
+<div class="heading justify-content-between">
+    <a class="btn btn-primary btn-sm m-1" href="/disciple/new">Add New Disciple</a>
+    <a class="btn btn-success btn-sm m-1" href="/report/new">Write New Report</a>
+    <a class="btn btn-success btn-sm m-1" href="/prayer">Prayer Group Report</a>
+    <a class="btn btn-success btn-sm m-1" href="/prayerchain">Prayer Chain Report</a>
     <% if(loggedInWorker.isLMA) { %>
         <!-- <a class="btn btn-success btn-sm" href="/lma/new">Add Worker</a> -->
-        <a class="btn btn-success btn-sm" href="/lma">LMA Admin</a>
+        <a class="btn btn-success btn-sm m-1" href="/lma">LMA Admin</a>
     <% } %>
-    <a class="btn btn-info btn-sm" href="/profile">Profile</a>
+    <a class="btn btn-info btn-sm m-1" href="/profile">Profile</a>
 </div>
 
 <main class="row">

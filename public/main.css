@@ -103,18 +103,92 @@ button {
     width: 400px;
 }
 
+
+/* 
+Table Stylings
+*/
 th, td {
     padding: 5px 12px;
     border: 1px solid gray;
 }
 
 table {
-    border-collapse: separate;
+    border-collapse: collapse;
     padding: 2px;
-    /* border: 1px solid gray; */
+    width: 100%; 
+    border: 1px solid gray;
 }
 
-th:hover, td:hover {
+/* th:hover, td:hover {
     background-color: #7e7c7c;
     color: white;
+} */
+
+/* Zebra striping */
+tbody > tr:nth-of-type(odd) { 
+  background: rgb(243, 228, 200);
+}
+
+th { 
+  background: rgb(255, 240, 212);
+  color: black; 
+  font-weight: 400; 
+  border: 1px solid #CEBF9F; 
+}
+td { 
+  padding: 6px; 
+  border: 1px solid #CEBF9F; 
+  text-align: left; 
+}
+
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+        display: block; 
+        border: none;
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { 
+        border: 1px solid #CEBF9F; 
+        margin: 0px 0px 5px 0px;
+    }
+	
+	td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #CEBF9F; 
+		position: relative;
+		padding-left: 50%; 
+	}
+	
+	td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+        white-space: wrap;
+        font-weight: 500;
+	}
+	
+	/*
+	Label the data
+	*/
+	td:nth-of-type(1):before { content: "Week"; }
+	td:nth-of-type(2):before { content: "Week: Mon to Sun"; }
+	td:nth-of-type(3):before { content: "Day Prayed"; }
+	td:nth-of-type(4):before { content: "Prayed?"; }
+	
 }

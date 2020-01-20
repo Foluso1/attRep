@@ -1,26 +1,26 @@
 <% include partials/header %>
 <section class="container">
     <div class="row justify-content-center">
-        <div class="m-5 col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light">
             <h1 class="text-center">Create Account</h1>
             <h5 class="m-2 text-center">...so, you are able to send your reports</h5>
-            <form class="text-center p-2" action="/register" method="POST">
+            <form class="text-center" action="/register" method="POST">
                 <fieldset class="m-4">
                     <legend>Login Credentials</legend>
                     <hr>
-                    <div class="d-flex m-2">
-                        <label class="m-2 float-left" for="username">Username:</label>
+                    <div class="d-flex m-2 flex-column align-items-start">
+                        <label class="m-2 align-items-start" for="username">Username:</label>
                         <input class="m-1 float-left form-control" type="text" id="username" name="username" placeholder="Username" required>
                     </div>
-                    <div class="d-flex m-2">
+                    <div class="d-flex m-2 flex-column align-items-start">
                         <label class="m-2 float-left" for="surname">Firstname:</label>
                         <input class="m-1 float-left form-control" type="text" id="firstname" name="firstname" placeholder="Firstname" required>
                     </div>
-                    <div class="d-flex m-2">
+                    <div class="d-flex m-2 flex-column align-items-start">
                         <label class="m-2 float-left" for="surname">Surname:</label>
                         <input class="m-1 float-left form-control" type="text" id="surname" name="surname" placeholder="Surname" required>
                     </div>
-                    <div class="d-flex m-2">
+                    <div class="d-flex m-2 flex-column align-items-start">
                         <label class="m-2 float-left" for="username">Password:</label>
                         <input class="m-1 form-control" type="password" id="password" name="password" placeholder="Password" required>
                     </div>
@@ -28,14 +28,14 @@
                 <fieldset class="m-4">
                     <legend>Church Details</legend>
                     <hr>
-                    <div class="d-flex m-2">
+                    <div class="d-flex m-2 flex-column align-items-start">
                         <label class="m-2 float-left" for="church">Church:</label>
                         <select class="m-1 form-control" name="church" id="church" required>
                             <option value="">Select an option</option>
                             <option value="Yabatech">Yaba</option>
                         </select>
                     </div>
-                    <div class="d-flex m-2">
+                    <div class="d-flex m-2 flex-column align-items-start">
                         <label class="m-2 float-left" for="fellowship">Fellowship:</label>
                         <select class="m-1 form-control" name="fellowship" id="fellowship" required>
                             <option value="">Select an option</option>
@@ -43,7 +43,7 @@
                             <option value="New Garage">New Garage</option>
                         </select>
                     </div>
-                    <div class="d-flex m-2">
+                    <div class="d-flex m-2 flex-column align-items-start">
                         <label class="m-2 float-left" for="department">Department:</label>
                         <select class="m-1 form-control" name="department" id="department" required>
                             <option value="">Select an option</option>
@@ -58,7 +58,7 @@
                             <option value="Livingword Media">Livingword Media</option>
                         </select>
                     </div>
-                    <div class="d-flex m-2">
+                    <div class="d-flex m-2 flex-column align-items-start">
                         <label class="m-2 float-left" for="prayerGroup">Prayer Group:</label>
                         <select class="m-1 form-control" name="prayerGroup" id="prayerGroup" required>
                             <option value="">Select an option</option>
