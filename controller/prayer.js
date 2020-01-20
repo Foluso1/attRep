@@ -31,7 +31,7 @@ function refWeekFromMonfunction(msDate) {
 };
 
 function sixDaysAfter(msDate) {
-    let msSun = msDate + 604799000 + (3600 * 1000);
+    let msSun = msDate + 604799000;
     return msSun;
 };
 
