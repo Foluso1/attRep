@@ -227,9 +227,6 @@ module.exports = {
                 lastReport = allDates[allDates.length - 1].date.getTime(); //Last reported time in database
             }
             let lastSunday = lastMondayfunction(Date.now()) //refSunday + (week * Math.floor(diffWeek)); // 
-            console.log("lastSunday", lastSunday);
-            console.log("lastReport", lastReport);
-            console.log("lastReport", allDates[allDates.length - 1].date);
             res.render("prayerNew", { lastReport, lastSunday });
         })
         .catch((err) => {
