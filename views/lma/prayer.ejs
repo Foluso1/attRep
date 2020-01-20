@@ -19,13 +19,16 @@
                 <td><b>Prayed?</b></td>
             </tr>
             <% weekNumPrDb.forEach((elem) => { %>
-                <tr>
-                    <td>Week <%= elem[0] %></td>
-                    <td><%= elem[2] %></td>
-                    <td><%= elem[1] %></td>
-                    <td>Yes</td>
-                </tr>
+                <td>Week <%= elem[0] %></td>
+                <td><%= elem[2] %></td>
+                <td><%= elem[1] %></td>
+                <td>Yes</td>
             <% }); %>
+
+
+            
+                </tr>
+            <% }; %>
         </table>
     </div>
 </main>

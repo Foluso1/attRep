@@ -3,28 +3,17 @@ const Worker = require("../models/worker")
     ;
 
 
-
-
-function lastSundayfunction(msDate) {
-    let refSunday = 318600000; //Sun, 4th January 1970, 17:30:000;
-    let week = 604800000; // Number of milliseconds in a week;
-    let timeAYear = 31536000000; // Number of milliseconds in a year;
-    let diffTime = msDate - refSunday;
-    let diffWeek = diffTime / week; //Difference in number of weeks;
-    let msLastSunday = refSunday + (week * Math.floor(diffWeek));
-    return msLastSunday;
-};
-
 function lastMondayfunction(msDate) {
-    let refSunday = 318600000; //Sun, 4th January 1970, 17:30:000;
+    // let refSunday = 318600000; //Sun, 4th January 1970, 17:30:000;
     let refMonday = 318600000 + (24 * 3600 * 1000) + (3 * 3600 * 1000) + (30 * 60 * 1000); //Mon, 5th January 1970, 9:00:000;
     let week = 604800000; // Number of milliseconds in a week;
     let timeAYear = 31536000000; // Number of milliseconds in a year;
     let diffTime = msDate - refMonday;
     let diffWeek = diffTime / week; //Difference in number of weeks;
-    let msLastMonday = refSunday + (week * Math.floor(diffWeek));
+    let msLastMonday = refMonday + (week * Math.floor(diffWeek));
     return msLastMonday;
 };
+
 module.exports = {
     postPrayerReport: (req, res) => {
         let currentWorker = req.user.id;
@@ -62,19 +51,7 @@ module.exports = {
 
     getPrayerReports: (req, res) => {
         currentWorker = req.user.id;
-        function lastSundayfunction(msDate) {
-            // let refSunday = 318600000; //Sun, 4th January 1970, 17:30:000;
-            // let refSunday = 318600000 + (24 * 3600 * 1000) + (3 * 3600 * 1000) + (30 * 60 * 1000); //Mon, 5th January 1970, 9:00:000;
-            let refSunday = 417600000;
-            let week = 604800000; // Number of milliseconds in a week;
-            let timeAYear = 31536000000; // Number of milliseconds in a year;
-            let diffTime = msDate - refSunday;
-            let diffWeek = diffTime / week; //Difference in number of weeks;
-            let msLastSunday = refSunday + (week * Math.floor(diffWeek));
-            console.log("msLastMonday///////")
-            console.log(new Date(msLastSunday));
-            return msLastSunday;
-        };
+       
         let week = 604800000; // Number of milliseconds in a week;
         Worker.findById({ _id: currentWorker })
         .populate("prayerReport")
@@ -139,13 +116,18 @@ module.exports = {
                 console.log(numWeeks);
                 return numWeeks + 1;
             }
-            // let refYear2 = 1483228800000;// Jan 1, 2017
-            // let diffYear = Date.now() - refYear2;
-            // let fracWeek = diffYear / week;
-            // let times52  = fracWeek / 52;
-            // let abc = Math.floor(times52) - 1;
-            // let mult52 = abc * 52;
-            // let remWeek = fracWeek - mult52;
+
+            function findThisWeekNumber(date) {
+                //find lastMonday of date;
+                //Get time of last Monday
+                let lastMonday = lastMondayfunction(date);
+                
+                //let abc = Subtract time of first Monday of the Year from last Monday.
+                let diffMondays = lastMonday - firstMondayOftheYear();
+                
+                //Divide abc by number of weeks and add 1 to it
+                return Math.ceil((diffMondays / week) + 1);
+            }
             let weekNum2 = findWeekNumber(); // Math.ceil(remWeek - 52);
 
             let allWeekNum2 = [];
@@ -159,69 +141,46 @@ module.exports = {
                 let j = findWeekNumber() - i - 1;
                 console.log("findWeekNumber()//////////", findWeekNumber())
                 allWeekNum2[i-1] = i;
-                // let yearsTime = lastSundayfunction(Date.now()) - (j * week);
-                // lastSundayfunction(weekNum2 * j)
-                // refWeekfunction(yearsTime);
                 allWeekSpan[i] = refWeekfunction(firstMondayOftheYear() - (week * j))
                 console.log("///allWeekSpan///", allWeekSpan);
-                // allWeekSpan[i - 1] = refWeekfunction(yearsTime);
             };
             allWeekPrayed = allWeekSpan;
-            //Set default values 
-            // for (let i = findWeekNumber() + 1; i > 0; i--){
-            //     let msNxtSun = lastSundayfunction(Date.now() + week);
-            //     let j = weekNum2 - i - 1;
-            //     let k = j * week;
-            //     allWeekPrayed[i] = refWeekfunction(msNxtSun - (k));
-            //     allPrayed[i] = false;
-            //     allShortDate[i] = "Nil";
-            // }
-            // console.log("allWeekPrayed///////", allWeekPrayed);
-            const indexArr = [];
+         
+
+            const weekNumPrDb = [];
 
             //Give appropriate values from DB
             for (let i = prayerReports.length - 1; i >= 0; i--) {
                 let datePrayed = prayerReports[i].datePrayed;
-                let mslstSun = lastSundayfunction(datePrayed.getTime());
+                let mslastMon = lastMondayfunction(datePrayed.getTime());
+                console.log("mslastMon", mslastMon);
                 console.log("datePrayed/////");
                 console.log(datePrayed);
                 arrWeek[i] = i;
+                let refWeek = refWeekfunction(mslastMon);
+
                 // let mslstMon = lastMondayfunction(datePrayed.getTime());
                 if (datePrayed.getFullYear() === new Date().getFullYear()) {
-                    let refWeek = refWeekfunction(mslstSun);
-                    let weekNum = findWeekNumber(mslstSun) - 1;
-                    indexArr.push(weekNum);
-                    allWeekSpan[weekNum] = refWeek;
-                    allPrayed[weekNum] = prayerReports[i].prayed;
-                    allShortDate[weekNum] = dMDYYYY(datePrayed);
+                    //Find weeek number of refWeeks in db
+                    let weekNumAndDatePrayed = [findThisWeekNumber(mslastMon), datePrayed, refWeek];
+                    console.log("weekNumAndDatePrayed", weekNumAndDatePrayed);
+                    //Store in array
+                    weekNumPrDb.push(weekNumAndDatePrayed);
                 }
             };
 
-            console.log("allShortDate/////");
-            console.log(allShortDate);
+            console.log("weekNumPrDb", weekNumPrDb)
+            weekNumPrDb.forEach((elem) => {
+                let j = elem[0];
+                let jPrayed = elem[1];
+                elem[1] = dMDYYYY(jPrayed);
+            })
+            console.log("allShortDate", allShortDate);
             
-            let mapped = [];
-
-            for(let i = 0; i < allShortDate.length; i++){
-                if (i !== 2) {
-                    mapped[i] = "Nil";
-                } else {
-                    mapped[i] = allShortDate[i];
-                }
-            }
-            
-            allShortDate = mapped;
-
-            console.log("mapped/////");
-            console.log(mapped);
-            
-            // console.log(remArr);
-            // console.log("indexArr////", indexArr);
-
             console.log("allWeekPrayed/////");
             console.log(allWeekPrayed);
             
-            res.render("prayer", { allShortDate, arrWeek, mapped, allWeekPrayed, allPrayed, weekNum2 });
+            res.render("prayer", { allShortDate, arrWeek, weekNumPrDb, allWeekPrayed, allPrayed, weekNum2 });
         })
         .catch((err) => {
             console.log(err);
@@ -242,6 +201,9 @@ module.exports = {
                 lastReport = allDates[allDates.length - 1].date.getTime(); //Last reported time in database
             }
             let lastSunday = lastMondayfunction(Date.now()) //refSunday + (week * Math.floor(diffWeek)); // 
+            console.log("lastSunday", lastSunday);
+            console.log("lastReport", lastReport);
+            console.log("lastReport", allDates[allDates.length - 1].date);
             res.render("prayerNew", { lastReport, lastSunday });
         })
         .catch((err) => {

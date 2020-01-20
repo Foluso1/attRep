@@ -21,10 +21,10 @@
                 <% let arrMonth = [[0, "Jan"], [1, "Feb"], [2, "Mar"], [3, "Apr"], [4, "May"], [5, "Jun"], [6,
                                 "Jul"], [7, "Aug"], [8, "Sep"], [9, "Oct"], [10, "Nov"], [11, "Dec"],]; %>
 
-                <% for(let i = 0; i < 7; i++) { %>
+                <% for(let i = 0; i < 14; i++) { %>
                 <h3> <%= [i] %> </h3>
                 <% let a = Date.now(); %>
-                <% let b = a - (86400000 * i); %>
+                <% let b = a - (86400000 * (i-6)); %>
                 <% let c = new Date(b); %>
                 <% let d = new Date(); %>
 
@@ -36,10 +36,10 @@
                 <% }; %>
             </select>
             <div class="col-lg-2 col-md-4 col-sm-6 col-xs-8">
+                    <button class="btn btn-sm btn-success">Submit</button>
                 <% if(lastReport >= lastSunday){ %>
                     <a href="#">You have reported for the Week</a>
                 <% } else { %>
-                    <button class="btn btn-sm btn-success">Submit</button>
                 <% }; %>
             </div>
         </form>
