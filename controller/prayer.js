@@ -128,11 +128,3 @@ module.exports = {
 
 }
 
-
-// Find last report
-// find refWeek of last report
-
-// Find ref week of reported day
-// Find refWeek of previous reports
-// let abc = See if ref week of reported day tallies with refWeek of previous reports
-// If abc is true alert (you have already prayed on that week);

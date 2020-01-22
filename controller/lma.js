@@ -6,55 +6,6 @@ const       Worker     =       require("../models/worker")
             ;
 
 
-// firstMondayOftheYear
-// findThisWeekNumber
-// lastMondayfunction
-// refWeekFromMonfunction
-
-// function lastMondayfunction(msDate) {
-//     // let refSunday = 318600000; //Sun, 4th January 1970, 17:30:000;
-//     let refMonday = 318600000 + (24 * 3600 * 1000) + (3 * 3600 * 1000) + (30 * 60 * 1000); //Mon, 5th January 1970, 9:00:000;
-//     let week = 604800000; // Number of milliseconds in a week;
-//     let timeAYear = 31536000000; // Number of milliseconds in a year;
-//     let diffTime = msDate - refMonday;
-//     let diffWeek = diffTime / week; //Difference in number of weeks;
-//     let msLastMonday = refMonday + (week * Math.floor(diffWeek));
-//     return msLastMonday;
-// };
-
-// function refWeekFromMonfunction(msDate) {
-//     let lastMonday = lastMondayfunction(msDate)
-//     let a = new Date(lastMonday);
-//     let weekMonth = a.getMonth();
-//     let weekDate = a.getDate();
-//     let weekYear = a.getFullYear();
-//     let b = new Date(sixDaysAfter(lastMonday));
-//     let plusWeekMonth = b.getMonth();
-//     let plusWeekYear = b.getFullYear();
-//     let plusWeekDate = b.getDate();
-//     console.log("plusWeekDate///////");
-//     console.log(plusWeekDate);
-//     let startWeek = `${weekDate}/${weekMonth + 1}/${weekYear} - ${plusWeekDate}/${plusWeekMonth + 1}/${plusWeekYear}`;
-//     return startWeek;
-// };
-
-// function sixDaysAfter(msDate) {
-//     let msSun = msDate + 541740000 - 12600000;
-//     return msSun;
-// };
-
-
-// function dMDYYYY(fullDate) {
-//     let month = fullDate.getMonth();
-//     let day = fullDate.getDay();
-//     let date = fullDate.getDate();
-//     let year = fullDate.getFullYear();
-//     let arrDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-//     let arrMonth = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-//     let shortDate = `${arrDay[day]}, ${arrMonth[month]} ${date}, ${year}`;
-//     return shortDate;
-// };
-
 module.exports = {
     getWorkers: (req, res) => {
         let currentWorker = req.user.id;
@@ -203,39 +154,6 @@ module.exports = {
             // let b = new Date(sixDaysAfter(lastSundayfunction(Date.now())));
             let prayerReports = foundWorker.prayerReport;
 
-
-            // function firstMondayOftheYear() {
-            //     let beginYear = new Date(new Date().getFullYear(), 0, 1); // January 1st of current year;
-            //     let dayOftheWeek = beginYear.getDay()
-            //     let firstMonday;
-            //     if (dayOftheWeek !== 1) {
-            //         //2
-            //         let add = 7 - dayOftheWeek + 1;
-            //         console.log(firstMonday)
-            //         return firstMonday = (new Date(beginYear.getFullYear(), beginYear.getMonth(), (1 + add))).getTime();
-            //     } else {
-            //         return beginYear.getTime();
-            //     }
-            // }
-
-
-
-            // function findThisWeekNumber(date) {
-            //     //find lastMonday of date;
-            //     //Get time of last Monday
-            //     let lastMonday = lastMondayfunction(date);
-
-            //     //let abc = Subtract time of first Monday of the Year from last Monday.
-            //     let diffMondays = lastMonday - firstMondayOftheYear();
-
-            //     //Divide abc by number of weeks and add 1 to it
-            //     return Math.ceil((diffMondays / week) + 1);
-            // }
-
-
-
-
-
             const weekNumPrDb = [];
 
             //Give appropriate values from DB
@@ -268,6 +186,48 @@ module.exports = {
         } catch (err) {
             console.log(err);
         }
+    },
+
+    getAll: async (req, res) => {
+
+        try {
+            lmaWorkerId = {
+                _id: req.user.id
+            }
+            let foundWorker = await Worker.findById(lmaWorkerId).populate("workers");
+            let workersUnder = foundWorker.workers;
+            let allWorkers = [];
+            let dataL = 0;
+
+            for(let i = 0; i < workersUnder.length; i++) {
+                let workerId = {
+                    _id: workersUnder[i]._id
+                }
+                console.log("workersUnder[i]", workersUnder[i]);
+                let thisWorker = await Worker.findById(workerId).populate("prayerReport");
+                let prayerReport = thisWorker.prayerReport;
+                let data = [`${thisWorker.firstname}, ${thisWorker.surname}`]
+                for(let j = 0; j < prayerReport.length; j++) {
+                    if (prayerReport[j].datePrayed.getFullYear() === new Date().getFullYear()){
+                        data.push(`${dMDYYYY.dMDYYYY(prayerReport[j].datePrayed)}, (${refWeekFromMonfunction.refWeekFromMonfunction(prayerReport[j].datePrayed)}), (Week ${findThisWeekNumber.findThisWeekNumber(prayerReport[j].datePrayed)})`)
+                    }
+                }
+                if (dataL < data.length) {
+                    dataL = data.length - 1;
+                }
+                console.log("data", data);
+                allWorkers.push(data);
+            }
+            console.log("allWorkers", allWorkers);
+            res.render("lma/prayerAll", { allWorkers, dataL })
+        } catch (err) {
+            console.log(err);
+        }
+        
     }
 }
  
+// Find all worker under LMA
+// Do a loop
+// Don't forget to populate "Yes" / "datePrayed"
+// Have an array for each worker [name, datePrayed (week1), datePrayed (week1), datePrayed (week1)]

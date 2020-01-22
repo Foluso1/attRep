@@ -13,6 +13,9 @@ lmaRouter.route("/")
     .put(middleware.isLoggedIn, middleware.isLMA, controller.editWorker)
     .delete(middleware.isLoggedIn, middleware.isLMA, controller.removeWorker);
 
+lmaRouter.route("/all")
+    .get(middleware.isLoggedIn, middleware.isLMA, controller.getAll)
+
 lmaRouter.route("/new")
     .get(middleware.isLoggedIn, middleware.isLMA, controller.newWorker);
 

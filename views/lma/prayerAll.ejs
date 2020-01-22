@@ -1,0 +1,38 @@
+<% include ../partials/header %>
+<div class="heading">
+
+    <p></p>
+   
+    <a class="btn btn-primary btn-sm" href="/prayer/new">New Prayer Group Report</a>
+    <!-- <a class="btn btn-success btn-sm" href="/report/new">Write New Report</a> -->
+</div>
+
+<main class="row">
+    <div class="col-md-12" style="overflow-x:auto;">
+        <br>
+        <h3 class="p-3">All Workers Prayer Group Participation</h3>
+        <table border="1" class="allPrayer" style="overflow-x: auto;">
+            <thead>
+                <tr>
+                    <th><b>Name</b></th>
+                    <% for(let i = 1; i <= dataL; i++){ %>
+                        <th><b><%= i %></b></th>
+                    <% }; %>
+                </tr>
+            </thead>
+            <tbody>
+            <% allWorkers.forEach((elem) => { %>
+                <tr>
+                    <td><%= elem[0] %></td>
+                    <% for(let i = 1; i <= dataL; i++){ %>
+                        <td><%= elem[i] %></td>
+                    <% }; %>
+                </tr>
+            <% }); %>
+            </tbody>
+        </table>
+    </div>
+</main>
+<p></p>
+<p></p>
+<% include ../partials/footer %>
