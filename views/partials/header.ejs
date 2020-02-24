@@ -39,3 +39,13 @@
                 <% } else { %>
                 <% } %>
         </div>
+    <% if(loggedInWorker) { %>
+        <div class="heading justify-content-between">
+            <a class="btn btn-success btn-sm m-1" href="/disciple/new">Add New Disciple</a>
+            <a class="btn btn-success btn-sm m-1" href="/report/new">Write New Report</a>
+            <a class="btn btn-success btn-sm m-1" href="/prayer">Prayer Group Report</a>
+            <a class="btn btn-success btn-sm m-1" href="/prayerchain">Prayer Chain Report</a>
+        <% if(loggedInWorker.isLMA) { %>
+            <a class="btn btn-info btn-sm m-1" href="/lma">LMA Admin</a>
+        <% } %>
+    <% } %>

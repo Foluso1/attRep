@@ -74,6 +74,7 @@ app.post("/register", async (req, res) => {
         if (!req.body.username) throw {name: "Error", message: "Please provide your firstname"};
         if (!req.body.password) throw {name: "Error", message: "Please provide a password"};
         if (!req.body.surname) throw {name: "Error", message: "Please provide your surname"};
+        if (req.body.password != req.body.password2) throw {name: "Error", message: "Password mismatch. Please, try again!"};
 
         await Worker.register(new Worker({
             username: req.body.username,

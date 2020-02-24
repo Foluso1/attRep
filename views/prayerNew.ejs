@@ -1,17 +1,32 @@
 <% include partials/header %>
+
+    <a class="btn btn-primary btn-sm" href="/profile">Change Prayer Group</a>
+
+</div>
+
 <div class="heading">
 
     <p></p>
 
     <h3>Your prayer group is: <%= loggedInWorker.prayerGroup%> </h3>
-    <a class="btn btn-primary btn-sm" href="/profile">Change Prayer Group</a>
     <!-- <a class="btn btn-success btn-sm" href="/report/new">Write New Report</a> -->
 </div>
 
 <main class="row">
     <div class="col-md-12">
         <!-- MakeUp -->
-        <h3>Pick the day you prayed</h3>
+        <br>
+        <h4><u>Instructions:</u></h4>
+        <ol>
+            <li>Pick the day you prayed.
+                <br>
+                However, if you are:
+                <ul>
+                    <li><b>Praying ahead: </b>Pick the day you are <b>supposed</b> to pray.</li>
+                    <li><b>Making up: </b>Pick the day you prayed.</li>
+                </ul>
+            </li>
+            <li>Click the <span class="notify"><b>"submit"</b></span> button.</li>
         <br>
         <form action="/prayer" method="POST">
             <select name="dayPrayed">

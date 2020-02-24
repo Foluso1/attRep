@@ -45,6 +45,7 @@ module.exports = {
                 let createPrayer = await Prayer.create(data);
                 foundWorker.prayerReport.push(createPrayer);
                 foundWorker.save();
+                req.flash("success", "You have successfully reported for the week!");
                 res.redirect("/prayer");
             } else {
                 // If abc is true alert (you have already prayed on that week);
