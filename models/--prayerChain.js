@@ -11,7 +11,7 @@ const prayerChainSchema = new mongoose.Schema({
     end: {
         type: Date
     },
-    
+
     date: {
         type: Date,
         default: Date.now

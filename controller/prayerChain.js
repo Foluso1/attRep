@@ -1,5 +1,6 @@
 const Worker        =   require("../models/worker")
     , PrayerChain   =   require("../models/prayerChain")
+    , moment        =   require("moment")
     ;
 
 
@@ -7,56 +8,85 @@ module.exports = {
     postPrayerReport: async (req, res) => {
         try {
             let currentWorker = req.user.id;
-            console.log(req.body);
-            //Jan 1, 2020
-            let refTimeMs = 1577833200000  //Wed, 1st January 2020, 00:00:00;
-            let nowMs = Date.now();
-            let diffDateMs = nowMs - refTimeMs;
-            let oneDayMs = 24 * 60 * 60 * 1000;
-            let divider = Math.floor(diffDateMs / oneDayMs);
-            // startString = req.body.starttime;
+            let newPrayerChain = await PrayerChain.create({start: req.body.starttime});
+            let foundWorker = await Worker.findById({ _id: currentWorker });
 
-            
-            let regExTime = /([0-9]?[0-9]):([0-9][0-9])/;
-            let regExTimeArrStarttime = regExTime.exec(req.body.starttime);
-            console.log(regExTimeArrStarttime);
-            let regExTimeArrEndtime = regExTime.exec(req.body.endtime);
-            let startHrMs = regExTimeArrStarttime[1] * 3600 * 1000;
-            let startMnMs = regExTimeArrStarttime[2] * 60 * 1000;
-            let endHrMs = regExTimeArrEndtime[1] * 3600 * 1000;
-            let endMnMs = regExTimeArrEndtime[2] * 60 * 1000;
-            console.log(startHrMs);
-            console.log(startMnMs);
-            console.log(endHrMs);
-            console.log(endMnMs);
-            let startTimeMs = new Date(refTimeMs + (divider * oneDayMs) + startHrMs + startMnMs);
-            let endTimeMs = new Date(refTimeMs + (divider * oneDayMs) + endHrMs + endMnMs);
-            console.log(startTimeMs);
-            console.log(endTimeMs);
-            
-
-            let data = {
-                start: startTimeMs,
-                end: endTimeMs
-            }
-            let newPrayerChain = await PrayerChain.create(data);
-            let foundWorker = await Worker.findById(currentWorker);
-            foundWorker.prayerChainReport.push(newPrayerChain)
+            foundWorker.prayerChainReport.push(newPrayerChain);
             foundWorker.save();
+
             res.json(newPrayerChain);
         } catch (err) {
             console.log(err);
         }
     },
 
-    getPrayerReports: (req, res) => {
-        currentWorker = req.user.id;
-        res.render("prayerChain");
+    getPrayerReports: async (req, res) => {
+        try {
+            currentWorker = req.user.id;
+            let thisWeekNum = moment().week()-1;
+            let allDayPrayed = [];
+            let foundWorker = await Worker.findById({ _id: currentWorker }).populate({
+                path: "prayerChainReport"
+            });
+            let prChRepAll = foundWorker.prayerChainReport;
+            prChRepAll.forEach((oneItem) => {
+                if(thisWeekNum == moment(oneItem.date).week()) {
+                    let dayPrayed = moment(oneItem.date).format("dddd");
+                    let startTime = moment(oneItem.start).format("h:mm a");
+                    let endTime = moment(oneItem.end).format("h:mm a");
+                    let dayData = [dayPrayed, startTime, endTime];
+                    allDayPrayed.push(dayData)
+                }
+            })
+            res.render("prayerChain/prayerChain", { thisWeekNum, allDayPrayed });
+        } catch (err) {
+            console.log(err);
+        }
     },
 
-    newPrayerReport: (req, res) => {
-        let currentWorker = req.user.id;
-       res.render("prayerChainNew");
+    newPrayerReport: async (req, res) => {
+        try {
+            let currentWorker = req.user.id;
+            let foundWorker = await Worker.findById({ _id: currentWorker }).populate({
+                path: "prayerChainReport",
+                options: { sort: { date: -1 }, limit: 1 } 
+            });
+            let lastPrChReport = foundWorker.prayerChainReport;
+            let lastPrChReportId;
+            let endPrChReport;
+            let lastPrChReportDate; 
+            if (lastPrChReport.length != 0) {
+                lastPrChReportDate = foundWorker.prayerChainReport[0].date.getTime();
+                lastPrChReportId = foundWorker.prayerChainReport[0]._id;
+                endPrChReport = foundWorker.prayerChainReport[0].end
+                if (endPrChReport == undefined) {
+                    endPrChReport;
+                } else {
+                    endPrChReport = endPrChReport.getTime();
+                }
+            }
+            let startOfDay = moment().startOf('day')._d.getTime();
+            let prChRange = moment().hour(15).minute(10).second(0).millisecond(0)._d.getTime();
+
+            res.render("prayerChain/prayerChainNew", { lastPrChReportDate, startOfDay, prChRange, lastPrChReportId, endPrChReport });
+        } catch (err) {
+            console.log(err);
+        }
+        
+    }, 
+
+    updatePrayerReport: async (req, res) => {
+        try {
+            let id = req.params.id;
+            let endtime = {
+                end: req.body.end
+            }
+            let updatedPrCh = await PrayerChain.findOneAndUpdate({ _id: id}, endtime, {new: true} );
+            await updatedPrCh.save();
+            res.json(updatedPrCh);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
 }

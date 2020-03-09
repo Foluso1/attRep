@@ -16,16 +16,17 @@ lmaRouter.route("/")
 lmaRouter.route("/all")
     .get(middleware.isLoggedIn, middleware.isLMA, controller.getAll)
 
+lmaRouter.route("/:id")
+    .delete(middleware.isLoggedIn, middleware.isLMA, controller.deleteWorker);
+
 lmaRouter.route("/new")
-    .get(middleware.isLoggedIn, middleware.isLMA, controller.newWorker);
+    .get(middleware.isLoggedIn, middleware.isLMA, controller.addRemoveOrDelWorker);
 
 lmaRouter.route("/prayer/:id")
     .get(middleware.isLoggedIn, middleware.isLMA, controller.getLma);
 
 
 lmaRouter.get("/report/:id", (req, res) => {
-    console.log("Kofoworola");
-    console.log(req.params);
     let worker = {
         _id: req.params.id
     }

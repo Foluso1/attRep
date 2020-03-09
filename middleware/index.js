@@ -17,13 +17,11 @@ module.exports = {
         if(req.user.isLMA) {
             return next()
         }
-        console.log("Access Denied!")
         req.flash("error", "Access denied. You have to be in the LMA to do this");
         res.send("Not in LMA!");
     },
 
     validator: async (req, res, next) => {
-        console.log("VALIDATOR");
         let worker = {
             _id: req.user.id
         }
@@ -32,16 +30,13 @@ module.exports = {
             foundWorker.validate((err) => {
                 if (!(err === null)) {
                     console.log(err);
-                    console.log("First error", err.message);
                     req.flash("error", "Please sir/ma, fill in one or more details missing in your profile");
                     res.redirect("/profile");
                 } else {
-                    console.log("hey");
                     return next();
                 }
             });
         } catch (error) {
-            console.log("Second error", error.message);
             req.flash("error", error.message);
             res.redirect("/profile");
         }

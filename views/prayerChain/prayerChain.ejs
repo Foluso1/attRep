@@ -1,0 +1,35 @@
+<% include ./../partials/header %>
+</div>
+<div class="heading">
+    <!-- <h1>Attendance <span>Report</span> Generator</h1>
+    <h2 class="head">An app to simplify generating attendance reports</h2> -->
+    <p></p>
+    <!-- <p>You are logged in as <span><b><%= //loggedInWorker.username %></b></span>:<input class="form-control input-class" type="text" id="addNewWorker" name="name"
+            placeholder="Add new worker to database" /></p> -->
+    <a class="btn btn-primary btn-sm" href="/profile">Change Prayer Group</a>
+    <a class="btn btn-primary btn-sm" href="/prayerchain/new">New Prayer Chain Report</a>
+    <!-- <a class="btn btn-success btn-sm" href="/report/new">Write New Report</a> -->
+</div>
+
+<main class="row">
+    <div class="col-md-12">
+        <h3>Welcome <%= loggedInWorker.firstname %> <%= loggedInWorker.surname %></h3>
+
+        <br>
+        <h3>Week <%= thisWeekNum %></h3>
+        <h4>Prayer Ratio: <%= allDayPrayed.length %>/7</h4>
+        <table>
+            <% allDayPrayed.forEach((oneItem) => { %>
+                <tr>
+                    <td><%= oneItem[0] %></td>
+                    <td><%= oneItem[1] %></td>
+                    <td><%= oneItem[2] %></td>
+                    <td>Yes</td>
+                </tr>
+            <% }) %>
+        </table>
+    </div>
+</main>
+<p></p>
+<p></p>
+<% include ./../partials/footer %>

@@ -1,4 +1,5 @@
-<% include partials/header %>
+<% include ./../partials/header %>
+</div
 <div class="heading">
     <!-- <h1>Attendance <span>Report</span> Generator</h1>
     <h2 class="head">An app to simplify generating attendance reports</h2> -->
@@ -20,16 +21,16 @@
                     <div class="col-md-2">
                         <label for="starttime">Start Time</label>
                     </div>
-                    <div class="col-md-2">
-                        <input id="starttime" type="time" name="starttime" min="00:00" max="07:00">
+                    <div class="col-md-3">
+                        <input class="form-control" id="starttime" type="time" name="starttime" min="00:00" max="07:00" value="<%= (new Date(Date.now())).getHours()-1 %>:<%= (new Date(Date.now())).getMinutes() %>">
                     </div>
                 </div>
                 <div class="row p-1">
                     <div class="col-md-2">
                         <label for="endtime">End Time</label>
                     </div>
-                    <div class="col-md-2">
-                        <input id="endtime" type="time" name="endtime" min="01:00" max="08:00">
+                    <div class="col-md-3">
+                        <input  class="form-control" id="endtime" type="time" name="endtime" min="01:00" max="08:00" value="<%= (new Date()).getHours() %>:<%= (new Date()).getMinutes() %>">
                     </div>
                 </div>
                 <br>
@@ -44,4 +45,4 @@
 </main>
 <p></p>
 <p></p>
-<% include partials/footer %>
+<% include ./../partials/footer %>

@@ -5,7 +5,6 @@ const           Worker      =   require("../models/worker")
 
 module.exports = {
     getDisciples: (req, res) => {
-        console.log("Disciple page");
         res.render("disciple");
     },
 

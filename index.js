@@ -129,9 +129,6 @@ app.get("/profile", middleWare.isLoggedIn, async (req, res) => {
 });
 
 app.put("/profile", middleWare.isLoggedIn, async (req, res) => {
-    console.log("PUT");
-    console.log("req.body////////////");
-    console.log(req.body)
     let profile = {
         username: req.body.username,
         firstname: req.body.firstname,

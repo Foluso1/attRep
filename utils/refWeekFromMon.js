@@ -13,8 +13,6 @@ module.exports = {
         let plusWeekMonth = b.getMonth();
         let plusWeekYear = b.getFullYear();
         let plusWeekDate = b.getDate();
-        console.log("plusWeekDate///////");
-        console.log(plusWeekDate);
         let startWeek = `${weekDate}/${weekMonth + 1}/${weekYear} - ${plusWeekDate}/${plusWeekMonth + 1}/${plusWeekYear}`;
         return startWeek;
     }

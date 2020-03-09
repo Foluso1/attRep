@@ -14,11 +14,8 @@ module.exports = {
             let subWorkers = foundWorker.workers
             subWorkers.forEach((foundworker) => {
                 foundworker.password = undefined;
-                // console.log(foundworker.username);
             })
-            // console.log(subWorkers)
-            res.render("lma", { subWorkers });
-            // console.log(foundWorkers);
+            res.render("lma/lma", { subWorkers });
         })
         .catch((err) => {
             console.log(err);
@@ -27,17 +24,13 @@ module.exports = {
 
     postWorker: (req, res) => {
         let currentWorker = req.user.id;
-        console.log("From Post Route");
-        console.log(req.body);
         let input = { _id: req.body._id };
-        // console.log(input);
         Worker.findById(input)
         .then((foundWorker) => {
             Worker.findById(currentWorker)
             .then((lma) => {
                 lma.workers.push(foundWorker);
                 lma.save();
-                console.log("Saved!!");
                 res.status(201).end();
             })
             .catch((err) => {
@@ -46,7 +39,7 @@ module.exports = {
         })
     },
 
-    newWorker: (req, res) => {
+    addRemoveOrDelWorker: (req, res) => {
         let currentWorker = req.user.id;
         let arrWorkers = [];
         let addWorker = [];
@@ -73,13 +66,8 @@ module.exports = {
                                     j = 0;
                                 }
                                 let worker = workerCheck[j];
-                                console.log("j is " + j);
-                                console.log("worker.length");
-                                console.log(worker.length);
                                 // if (worker.length >= 0) {
-                                    console.log(worker);
                                     let index = arrWorkersId.indexOf(worker._id.toString());
-                                    console.log("Index is " + index);
                                     if (index != -1) {
                                         arrWorkersId.splice(index, 1);
                                     // }
@@ -87,13 +75,10 @@ module.exports = {
                             }
                         }
                         arrWorkersId.splice(arrWorkersId.indexOf(currentWorker.toString()), 1); //remove currentworker from array
-                        console.log(arrWorkersId);
                         arrWorkersId.forEach((workerId) => {
                             addWorker.push(arrWorkers[arrWorkersIdTwo.indexOf(workerId)]);
                         })
-                        console.log("addWorker tailend is ");
-                        console.log(addWorker);
-                        res.render("lmaNew", { addWorker, workerCheck });
+                        res.render("lma/lmaNew", { addWorker, workerCheck });
                     })
                     .catch((err) => {
                         console.log(err);
@@ -105,24 +90,16 @@ module.exports = {
     },
 
     editWorker: (req, res) => {
-        console.log("the put route");
-        console.log(req.body);
         let currentWorker = req.user.id;
         Worker.findById(currentWorker)
             .then((foundWorker) => {
                 let arr = foundWorker.workers;
-                console.log("Arr length is " + arr.length);
-                // console.log(arr);
                 let index = arr.indexOf(req.body._id);
-                console.log(index);
                 if (index == -1){
-                    console.log("not saved!");
                     res.json("not removed")
                 } else {
                     arr.splice(index, 1);
                     foundWorker.save();
-                    console.log("Arr length is " + arr.length);
-                    console.log("success");
                     res.json("removed");
                 }
             })
@@ -160,22 +137,17 @@ module.exports = {
             for (let i = prayerReports.length - 1; i >= 0; i--) {
                 let datePrayed = prayerReports[i].datePrayed;
                 let mslastMon = lastMondayfunction.lastMondayfunction(datePrayed.getTime());
-                console.log("mslastMon", mslastMon);
-                console.log("datePrayed/////");
-                console.log(datePrayed);
                 let refWeek = refWeekFromMonfunction.refWeekFromMonfunction(mslastMon);
 
                 // let mslstMon = lastMondayfunction(datePrayed.getTime());
                 if (datePrayed.getFullYear() === new Date().getFullYear()) {
                     //Find weeek number of refWeeks in db
                     let weekNumAndDatePrayed = [findThisWeekNumber.findThisWeekNumber(mslastMon), datePrayed, refWeek];
-                    console.log("weekNumAndDatePrayed", weekNumAndDatePrayed);
                     //Store in array
                     weekNumPrDb.push(weekNumAndDatePrayed);
                 }
             };
 
-            console.log("weekNumPrDb", weekNumPrDb)
             weekNumPrDb.forEach((elem) => {
                 let j = elem[0];
                 let jPrayed = elem[1];
@@ -189,7 +161,6 @@ module.exports = {
     },
 
     getAll: async (req, res) => {
-
         try {
             lmaWorkerId = {
                 _id: req.user.id
@@ -203,7 +174,6 @@ module.exports = {
                 let workerId = {
                     _id: workersUnder[i]._id
                 }
-                console.log("workersUnder[i]", workersUnder[i]);
                 let thisWorker = await Worker.findById(workerId).populate("prayerReport");
                 let prayerReport = thisWorker.prayerReport;
                 let data = [`${thisWorker.firstname}, ${thisWorker.surname}`]
@@ -215,15 +185,22 @@ module.exports = {
                 if (dataL < data.length) {
                     dataL = data.length - 1;
                 }
-                console.log("data", data);
                 allWorkers.push(data);
             }
-            console.log("allWorkers", allWorkers);
             res.render("lma/prayerAll", { allWorkers, dataL })
         } catch (err) {
             console.log(err);
         }
-        
+    },
+
+    deleteWorker: async (req, res) => {
+        try {
+            let id = req.params.id
+            let toDelWorker = await Worker.findOneAndRemove({ _id: id });
+            res.json(toDelWorker);
+        } catch (err) {
+            console.log(err);
+        }
     }
 }
  

@@ -1,4 +1,102 @@
 const route = window.location.pathname;
+
+const startTime = document.querySelector("#starttime");
+const startPrBtn = document.querySelector("#startPrBtn");
+const endPrBtn = document.querySelector("#endPrBtn");
+const myDiv = document.querySelector(".mydiv");
+const prChform = document.querySelector("#prChform");
+const noDisp = document.querySelector(".nodisplay");
+const startPr = document.querySelector("#startPr");
+const starttimeInput = document.querySelector("#starttime");
+const deleteWorkerButton = document.querySelectorAll(".del-worker")
+const delWorkerBtn = Array.from(deleteWorkerButton);
+
+
+// let startOfDay = moment().startOf('day');
+
+if (startPrBtn) {
+    startPrBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        myDiv.classList.add("nodisplay");
+        startPrBtn.classList.add("nodisplay");
+        let regExTime = /([0-9]?[0-9]):([0-9][0-9])/;
+        let regExTimeArrStarttime = regExTime.exec(starttimeInput.value);
+        let thisTime = moment().hour(regExTimeArrStarttime[1]).minute(regExTimeArrStarttime[2]).second(0).millisecond(0)._d.getTime();
+        let time = { starttime: thisTime }
+        $.ajax({
+            type: "POST",
+            url: "/prayerChain",
+            data: time,
+            success: (data) => {
+                let newPrCh = document.createElement("p");
+                let newDiv = document.createElement("div");
+                let newDiv2 = document.createElement("div");
+                newDiv.classList.add("d-flex");
+                newPrCh.setAttribute("data-id", data._id);
+                newPrCh.setAttribute("class", "startPr");
+                newPrCh.classList.add("text-center");
+                newPrCh.classList.add("p-2");
+                newPrCh.textContent = "I have started praying " + new Date(data.start).getHours().toString().padStart(2, "0") + ":" + new Date(data.start).getMinutes().toString().padStart(2, "0") + " am";
+                //Create a "End Praying" button
+                let endPrBtn = document.createElement("button");
+                endPrBtn.setAttribute("id", "endPrBtn");
+                endPrBtn.innerText = "End Praying";
+                endPrBtn.setAttribute("class", "col-sm-10 btn btn-success btn-sm");
+                newDiv2.append(endPrBtn);
+                newDiv.append(newPrCh, newDiv2);
+                prChform.append(newDiv);
+            }
+        });
+    });
+}
+
+if (prChform) {
+    prChform.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (e.target.getAttribute("id") == "endPrBtn") {
+            let id = e.target.parentNode.parentNode.children[0].dataset.id;
+            let time = {
+                end: Date.now()
+            }
+            e.target.remove();
+            $.ajax({
+                type: "PUT",
+                url: "/prayerChain/" + id,
+                data: time,
+                success: (data) => {
+                    let newPrCh = document.createElement("p");
+                    let newDiv = document.createElement("div");
+                    newPrCh.setAttribute("data-id", data._id);
+                    newPrCh.textContent = "I have ended praying " + new Date(data.end).getHours().toString().padStart(2, "0") + ":" + new Date(data.end).getMinutes().toString().padStart(2, "0") + " am";
+                    newDiv.append(newPrCh);
+                    prChform.append(newDiv);
+                }
+            });
+        }
+    });
+}
+
+
+// Delete Worker Account
+
+if(deleteWorkerButton) {
+    delWorkerBtn.forEach((delOne) => {
+        delOne.addEventListener("click", (e) => {
+            let idWorker = e.target.dataset.id
+            let response = confirm(`Are you sure you want to delete ${e.target.parentNode.parentNode.children[0].children[0].innerText} forever?`);
+            if (response) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "/lma/" + idWorker,
+                    data: { id: idWorker },
+                });
+                e.target.parentNode.parentNode.remove();
+            }
+        });
+    });
+}
+
+
 $(document).ready(function () {
     // $.getJSON("/api/workers")
         // .then(appendWorkers);
@@ -22,32 +120,22 @@ $(document).ready(function () {
 
     //For Report_edit template. It removes / adds from a list
     $(".list").on("click", ".select", function (worker) {
-        // console.log($(this).parent("div")[0]);
-        // console.log($(worker).parent("div").outerHTML)
         removeWorker2($(this));
         $("#present").text("Present");
-        // let ch = document.gets
     })
 
     $(".absent").on("click", ".select", function (worker) {
-        // console.log($(this));
         restoreWorker2($(this));
-        // let ch = document.gets
     })
 
     $(".worker-list").on("click", function (e) {
         e.preventDefault();
-        console.log("To Add Worker");
-        console.log(e);
         let form = $(this);
-        console.log(form);
         let btn = $(this).children("button");
         btn.removeClass("btn-primary").addClass("btn-danger");
         btn.text("Remove Worker");
-        console.log(btn);// e.attr("_id", id);
         let id = btn.attr("_id"); 
         let data = { "_id": id };
-        console.log(data);
         $.post("/lma", data);
         if (form.hasClass("worker-list")) {
             form.removeClass("worker-list").addClass("worker-list-remove");
@@ -63,18 +151,12 @@ $(document).ready(function () {
 
     $(".disciple-list").on("click", function (e) {
         e.preventDefault();
-        console.log("To Add Disciple");
-        console.log(e);
         let form = $(e);
-        console.log(form);
         let btn = $(this).children(".select");
-        // let btn = $(this).(".select");
         btn.removeClass("btn-primary").addClass("btn-danger");
         btn.text("Remove");
-        console.log(btn);// e.attr("_id", id);
         let id = btn.attr("_id");
         let data = { "_id": id };
-        console.log(data);
         $.post(route, data);
         if (form.hasClass("disciple-list")) {
             form.removeClass("disciple-list").addClass("disciple-list-remove");
@@ -84,14 +166,11 @@ $(document).ready(function () {
 
     $(".disciple-list-remove").on("click", function (e) {
         e.preventDefault();
-        console.log($(this));
         rmDisciple($(this));
     })
 
     $(".absent").on("click", "li", function (worker) {
-        // console.log($(this));
         restoreWorker($(this));
-        // let ch = document.gets
     })
 
     $("#export").on("click", function(e){
@@ -130,28 +209,19 @@ function createWorker(worker) {
 }
 
 function absent(worker){
-    console.log(worker);
-    // $(".absent").append(worker);
 }
 
 
 function removeWorker(worker) {
-    console.log(worker[0])
     let absentName = worker[0].innerHTML;
     let absentNameList = $(`<li>${absentName}</li>`);
     // let absentNameList = $(worker[0].outerHTML);
-    console.log(absentNameList);
     $(".absent").append(absentNameList);
     worker.remove();
 }
 
 function removeWorker2(worker){
-    console.log(worker[0])
-    // let abc = $(worker).parent().removeClass("btn-danger").addClass("btn-primary");
     let toRemoveDiv = $(worker).removeClass("btn-danger").addClass("btn-primary").val("Add").parent().parent()[0].outerHTML;
-    // let toRemoveDiv = $(worker).parent().parent()[0].outerHTML;
-    console.log(toRemoveDiv)
-    // let absentName = worker[0].innerHTML;
     $(".absent").append(toRemoveDiv);
     $(worker).parent().parent()[0].remove();
 }
@@ -167,7 +237,6 @@ function restoreWorker(worker){
 function restoreWorker2(worker) {
     // let presentWorker = worker[0].innerHTML;
     let toRemoveDiv = $(worker).removeClass("btn-primary").addClass("btn-danger").val("Remove").parent().parent()[0].outerHTML;
-    console.log(toRemoveDiv)
     $(".list").append(toRemoveDiv);
     $(worker).parent().parent()[0].remove();
     // let id = $(worker[0]).attr("id");
@@ -178,7 +247,6 @@ function restoreWorker2(worker) {
 }
 
 function splitText(presWorkers){
-    console.log(presWorkers);
 }
 
 function exporter(){
@@ -189,7 +257,6 @@ function exporter(){
     let lister = Array.from(list.children);
     lister.forEach((item) => {
         let ids = item.getAttribute("id");
-        console.log(ids);
         objIds = { "_id": ids };
         idsArray.push(objIds);
     });
@@ -199,22 +266,15 @@ function exporter(){
             ids: idsArray
         },
         function (data) {
-            console.log(data);
             window.location.replace(`${window.location.origin}/report`)
         });
 }
 
 function rmSubWorker(e) {
-    console.log("To remove worker");
     let form = $(e);
-    console.log(e);
     let btn = form.children("button");
-    console.log("Form Parent")
-    console.log(form.get(0));
     let id = $(".worker-list-remove").children("button").attr("_id");
-    console.log(id);
     let data = { "_id": id };
-    console.log(data);
     btn.removeClass("btn-danger").addClass("btn-primary")
     btn.text("Add Worker");
     $.ajax({
@@ -222,7 +282,6 @@ function rmSubWorker(e) {
         data: data,
         type: "PUT",
         success: function (data) {
-            console.log(data)
         }
     })
     if (form.hasClass("worker-list-remove")) {
@@ -233,15 +292,11 @@ function rmSubWorker(e) {
 
 function subWorker(e) {
     e.preventDefault();
-    console.log("TO ADD WORKER");
-    console.log($(this));
     let form = $(this);
     let btn = $(this).children("button");
-    console.log(btn);
     btn.text("Remove Worker");
     let id = btn.attr("_id");
     let data = { "_id": id };
-    console.log(data);
     $.post("/lma", data);
     btn.removeClass("btn-primary").addClass("btn-danger");
     if (form.hasClass("worker-list")) {
@@ -252,21 +307,16 @@ function subWorker(e) {
 
 function rmaSubWorker(worker) {
     worker.preventDefault();
-    console.log("TO REMOVE WORKER!!");
     let workerThis = worker[0];
     let id = $(this).children("button").attr("_id");//workerThis = worker[0];
     let btn = $(this).children("button");
-    console.log($(this).children("button"));
     let formData = { "_id": id };
     let formAction = "/lma";
-    console.log(formData);
-    console.log(formAction);
     $.ajax({
         url: formAction,
         data: formData,
         type: "PUT",
         success: function (data) {
-            console.log("Successfully Removed!")
         }
     })
     btn.removeClass("btn-danger").addClass("btn-primary");
@@ -284,21 +334,16 @@ function copyAll() {
     copyText.setSelectionRange(0, 99999); /*For mobile devices*/
     document.execCommand("copy");
     let resu = copyText.value;
-    console.log(resu);
 }
 
 
 function disciple (e) {
     e.preventDefault();
-    console.log("TO ADD DISCIPLE");
-    console.log($(this));
     let form = $(this);
     let btn = $(this).children("button");
-    console.log(btn);
     btn.text("Remove");
     let id = btn.attr("_id");
     let data = { "_id": id };
-    console.log(data);
     $.post(route, data);
     btn.removeClass("btn-primary").addClass("btn-danger");
     if (form.hasClass("disciple-list")) {
@@ -311,22 +356,16 @@ function disciple (e) {
 
 function rmaDisciple(e) {
     // e.children("button").preventDefault();
-    console.log(e);
-    console.log("TO REMOVE DISCIPLE!!");
     // let discipleThis = disciple[0];
     let id = e.children("button").attr("_id");//discipleThis = disciple[0];
     let btn = e.children("button");
-    console.log(e.children("button"));
     let formData = { "_id": id };
     let formAction = "/report";
-    console.log(formData);
-    console.log(formAction);
     $.ajax({
         url: formAction,
         data: formData,
         type: "DELETE",
         success: function (data) {
-            console.log("Successfully Removed!");
         }
     })
     btn.removeClass("btn-danger").addClass("btn-primary");
@@ -338,18 +377,10 @@ function rmaDisciple(e) {
 }
 
 function rmDisciple(e) {
-    console.log("To remove disciple");
     let form = $(e);
-    console.log(e);
     let btn = form.children("button");
-    console.log("Form Parent");
-    console.log(form.get(0));
-    // console.log($(form).get(0).children("button").attr("_id"));
-    // console.log(form.get(1));
     let id = e.children(".select").attr("_id");
-    console.log(id);
     let data = { "_id": id };
-    console.log(data);
     btn.removeClass("btn-danger").addClass("btn-primary");
     btn.text("Add");
     $.ajax({
@@ -357,7 +388,6 @@ function rmDisciple(e) {
         data: data,
         type: "DELETE",
         success: function (data) {
-            console.log(data);
         }
     });
     if (form.hasClass("disciple-list-remove")) {
