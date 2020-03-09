@@ -9,20 +9,19 @@
             <h3></h3>
             <ol>
                 <% subWorkers.forEach((foundWorker) => { %>
-                <div class="d-flex">
-                    <li _id="<%= foundWorker._id %>" > <%= foundWorker.firstname %>&nbsp;<%= foundWorker.surname %> 
-                        <form action="/lma" method="POST">
-                            <input style="display: none" type="text" name="id" value="<%= foundWorker._id %>" >
-                        </form>
-                        <a class="btn btn-sm btn-primary" href="/lma/report/<%= foundWorker._id %>">
-                            <%= foundWorker.username %>'s Report
-                        </a>
-                        <a class="btn btn-sm btn-success" href="/lma/prayer/<%= foundWorker._id %>">
-                            <%= foundWorker.username %>'s Prayer Report
-                        </a>
-                    </li>
+                <div>
+                    <div class="d-flex">
+                        <li _id="<%= foundWorker._id %>" > <%= foundWorker.firstname %>&nbsp;<%= foundWorker.surname %> 
+                            <form action="/lma" method="POST">
+                                <input style="display: none" type="text" name="id" value="<%= foundWorker._id %>" >
+                            </form>
+                            <a class="btn btn-sm btn-secondary" href="/lma/report/<%= foundWorker._id %>">Report</a>
+                            <a class="btn btn-sm btn-secondary" href="/lma/prayer/<%= foundWorker._id %>">Prayer Report</a>
+                            <a class="del-worker btn btn-sm btn-danger" href="" data-id="<%= foundWorker._id %>">Delete Account</a>
+                        </li>
+                    </div>
+                    <hr>
                 </div>
-                <hr>
                 <% });  %>
             </ol>
             <div class="col-lg-4 col-md-6 col-sm-8 col-xs-10">

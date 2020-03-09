@@ -82,6 +82,8 @@ if (prChform) {
 if(deleteWorkerButton) {
     delWorkerBtn.forEach((delOne) => {
         delOne.addEventListener("click", (e) => {
+            e.preventDefault();
+            console.log("clicked");
             let idWorker = e.target.dataset.id
             let response = confirm(`Are you sure you want to delete ${e.target.parentNode.parentNode.children[0].children[0].innerText} forever?`);
             if (response) {
@@ -90,7 +92,7 @@ if(deleteWorkerButton) {
                     url: "/lma/" + idWorker,
                     data: { id: idWorker },
                 });
-                e.target.parentNode.parentNode.remove();
+                e.target.parentNode.parentNode.parentNode.remove();
             }
         });
     });
