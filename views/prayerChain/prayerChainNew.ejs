@@ -28,7 +28,11 @@
                 <!-- last Prayer Chain start report within 00:00 and 07:00  -->
                 <% } else if (lastPrChReportDate >= startOfDay && lastPrChReportDate < prChRange && endPrChReport == undefined ) { %>
                     <div class="inline-div d-flex">
-                        <p id="startPr" class="p-2 text-center" data-id="<%= lastPrChReportId %>">I have started praying <%= new Date(lastPrChReportDate).getHours().toString().padStart(2, "0")%>:<%= new Date(lastPrChReportDate).getMinutes().toString().padStart(2, "0")%> am</p>
+                        <p id="startPr" class="p-2 text-center" data-id="<%= lastPrChReportId %>">I started praying at <%= new Date(lastPrChReportDate).getHours().toString().padStart(2, "0")%>:<%= new Date(lastPrChReportDate).getMinutes().toString().padStart(2, "0")%> am</p>
+                    </div>
+                    <div class="inline-div d-flex">
+                        End praying at:
+                        <input class="form-control col-md-3" id="endtime" data-id="<%= lastPrChReportId %>" type="time" name="endtime" min="01:00" max="08:00" value="<%= (new Date(Date.now())).getHours().toString().padStart(2, "0") %>:<%= (new Date(Date.now())).getMinutes().toString().padStart(2, "0") %>" required>
                         <div>
                             <button id="endPrBtn" class="col-sm-10 btn btn-success btn-sm">End Praying</button>
                         </div>
@@ -36,10 +40,10 @@
 
                 <!-- If ended prayer chain -->
                 <% } else if (lastPrChReportDate >= startOfDay && lastPrChReportDate < prChRange && endPrChReport ) { %>
-                    <p id="startPr" class="p-2 text-center" data-id="<%= lastPrChReportId %>">I have started praying
+                    <p id="startPr" class="p-2 text-center" data-id="<%= lastPrChReportId %>">I started praying at 
                         <%= new Date(lastPrChReportDate).getHours().toString().padStart(2, "0")%>:<%= new Date(lastPrChReportDate).getMinutes().toString().padStart(2, "0")%> am
                     </p>
-                    <p id="endPr" class="p-2 text-center" data-id="<%= lastPrChReportId %>">I have ended praying <%= new Date(endPrChReport).getHours().toString().padStart(2, "0")%>:<%= new Date(endPrChReport).getMinutes().toString().padStart(2, "0")%> am
+                    <p id="endPr" class="p-2 text-center" data-id="<%= lastPrChReportId %>">I ended praying at <%= new Date(endPrChReport).getHours().toString().padStart(2, "0")%>:<%= new Date(endPrChReport).getMinutes().toString().padStart(2, "0")%> am
                     </p>
 
                 <!-- Time of now is greater than 07:00 and no start of prayer -->

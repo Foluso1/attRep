@@ -3,6 +3,7 @@ const       express     =   require("express")
         ,   Worker      =   require("../models/worker")
         ,   controller  =   require("../controller/lma")
         ,   middleware  =   require("../middleware")
+        ,   moment      =   require("moment")
 
 ;
 
@@ -48,6 +49,39 @@ lmaRouter.get("/report/:id", (req, res) => {
             console.log(err);
         });
     // res.send("Good here!");
+})
+
+lmaRouter.get("/prayerChain/:id", async (req, res) => {
+    try {
+        let ownerId = req.params.id;
+        let currentWorker = req.user.id;
+        let ownerStatus;// = ownerId == currentWorker;
+        // if (req.baseUrl == "/lma") {
+        //     console.log(req.baseUrl == "/lma")
+        //     ownerStatus = false;
+        // }
+
+        console.log(req.baseUrl, req.originalUrl);
+
+        let thisWeekNum = moment().week() - 1;
+        let allDayPrayed = [];
+        let foundWorker = await Worker.findById({ _id: currentWorker }).populate({
+            path: "prayerChainReport"
+        });
+        let prChRepAll = foundWorker.prayerChainReport;
+        prChRepAll.forEach((oneItem) => {
+            if (thisWeekNum == moment(oneItem.date).week()) {
+                let dayPrayed = moment(oneItem.date).format("dddd");
+                let startTime = moment(oneItem.start).format("h:mm a");
+                let endTime = moment(oneItem.end).format("h:mm a");
+                let dayData = [dayPrayed, startTime, endTime];
+                allDayPrayed.push(dayData)
+            }
+        })
+        res.render("prayerChain/prayerChain", { thisWeekNum, allDayPrayed });
+    } catch (err) {
+        console.log(err);
+    }
 })
 
 module.exports = lmaRouter;

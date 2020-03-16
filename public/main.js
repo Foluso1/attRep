@@ -8,6 +8,7 @@ const prChform = document.querySelector("#prChform");
 const noDisp = document.querySelector(".nodisplay");
 const startPr = document.querySelector("#startPr");
 const starttimeInput = document.querySelector("#starttime");
+const endtimeInput = document.querySelector("#endtime");
 const deleteWorkerButton = document.querySelectorAll(".del-worker")
 const delWorkerBtn = Array.from(deleteWorkerButton);
 
@@ -36,15 +37,31 @@ if (startPrBtn) {
                 newPrCh.setAttribute("class", "startPr");
                 newPrCh.classList.add("text-center");
                 newPrCh.classList.add("p-2");
-                newPrCh.textContent = "I have started praying " + new Date(data.start).getHours().toString().padStart(2, "0") + ":" + new Date(data.start).getMinutes().toString().padStart(2, "0") + " am";
-                //Create a "End Praying" button
+                newPrCh.textContent = "I started praying at " + new Date(data.start).getHours().toString().padStart(2, "0") + ":" + new Date(data.start).getMinutes().toString().padStart(2, "0") + " am";
+                //Create an input for End Praying
+                let newInput = document.createElement("input");
+                newInput.setAttribute("class", "form-control col-md-3");
+                // newInput.setAttribute("class", );
+                newInput.setAttribute("id", "endtime");
+                newInput.setAttribute("data-id", data._id);
+                newInput.setAttribute("type", "time");
+                newInput.setAttribute("name", "endtime");
+                newInput.setAttribute("min", "01:00");
+                newInput.setAttribute("max", "08:00");
+                newInput.value = `${(new Date(Date.now())).getHours().toString().padStart(2, "0")}:${(new Date(Date.now())).getMinutes().toString().padStart(2, "0")}`
+                //Create a div of class "d-flex"
+                let newDiv3 = document.createElement("div")
+                newDiv3.setAttribute("class", "d-flex");
+                newDiv3.innerText = "I ended praying at ";
+                //insert newInput
+                newDiv3.append(newInput, newDiv2);
                 let endPrBtn = document.createElement("button");
                 endPrBtn.setAttribute("id", "endPrBtn");
                 endPrBtn.innerText = "End Praying";
                 endPrBtn.setAttribute("class", "col-sm-10 btn btn-success btn-sm");
                 newDiv2.append(endPrBtn);
-                newDiv.append(newPrCh, newDiv2);
-                prChform.append(newDiv);
+                newDiv.append(newPrCh);
+                prChform.append(newDiv, newDiv3);
             }
         });
     });
@@ -54,11 +71,17 @@ if (prChform) {
     prChform.addEventListener("click", (e) => {
         e.preventDefault();
         if (e.target.getAttribute("id") == "endPrBtn") {
-            let id = e.target.parentNode.parentNode.children[0].dataset.id;
-            let time = {
-                end: Date.now()
-            }
-            e.target.remove();
+            let regExTime = /([0-9]?[0-9]):([0-9][0-9])/;
+            ;
+            let inputTarget = e.target.parentNode.parentNode.children[0];
+            let regExTimeArrEndtime = regExTime.exec(inputTarget.value);
+            // let regExTimeArrEndtime = regExTime.exec(endtimeInput.value);
+            let thisTime = moment().hour(regExTimeArrEndtime[1]).minute(regExTimeArrEndtime[2]).second(0).millisecond(0)._d.getTime();
+            let time = { endtime: thisTime }
+            ////
+            let id = inputTarget.dataset.id;
+            inputTarget.classList.add("nodisplay");
+            e.target.parentNode.parentNode.remove();
             $.ajax({
                 type: "PUT",
                 url: "/prayerChain/" + id,
@@ -67,7 +90,7 @@ if (prChform) {
                     let newPrCh = document.createElement("p");
                     let newDiv = document.createElement("div");
                     newPrCh.setAttribute("data-id", data._id);
-                    newPrCh.textContent = "I have ended praying " + new Date(data.end).getHours().toString().padStart(2, "0") + ":" + new Date(data.end).getMinutes().toString().padStart(2, "0") + " am";
+                    newPrCh.textContent = "I ended praying at " + new Date(data.end).getHours().toString().padStart(2, "0") + ":" + new Date(data.end).getMinutes().toString().padStart(2, "0") + " am";
                     newDiv.append(newPrCh);
                     prChform.append(newDiv);
                 }
@@ -83,9 +106,8 @@ if(deleteWorkerButton) {
     delWorkerBtn.forEach((delOne) => {
         delOne.addEventListener("click", (e) => {
             e.preventDefault();
-            console.log("clicked");
             let idWorker = e.target.dataset.id
-            let response = confirm(`Are you sure you want to delete ${e.target.parentNode.parentNode.children[0].children[0].innerText} forever?`);
+            let response = confirm(`Are you sure you want to delete ${e.target.dataset.name} forever?`);
             if (response) {
                 $.ajax({
                     type: "DELETE",

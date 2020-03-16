@@ -22,8 +22,14 @@ module.exports = {
 
     getPrayerReports: async (req, res) => {
         try {
-            currentWorker = req.user.id;
-            let thisWeekNum = moment().week()-1;
+            let ownerId = req.params.id;
+            if(ownerId == undefined) {
+                ownerId = req.user.id;
+            }
+            console.log(req.baseUrl, req.originalUrl);
+            let currentWorker = req.user.id;
+            let ownerStatus = ownerId == currentWorker;
+            let thisWeekNum = moment().week();
             let allDayPrayed = [];
             let foundWorker = await Worker.findById({ _id: currentWorker }).populate({
                 path: "prayerChainReport"
@@ -66,7 +72,7 @@ module.exports = {
                 }
             }
             let startOfDay = moment().startOf('day')._d.getTime();
-            let prChRange = moment().hour(15).minute(10).second(0).millisecond(0)._d.getTime();
+            let prChRange = moment().hour(23).minute(0).second(0).millisecond(0)._d.getTime();
 
             res.render("prayerChain/prayerChainNew", { lastPrChReportDate, startOfDay, prChRange, lastPrChReportId, endPrChReport });
         } catch (err) {
@@ -79,7 +85,7 @@ module.exports = {
         try {
             let id = req.params.id;
             let endtime = {
-                end: req.body.end
+                end: req.body.endtime
             }
             let updatedPrCh = await PrayerChain.findOneAndUpdate({ _id: id}, endtime, {new: true} );
             await updatedPrCh.save();

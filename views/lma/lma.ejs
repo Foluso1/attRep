@@ -17,7 +17,8 @@
                             </form>
                             <a class="btn btn-sm btn-secondary" href="/lma/report/<%= foundWorker._id %>">Report</a>
                             <a class="btn btn-sm btn-secondary" href="/lma/prayer/<%= foundWorker._id %>">Prayer Report</a>
-                            <a class="del-worker btn btn-sm btn-danger" href="" data-id="<%= foundWorker._id %>">Delete Account</a>
+                            <a class="btn btn-sm btn-secondary" href="/lma/prayerChain/<%= foundWorker._id %>">Prayer Chain Report</a>
+                            <a class="del-worker btn btn-sm btn-danger" href="" data-id="<%= foundWorker._id %>" data-name="<%= foundWorker.firstname %> <%= foundWorker.surname %>">Delete Account</a>
                         </li>
                     </div>
                     <hr>

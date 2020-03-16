@@ -3,6 +3,7 @@ const       express                 =   require("express")
         ,   app                     =   express()
         ,   db                      =   require("./models")
         ,   Worker                  =   require("./models/worker")
+        ,   GoogleStrategy          =   require('passport-google-oauth').OAuth2Strategy
         ,   flash                   =   require("connect-flash")
         ,   passport                =   require("passport")
         ,   passportLocal           =   require("passport-local")
@@ -25,6 +26,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/views"));
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://scc.foz.ng/report"
+},
+    function (accessToken, refreshToken, profile, done) {
+        User.findOrCreate({ googleId: profile.id }, function (err, user) {
+            return done(err, user);
+        });
+    }
+));
 
 
 app.use(expressSession({
@@ -45,6 +57,16 @@ app.use((req, res, next) => {
     res.locals.cdn = process.env.css_cdn;
     res.locals.error = req.flash("error");
     res.locals.success = req.flash("success");
+    if (req.baseUrl == "/lma") {
+        console.log(req.baseUrl == "/lma")
+        res.locals.ownerStatus = false;
+    } else {
+        console.log("///", req.url)
+        console.log(req.originalUrl)
+        console.log(req.baseUrl)
+        let regExUrl = /([0-9]?[0-9])([0-9][0-9])/;
+        res.locals.ownerStatus = true;
+    }
     next();
 })
 
@@ -68,6 +90,20 @@ app.get("/login", (req, res) => {
 app.get("/register", (req, res) => {
     res.render("register");
 });
+
+
+/////
+
+
+app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+
+app.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    function (req, res) {
+        res.redirect('/');
+    });
+
+    // //////
 
 app.post("/register", async (req, res) => {
     try {
