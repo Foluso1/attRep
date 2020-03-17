@@ -3,6 +3,7 @@ const       express                 =   require("express")
         ,   app                     =   express()
         ,   db                      =   require("./models")
         ,   Worker                  =   require("./models/worker")
+        ,   User                    =   require("./models/user")
         ,   GoogleStrategy          =   require('passport-google-oauth').OAuth2Strategy
         ,   flash                   =   require("connect-flash")
         ,   passport                =   require("passport")
@@ -29,14 +30,47 @@ app.set("view engine", "ejs");
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://scc.foz.ng/report"
+    callbackURL: "/auth/google/callback"
 },
     function (accessToken, refreshToken, profile, done) {
-        User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        User.create({ googleId: profile.id }, function (err, user) {
+            console.log(user);
             return done(err, user);
         });
     }
 ));
+
+// passport.use(new GoogleStrategy({
+//     clientID: process.env.GOOGLE_CLIENT_ID,
+//     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+//     callbackURL: "/auth/google/callback"
+// },
+//     function (request, accessToken, refreshToken, profile, done) {
+//         User.findOne({ oauthID: profile.id }, function (err, user) {
+//             if (err) {
+//                 console.log(err);  // handle errors!
+//             }
+//             if (!err && user !== null) {
+//                 done(null, user);
+//             } else {
+//                 user = new User({
+//                     oauthID: profile.id,
+//                     name: profile.displayName,
+//                     created: Date.now()
+//                 });
+//                 console.log(user);
+//                 user.save(function (err) {
+//                     if (err) {
+//                         console.log(err);  // handle errors!
+//                     } else {
+//                         console.log("saving user ...");
+//                         done(null, user);
+//                     }
+//                 });
+//             }
+//         });
+//     }
+// ));
 
 
 app.use(expressSession({
@@ -50,6 +84,11 @@ app.use(passport.session());
 passport.use(new passportLocal(Worker.authenticate()));
 passport.serializeUser(Worker.serializeUser());
 passport.deserializeUser(Worker.deserializeUser());
+
+
+passport.use(new passportLocal(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 
 app.use((req, res, next) => {
@@ -100,7 +139,7 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.g
 app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     function (req, res) {
-        res.redirect('/');
+        res.redirect('/report');
     });
 
     // //////
@@ -136,7 +175,7 @@ app.post("/login", passport.authenticate("local", {
         failureRedirect: "/login",
         failureFlash: true
     }), (req, res) => {
-
+        console.log("Hey, there is a problem here!");
 })
 
 
