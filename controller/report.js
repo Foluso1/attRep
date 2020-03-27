@@ -8,10 +8,10 @@ const   Worker  =   require("../models/worker")
 
 module.exports = {
     getReports: (req, res) => {
+        console.log("from google, etc.")
         let worker = {
             _id: req.user.id
         }
-        
         Worker.findById(worker).
             populate({path: 'reports', populate: { path: 'disciples' }})
             // populate("disciples")

@@ -203,3 +203,8 @@ only screen and (max-width: 760px),
 .nodisplay {
     display: none;
 }
+
+.small-text {
+    font-size: 12pt;
+    color: grey;
+}

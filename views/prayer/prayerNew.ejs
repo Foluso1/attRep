@@ -9,12 +9,10 @@
     <p></p>
 
     <h3>Your prayer group is: <%= loggedInWorker.prayerGroup%> </h3>
-    <!-- <a class="btn btn-success btn-sm" href="/report/new">Write New Report</a> -->
 </div>
 
 <main class="row">
     <div class="col-md-12">
-        <!-- MakeUp -->
         <br>
         <h4><u>Instructions:</u></h4>
         <ol>
@@ -28,7 +26,7 @@
             </li>
             <li>Click the <span class="notify"><b>"submit"</b></span> button.</li>
         <br>
-        <form action="/prayer" method="POST">
+        <form action="/prayer" method="POST" class="text-center">
             <select name="dayPrayed">
                 <!-- List all Possible Days -->
                 <% let arrDay = [[0, "Sunday"], [1, "Monday"], [2, "Tuesday"], [3, "Wednesday"], [4, "Thursday"], [5, "Friday"], [6,

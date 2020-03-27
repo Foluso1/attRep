@@ -7,6 +7,7 @@ const Worker = require("../models/worker")
 module.exports = {
     isLoggedIn: (req, res, next) => {
         if (req.isAuthenticated()) {
+            res.locals.loggedInWorker = req.user;
             return next()
         }
         req.flash("error", "You have to log in first");
@@ -22,9 +23,7 @@ module.exports = {
     },
 
     validator: async (req, res, next) => {
-        let worker = {
-            _id: req.user.id
-        }
+        let worker = { _id: req.user.id }
         try {
             let foundWorker = await Worker.findById(worker);
             foundWorker.validate((err) => {
@@ -41,4 +40,30 @@ module.exports = {
             res.redirect("/profile");
         }
     },
+
+    signInWithGoogle: async (req, res, next) => {
+        console.log("////hey signInWithGoogle")
+        console.log(req.user._id);
+        try {
+            if (req.user._id) {
+                let worker = { _id: req.user._id }
+                let foundWorker = await Worker.findById(worker);
+                if (foundWorker.googleIdentity) {
+                    return next();
+                } else {
+                    foundWorker.linkCount++;
+                    await foundWorker.save();
+                    if (foundWorker.linkCount <= 1){
+                        res.render("linkWithGoogle");
+                    } else {
+                        return next();
+                    }
+                }
+            }
+        } catch (e) {
+            console.log(e)
+            req.flash("error", "Please, sign up with Google or login by other methods if you have an account already")
+            res.redirect("/login");
+        }
+    }
 }

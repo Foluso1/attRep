@@ -21,10 +21,25 @@ workerSchema = new mongoose.Schema({
         type: String,
         required: "You have to specify this"
     },
+
+    googleIdentity: {
+        type: String,
+        required: false
+    },
+
+    googleName: {
+        type: String,
+        required: false
+    }, 
+    
+    googleMail: {
+        type: String,
+        required: false
+    },
     
     password: {
         type: String,
-        required: "You have to specify this"
+        required: false
     },
 
     church: {
@@ -85,6 +100,11 @@ workerSchema = new mongoose.Schema({
     isLMA: {
         type: Boolean,
         default: false
+    },
+
+    linkCount: {
+        type: Number,
+        default: 0
     },
  
     date: {
