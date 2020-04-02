@@ -11,10 +11,17 @@
                     <hr>
                     <% if(loggedInWorker.googleIdentity){ %>
                         <p>Your account is linked to 
-                            <b><span style="color: #4183F1">G</span><span style="color: #EA4335">o</span><span style="color: #FBBC05">o</span><span style="color: #4183F1">g</span><span style="color: #34A853">l</span><span style="color: #EA4335">e</span></b>!
+                            <span style="color: #4183F1">G</span><span style="color: #EA4335">o</span><span style="color: #FBBC05">o</span><span style="color: #4183F1">g</span><span style="color: #34A853">l</span><span style="color: #EA4335">e</span>!
                             </p>
                     <% } else { %>
                         <p>Would you like to link your Google account? <a class="btn btn-sm btn-primary" href="/google/auth/google">Yes</a></p>
+                    <% } %>
+                    <% if(loggedInWorker.facebookIdentity){ %>
+                        <p>Your account is linked to 
+                            <b><span style="color: #4183F1">facebook</span></b>!
+                            </p>
+                    <% } else { %>
+                        <p>Would you like to link your facebook account? <a class="btn btn-sm btn-primary" href="/facebook/auth/facebook">Yes</a></p>
                     <% } %>
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="username">Username:</label>

@@ -3,6 +3,7 @@ const       Worker     =       require("../models/worker")
             , refWeekFromMonfunction = require("../utils/refWeekFromMon")
             , findThisWeekNumber = require("../utils/findThisWeekNumber")
             , dMDYYYY                   =   require("../utils/dMDYYYY")
+            ,   moment  =   require("moment")
             ;
 
 
@@ -119,14 +120,13 @@ module.exports = {
         })
     }, 
 
-    getLma: async (req, res) => {
+    getPrayerReport: async (req, res) => {
         lmaUser = req.user.id;
         idCurrentWorker = req.params.id;
 
         let week = 604800000; // Number of milliseconds in a week;
         try {
             let foundWorker = await Worker.findById({ _id: idCurrentWorker }).populate("prayerReport")
-            let currentWorker = foundWorker;
 
             // let b = new Date(sixDaysAfter(lastSundayfunction(Date.now())));
             let prayerReports = foundWorker.prayerReport;
@@ -154,13 +154,13 @@ module.exports = {
                 elem[1] = dMDYYYY.dMDYYYY(jPrayed);
             })
 
-            res.render("lma/prayerLMA", { weekNumPrDb, currentWorker });
+            res.render("prayer/prayer", { weekNumPrDb, foundWorker });
         } catch (err) {
             console.log(err);
         }
     },
 
-    getAll: async (req, res) => {
+    getAllPrayerReports: async (req, res) => {
         try {
             lmaWorkerId = {
                 _id: req.user.id
@@ -201,7 +201,66 @@ module.exports = {
         } catch (err) {
             console.log(err);
         }
-    }
+    },
+
+    getDiscipleshipReport: async (req, res) => {
+        try {
+              let worker = {
+                _id: req.params.id
+              };
+              let foundWorker = await Worker.findById(worker)
+                .populate({ path: "reports", populate: { path: "disciples" } })
+                  let reports = foundWorker.reports;
+                  let dayWeek = [];
+                  let month = [];
+                  let arrDay = [ [0, "Sunday"], [1, "Monday"], [2, "Tuesday"], [3, "Wednesday"], [4, "Thursday"], [5, "Friday"], [6, "Saturday"] ];
+                let allDay = [];
+                reports.forEach(report => {
+                    let j = report.date.getDay();
+                    let reportDay = arrDay[j];
+                    let day = reportDay[1];
+                    month.push(report.date.getMonth() + 1);
+                    allDay.push(day);
+                });
+                res.render("report", { reports, dayWeek, month, allDay, foundWorker });
+            } catch (e) {
+            console.log(e);
+            req.flash("Error", "There was a problem")
+            res.redirect("/lma");
+        }
+        
+    },
+
+    getPrayerChainReport: async (req, res) => {
+        try {
+            let ownerId = req.params.id;
+            let currentWorker = req.user.id;
+            let ownerStatus;// = ownerId == currentWorker;
+
+            console.log(req.baseUrl, req.originalUrl);
+
+            let thisWeekNum = moment().week() - 1;
+            let allDayPrayed = [];
+            let foundWorker = await Worker.findById({ _id: ownerId }).populate({
+                path: "prayerChainReport"
+            });
+            let prChRepAll = foundWorker.prayerChainReport;
+            prChRepAll.forEach((oneItem) => {
+                if (thisWeekNum == moment(oneItem.date).week()) {
+                    let dayPrayed = moment(oneItem.date).format("dddd");
+                    let startTime = moment(oneItem.start).format("h:mm a");
+                    let endTime = moment(oneItem.end).format("h:mm a");
+                    let dayData = [dayPrayed, startTime, endTime];
+                    allDayPrayed.push(dayData)
+                }
+            })
+            res.render("prayerChain/prayerChain", { thisWeekNum, allDayPrayed, foundWorker });
+        } catch (err) {
+            console.log(err);
+            req.flash("Error", "There was a problem");
+            res.redirect("/lma");
+        }
+    },
 }
  
 // Find all worker under LMA

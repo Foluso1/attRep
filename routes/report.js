@@ -13,7 +13,7 @@ reportRouter.use(methodOverride("_method"));
 
 reportRouter.route("/")
     // .get(middleware.isLoggedIn, middleware.signInWithGoogle, helper.getReports)
-    .get(middleware.isLoggedIn, middleware.validator, middleware.signInWithGoogle, helper.getReports)
+    .get(middleware.isLoggedIn, middleware.validator, middleware.signInWithGoogle, middleware.signInWithFacebook, helper.getReports)
     .post(middleware.isLoggedIn, helper.postNewReport);
 
 reportRouter.route("/new")
@@ -22,7 +22,6 @@ reportRouter.route("/new")
 
 reportRouter.route("/:id")
     .get(middleware.isLoggedIn, helper.getOneReport)
-    // .put(middleware.isLoggedIn, helper.editReport)
     .delete(middleware.isLoggedIn, helper.deleteReport);
 
 reportRouter.route("/:id/edit")

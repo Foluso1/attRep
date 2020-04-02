@@ -1,11 +1,20 @@
 <% include ./../partials/header %>
-    <a class="btn btn-primary btn-sm" href="/prayer/new">New Prayer Group Report</a>
+
+
+<% if( foundWorker._id.toString() == loggedInWorker._id.toString() ) { %>
+        <a class="btn btn-primary btn-sm" href="/prayer/new">New Prayer Group Report</a>
+    </div>
+<% } %>
 
 </div>
 
 <div class="heading">
     <p></p>
-    <h3>Your prayer group is: <%= loggedInWorker.prayerGroup%> </h3>
+    <% if( foundWorker._id.toString() == loggedInWorker._id.toString() ) { %>
+        <h3>Your prayer group is: <%= loggedInWorker.prayerGroup%> </h3>
+    <% } else { %>
+        <h3> <%= foundWorker.firstname %> <%= foundWorker.surname %>'s Prayer Report</h3>
+    <% } %>
     <!-- <a class="btn btn-success btn-sm" href="/report/new">Write New Report</a> -->
 </div>
 
@@ -13,13 +22,14 @@
     <div class="col-md-12" style="overflow-x:auto;">
         <br>
         <h3 class="p-3">Welcome <%= loggedInWorker.firstname %></h3>
-        <table border="1" >
+        <table id="prayer-table" border="1" >
             <thead>
                 <tr>
                     <th><b>Week</b></th>
                     <th><b>Week: Monday to Sunday</b></th>
                     <th><b>Day Prayed</b></th>
                     <th><b>Prayed?</b></th>
+                    <th><b>Delete</b></th>
                 </tr>
             </thead>
             <tbody>
@@ -28,7 +38,15 @@
                     <td>Week <%= elem[0] %></td>
                     <td><%= elem[2] %></td>
                     <td><%= elem[1] %></td>
-                    <td>Yes</td>
+                    <td>Yes 
+                    </td>
+                    <td> 
+                        <% if((Date.now() - new Date(elem[4]).getTime()) < 86400000) { %>
+                            <a class="prayer-del-btn data-toggle="tooltip" data-placement="top" title="Delete Report" href="/prayer/<%= elem[3] %>">X</a> 
+                        <% } else { %> 
+                            <a class="invisible">X</a>
+                        <% } %> 
+                    </td>
                 </tr>
             <% }); %>
             </tbody>

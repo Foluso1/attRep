@@ -17,6 +17,7 @@ const       express                 =   require("express")
         ,   methodOverride          =   require("method-override")
         ,   expressSession          =   require("express-session")
         ,   googleRouter            =   require("./routes/auth/google-auth")
+        ,   facebookRouter          =   require("./routes/auth/facebook-auth")
             ;
 
 const PORT = process.env.PORT;
@@ -45,8 +46,8 @@ app.use(passport.session());
 //Local Strategy
 passport.use(new LocalStrategy(Worker.authenticate()));
 
-passport.serializeUser(Worker.serializeUser());
-passport.deserializeUser(Worker.deserializeUser());
+// passport.serializeUser(Worker.serializeUser());
+// passport.deserializeUser(Worker.deserializeUser());
 
 
 
@@ -54,15 +55,10 @@ passport.deserializeUser(Worker.deserializeUser());
 
 app.use((req, res, next) => {
     res.locals.loggedInWorker = req.user;
-    res.locals.cdn = process.env.css_cdn;
-    res.locals.error = req.flash("error");
-    res.locals.success = req.flash("success");
-    if (req.baseUrl == "/lma") {
-        res.locals.ownerStatus = false;
-    } else {
-        let regExUrl = /([0-9]?[0-9])([0-9][0-9])/;
-        res.locals.ownerStatus = true;
-    }
+    res.locals.cdn            = process.env.css_cdn;
+    res.locals.error          = req.flash("error");
+    res.locals.success        = req.flash("success");
+    res.locals.baseUrl        = req.baseUrl
     next();
 })
 
@@ -73,6 +69,7 @@ app.use('/prayer', prayerRouter);
 app.use('/prayerChain', prayerChainRouter);
 app.use('/lma', lmaRouter);
 app.use('/google', googleRouter);
+app.use('/facebook', facebookRouter);
 app.use(methodOverride("_method"));
 
 

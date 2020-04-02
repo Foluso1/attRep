@@ -65,5 +65,31 @@ module.exports = {
             req.flash("error", "Please, sign up with Google or login by other methods if you have an account already")
             res.redirect("/login");
         }
-    }
+    },
+
+    signInWithFacebook: async (req, res, next) => {
+        console.log("////hey signInWithFacebook")
+        console.log(req.user._id);
+        try {
+            if (req.user._id) {
+                let worker = { _id: req.user._id }
+                let foundWorker = await Worker.findById(worker);
+                if (foundWorker.googleIdentity && foundWorker.facebookIdentity) {
+                    return next()
+                } else {
+                    foundWorker.linkCount++;
+                    await foundWorker.save();
+                    if (foundWorker.linkCount <= 1) {
+                        res.render("linkWithFacebook");
+                    } else {
+                        return next();
+                    }
+                }
+            }
+        } catch (e) {
+            console.log(e)
+            req.flash("error", "Please, sign up with Google or login by other methods if you have an account already")
+            res.redirect("/login");
+        }
+    },
 }

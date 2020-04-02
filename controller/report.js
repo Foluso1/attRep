@@ -7,32 +7,32 @@ const   Worker  =   require("../models/worker")
 
 
 module.exports = {
-    getReports: (req, res) => {
-        console.log("from google, etc.")
-        let worker = {
-            _id: req.user.id
-        }
-        Worker.findById(worker).
-            populate({path: 'reports', populate: { path: 'disciples' }})
-            // populate("disciples")
-            .then((presentWorkers) => {
-                let reports = presentWorkers.reports;
+    getReports: async (req, res) => {
+        try {
+            let worker = {
+              _id: req.user.id
+            };
+            let foundWorker = await Worker.findById(worker)
+              .populate({ path: "reports", populate: { path: "disciples" } })
+              // populate("disciples")
+                let reports = foundWorker.reports;
                 let dayWeek = [];
                 let month = [];
-                let arrDay = [[0, "Sunday"], [1, "Monday"], [2, "Tuesday"], [3, "Wednesday"], [4, "Thursday"], [5, "Friday"], [6, "Saturday"]];
-                let allDay = []
-                reports.forEach((report) => {
-                    let j = report.date.getDay();
-                    let reportDay = arrDay[j];
-                    let day = reportDay[1];
-                    month.push(report.date.getMonth() + 1);
-                    allDay.push(day);
+                let arrDay = [ [0, "Sunday"], [1, "Monday"], [2, "Tuesday"], [3, "Wednesday"], [4, "Thursday"], [5, "Friday"], [6, "Saturday"] ];
+                let allDay = [];
+                reports.forEach(report => {
+                  let j = report.date.getDay();
+                  let reportDay = arrDay[j];
+                  let day = reportDay[1];
+                  month.push(report.date.getMonth() + 1);
+                  allDay.push(day);
                 })
-                res.render("report", { reports, dayWeek, month, allDay });
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+                res.render("report", { reports, dayWeek, month, allDay, foundWorker });
+        } catch (e) {
+            console.log(e);
+            req.flash("error", "There was a problem");
+            res.redirect("/report");
+        }
     },
     
     postNewReport: async (req, res) => {
@@ -88,61 +88,57 @@ module.exports = {
             });
     },
 
-    editOneReport: (req, res) => {
-        let thisReportId = req.params.id;
-        let worker = {
-            _id: req.user.id
-        }
-        //get all disciples
-        Worker.findById(worker)
-        .populate({ path: 'reports', populate: { path: 'disciples' } })
-        .populate("disciples")
-        .then((foundWorker) => {
-            let allDisciples = foundWorker.disciples;
-            let allReports = foundWorker.reports;
-            // Look for the position of this report in the allReports array
+    editOneReport: async (req, res) => {
+        try {
+            let thisReportId = req.params.id;
+            let worker = {
+              _id: req.user.id
+            };
+            //get all disciples
+            let foundWorker = await Worker.findById(worker)
+              .populate({ path: "reports", populate: { path: "disciples" } })
+              .populate("disciples");
+            //   .then(foundWorker => {
+                let allDisciples = foundWorker.disciples;
+                let allReports = foundWorker.reports;
+                // Look for the position of this report in the allReports array
                 // Map all ids into an array
-                let idsAllReports = allReports.map((elem) => {
-                    return elem._id;
-                })
+                let idsAllReports = allReports.map(elem => {
+                  return elem._id;
+                });
                 // Look for position of thisReportId in that array
                 let index = idsAllReports.indexOf(thisReportId);
-            //stringify the disicples in array
-            let remDisciples = allDisciples.map((disc) => {
-                return disc;
-            })
+                //stringify the disicples in array
+                let remDisciples = allDisciples.map(disc => {
+                  return disc;
+                });
 
-            //get ids of disciples in report
-                Report.findById(thisReportId).populate("disciples")
-                .then((thisReport) => {
+                //get ids of disciples in report
+                let thisReport = await Report.findById(thisReportId)
+                  .populate("disciples")
                     let discReport = thisReport.disciples;
                     if (discReport && discReport.length !== 0) {
-                        let idsDiscReport = discReport.map((disc) => {
-                            return disc._id.toString();
-                        })
-                        //find the index of ids of disciples in allDisciples and remove each {forEach} for list of remaining disciples
-                        let idsAllDisciples = allDisciples.map((disc) => {
-                            return disc._id;
-                        })
-                        // if discReport[i]._id find in allDisciples
-                        // Remove if it is found
+                      let idsDiscReport = discReport.map(disc => {
+                        return disc._id.toString();
+                      });
+                      //find the index of ids of disciples in allDisciples and remove each {forEach} for list of remaining disciples
+                      let idsAllDisciples = allDisciples.map(disc => {
+                        return disc._id;
+                      });
+                      // if discReport[i]._id find in allDisciples
+                      // Remove if it is found
 
-                        idsDiscReport.forEach(async (disc) => {
-                            let i = idsAllDisciples.indexOf(disc);
-                            remDisciples.splice(i, 1);
-                            idsAllDisciples.splice(i, 1);
-                        })
+                      idsDiscReport.forEach(async disc => {
+                        let i = idsAllDisciples.indexOf(disc);
+                        remDisciples.splice(i, 1);
+                        idsAllDisciples.splice(i, 1);
+                      });
                     }
-                    
-                    res.render("report_edit", { thisReport, remDisciples, thisReportId, index });
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+                    res.render("report_edit", { thisReport, remDisciples, thisReportId, index, foundWorker });
+        } catch (e) {
+            console.log(e)
+        }
+        
         //make new variable for list of remaining disciples
         //display remaining disciples on the right
     },
@@ -170,9 +166,10 @@ module.exports = {
 
     deleteReport: (req, res) => {
         thisReportId = req.params.id;
-        Report.findByIdAndRemove(thisReportId)
+        console.log(thisReportId)
+        Report.findByIdAndRemove({ _id: thisReportId })
         .then((good) => {
-            res.redirect("/report");
+            res.json(good);
         })
         .catch((err) => {
             console.log(err);

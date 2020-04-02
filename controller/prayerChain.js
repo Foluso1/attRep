@@ -17,6 +17,9 @@ module.exports = {
             res.json(newPrayerChain);
         } catch (err) {
             console.log(err);
+            req.flash("error", "There was a problem");
+            res.redirect("/report");
+
         }
     },
 
@@ -34,6 +37,7 @@ module.exports = {
             let foundWorker = await Worker.findById({ _id: currentWorker }).populate({
                 path: "prayerChainReport"
             });
+
             let prChRepAll = foundWorker.prayerChainReport;
             prChRepAll.forEach((oneItem) => {
                 if(thisWeekNum == moment(oneItem.date).week()) {
@@ -44,9 +48,11 @@ module.exports = {
                     allDayPrayed.push(dayData)
                 }
             })
-            res.render("prayerChain/prayerChain", { thisWeekNum, allDayPrayed });
+            res.render("prayerChain/prayerChain", { thisWeekNum, allDayPrayed, foundWorker });
         } catch (err) {
             console.log(err);
+            req.flash("error", "There was a problem!")
+            res.redirect("/report")
         }
     },
 

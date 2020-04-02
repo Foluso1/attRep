@@ -15,9 +15,9 @@
                             <form action="/lma" method="POST">
                                 <input style="display: none" type="text" name="id" value="<%= foundWorker._id %>" >
                             </form>
-                            <a class="btn btn-sm btn-secondary" href="/lma/report/<%= foundWorker._id %>">Report</a>
-                            <a class="btn btn-sm btn-secondary" href="/lma/prayer/<%= foundWorker._id %>">Prayer Report</a>
-                            <a class="btn btn-sm btn-secondary" href="/lma/prayerChain/<%= foundWorker._id %>">Prayer Chain Report</a>
+                            <a class="btn btn-sm btn-secondary" href="/lma/<%= foundWorker._id %>/report">Report</a>
+                            <a class="btn btn-sm btn-secondary" href="/lma/<%= foundWorker._id %>/prayer">Prayer Report</a>
+                            <a class="btn btn-sm btn-secondary" href="/lma/<%= foundWorker._id %>/prayerChain">Prayer Chain Report</a>
                             <a class="del-worker btn btn-sm btn-danger" href="" data-id="<%= foundWorker._id %>" data-name="<%= foundWorker.firstname %> <%= foundWorker.surname %>">Delete Account</a>
                         </li>
                     </div>

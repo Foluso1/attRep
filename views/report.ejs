@@ -6,32 +6,34 @@
     <div class="col-md-12">
         <div class="list-workers">
         <% for(i = reports.length-1; i >= 0; i--){ %>
-        <% let day = dayWeek[i] %>
-        <h3>Report <%= i+1 %></h3>
-        <p class="date"><i><%= allDay[i] %>,&nbsp;&nbsp;<%= reports[i].date.getDate() %>/<%= month[i] %>/<%= reports[i].date.getFullYear() %>&nbsp;&nbsp;<%= reports[i].date.getHours() %>:<%= reports[i].date.getMinutes() %>:<%= reports[i].date.getSeconds() %></i></p>
-        <% let disciples = reports[i].disciples; %>
-        <ol>
-            <% disciples.forEach((disciple) => { %>
-                <li><%= disciple.name %></li>
-            <% }); %>
-        </ol>
+            <div>
+                <% let day = dayWeek[i] %>
+                <h3>Report <%= i+1 %></h3>
+                <p class="date"><i class="d-flex"><%= allDay[i] %>,&nbsp;&nbsp;<%= reports[i].date.getDate() %>/<%= month[i] %>/<%= reports[i].date.getFullYear() %>&nbsp;&nbsp;<%= reports[i].date.getHours() %>:<%= reports[i].date.getMinutes() %>:<%= reports[i].date.getSeconds() %></i></p>
+                <% let disciples = reports[i].disciples; %>
+                <ol>
+                    <% disciples.forEach((disciple) => { %>
+                        <li><%= disciple.name %></li>
+                    <% }); %>
+                </ol>
 
-        <div class="d-inline-flex ">
-        <a class="btn btn-md btn-primary m-2" href="/report/<%= reports[i]._id %>">View Report</a>
-            <% let dateReport = reports[i].date.getTime(); %>
-            <% let date = Date.now(); %>
-            <% let diffDate = date - dateReport; %>
-            <% if(!(diffDate > 604800000)){ %>
-                <a class="btn btn-md btn-success m-2" href="/report/<%= reports[i]._id %>/edit">Edit Report</a>
-                <form action="/report/<%= reports[i]._id %>?_method=DELETE" method="POST">
-                    <button class="btn btn-md btn-danger m-2">Delete Report</button>
-                </form>
-            <% }; %>
-        </div>
-        <p></p>
-        <hr />
-        <p></p>
-        </br>
+                <% if( foundWorker._id.toString() === loggedInWorker._id.toString() ) { %>
+                <div class="col-md-12">
+                    <% let dateReport = reports[i].date.getTime(); %>
+                    <% let date = Date.now(); %>
+                    <% let diffDate = date - dateReport; %>
+                    <% if(!(diffDate > 86400000)){ %>
+                        <a class="btn btn-sm btn-primary m-2" href="/report/<%= reports[i]._id %>">View</a>
+                        <a class="btn btn-sm btn-success m-2" href="/report/<%= reports[i]._id %>/edit">Edit</a>
+                        <a class="del-report btn btn-sm btn-danger m-2" href="#" data-id="<%= reports[i]._id %>">Delete</a>
+                    <% }; %>
+                </div>
+                <% } %>
+                <p></p>
+                <hr />
+                <p></p>
+                </br>
+            </div>
         <% } %>
         </div>
         <p></p>

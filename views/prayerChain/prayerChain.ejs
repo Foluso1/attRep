@@ -1,16 +1,19 @@
 <% include ./../partials/header %>
 </div>
-<%= ownerStatus %>
-<% if (ownerStatus) { %>
+
+<% if( foundWorker._id.toString() == loggedInWorker._id.toString() ) { %>
     <div class="heading">
-        <a class="btn btn-primary btn-sm" href="/profile">Change Prayer Group</a>
         <a class="btn btn-primary btn-sm" href="/prayerchain/new">New Prayer Chain Report</a>
     </div>
 <% } %>
 
 <main class="row">
     <div class="col-md-12">
-        <h3>Welcome <%= loggedInWorker.firstname %> <%= loggedInWorker.surname %></h3>
+        <% if( foundWorker._id.toString() == loggedInWorker._id.toString() ) { %>
+            <h3>My Prayer Chain Report</h3>
+        <% } else { %>
+            <h3><%= foundWorker.firstname %> <%= foundWorker.surname %>'s Prayer Chain Report</h3>
+        <% } %>
 
         <br>
         <h3>Week <%= thisWeekNum %></h3>

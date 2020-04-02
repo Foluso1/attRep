@@ -1,6 +1,9 @@
 <% include partials/header %>
 
+<% if( foundWorker._id == loggedInWorker._id ) { %>
     <a class="btn btn-primary btn-sm" href="/disciple/new">Add New Disciple</a>
+<% } %>
+
 </div>
 
 <main class="row">

@@ -17,4 +17,7 @@ prayerRouter.route("/")
     .get(middleware.isLoggedIn, controller.getPrayerReports)
     .post(middleware.isLoggedIn, controller.postPrayerReport);
 
+prayerRouter.route("/:id")
+    .delete(middleware.isLoggedIn, controller.deletePrayerReport);
+
 module.exports = prayerRouter;

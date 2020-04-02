@@ -3,12 +3,11 @@
 </div>
     <div class="row justify-content-center">
         <div class="m-5 col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light" >
-            <h1 class="text-center" >Hello <%= loggedInWorker.username %>!</h1>
             <h5 class="m-2 text-center" >Add new disciple to database</h5>
             <div class="container">
             </div>
             <form class="text-center p-2" action="/disciple" method="POST">
-                <input class="form-control m-2" type="text" name="name" placeholder="disciple">
+                <input class="form-control m-2" type="text" name="name" placeholder="Disciple's Fullname">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
                         <button class="btn btn-md btn-primary btn-block m-2">Submit</button>
@@ -16,7 +15,6 @@
                 </div>
             </form>
             <hr>
-            <p class="text-center">Not a member? <a href="/register">Register</a></p>
         </div>
     </div>
 </section>

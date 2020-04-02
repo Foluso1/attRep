@@ -1,16 +1,19 @@
 const route = window.location.pathname;
 
-const startTime = document.querySelector("#starttime");
-const startPrBtn = document.querySelector("#startPrBtn");
-const endPrBtn = document.querySelector("#endPrBtn");
-const myDiv = document.querySelector(".mydiv");
-const prChform = document.querySelector("#prChform");
-const noDisp = document.querySelector(".nodisplay");
-const startPr = document.querySelector("#startPr");
-const starttimeInput = document.querySelector("#starttime");
-const endtimeInput = document.querySelector("#endtime");
+const startTime      = document.querySelector("#starttime" );
+const startPrBtn     = document.querySelector("#startPrBtn");
+const endPrBtn       = document.querySelector("#endPrBtn"  );
+const myDiv          = document.querySelector(".mydiv"     );
+const prChform       = document.querySelector("#prChform"  );
+const noDisp         = document.querySelector(".nodisplay" );
+const startPr        = document.querySelector("#startPr"   );
+const starttimeInput = document.querySelector("#starttime" );
+const endtimeInput   = document.querySelector("#endtime"   );
+const prayerTable = document.querySelector("#prayer-table");
 const deleteWorkerButton = document.querySelectorAll(".del-worker")
 const delWorkerBtn = Array.from(deleteWorkerButton);
+const deleteReportButton = document.querySelectorAll(".del-report")
+const delReportBtn = Array.from(deleteReportButton);
 
 
 // let startOfDay = moment().startOf('day');
@@ -84,7 +87,7 @@ if (prChform) {
             e.target.parentNode.parentNode.remove();
             $.ajax({
                 type: "PUT",
-                url: "/prayerChain/" + id,
+                url: id + "/prayerChain/",
                 data: time,
                 success: (data) => {
                     let newPrCh = document.createElement("p");
@@ -100,24 +103,85 @@ if (prChform) {
 }
 
 
-// Delete Worker Account
+//Delete Report
 
-if(deleteWorkerButton) {
-    delWorkerBtn.forEach((delOne) => {
+if(deleteReportButton) {
+    delReportBtn.forEach((delOne) => {
         delOne.addEventListener("click", (e) => {
             e.preventDefault();
-            let idWorker = e.target.dataset.id
-            let response = confirm(`Are you sure you want to delete ${e.target.dataset.name} forever?`);
-            if (response) {
-                $.ajax({
-                    type: "DELETE",
-                    url: "/lma/" + idWorker,
-                    data: { id: idWorker },
-                });
-                e.target.parentNode.parentNode.parentNode.remove();
-            }
+            let id = e.target.dataset.id;
+            console.log(id)
+            $.ajax({
+              type: "DELETE",
+              url: "/report/" + id,
+            //   data: { id: idWorker }
+            });
+            e.target.parentNode.parentNode.remove();
         });
     });
+}
+
+// Delete Worker Account
+
+if (deleteWorkerButton) {
+  delWorkerBtn.forEach(delOne => {
+    delOne.addEventListener("click", e => {
+      e.preventDefault();
+      let idWorker = e.target.dataset.id;
+      let response = confirm(
+        `Are you sure you want to delete ${e.target.dataset.name} forever?`
+      );
+      if (response) {
+        $.ajax({
+          type: "DELETE",
+          url: "/lma/" + idWorker,
+          data: { id: idWorker }
+        });
+        e.target.parentNode.parentNode.parentNode.remove();
+      }
+    });
+  });
+}
+
+if(prayerTable) {
+    prayerTable.addEventListener("click", (e) => {
+        e.preventDefault();
+        if(Array.from(e.target.classList).includes("prayer-del-btn")){
+            let url = e.target.getAttribute("href");
+            console.log(url);
+            $.ajax({
+                type: "DELETE",
+                url: url,
+                success: (data) => {
+                    console.log(data);
+                }
+            })
+        e.target.parentNode.parentNode.remove();
+        }
+    });
+}
+
+if (prayerTable) {
+  prayerTable.addEventListener("mouseover", e => {
+    e.preventDefault();
+    if (Array.from(e.target.classList).includes("prayer-del-btn")) {
+      Array.from(e.target.parentNode.parentNode.children).forEach((elem) => {
+          elem.classList.toggle("line-through");
+      })
+    //   addClass("line-through");
+    }
+  });
+}
+
+if (prayerTable) {
+  prayerTable.addEventListener("mouseout", e => {
+    e.preventDefault();
+    if (Array.from(e.target.classList).includes("prayer-del-btn")) {
+      Array.from(e.target.parentNode.parentNode.children).forEach(elem => {
+        elem.classList.toggle("line-through");
+      });
+    }
+  });
 }
 
 

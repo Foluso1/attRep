@@ -36,6 +36,16 @@ workerSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+
+    facebookIdentity: {
+        type: String,
+        required: false
+    },
+
+    facebookName: {
+        type: String,
+        required: false
+    },
     
     password: {
         type: String,
