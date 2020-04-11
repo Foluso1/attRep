@@ -14,6 +14,7 @@ const       express                 =   require("express")
         ,   prayerChainRouter       =   require("./routes/prayerChain")
         ,   middleWare              =   require("./middleware/index")
         ,   lmaRouter               =   require("./routes/lma")
+        ,   newRouter               =   require("./routes/new")
         ,   methodOverride          =   require("method-override")
         ,   expressSession          =   require("express-session")
         ,   googleRouter            =   require("./routes/auth/google-auth")
@@ -68,6 +69,7 @@ app.use('/disciple', discipleRouter);
 app.use('/prayer', prayerRouter);
 app.use('/prayerChain', prayerChainRouter);
 app.use('/lma', lmaRouter);
+app.use('/new', newRouter);
 app.use('/google', googleRouter);
 app.use('/facebook', facebookRouter);
 app.use(methodOverride("_method"));

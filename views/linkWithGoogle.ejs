@@ -7,8 +7,9 @@
             <div class="container">
             </div>
                 <div class="row justify-content-center">
-                    <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12 text-center">Would you like to link your <span style="color: #4183F1">G</span><span style="color: #EA4335">o</span><span style="color: #FBBC05">o</span><span style="color: #4183F1">g</span><span style="color: #34A853">l</span><span style="color: #EA4335">e</span> account?
-                        <a data-id="<%= loggedInWorker._id %>" class="btn btn-md btn-primary btn-block m-2" href="/google/auth/google">Yes</a> 
+                    <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12 text-center">Would you like to link your <span style="color: #4183F1">G</span><span style="color: #EA4335">o</span><span style="color: #FBBC05">o</span><span style="color: #4183F1">g</span><span style="color: #34A853">l</span><span style="color: #EA4335">e</span> or <b><span style="color: #4183F1">facebook</span></b> account?
+                        <a data-id="<%= loggedInWorker._id %>" class="btn btn-md btn-success btn-block m-2" href="/google/auth/google">Google</a> 
+                        <a data-id="<%= loggedInWorker._id %>" class="btn btn-md btn-primary btn-block m-2" href="/facebook/auth/facebook">Facebook</a> 
                         <a data-id="<%= loggedInWorker._id %>" class="btn btn-md btn-danger btn-block m-2" href="/report">No</a> 
                     </div>
                 </div>

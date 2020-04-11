@@ -240,3 +240,19 @@ only screen and (max-width: 760px),
 .invisible {
     visibility: hidden;
 }
+
+.cover {
+    border-top: 1px solid lightgray;
+}
+
+hr {
+    /* border: 1px solid grey; */
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+}
+
+.notabene {
+    font-size: 11pt;
+    color: red;
+}

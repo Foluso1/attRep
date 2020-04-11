@@ -10,6 +10,8 @@ const startPr        = document.querySelector("#startPr"   );
 const starttimeInput = document.querySelector("#starttime" );
 const endtimeInput   = document.querySelector("#endtime"   );
 const prayerTable = document.querySelector("#prayer-table");
+const dateLockdown  =   document.querySelector("#date-lockdown");
+const formLockdown  =   document.querySelector("#form-lockdown");
 const deleteWorkerButton = document.querySelectorAll(".del-worker")
 const delWorkerBtn = Array.from(deleteWorkerButton);
 const deleteReportButton = document.querySelectorAll(".del-report")
@@ -182,6 +184,16 @@ if (prayerTable) {
       });
     }
   });
+}
+
+
+// LMA Lockdown
+if (dateLockdown) {
+    console.log(formLockdown.getAttribute("action"));
+    dateLockdown.addEventListener("input", (e)=>{
+        let date = e.target.value;
+        formLockdown.setAttribute("action", `/lma/lockdown/${date}`)
+    })
 }
 
 

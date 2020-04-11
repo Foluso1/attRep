@@ -1,0 +1,63 @@
+<% include ../partials/header %>
+<!-- <a class="btn btn-primary btn-sm m-1" href="/prayer/new">New Prayer Group Report</a> -->
+<!-- <a class="btn btn-success btn-sm" href="/report/new">Write New Report</a> -->
+</div>
+
+<main class="row">
+    <div class="col-md-12" style="overflow-x:auto;">
+        <br>
+        <h3 class="p-3">All Workers Stay-Home Activity Report</h3>
+        <div class="mx-3">
+            <h3>Date: <%= manyArr[0].date %> </h3>
+            <p>Select a date to query for data</p>
+            <form action="/lma/lockdown/" id="form-lockdown">
+                <div class="d-inline-flex">
+                    <input type="date" name="date-lockdown" id="date-lockdown" class="form-control mx-2">
+                    <input type="submit" class="btn btn-sm btn-secondary mx-2">
+                </div>
+            </form>
+        </div>
+        <p></p>
+        <% if (manyArr.length < 1) { %>
+            <p>Nothing to show here </p>
+        <% } else { %>
+            <table border="1" class="allPrayer" style="overflow-x: auto;">
+                <thead>
+                    <tr>
+                        <th><b>Name</b></th>
+                        <th><b>Prayer Chain</b></th>
+                        <th><b>Discipleship</b></th>
+                        <th><b>Evangelism</b></th>
+                        <th><b>Bible Study</b></th>
+                        <th><b>Exhortation</b></th>
+                        <th><b>Facebook</b></th>
+                        <th><b>Study Group</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% manyArr.forEach((elem) => { %>
+                    <tr>
+                        <td><%= elem['firstname'] %> <%= elem['surname'] %></td>
+                        <td><%= elem['data']['prayerChain'][0] %></td>
+                        <td>Disc</td>
+                        <% if ( elem['data']['evangelism'][0] == true ) { %>
+                        <td><%= elem['data']['evangelism'][1] %> (<%= elem['data']['evangelism'][2] %>,
+                            <%= elem['data']['evangelism'][3] %>, <%= elem['data']['evangelism'][4] %>,
+                            <%= elem['data']['evangelism'][5] %>)</td>
+                        <% } else { %>
+                        <td>0</td>
+                        <% } %>
+                        <td><%= elem['data']['bibleStudy'][0] %></td>
+                        <td><%= elem['data']['exhortation'][0] %></td>
+                        <td><%= elem['data']['facebook'][0] %></td>
+                        <td><%= elem['data']['studyGroup'][0] %>, <%= elem['data']['studyGroup'][1] %></td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } %> 
+    </div>
+</main>
+<p></p>
+<p></p>
+<% include ../partials/footer %>

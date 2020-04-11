@@ -20,6 +20,14 @@ lmaRouter
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllPrayerReports);
 
 lmaRouter
+  .route("/lockdown")
+  .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllLockdown);
+
+  lmaRouter
+    .route("/lockdown/:date")
+    .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllLockdownWithDate);
+
+lmaRouter
     .route("/new")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.addRemoveOrDelWorker);
 
