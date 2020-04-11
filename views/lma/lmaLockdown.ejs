@@ -8,7 +8,11 @@
         <br>
         <h3 class="p-3">All Workers Stay-Home Activity Report</h3>
         <div class="mx-3">
-            <h3>Date: <%= manyArr[0].date %> </h3>
+            <% if (manyArr.length > 0 && manyArr[0]) { %>
+                <h3>Date: <%= manyArr[0].date %> </h3>
+            <% } else { %>
+                <h3>Date: Today's Date </h3>
+            <% } %>
             <p>Select a date to query for data</p>
             <form action="/lma/lockdown/" id="form-lockdown">
                 <div class="d-inline-flex">
