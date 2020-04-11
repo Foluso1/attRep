@@ -43,7 +43,7 @@
                     <tr>
                         <td><%= elem['firstname'] %> <%= elem['surname'] %></td>
                         <td><%= elem['data']['prayerChain'][0] %></td>
-                        <td>Disc</td>
+                        <td><%= elem['data']['discipleship'][0] %> (<%= elem['data']['evangelism'][1] %>)</td>
                         <% if ( elem['data']['evangelism'][0] == true ) { %>
                         <td><%= elem['data']['evangelism'][1] %> (<%= elem['data']['evangelism'][2] %>,
                             <%= elem['data']['evangelism'][3] %>, <%= elem['data']['evangelism'][4] %>,
