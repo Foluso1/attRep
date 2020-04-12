@@ -91,7 +91,7 @@
                     <div class="d-inline=flex">
                         <label for="">Of those you reached, how many did you meet <b>physically</b>?</label>
                         <p class=" notabene">* Put '0' if you reached none physically.</p>
-                            <input type="number" name="discipleship" min="0" class="form-control col-3">
+                            <input type="number" name="discipleship" min="0" class="form-control col-3" required>
                     </div>
                     <!-- <label for="">Of those you reached, how many did you meet physically?</label> -->
                     <label class="text-justify" for="discipleship">What is / are the name(s) of the <b>disciple(s)</b>
@@ -206,9 +206,26 @@
 
                 <br><hr><br>
 
+                <!-- BROADCAST -->
+                <fieldset>
+                    <legend>7. <b>Broadcast and Telecast</b></legend>
+                    <label class="text-justify" for="">Have you been watching the <b>broadcast</b> on YouTube and the <b>LivingWord Telecast</b> on WAP TV?</label>
+                    <div class="mx-4">
+                        <label for="telecast-true">Yes</label>
+                        <input type="radio" name="telecast" id="telecast-true" value="true">
+                    </div>
+                    <div class="mx-4">
+                        <label for="telecast-false">No</label>
+                        <input type="radio" name="telecast" id="telecast-false" value="false">
+                    </div>
+                </fieldset>
+                
+                
+                <br><hr><br>
+
                 <!-- OPTIONAL -->
                 <fieldset>
-                    <legend>7. <b>Optional</b></legend>
+                    <legend>8. <b>Optional</b></legend>
                     <label class="text-justify" for="optional">What were the other things you did today to improve
                         yourself <b>naturally</b>?</label>
                     <textarea class="form-control" name="optional" id="optional" cols="10" rows="5"></textarea>

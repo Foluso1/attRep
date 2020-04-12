@@ -194,6 +194,12 @@ only screen and (max-width: 760px),
 	.allPrayer td:nth-of-type(n):before { content: ""; }
     .allPrayer td:nth-of-type(1):before { content: "Name"; }
 
+    .allLockdown td:nth-of-type(n):before { content: ""; }
+    .allLockdown td:nth-of-type(1):before { content: "Date"; }
+
+    .allLMALockdown td:nth-of-type(n):before { content: ""; }
+    .allLMALockdown td:nth-of-type(1):before { content: "Date"; }
+
     #prayer-table td:nth-of-type(4):before, td:nth-of-type(5):before {
         text-align: left;
     }
@@ -256,3 +262,60 @@ hr {
     font-size: 11pt;
     color: red;
 }
+
+
+
+/* ALL LOCKDOWN TABLE */
+/* Force table to not be like tables anymore */
+	table.allLockdown thead, .allLockdown tbody, .allLockdown tr, .allLockdown td { 
+        display: block; 
+        border: none;
+    }
+
+    table.allLMALockdown {
+        display: table;
+    }
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	.allLockdown thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	.allLockdown tr { 
+        border: 1px solid #CEBF9F; 
+        margin: 0px 0px 5px 0px;
+    }
+	
+	.allLockdown td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #CEBF9F; 
+		position: relative;
+		padding-left: 50%; 
+	}
+	
+	.allLockdown td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+        white-space: wrap;
+        font-weight: 500;
+	}
+	
+	/* Label the data */
+	.allLockdown td:nth-of-type(1):before { content: "Date"; }
+	.allLockdown td:nth-of-type(2):before { content: "Prayer Chain"; }
+	.allLockdown td:nth-of-type(3):before { content: "Exhortation Summary"; }
+    .allLockdown td:nth-of-type(4):before { content: "Discipleship"; }
+    .allLockdown td:nth-of-type(5):before { content: "Evangelism"; }
+    .allLockdown td:nth-of-type(6):before { content: "Bible Study"; }
+    .allLockdown td:nth-of-type(7):before { content: "Facebook"; }
+    .allLockdown td:nth-of-type(8):before { content: "Telecast"; }
+    .allLockdown td:nth-of-type(9):before { content: "Study Group"; }
+    .allLockdown td:nth-of-type(10):before { content: "Optional"; }

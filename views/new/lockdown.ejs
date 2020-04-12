@@ -7,6 +7,46 @@
                 <div class="text-center">
                     <a class="btn btn-sm btn-primary col-sm-6 col-md-4 col-lg-2 my-3" href="/new/lockdown/new">Write new report</a>
                 </div>
+            <div>
+                <table border="1" class="allLockdown" style="overflow-x: auto;">
+                    <thead>
+                        <tr>
+                            <th><b>Date</b></th>
+                            <th><b>Exhortation</b></th>
+                            <th><b>Prayer Chain</b></th>
+                            <th><b>Discipleship</b></th>
+                            <th><b>Evangelism</b></th>
+                            <th><b>Bible Study</b></th>
+                            <th><b>Facebook</b></th>
+                            <th><b>Telecast</b></th>
+                            <th><b>Study Group</b></th>
+                            <th><b>Optional</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% lockdownReports.forEach((elem) => { %>
+                        <tr>
+                            <td><%= elem.date %></td>
+                            <td><%= elem['data']['prayerChain'][0] %></td>
+                            <td><%= elem['data']['exhortation'][1] %></td>
+                            <td><%= elem['data']['discipleship'][2] %></td>
+                            <td><%= elem['data']['evangelism'][6] %></td>
+                            <td><%= elem['data']['bibleStudy'][1] %></td>
+                            <td><%= elem['data']['facebook'][1] %></td>
+                            <% if(elem['data']['telecast'] == "true") { %>
+                                <td>Yes</td>
+                            <% } else if (elem['data']['telecast'] == "false") { %>
+                                <td>No</td>
+                            <% } else {%>
+                                <td>&nbsp;</td>
+                            <% } %>
+                            <td><%= elem['data']['studyGroup'][0] %>, <%= elem['data']['studyGroup'][1] %></td>
+                            <td><%= elem['data']['optional'][0] %></td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
     </div>
 </div>
 <% include ../partials/footer %>

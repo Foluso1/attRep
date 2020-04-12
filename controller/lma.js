@@ -261,7 +261,7 @@ module.exports = {
             let lmaWorkerId = { _id: req.user.id };
             let foundWorker = await Worker.findById(lmaWorkerId).populate("workers");
             let workersUnder = foundWorker.workers;
-            let startOfToday = moment('2020-04-09').startOf('day')._d.getTime();
+            let startOfToday = moment().startOf('day')._d.getTime();
             let manyArr = [];
             for(let i = 0; i < workersUnder.length; i++) {
                 // console.log(workersUnder[i])
@@ -273,6 +273,7 @@ module.exports = {
                             let thisDay = moment(item.dateOfReport).startOf("day")._d.getTime();
                             if (startOfToday == thisDay) {
                                 let abc = { 
+                                    date: moment().format("dddd, MMMM Do YYYY"),
                                     firstname: thisWorker.firstname,
                                     surname: thisWorker.surname,
                                     data: JSON.parse(item.data),

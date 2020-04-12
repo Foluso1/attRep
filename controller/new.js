@@ -3,6 +3,7 @@ const   Worker      =   require("../models/worker")
     ,   Report      =   require("../models/report")
     ,   flash       =   require("connect-flash")
     ,   Lockdown    =   require("../models/lockdown")
+    ,   moment      =   require("moment")
     ;
 
 
@@ -13,9 +14,15 @@ module.exports = {
             let worker = {
               _id: req.user.id
             };
-            let foundWorker = await Worker.findById(worker)
-
-            res.render("new/lockdown");
+            let foundWorker = await Worker.findById(worker).populate("lockdown");
+            let theseLockdownReports = foundWorker.lockdown;
+            let lockdownReports = theseLockdownReports.map((item)=>{
+                return thisOne = {
+                    date: moment(item.dateOfReport).format('L'),
+                    data: JSON.parse(item.data)
+                }
+            });
+            res.render("new/lockdown", { lockdownReports });
         } catch (e) {
             console.log(e);
             req.flash("error", "There was a problem");
@@ -47,7 +54,8 @@ module.exports = {
                     bibleStudy: req.body['bible-study'],
                     facebook: req.body.facebook,
                     studyGroup: req.body['study-group'],
-                    optional: req.body.optional
+                    telecast: req.body.telecast,
+                    optional: req.body.optional,
                 })
             }
             // let abc = JSON.stringify(obj.data);
@@ -55,7 +63,6 @@ module.exports = {
             let foundWorker = await Worker.findById({ _id: req.user.id });
             foundWorker.lockdown.push(lockdown);
             foundWorker.save();
-            console.log(foundWorker);
             req.flash("success", "Your report has been submitted successfully. Thank you!");
             res.redirect("/new/lockdown");
         } catch (error) {
