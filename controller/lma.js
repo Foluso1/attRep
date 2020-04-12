@@ -274,6 +274,7 @@ module.exports = {
                             if (startOfToday == thisDay) {
                                 let abc = { 
                                     date: moment().format("dddd, MMMM Do YYYY"),
+                                    id: thisWorker.id,
                                     firstname: thisWorker.firstname,
                                     surname: thisWorker.surname,
                                     data: JSON.parse(item.data),
@@ -311,6 +312,7 @@ module.exports = {
                             if (startOfToday == thisDay) {
                                 let abc = { 
                                     date:   moment(dateForData).format("dddd, MMMM Do YYYY"),
+                                    id: thisWorker.id,
                                     firstname: thisWorker.firstname,
                                     surname: thisWorker.surname,
                                     data: JSON.parse(item.data),
@@ -324,8 +326,31 @@ module.exports = {
             }
             res.render("lma/lmaLockdown", {manyArr});
         } catch (e) {
+            req.flash("error", "There was a problem");
+            res.redirect("/lma");
             console.log(e);
         }
+    },
+
+    getOneLockdown: async (req, res) => {
+        try {
+            let workerId = req.params.id;
+            let foundWorker = await Worker.findById({ _id: workerId }).populate("lockdown");
+            let theseLockdownReports = foundWorker.lockdown;
+            let lockdownReports = theseLockdownReports.map((item) => {
+              return (thisOne = {
+                date: moment(item.dateOfReport).format("L"),
+                data: JSON.parse(item.data),
+              });
+            });
+            res.render("new/lockdown", { lockdownReports });
+            
+        } catch (e) {
+            req.flash("error", "There was a problem");
+            res.redirect("/lma");
+            console.log(e);
+        }
+
     },
 }
  

@@ -77,7 +77,7 @@
                     <% manyArr.forEach((elem, i) => { %>
                     <tr>
                         <td><%= i+1 %> </td>
-                        <td><%= elem['firstname'] %> <%= elem['surname'] %></td>
+                        <td><a href="/lma/<%= elem.id %>/lockdown"><%= elem['firstname'] %> <%= elem['surname'] %></a></td>
                         <td><%= elem['data']['prayerChain'][0] %></td>
                         <td><%= elem['data']['discipleship'][0] %> (<%= elem['data']['discipleship'][1] %>)</td>
                         <% if ( elem['data']['evangelism'][0] == "true" ) { %>

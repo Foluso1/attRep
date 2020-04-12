@@ -44,6 +44,10 @@ lmaRouter
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getPrayerChainReport)
 
 lmaRouter
+    .route("/:id/lockdown")
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.getOneLockdown)
+
+lmaRouter
     .route("/:id")
         .delete(middleware.isLoggedIn, middleware.isLMA, controller.deleteWorker);
 
