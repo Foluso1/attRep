@@ -21,18 +21,19 @@
                             <th><b>Telecast</b></th>
                             <th><b>Study Group</b></th>
                             <th><b>Optional</b></th>
+                            <th><b>Delete</b></th>
                         </tr>
                     </thead>
                     <tbody>
                         <% lockdownReports.forEach((elem) => { %>
                         <tr>
                             <td><%= elem.date %></td>
-                            <td><%= elem['data']['prayerChain'][0] %></td>
-                            <td><%= elem['data']['exhortation'][1] %></td>
-                            <td><%= elem['data']['discipleship'][2] %></td>
-                            <td><%= elem['data']['evangelism'][6] %></td>
+                            <td><%= elem['data']['prayerChain'][1] %> - <%= elem['data']['prayerChain'][2] %>; &emsp; <%= elem['data']['prayerChain'][3] %> - <%= elem['data']['prayerChain'][4] %>; &emsp; <%= elem['data']['prayerChain'][5] %> - <%= elem['data']['prayerChain'][6] %></td>
+                            <td class="text-paragraphs"><%= elem['data']['exhortation'][1] %></td>
+                            <td class="text-paragraphs"><%= elem['data']['discipleship'][2] %></td>
+                            <td class="text-paragraphs"><%= elem['data']['evangelism'][6] %></td>
                             <td><%= elem['data']['bibleStudy'][1] %></td>
-                            <td><%= elem['data']['facebook'][1] %></td>
+                            <td class="text-paragraphs"><%= elem['data']['facebook'][1] %></td>
                             <% if(elem['data']['telecast'] == "true") { %>
                                 <td>Yes</td>
                             <% } else if (elem['data']['telecast'] == "false") { %>
@@ -41,7 +42,16 @@
                                 <td>&nbsp;</td>
                             <% } %>
                             <td><%= elem['data']['studyGroup'][0] %>, <%= elem['data']['studyGroup'][1] %></td>
-                            <td><%= elem['data']['optional'][0] %></td>
+                            <% if(elem['data']['optional'] !== "") { %>
+                                <td><%= elem['data']['optional'][0] %></td>
+                            <%} else {%> 
+                                <td>&nbsp;</td>
+                            <% } %>
+                            <td>
+                                <form action="/new/lockdown/<%= elem.id %>?_method=DELETE" method="POST">
+                                    <input type="submit" value="X" class="btn btn-sm btn-danger">
+                                </form>
+                            </td>
                         </tr>
                         <% }); %>
                     </tbody>

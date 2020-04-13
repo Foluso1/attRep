@@ -259,9 +259,16 @@ module.exports = {
     getAllLockdown: async (req, res) => {
         try {
             let lmaWorkerId = { _id: req.user.id };
+            let dateForData = req.params.date;
+            console.log("dateForData", dateForData)
             let foundWorker = await Worker.findById(lmaWorkerId).populate("workers");
             let workersUnder = foundWorker.workers;
-            let startOfToday = moment().startOf('day')._d.getTime();
+            let startOfToday = 0;
+            if (!dateForData) {
+                startOfToday = moment().startOf('day')._d.getTime();
+            } else {
+                startOfToday = moment(dateForData).startOf("day")._d.getTime();
+            }
             let manyArr = [];
             for(let i = 0; i < workersUnder.length; i++) {
                 // console.log(workersUnder[i])

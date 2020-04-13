@@ -168,7 +168,7 @@ only screen and (max-width: 760px),
 		border: none;
 		border-bottom: 1px solid #CEBF9F; 
 		position: relative;
-		padding-left: 50%; 
+		padding-left: 40%; 
 	}
 	
 	td:before { 
@@ -177,7 +177,7 @@ only screen and (max-width: 760px),
 		/* Top/left values mimic padding */
 		top: 6px;
 		left: 6px;
-		width: 45%; 
+		width: 35%; 
 		padding-right: 10px; 
         white-space: wrap;
         font-weight: 500;
@@ -267,55 +267,61 @@ hr {
 
 /* ALL LOCKDOWN TABLE */
 /* Force table to not be like tables anymore */
-	table.allLockdown thead, .allLockdown tbody, .allLockdown tr, .allLockdown td { 
-        display: block; 
-        border: none;
-    }
+table.allLockdown thead, .allLockdown tbody, .allLockdown tr, .allLockdown td { 
+    display: block; 
+    border: none;
+}
 
-    table.allLMALockdown {
-        display: table;
-    }
-	
-	/* Hide table headers (but not display: none;, for accessibility) */
-	.allLockdown thead tr { 
-		position: absolute;
-		top: -9999px;
-		left: -9999px;
-	}
-	
-	.allLockdown tr { 
-        border: 1px solid #CEBF9F; 
-        margin: 0px 0px 5px 0px;
-    }
-	
-	.allLockdown td { 
-		/* Behave  like a "row" */
-		border: none;
-		border-bottom: 1px solid #CEBF9F; 
-		position: relative;
-		padding-left: 50%; 
-	}
-	
-	.allLockdown td:before { 
-		/* Now like a table header */
-		position: absolute;
-		/* Top/left values mimic padding */
-		top: 6px;
-		left: 6px;
-		width: 45%; 
-		padding-right: 10px; 
-        white-space: wrap;
-        font-weight: 500;
-	}
-	
-	/* Label the data */
-	.allLockdown td:nth-of-type(1):before { content: "Date"; }
-	.allLockdown td:nth-of-type(2):before { content: "Prayer Chain"; }
-	.allLockdown td:nth-of-type(3):before { content: "Exhortation Summary"; }
-    .allLockdown td:nth-of-type(4):before { content: "Discipleship"; }
-    .allLockdown td:nth-of-type(5):before { content: "Evangelism"; }
-    .allLockdown td:nth-of-type(6):before { content: "Bible Study"; }
-    .allLockdown td:nth-of-type(7):before { content: "Facebook"; }
-    .allLockdown td:nth-of-type(8):before { content: "Telecast"; }
-    .allLockdown td:nth-of-type(9):before { content: "Study Group"; }
-    .allLockdown td:nth-of-type(10):before { content: "Optional"; }
+table.allLMALockdown {
+    display: table;
+}
+
+/* Hide table headers (but not display: none;, for accessibility) */
+.allLockdown thead tr { 
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+}
+
+.allLockdown tr { 
+    border: 1px solid #CEBF9F; 
+    margin: 0px 0px 5px 0px;
+}
+
+.allLockdown td { 
+    /* Behave  like a "row" */
+    border: none;
+    border-bottom: 1px solid #CEBF9F; 
+    position: relative;
+    padding-left: 40%; 
+}
+
+.allLockdown td:before { 
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    top: 6px;
+    left: 6px;
+    width: 35%; 
+    padding-right: 10px; 
+    white-space: wrap;
+    font-weight: 500;
+}
+
+/* Label the data */
+.allLockdown td:nth-of-type(1):before { content: "Date"; }
+.allLockdown td:nth-of-type(2):before { content: "Prayer Chain"; }
+.allLockdown td:nth-of-type(3):before { content: "Exhortation Summary"; }
+.allLockdown td:nth-of-type(4):before { content: "Discipleship"; }
+.allLockdown td:nth-of-type(5):before { content: "Evangelism"; }
+.allLockdown td:nth-of-type(6):before { content: "Bible Study"; }
+.allLockdown td:nth-of-type(7):before { content: "Facebook"; }
+.allLockdown td:nth-of-type(8):before { content: "Telecast"; }
+.allLockdown td:nth-of-type(9):before { content: "Study Group"; }
+.allLockdown td:nth-of-type(10):before { content: "Optional"; }
+.allLockdown td:nth-of-type(11):before { content: "Delete"; }
+
+
+.text-paragraphs {
+    white-space: pre-line;
+}
