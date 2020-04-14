@@ -19,7 +19,8 @@ module.exports = {
             let lockdownReports = theseLockdownReports.map((item)=>{
                 return thisOne = {
                     id: item.id,
-                    date: moment(item.dateOfReport).format('L'),
+                    date: item.date, //Time of repoort creation
+                    dateOfReport: moment(item.dateOfReport).format('DD/MM/YYYY'),  //Time stated on report by user
                     data: JSON.parse(item.data)
                 }
             });
@@ -44,7 +45,7 @@ module.exports = {
     postNewReport: async (req, res) => {
         try {
             console.log(req.body);
-
+            
             // Check if user already has a report for that date
             let dateOfReport = new Date(req.body.date)
             let startDateOfReport = moment(dateOfReport).startOf('day')._d.getTime();
@@ -52,27 +53,24 @@ module.exports = {
             // Find reports in DB
             let foundWorker =  await Worker.findById({ _id: req.user.id }).populate("lockdown");
             let allLockdownReports = foundWorker.lockdown // Array;
+            let reportCheck = false;
 
             // If array isn't empty
             if (allLockdownReports.length >= 1){
-                let reportCheck = allLockdownReports.reduce((acc, item) => {
-                  console.log(
-                    moment(item.dateOfReport).startOf("day")._d.getTime()
-                  );
+            reportCheck = allLockdownReports.reduce((acc, item) => {
+                  console.log(moment(item.dateOfReport).startOf("day")._d.getTime());
                   if (startDateOfReport == moment(item.dateOfReport).startOf("day")._d.getTime()) {
-                    return true;
+                    return acc = true;
                   } else {
-                    return false;
+                    return acc = false;
                   }
-                });
+                }, false);
                 console.log("reportCheck", reportCheck);
-                if (reportCheck == true) {
-                  req.flash("error", "You have already reported for that day!");
-                  res.redirect("/new/lockdown");
-                } else {
-                  return;
-                }
             }
+            if (reportCheck == true) {
+              req.flash("error", "You have already reported for that day!");
+              res.redirect("/new/lockdown");
+            } else {
                 let obj = {
                     dateOfReport: new Date(req.body.date),
                     data: JSON.stringify({
@@ -88,19 +86,16 @@ module.exports = {
                       optional: req.body.optional,
                     }),
                   };
-                  // let abc = JSON.stringify(obj.data);
-                  let lockdown = await Lockdown.create(obj);
-                  foundWorker.lockdown.push(lockdown);
-                  foundWorker.save();
-                  req.flash(
-                    "success",
-                    "Your report has been submitted successfully. Thank you!"
-                  );
-                  res.redirect("/new/lockdown");
-            
+                // let abc = JSON.stringify(obj.data);
+                let lockdown = await Lockdown.create(obj);
+                foundWorker.lockdown.push(lockdown);
+                foundWorker.save();
+                req.flash("success", "Your report has been submitted successfully. Thank you!");
+                res.redirect("/new/lockdown");
+            }
         } catch (error) {
             console.log(error)
-            req.flash("error", "You must complete your profile first");
+            req.flash("error", "Something went wrong");
             res.redirect("/register");
         }
     },

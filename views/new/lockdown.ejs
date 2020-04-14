@@ -5,7 +5,12 @@
     <div class="row card d-flex justify-content-center">
             <h3 class="pt-5 text-center"><b>Workers Daily Activity Report</b></h3>
                 <div class="text-center">
-                    <a class="btn btn-sm btn-primary col-sm-6 col-md-4 col-lg-2 my-3" href="/new/lockdown/new">Write new report</a>
+                    <% if(baseUrl == "/lma"){ %>
+                        <br>
+                        <p></p>
+                    <% } else { %>
+                        <a class="btn btn-sm btn-primary col-sm-6 col-md-4 col-lg-2 my-3" href="/new/lockdown/new">Write new report</a>
+                    <%}%>
                 </div>
             <div>
                 <table border="1" class="allLockdown" style="overflow-x: auto;">
@@ -21,13 +26,16 @@
                             <th><b>Telecast</b></th>
                             <th><b>Study Group</b></th>
                             <th><b>Optional</b></th>
-                            <th><b>Delete</b></th>
+                            <% if(baseUrl == "/lma"){ %>
+                            <% } else { %>
+                                <th><b>Delete</b></th>
+                            <%}%>
                         </tr>
                     </thead>
                     <tbody>
                         <% lockdownReports.forEach((elem) => { %>
                         <tr>
-                            <td><%= elem.date %></td>
+                            <td><%= elem.dateOfReport %></td>
                             <td><%= elem['data']['prayerChain'][1] %> - <%= elem['data']['prayerChain'][2] %>; &emsp; <%= elem['data']['prayerChain'][3] %> - <%= elem['data']['prayerChain'][4] %>; &emsp; <%= elem['data']['prayerChain'][5] %> - <%= elem['data']['prayerChain'][6] %></td>
                             <td class="text-paragraphs"><%= elem['data']['exhortation'][1] %></td>
                             <td class="text-paragraphs"><%= elem['data']['discipleship'][2] %></td>
@@ -43,15 +51,18 @@
                             <% } %>
                             <td><%= elem['data']['studyGroup'][0] %>, <%= elem['data']['studyGroup'][1] %></td>
                             <% if(elem['data']['optional'] !== "") { %>
-                                <td><%= elem['data']['optional'][0] %></td>
+                                <td><%= elem['data']['optional'] %></td>
                             <%} else {%> 
                                 <td>&nbsp;</td>
                             <% } %>
-                            <td>
-                                <form action="/new/lockdown/<%= elem.id %>?_method=DELETE" method="POST">
-                                    <input type="submit" value="X" class="btn btn-sm btn-danger">
-                                </form>
-                            </td>
+                            <% if(baseUrl == "/lma" || (Date.now() - elem.date.getTime()) >= 86400000 ){ %>
+                            <% } else { %>
+                                <td>
+                                    <form action="/new/lockdown/<%= elem.id %>?_method=DELETE" method="POST">
+                                        <input type="submit" value="X" class="btn btn-sm btn-danger">
+                                    </form>
+                                </td>
+                            <%}%>
                         </tr>
                         <% }); %>
                     </tbody>

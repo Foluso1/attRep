@@ -19,6 +19,7 @@ const       express                 =   require("express")
         ,   expressSession          =   require("express-session")
         ,   googleRouter            =   require("./routes/auth/google-auth")
         ,   facebookRouter          =   require("./routes/auth/facebook-auth")
+        ,   moment                  =   require("moment")
             ;
 
 const PORT = process.env.PORT;
@@ -73,6 +74,7 @@ app.use('/new', newRouter);
 app.use('/google', googleRouter);
 app.use('/facebook', facebookRouter);
 app.use(methodOverride("_method"));
+app.locals.moment = moment; 
 
 
 app.get("/", (req, res) => {

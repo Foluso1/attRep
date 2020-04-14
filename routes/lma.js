@@ -23,7 +23,7 @@ lmaRouter
   .route("/lockdown")
   .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllLockdown);
 
-  lmaRouter
+lmaRouter
     .route("/lockdown/:date")
     .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllLockdownWithDate);
 

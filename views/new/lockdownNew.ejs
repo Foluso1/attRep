@@ -9,8 +9,9 @@
 
                 <!-- DATE -->
                 <div class="pb-3 d-inline-flex align-items-center">
+                    
                     <label for="date">Date:</label>
-                    <input class="m-2 form-control" type="date" name="date" id="date" required>
+                    <input class="m-2 form-control" type="date" name="date" id="date" value="<%= new Date().getFullYear() %>-<%= (new Date().getMonth()+1).toString().padStart(2, "0") %>-<%= new Date().getDate() %>" required>
                 </div>
                 <p class="notabene">NB: The date here should be the date of the report you are writing for. If it is today's report, today's date.</p>
                 <br>
@@ -21,7 +22,7 @@
                     <div class="d-inline-flex">
                         <div class="mx-3">
                             <label for="">Yes</label>
-                            <input type="radio" name="exhortation" value="true" checked>
+                            <input type="radio" name="exhortation" value="true" required>
                         </div>
                         <div class="mx-3">
                             <label for="">No</label>
@@ -112,13 +113,14 @@
                     <div class="d-inline-flex">
                         <div class="mx-4">
                             <label for="">Yes</label>
-                            <input type="radio" name="evangelism" value="true">
+                            <input type="radio" name="evangelism" value="true" required>
                         </div>
                         <div class="mx-4">
                             <label for="">No</label>
                             <input type="radio" name="evangelism" value="false" checked>
                         </div>
                     </div><br>
+                    <p class=" notabene">* Put '0' if your answer below is none.</p>
                     <div class="ml-3 d-inline=flex">
                         <label for=""">If yes, how many people did you reach?</label>
                         <input type=" number" min="0" name="evangelism" class="form-control col-3" required>
@@ -154,7 +156,7 @@
                     <label class="text-justify" for="bible-study">How many hours of the day did you use for bible study?
                         (hh:mm)</label>
                     <p class="notabene">* Put '00:00' if you did not read.</p>
-                    <input type="time" name="bible-study" class="form-control" id="bible-study" required>
+                    <input type="time" min="00:00" max="12:00" name="bible-study" class="form-control" id="bible-study" required>
                     <br>
                     <label class="text-justify" for="bible-book-chapter">Bible Reading: Which book of the bible and what
                         chapter(s) did you read today?</label>
@@ -172,7 +174,7 @@
                     <div class="d-inline-flex">
                         <div class="mx-4">
                             <label for="facebook-true">Yes</label>
-                            <input type="radio" name="facebook" id="facebook-true" value="true">
+                            <input type="radio" name="facebook" id="facebook-true" value="true" required>
                         </div>
                         <div class="mx-4">
                             <label for="facebook-false">No</label>
@@ -212,7 +214,7 @@
                     <label class="text-justify" for="">Have you been watching the <b>broadcast</b> on YouTube and the <b>LivingWord Telecast</b> on WAP TV?</label>
                     <div class="mx-4">
                         <label for="telecast-true">Yes</label>
-                        <input type="radio" name="telecast" id="telecast-true" value="true">
+                        <input type="radio" name="telecast" id="telecast-true" value="true" required>
                     </div>
                     <div class="mx-4">
                         <label for="telecast-false">No</label>

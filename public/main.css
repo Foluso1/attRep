@@ -274,6 +274,10 @@ table.allLockdown thead, .allLockdown tbody, .allLockdown tr, .allLockdown td {
 
 table.allLMALockdown {
     display: table;
+    font-size: small;
+    /* font-size: smaller; */
+    /* font-size: x-small; */
+    /* font-size: xx-small; */
 }
 
 /* Hide table headers (but not display: none;, for accessibility) */

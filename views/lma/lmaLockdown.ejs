@@ -9,7 +9,7 @@
         <h3 class="p-3">All Workers Stay-Home Activity Report</h3>
         <div class="mx-3">
             <% if (manyArr.length > 0 && manyArr[0]) { %>
-                <h3>Date: <%= manyArr[0].date %> </h3>
+                <h3>Date: <%= moment(startOfToday).startOf("day").format("DD-MM-YYYY") %> </h3>
             <% } else { %>
                 <h3>Date: </h3>
             <% } %>
@@ -30,6 +30,7 @@
                     <tr>
                         <th><b>S/N</b></th>
                         <th><b>Name</b></th>
+                        <th><b>Time</b></th>
                         <th><b>Prayer Chain</b></th>
                         <th><b>Discipleship</b></th>
                         <th><b>Evangelism</b></th>
@@ -37,6 +38,8 @@
                         <th><b>Exhortation</b></th>
                         <th><b>Facebook</b></th>
                         <th><b>Study Group</b></th>
+                        <th><b>Telecast</b></th>
+                        <th><b>Optional</b></th>
                     </tr>
                 </thead>
                 <thead>
@@ -48,7 +51,7 @@
                             <% return acc + Number(cur.data.discipleship[1]); %>
                         <% }, 0); %>
                         <% let allEvglsm = manyArr.reduce((acc, cur)=>{ %>
-                            <% return acc + Number(cur.data.evangelism[1]); %>
+                            <% return acc + parseInt(cur.data.evangelism[1]); %>
                         <% }, 0); %>
                         <% let allEvglsmSvd = manyArr.reduce((acc, cur)=>{ %>
                             <% return acc + Number(cur.data.evangelism[2]); %>
@@ -65,8 +68,11 @@
                         <th><b>Total</b></th>
                         <th><b><%= manyArr.length %></b></th>
                         <th><b></b></th>
+                        <th><b></b></th>
                         <th><b><%= allDiscShip %> (<%= allDiscShipPhys %>)</b></th>
                         <th><b><%= allEvglsm %> (<%= allEvglsmSvd %>, <%= allEvglsmFld %>, <%= allEvglsmPrph %>, <%= allEvglsmHld %>)</b></th>
+                        <th><b></b></th>
+                        <th><b></b></th>
                         <th><b></b></th>
                         <th><b></b></th>
                         <th><b></b></th>
@@ -78,6 +84,11 @@
                     <tr>
                         <td><%= i+1 %> </td>
                         <td><a href="/lma/<%= elem.id %>/lockdown"><%= elem['firstname'] %> <%= elem['surname'] %></a></td>
+                        <% if( moment(elem.date).valueOf() < moment().startOf('day').valueOf() || moment(elem.date).valueOf() > moment().endOf('day').valueOf ){ %>
+                            <td><%= moment(elem.date).format("DD-MM-YYYY") %> <%= elem.date.getHours() %>:<%= elem.date.getMinutes() %></td>
+                        <% } else { %>
+                            <td><%= elem.date.getHours() %>:<%= elem.date.getMinutes() %></td>
+                        <% } %>
                         <td><%= elem['data']['prayerChain'][0] %></td>
                         <td><%= elem['data']['discipleship'][0] %> (<%= elem['data']['discipleship'][1] %>)</td>
                         <% if ( elem['data']['evangelism'][0] == "true" ) { %>
@@ -91,6 +102,34 @@
                         <td><%= elem['data']['exhortation'][0] %></td>
                         <td><%= elem['data']['facebook'][0] %></td>
                         <td><%= elem['data']['studyGroup'][0] %>, <%= elem['data']['studyGroup'][1] %></td>
+                        <td><%= elem['data']['telecast'] %></td>
+                        <td><%= elem['data']['optional'] %></td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+
+            <!-- WORKERS With NO REPORTS YET -->
+            <p></p>
+            <h3>Workers with no Reports Yet</h3>
+            <table border="1" class="allLMALockdown" style="overflow-x: auto;">
+                <thead>
+                    <tr>
+                        <th><b>S/N</b></th>
+                        <th><b>Name</b></th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <th><b>Total</b></th>
+                        <th><b> <%= noReportYet.length %></b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% noReportYet.forEach((elem, i) => { %>
+                    <tr>
+                        <td><%= i+1 %> </td>
+                        <td><a href="/lma/<%= elem.id %>/lockdown"><%= elem['firstname'] %> <%= elem['surname'] %></a></td>
                     </tr>
                     <% }); %>
                 </tbody>
