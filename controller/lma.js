@@ -276,10 +276,10 @@ module.exports = {
             for(let i = 0; i < workersUnder.length; i++) {
                 // console.log(workersUnder[i])
                 if (workersUnder.length > 0 && workersUnder[i].lockdown.length > 0){
-                    let thisWorker = await Worker.findById({ _id: workersUnder[i].id }).populate("lockdown")
+                    let isReportToday = false;
+                    let thisWorker = await Worker.findById({ _id: workersUnder[i].id }).populate("lockdown");
                     if (thisWorker.lockdown.length > 0) {
                         let lockdownArr = thisWorker.lockdown;
-                        let isReportToday = false;
                         lockdownArr.filter( (item) => {
                             let thisDay = moment(item.dateOfReport).startOf("day")._d.getTime();
                             if (startOfToday == thisDay) {
@@ -293,16 +293,16 @@ module.exports = {
                                     data: JSON.parse(item.data),
                                 }
                                 manyArr.push(abc)
-                            }
-                            if(isReportToday) {
-                                let abc = {
-                                    id: thisWorker.id,
-                                    firstname: thisWorker.firstname,
-                                    surname: thisWorker.surname,
-                                }
-                                noReportYet.push(abc);
-                            }
+                            } 
                         });
+                        if (!isReportToday) {
+                            let abc = {
+                                id: thisWorker.id,
+                                firstname: thisWorker.firstname,
+                                surname: thisWorker.surname,
+                            }
+                            noReportYet.push(abc);
+                        }
                     } else {
                         let abc = {
                             id: thisWorker.id,
@@ -317,6 +317,8 @@ module.exports = {
             res.render("lma/lmaLockdown", {manyArr, startOfToday, noReportYet, baseUrl});
         } catch (e) {
             console.log(e);
+            req.flash("error", "There was a problem");
+            res.redirect("/lma");
         }
     },
 
@@ -335,10 +337,10 @@ module.exports = {
             for(let i = 0; i < workersUnder.length; i++) {
                 // console.log(workersUnder[i])
                 if(workersUnder.length > 0 && workersUnder[i].lockdown.length > 0){
+                    let isReportToday = false;
                     let thisWorker = await Worker.findById({ _id: workersUnder[i].id }).populate("lockdown");
                     if (thisWorker.lockdown.length > 0) {
                         let lockdownArr = thisWorker.lockdown;
-                        let isReportToday = false;
                         lockdownArr.filter( (item) => {
                             let thisDay = moment(item.dateOfReport).startOf("day")._d.getTime();
                             if (startOfToday == thisDay) {
@@ -353,15 +355,15 @@ module.exports = {
                                 }
                                 manyArr.push(abc)
                             } 
-                            if(isReportToday) {
-                                let abc = {
-                                    id: thisWorker.id,
-                                    firstname: thisWorker.firstname,
-                                    surname: thisWorker.surname,
-                                }
-                                noReportYet.push(abc);
-                            }
                         });
+                        if(!isReportToday) {
+                            let abc = {
+                                id: thisWorker.id,
+                                firstname: thisWorker.firstname,
+                                surname: thisWorker.surname,
+                            }
+                            noReportYet.push(abc);
+                        }
                     } else {
                         let abc = {
                             id: thisWorker.id,
@@ -375,9 +377,9 @@ module.exports = {
             }
             res.render("lma/lmaLockdown", {manyArr, startOfToday, noReportYet, baseUrl});
         } catch (e) {
+            console.log(e);
             req.flash("error", "There was a problem");
             res.redirect("/lma");
-            console.log(e);
         }
     },
 
