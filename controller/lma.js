@@ -279,9 +279,11 @@ module.exports = {
                     let thisWorker = await Worker.findById({ _id: workersUnder[i].id }).populate("lockdown")
                     if (thisWorker.lockdown.length > 0) {
                         let lockdownArr = thisWorker.lockdown;
+                        let isReportToday = false;
                         lockdownArr.filter( (item) => {
                             let thisDay = moment(item.dateOfReport).startOf("day")._d.getTime();
                             if (startOfToday == thisDay) {
+                                isReportToday = true;
                                 let abc = { 
                                     dateOfReport: moment().format("dddd, MMMM Do YYYY"),
                                     date: item.date,
@@ -291,7 +293,8 @@ module.exports = {
                                     data: JSON.parse(item.data),
                                 }
                                 manyArr.push(abc)
-                            } else {
+                            }
+                            if(isReportToday) {
                                 let abc = {
                                     id: thisWorker.id,
                                     firstname: thisWorker.firstname,
@@ -335,9 +338,11 @@ module.exports = {
                     let thisWorker = await Worker.findById({ _id: workersUnder[i].id }).populate("lockdown");
                     if (thisWorker.lockdown.length > 0) {
                         let lockdownArr = thisWorker.lockdown;
+                        let isReportToday = false;
                         lockdownArr.filter( (item) => {
                             let thisDay = moment(item.dateOfReport).startOf("day")._d.getTime();
                             if (startOfToday == thisDay) {
+                                isReportToday = true;
                                 let abc = { 
                                     dateOfReport:   moment(dateForData).format("dddd, MMMM Do YYYY"),
                                     date: item.date,
@@ -347,7 +352,8 @@ module.exports = {
                                     data: JSON.parse(item.data),
                                 }
                                 manyArr.push(abc)
-                            } else {
+                            } 
+                            if(isReportToday) {
                                 let abc = {
                                     id: thisWorker.id,
                                     firstname: thisWorker.firstname,
