@@ -324,9 +324,14 @@ module.exports = {
                 console.log(a);
                 return b.date.getTime() - a.date.getTime();
             });
-            let allEvangelism = manyArr.map((elem)=>{
-                elem.data.evangelism[1];
-            })
+            let allEvangelism222 = manyArr.map((elem) => {
+                return elem.data.evangelism[1];
+            }, 0)
+            console.log("allEvangelism222", allEvangelism222)
+            let allEvangelism = manyArr.reduce((acc, elem)=>{
+                console.log("evang///", elem.data.evangelism[1]);
+                return (acc + Number(elem.data.evangelism[1]));
+            }, 0)
             console.log("allEvangelism", allEvangelism)
             res.render("lma/lmaLockdown", {manyArr, startOfToday, noReportYet, baseUrl});
         } catch (e) {
