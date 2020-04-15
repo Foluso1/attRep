@@ -320,8 +320,9 @@ module.exports = {
             }
             let allEvglsm = manyArr.reduce((acc, cur) => { 
                 let abc = Number(cur.data.evangelism[1])
-                console.log(typeof abc);
+                console.log(typeof abc, abc);
                 if (!isNaN(abc)) { 
+                    console.log("acc + abc", acc+abc)
                     return acc + abc; 
                 } 
             }, 0);
