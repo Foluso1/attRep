@@ -256,13 +256,13 @@ module.exports = {
         }
     },
 
-    getAllLockdown: async (req, res) => {
+    getAllLockdownWithDate: async (req, res) => {
         try {
-            let lmaWorkerId = { _id: req.user.id };
+            console.log(req.params);
             let baseUrl = req.baseUrl
             console.log("baseUrl", baseUrl)
             let dateForData = req.params.date;
-            console.log("dateForData", dateForData)
+            let lmaWorkerId = { _id: req.user.id };
             let foundWorker = await Worker.findById(lmaWorkerId).populate("workers");
             let workersUnder = foundWorker.workers;
             let startOfToday = 0;
@@ -274,68 +274,6 @@ module.exports = {
             let manyArr = [];
             let noReportYet = [];
             for(let i = 0; i < workersUnder.length; i++) {
-                // console.log(workersUnder[i])
-                if (workersUnder.length > 0 && workersUnder[i].lockdown.length > 0){
-                    let isReportToday = false;
-                    let thisWorker = await Worker.findById({ _id: workersUnder[i].id }).populate("lockdown");
-                    if (thisWorker.lockdown.length > 0) {
-                        let lockdownArr = thisWorker.lockdown;
-                        lockdownArr.filter( (item) => {
-                            let thisDay = moment(item.dateOfReport).startOf("day")._d.getTime();
-                            if (startOfToday == thisDay) {
-                                isReportToday = true;
-                                let abc = { 
-                                    dateOfReport: moment().format("dddd, MMMM Do YYYY"),
-                                    date: item.date,
-                                    id: thisWorker.id,
-                                    firstname: thisWorker.firstname,
-                                    surname: thisWorker.surname,
-                                    data: JSON.parse(item.data),
-                                }
-                                manyArr.push(abc)
-                            } 
-                        });
-                        if (!isReportToday) {
-                            let abc = {
-                                id: thisWorker.id,
-                                firstname: thisWorker.firstname,
-                                surname: thisWorker.surname,
-                            }
-                            noReportYet.push(abc);
-                        }
-                    } else {
-                        let abc = {
-                            id: thisWorker.id,
-                            firstname: thisWorker.firstname,
-                            surname: thisWorker.surname,
-                        }
-                        noReportYet.push(abc);
-                    }
-                }
-                // let thisWorkerLockdown = await Worker.findById({ _id: workersUnder[i]._id }).populate("lockdown")
-            }
-            res.render("lma/lmaLockdown", {manyArr, startOfToday, noReportYet, baseUrl});
-        } catch (e) {
-            console.log(e);
-            req.flash("error", "There was a problem");
-            res.redirect("/lma");
-        }
-    },
-
-    getAllLockdownWithDate: async (req, res) => {
-        try {
-            console.log(req.params);
-            let baseUrl = req.baseUrl
-            console.log("baseUrl", baseUrl)
-            let dateForData = req.params.date;
-            let lmaWorkerId = { _id: req.user.id };
-            let foundWorker = await Worker.findById(lmaWorkerId).populate("workers");
-            let workersUnder = foundWorker.workers;
-            let startOfToday = moment(dateForData).startOf('day')._d.getTime();
-            let manyArr = [];
-            let noReportYet = [];
-            for(let i = 0; i < workersUnder.length; i++) {
-                // console.log(workersUnder[i])
                 if(workersUnder.length > 0 && workersUnder[i].lockdown.length > 0){
                     let isReportToday = false;
                     let thisWorker = await Worker.findById({ _id: workersUnder[i].id }).populate("lockdown");
@@ -373,8 +311,11 @@ module.exports = {
                         noReportYet.push(abc);
                     }
                 }
-                // let thisWorkerLockdown = await Worker.findById({ _id: workersUnder[i]._id }).populate("lockdown")
             }
+            manyArr.sort((a, b) => {
+                console.log(a);
+                return b.date.getTime() - a.date.getTime();
+            });
             res.render("lma/lmaLockdown", {manyArr, startOfToday, noReportYet, baseUrl});
         } catch (e) {
             console.log(e);
@@ -388,15 +329,23 @@ module.exports = {
             let workerId = req.params.id;
             let baseUrl = req.baseUrl
             console.log("baseUrl", baseUrl)
-            let foundWorker = await Worker.findById({ _id: workerId }).populate("lockdown");
+            let foundWorker = await Worker.findById({ _id: workerId }).populate({
+                path: "lockdown",
+                options: { sort: { date: -1 }}
+            });
             let theseLockdownReports = foundWorker.lockdown;
+            let workerDetails = {
+                firstname: foundWorker.firstname,
+                surname: foundWorker.surname,
+            };
             let lockdownReports = theseLockdownReports.map((item) => {
               return (thisOne = {
                 dateOfReport: moment(item.dateOfReport).format('DD/MM/YYYY'), //Date choosen by user concerning the report
                 data: JSON.parse(item.data),
               });
             });
-            res.render("new/lockdown", { lockdownReports, baseUrl });
+            
+            res.render("new/lockdown", { lockdownReports, workerDetails, baseUrl });
             
         } catch (e) {
             req.flash("error", "There was a problem");

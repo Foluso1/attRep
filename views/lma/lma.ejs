@@ -1,7 +1,7 @@
 <% include ./../partials/header %>
     <a class="btn btn-primary btn-sm" href="/lma/new">Add / Remove Worker</a>
     <a class="btn btn-primary btn-sm" href="/lma/all">Collective Report</a>
-    <a class="btn btn-primary btn-sm" href="/lma/lockdown">Lockdown Reports</a>
+    <a class="btn btn-primary btn-sm" href="/lma/lockdown/<%= moment().format("YYYY-MM-DD") %> ">Lockdown Reports</a>
 </div>
 
 <main class="row">
@@ -19,6 +19,7 @@
                             <a class="btn btn-sm btn-secondary" href="/lma/<%= foundWorker._id %>/report">Report</a>
                             <a class="btn btn-sm btn-secondary" href="/lma/<%= foundWorker._id %>/prayer">Prayer Report</a>
                             <a class="btn btn-sm btn-secondary" href="/lma/<%= foundWorker._id %>/prayerChain">Prayer Chain Report</a>
+                            <a class="btn btn-sm btn-secondary" href="/lma/<%= foundWorker._id %>/lockdown">Stay-Home Report</a>
                             <a class="del-worker btn btn-sm btn-danger" href="" data-id="<%= foundWorker._id %>" data-name="<%= foundWorker.firstname %> <%= foundWorker.surname %>">Delete Account</a>
                         </li>
                     </div>

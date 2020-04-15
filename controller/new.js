@@ -14,12 +14,17 @@ module.exports = {
             let worker = {
               _id: req.user.id
             };
-            let foundWorker = await Worker.findById(worker).populate("lockdown");
+            let foundWorker = await Worker.findById(worker).populate({
+                path: "lockdown",
+                options: { sort: { date: -1 } }
+            });
             let theseLockdownReports = foundWorker.lockdown;
             let lockdownReports = theseLockdownReports.map((item)=>{
                 return thisOne = {
                     id: item.id,
-                    date: item.date, //Time of repoort creation
+                    firstname: item.firstname,
+                    surname: item.surname,
+                    date: item.date, //Time of report creation
                     dateOfReport: moment(item.dateOfReport).format('DD/MM/YYYY'),  //Time stated on report by user
                     data: JSON.parse(item.data)
                 }

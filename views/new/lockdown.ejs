@@ -3,15 +3,19 @@
 
 <div class="container">
     <div class="row card d-flex justify-content-center">
-            <h3 class="pt-5 text-center"><b>Workers Daily Activity Report</b></h3>
-                <div class="text-center">
-                    <% if(baseUrl == "/lma"){ %>
-                        <br>
-                        <p></p>
-                    <% } else { %>
-                        <a class="btn btn-sm btn-primary col-sm-6 col-md-4 col-lg-2 my-3" href="/new/lockdown/new">Write new report</a>
-                    <%}%>
-                </div>
+            <% if(baseUrl == "/lma"){ %>
+                <h3 class="pt-5 text-center"><b> <%= workerDetails.firstname %> <%= workerDetails.surname %>'s Daily Activity Report</b></h3>
+            <% } else { %>
+                <h3 class="pt-5 text-center"><b>My Daily Activity Report</b></h3>
+            <%}%>
+            <div class="text-center">
+                <% if(baseUrl == "/lma"){ %>
+                    <br>
+                    <p></p>
+                <% } else { %>
+                    <a class="btn btn-sm btn-primary col-sm-6 col-md-4 col-lg-2 my-3" href="/new/lockdown/new">Write new report</a>
+                <%}%>
+            </div>
             <div>
                 <table border="1" class="allLockdown" style="overflow-x: auto;">
                     <thead>
@@ -39,7 +43,11 @@
                             <td><%= elem['data']['prayerChain'][1] %> - <%= elem['data']['prayerChain'][2] %>; &emsp; <%= elem['data']['prayerChain'][3] %> - <%= elem['data']['prayerChain'][4] %>; &emsp; <%= elem['data']['prayerChain'][5] %> - <%= elem['data']['prayerChain'][6] %></td>
                             <td class="text-paragraphs"><%= elem['data']['exhortation'][1] %></td>
                             <td class="text-paragraphs"><%= elem['data']['discipleship'][2] %></td>
-                            <td class="text-paragraphs"><%= elem['data']['evangelism'][6] %></td>
+                            <% if (elem.data.evangelism[6] == "") { %>
+                                <td>&nbsp;</td>
+                            <% } else { %>
+                                <td class="text-paragraphs"><%= elem['data']['evangelism'][6] %></td>
+                            <% } %>
                             <td><%= elem['data']['bibleStudy'][1] %></td>
                             <td class="text-paragraphs"><%= elem['data']['facebook'][1] %></td>
                             <% if(elem['data']['telecast'] == "true") { %>

@@ -155,7 +155,7 @@ if(prayerTable) {
                 type: "DELETE",
                 url: url,
                 success: (data) => {
-                    console.log(data);
+                    // console.log(data);
                 }
             })
         e.target.parentNode.parentNode.remove();
@@ -192,14 +192,12 @@ if (dateLockdown) {
     console.log(formLockdown.getAttribute("action"));
     dateLockdown.addEventListener("input", (e)=>{
         let date = e.target.value;
-        formLockdown.setAttribute("action", `/lma/lockdown/${date}`)
+        formLockdown.setAttribute("action", `/lma/lockdown/${date}`);
     })
 }
 
 
 $(document).ready(function () {
-    // $.getJSON("/api/workers")
-        // .then(appendWorkers);
 
 
     $("#addNewWorker").keypress(function (event) {
