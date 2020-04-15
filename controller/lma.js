@@ -318,17 +318,7 @@ module.exports = {
                     noReportYet.push(abc);
                 }
             }
-            let allEvglsm = manyArr.reduce((acc, cur) => { 
-                let abc = Number(cur.data.evangelism[1])
-                console.log(typeof abc, abc);
-                if (!isNaN(abc)) { 
-                    console.log("acc + abc", acc+abc)
-                    return acc + abc; 
-                } else {
-                    return acc;
-                }
-            }, 0);
-            console.log("allEvglsm", allEvglsm)
+            
             manyArr.sort((a, b) => {
                 return b.date.getTime() - a.date.getTime();
             });

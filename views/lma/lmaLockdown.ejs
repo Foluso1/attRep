@@ -63,8 +63,11 @@
                             <% let abc = Number(cur.data.evangelism[1]) %>
                             <% if (!isNaN(abc)) { %>
                                 <% return acc + abc; %>
-                            <% } %>
+                            <% } else { %>
+                                <% return acc; %> 
+                            <% } %> 
                         <% }, 0); %>
+                        <% console.log("allEvglsm", allEvglsm) %>
                         <% let allEvglsmSvd = manyArr.reduce((acc, cur)=>{ %>
                             <% let abc = Number(cur.data.evangelism[2]) %>
                             <% if (!isNaN(abc)) { %>
