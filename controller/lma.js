@@ -310,12 +310,24 @@ module.exports = {
                         }
                         noReportYet.push(abc);
                     }
+                } else if (workersUnder[i]) {
+                    let thisWorker = await Worker.findById({ _id: workersUnder[i].id });
+                    let abc = {
+                        id: thisWorker.id,
+                        firstname: thisWorker.firstname,
+                        surname: thisWorker.surname,
+                    }
+                    noReportYet.push(abc);
                 }
             }
             manyArr.sort((a, b) => {
                 console.log(a);
                 return b.date.getTime() - a.date.getTime();
             });
+            let allEvangelism = manyArr.map((elem)=>{
+                elem.data.evangelism[1];
+            })
+            console.log("allEvangelism", allEvangelism)
             res.render("lma/lmaLockdown", {manyArr, startOfToday, noReportYet, baseUrl});
         } catch (e) {
             console.log(e);

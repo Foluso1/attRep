@@ -54,7 +54,7 @@
                             <% return acc + Number(cur.data.discipleship[1]); %>
                         <% }, 0); %>
                         <% let allEvglsm = manyArr.reduce((acc, cur)=>{ %>
-                            <% return acc + parseInt(cur.data.evangelism[1]); %>
+                            <% return acc + Number(cur.data.evangelism[1]); %>
                         <% }, 0); %>
                         <% let allEvglsmSvd = manyArr.reduce((acc, cur)=>{ %>
                             <% return acc + Number(cur.data.evangelism[2]); %>
