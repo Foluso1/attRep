@@ -48,25 +48,46 @@
                 <tbody>
                     <tr>
                         <% let allDiscShip = manyArr.reduce((acc, cur)=>{ %>
-                            <% return acc + Number(cur.data.discipleship[0]); %>
+                            <% let abc = Number(cur.data.discipleship[0]) %>
+                            <% if (!isNaN(abc)) { %>
+                                <% return acc + abc; %>
+                            <% } %>
                         <% }, 0); %>
                         <% let allDiscShipPhys = manyArr.reduce((acc, cur)=>{ %>
-                            <% return acc + Number(cur.data.discipleship[1]); %>
+                            <% let abc = Number(cur.data.discipleship[1]) %>
+                            <% if (!isNaN(abc)) { %>
+                                <% return acc + abc; %>
+                            <% } %>
                         <% }, 0); %>
                         <% let allEvglsm = manyArr.reduce((acc, cur)=>{//Here %>
-                            <% return acc + Number(cur.data.evangelism[1]); %>
+                            <% let abc = Number(cur.data.evangelism[1]) %>
+                            <% if (!isNaN(abc)) { %>
+                                <% return acc + abc; %>
+                            <% } %>
                         <% }, 0); %>
                         <% let allEvglsmSvd = manyArr.reduce((acc, cur)=>{ %>
-                            <% return acc + Number(cur.data.evangelism[2]); %>
+                            <% let abc = Number(cur.data.evangelism[2]) %>
+                            <% if (!isNaN(abc)) { %>
+                                <% return acc + abc; %>
+                            <% } %>
                         <% }, 0); %>
                         <% let allEvglsmFld = manyArr.reduce((acc, cur)=>{ %>
-                            <% return acc + Number(cur.data.evangelism[3]); %>
+                            <% let abc = Number(cur.data.evangelism[3]) %>
+                            <% if (!isNaN(abc)) { %>
+                                <% return acc + abc; %>
+                            <% } %>
                         <% }, 0); %>
                         <% let allEvglsmPrph = manyArr.reduce((acc, cur)=>{ %>
-                            <% return acc + Number(cur.data.evangelism[4]); %>
+                            <% let abc = Number(cur.data.evangelism[4]) %>
+                            <% if (!isNaN(abc)) { %>
+                                <% return acc + abc; %>
+                            <% } %>
                         <% }, 0); %>
                         <% let allEvglsmHld = manyArr.reduce((acc, cur)=>{ %>
-                            <% return acc + Number(cur.data.evangelism[5]); %>
+                            <% let abc = Number(cur.data.evangelism[5]) %>
+                            <% if (!isNaN(abc)) { %>
+                                <% return acc + abc; %>
+                            <% } %>
                         <% }, 0); %>
                         <td><b>Total</b></td>
                         <td><b><%= manyArr.length %></b></td>

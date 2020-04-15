@@ -258,9 +258,7 @@ module.exports = {
 
     getAllLockdownWithDate: async (req, res) => {
         try {
-            console.log(req.params);
             let baseUrl = req.baseUrl
-            console.log("baseUrl", baseUrl)
             let dateForData = req.params.date;
             let lmaWorkerId = { _id: req.user.id };
             let foundWorker = await Worker.findById(lmaWorkerId).populate("workers");
@@ -321,18 +319,8 @@ module.exports = {
                 }
             }
             manyArr.sort((a, b) => {
-                console.log(a);
                 return b.date.getTime() - a.date.getTime();
             });
-            let allEvangelism222 = manyArr.map((elem) => {
-                return elem.data.evangelism[1];
-            }, 0)
-            console.log("allEvangelism222", allEvangelism222)
-            let allEvangelism = manyArr.reduce((acc, elem)=>{
-                console.log("evang///", elem.data.evangelism[1]);
-                return (acc + Number(elem.data.evangelism[1]));
-            }, 0)
-            console.log("allEvangelism", allEvangelism)
             res.render("lma/lmaLockdown", {manyArr, startOfToday, noReportYet, baseUrl});
         } catch (e) {
             console.log(e);
