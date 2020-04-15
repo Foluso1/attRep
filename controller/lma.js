@@ -324,7 +324,9 @@ module.exports = {
                 if (!isNaN(abc)) { 
                     console.log("acc + abc", acc+abc)
                     return acc + abc; 
-                } 
+                } else {
+                    return acc;
+                }
             }, 0);
             console.log("allEvglsm", allEvglsm)
             manyArr.sort((a, b) => {
