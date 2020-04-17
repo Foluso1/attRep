@@ -318,7 +318,6 @@ module.exports = {
                     noReportYet.push(abc);
                 }
             }
-            
             manyArr.sort((a, b) => {
                 return b.date.getTime() - a.date.getTime();
             });

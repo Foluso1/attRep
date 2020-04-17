@@ -107,12 +107,17 @@
                     </tr>
                     <% manyArr.forEach((elem, i) => { %>
                     <tr>
-                        <td><%= i+1 %> </td>
+                        <td><%= manyArr.length-(manyArr.length-i-1) %> </td>
                         <td><a href="/lma/<%= elem.id %>/lockdown"><%= elem['firstname'] %> <%= elem['surname'] %></a></td>
-                        <% if( moment(elem.date).valueOf() < startOfToday || moment(elem.date).valueOf() > startOfToday ){ %>
-                            <td><%= elem.date.getHours().toString().padStart(2, "0") %>:<%= elem.date.getMinutes().toString().padStart(2, "0") %></td>
+                        <% if( moment(elem.date).valueOf() < moment(startOfToday).startOf('day') || moment(elem.date).valueOf() > moment(startOfToday).endOf('day') ){ %>
+                            <td>
+                                <%= moment(elem.date).format("DD-MM-YYYY") %>
+                                <%= elem.date.getHours().toString().padStart(2, "0") %>:<%= elem.date.getMinutes().toString().padStart(2, "0") %>
+                            </td>
                         <% } else { %>
-                            <td><%= moment(elem.date).format("DD-MM-YYYY") %> <%= elem.date.getHours().toString().padStart(2, "0") %>:<%= elem.date.getMinutes().toString().padStart(2, "0") %></td>
+                            <td>
+                                <%= elem.date.getHours().toString().padStart(2, "0") %>:<%= elem.date.getMinutes().toString().padStart(2, "0") %>
+                            </td>
                         <% } %>
                         <td><%= elem['data']['prayerChain'][0] %></td>
                         <td><%= elem['data']['discipleship'][0] %> (<%= elem['data']['discipleship'][1] %>)</td>

@@ -121,6 +121,19 @@ module.exports = {
 
     newRep: (req, res) => {
         console.log("HEYEYYYYYYY YOU!");
+    },
+
+    editReport: async (rep, res) => {
+        try {
+            let reportId = req.params.id;
+            let foundReport = await Report.findById({ _id: reportId });
+            res.render("/new/")
+        } catch (e) {
+            console.log(e)
+            req.flash("error", "There was a problem");
+            res.redirect("/report");
+        }
+    
     }
 }
 

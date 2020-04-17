@@ -98,10 +98,10 @@ app.post("/register", async (req, res) => {
         if (req.body.password != req.body.password2) throw {name: "Error", message: "Password mismatch. Please, try again!"};
 
         await Worker.register(new Worker({
-            username: req.body.username,
+            username: req.body.username.trim(),
             // password: req.body.password,
-            firstname: req.body.firstname,
-            surname: req.body.surname,
+            firstname: req.body.firstname.trim(),
+            surname: req.body.surname.trim(),
             church: req.body.church,
             fellowship: req.body.fellowship,
             department: req.body.department,
@@ -151,9 +151,9 @@ app.get("/profile", middleWare.isLoggedIn, async (req, res) => {
 
 app.put("/profile", middleWare.isLoggedIn, async (req, res) => {
     let profile = {
-        username: req.body.username,
-        firstname: req.body.firstname,
-        surname: req.body.surname,
+        username: req.body.username.trim(),
+        firstname: req.body.firstname.trim(),
+        surname: req.body.surname.trim(),
         church: req.body.church,
         fellowship: req.body.fellowship,
         department: req.body.department,
