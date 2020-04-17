@@ -179,8 +179,10 @@
                     <label class="text-justify" >How many hours of the day did you use for bible study?
                         (hh:mm)</label>
                     <p class="notabene">* Put '0' if you did not read.</p>
-                    <div class="d-inline-flex align-items-center">
+                    <div class="d-inline-flex align-items-center m-2">
                         <input type="number" name="bible-study" min="0" max="23" value="<%= thisReport.data.bibleStudy[0][0] %>" class="form-control ml-3" required>&nbsp;hour(s)
+                    </div><br>
+                    <div class="d-inline-flex align-items-center m-2">
                         <input type="number" name="bible-study" min="0" max="59" value="<%= thisReport.data.bibleStudy[0][1] %>" class="form-control ml-3" required>&nbsp;minutes(s)
                     </div><br>
 
