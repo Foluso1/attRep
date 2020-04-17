@@ -30,7 +30,7 @@
                     <tr>
                         <th><b>S/N</b></th>
                         <th><b>Name</b></th>
-                        <th><b>Time</b></th>
+                        <th><b>Time Reported</b></th>
                         <th><b>Prayer Chain</b></th>
                         <th><b>Discipleship</b></th>
                         <th><b>Evangelism</b></th>
@@ -67,7 +67,6 @@
                                 <% return acc; %> 
                             <% } %> 
                         <% }, 0); %>
-                        <% console.log("allEvglsm", allEvglsm) %>
                         <% let allEvglsmSvd = manyArr.reduce((acc, cur)=>{ %>
                             <% let abc = Number(cur.data.evangelism[2]) %>
                             <% if (!isNaN(abc)) { %>
@@ -107,7 +106,7 @@
                     </tr>
                     <% manyArr.forEach((elem, i) => { %>
                     <tr>
-                        <td><%= manyArr.length-(manyArr.length-i-1) %> </td>
+                        <td><%= manyArr.length-i %> </td>
                         <td><a href="/lma/<%= elem.id %>/lockdown"><%= elem['firstname'] %> <%= elem['surname'] %></a></td>
                         <% if( moment(elem.date).valueOf() < moment(startOfToday).startOf('day') || moment(elem.date).valueOf() > moment(startOfToday).endOf('day') ){ %>
                             <td>

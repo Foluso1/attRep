@@ -84,7 +84,7 @@ module.exports = {
                       prayerChain: req.body["prayer-chain"],
                       discipleship: req.body["discipleship"],
                       evangelism: req.body.evangelism,
-                      bibleStudy: req.body["bible-study"],
+                        bibleStudy: [`${req.body["bible-study"][0]}:${req.body["bible-study"][1]}`, req.body["bible-study"][2]],
                       facebook: req.body.facebook,
                       studyGroup: req.body["study-group"],
                       telecast: req.body.telecast,

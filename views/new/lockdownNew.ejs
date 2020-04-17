@@ -155,12 +155,12 @@
                     <legend>4. <b>Bible Study</b></legend>
                     <label class="text-justify" >How many hours of the day did you use for bible study?
                         (hh:mm)</label>
-                    <p class="notabene">* Put '00:00' if you did not read.</p>
-                    <!-- <div class="d-inline-flex align-items-center cover">
-                        <input type="number" name="bible-study" class="form-control">
-                    </div><br> -->
+                    <p class="notabene">* Put '0' if you did not read.</p>
+                    <div class="d-inline-flex align-items-center">
+                        <input type="number" name="bible-study" min="0" max="23" class="form-control ml-3" required>&nbsp;hour(s)
+                        <input type="number" name="bible-study" min="0" max="59" class="form-control ml-3" required>&nbsp;minutes(s)
+                    </div><br>
 
-                    <input type="time" min="00:00" max="12:00" name="bible-study" id="no-ampm" class="without_ampm form-control" required>
                     <br>
                     <label class="text-justify" for="bible-book-chapter">Bible Reading: Which book of the bible and what
                         chapter(s) did you read today?</label>
