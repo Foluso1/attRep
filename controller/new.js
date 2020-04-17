@@ -119,21 +119,54 @@ module.exports = {
         }
     },
 
-    newRep: (req, res) => {
-        console.log("HEYEYYYYYYY YOU!");
-    },
-
-    editReport: async (rep, res) => {
+    editReportForm: async (req, res) => {
         try {
             let reportId = req.params.id;
-            let foundReport = await Report.findById({ _id: reportId });
-            res.render("/new/")
+            let foundReport = await Lockdown.findById({ _id: reportId });
+            let thisData = JSON.parse(foundReport.data);
+            let regEx = /([0-9]*[0-9]):([0-9][0-9])/;
+            let abc = regEx.exec(thisData.bibleStudy[0]);
+            thisData.bibleStudy[0] = [abc[1], abc[2]]
+            let thisReport = {
+                dateOfReport: foundReport.dateOfReport,
+                date: foundReport.date,
+                data: thisData,
+            }
+            res.render("new/lockdownEdit", {thisReport, reportId});
         } catch (e) {
             console.log(e)
             req.flash("error", "There was a problem");
             res.redirect("/report");
         }
-    
-    }
+    },
+
+    editReport: async (req, res) => {
+        try {            
+            let reportId = req.params.id;
+            let obj = {
+                dateOfReport: new Date(req.body.date),
+                data: JSON.stringify({
+                    date: req.body.date,
+                    exhortation: req.body.exhortation,
+                    prayerChain: req.body["prayer-chain"],
+                    discipleship: req.body["discipleship"],
+                    evangelism: req.body.evangelism,
+                    bibleStudy: [`${req.body["bible-study"][0]}:${req.body["bible-study"][1]}`, req.body["bible-study"][2]],
+                    facebook: req.body.facebook,
+                    studyGroup: req.body["study-group"],
+                    telecast: req.body.telecast,
+                    optional: req.body.optional,
+                }),
+            };
+            let thisReport = await Lockdown.findByIdAndUpdate({ _id: reportId }, obj, {new: true});
+            console.log(thisReport);
+            req.flash("success", "Your edit was submitted successfully");
+            res.redirect("/new/lockdown");
+        } catch (e) {
+            console.log(e)
+            req.flash("error", "There was a problem");
+            res.redirect("/new/lockdown");
+        }
+    },
 }
 

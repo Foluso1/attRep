@@ -16,14 +16,14 @@ newRouter
     .route("/lockdown/new")
     .get(middleware.isLoggedIn, helper.newReport);
 
-// newRouter
-//     .route("/lockdown/:id/edit")
-//     .put(middleware.isLoggedIn, helper.editReport)
+newRouter
+    .route("/lockdown/:id/edit")
+    .get(middleware.isLoggedIn, helper.editReportForm)
 
 newRouter
     .route("/lockdown/:id")
     .delete(middleware.isLoggedIn, helper.delReport)
-    .put(middleware.isLoggedIn, helper.newRep);
+    .put(middleware.isLoggedIn, helper.editReport);
 
 
 module.exports = newRouter;

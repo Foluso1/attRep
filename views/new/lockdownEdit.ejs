@@ -5,13 +5,13 @@
     <div class="row d-flex justify-content-center">
         <div class="card p4 col-sm-10 col-md-8 col-lg-8">
             <h3 class="pt-5 text-center"><b>Workers Daily Activity Report</b></h3>
-            <form class="p-4" action="/new/lockdown" method="POST">
+            <form class="p-4" action="/new/lockdown/<%= reportId %>?_method=PUT" method="POST">
 
                 <!-- DATE -->
                 <div class="pb-3 d-inline-flex align-items-center">
                     
                     <label for="date">Date:</label>
-                    <input class="m-2 form-control" type="date" name="date" id="date" value="<%= new Date().getFullYear() %>-<%= (new Date().getMonth()+1).toString().padStart(2, "0") %>-<%= new Date().getDate() %>" required>
+                    <input class="m-2 form-control" type="date" name="date" id="date" value="<%= new Date(thisReport.dateOfReport).getFullYear() %>-<%= (new Date(thisReport.dateOfReport).getMonth()+1).toString().padStart(2, "0") %>-<%= new Date(thisReport.dateOfReport).getDate() %>" required>
                 </div>
                 <p class="notabene">NB: The date here should be the date of the report you are writing for. If it is today's report, today's date.</p>
                 <br>
@@ -20,30 +20,42 @@
                     <legend>1. <b>Exhortation</b></legend>
                     <label for="">Did you read the exhortations today?</label>
                     <div class="d-inline-flex">
+                    <% if(thisReport.data.exhortation[0] == "true"){ %>
+                        <div class="mx-3">
+                            <label for="">Yes</label>
+                            <input type="radio" name="exhortation" value="true" checked required>
+                        </div>
+                        <div class="mx-3">
+                            <label for="">No</label>
+                            <input type="radio" name="exhortation" value="false">
+                        </div>
+                    <% } else { %>
                         <div class="mx-3">
                             <label for="">Yes</label>
                             <input type="radio" name="exhortation" value="true" required>
                         </div>
                         <div class="mx-3">
                             <label for="">No</label>
-                            <input type="radio" name="exhortation" value="false">
+                            <input type="radio" name="exhortation" value="false" checked>
                         </div>
+                    <% } %>
                     </div>
                     <label class="text-justify" for="exhortation">Summary of instructions received from all exhortations
                         today</label>
                     <textarea class="form-control" name="exhortation" id="exhortation" cols="10" rows="5"
-                        required></textarea>
+                        required><%= thisReport.data.exhortation[1] %></textarea>
                 </fieldset>
 
                 <br>
                 <hr><br>
 
+                <!-- PRAYER CHAIN -->
                 <fieldset>
                     <legend>2. <b>Prayer Chain</b></legend>
                     <div>
                         <label for="">How many hours of prayer chain have you observed today?</label>
                         <p class="notabene">* Put '0' if you observed none.</p>
-                        <input type="number" name="prayer-chain" min="0" class="form-control" required>
+                        <input type="number" name="prayer-chain" min="0" class="form-control" value="<%= thisReport.data.prayerChain[0] %>" required>
                     </div>
 
                     <label class="text-justify">Times of the day you observed the 3 hours prayer chain</label><br>
@@ -52,25 +64,25 @@
                         <label for="prayer-chain-morning">Morning:</label><br>
                         <div class="d-inline-flex align-items-center cover">
                             From:<input name="prayer-chain" class="form-control m-2"
-                                id="prayer-chain-morning-from" type="time">
+                                id="prayer-chain-morning-from" value="<%= thisReport.data.prayerChain[1] %>" type="time">
                             To:<input name="prayer-chain" class="form-control m-2"
-                                id="prayer-chain-morning-to" type="time">
+                                id="prayer-chain-morning-to" value="<%= thisReport.data.prayerChain[2] %>" type="time">
                         </div><br><br>
 
                         <label for="prayer-chain-afternoon">Afternoon:</label><br>
                         <div class="d-inline-flex align-items-center cover">
-                            From:<input type="time" name="prayer-chain" class="form-control m-2"
+                            From:<input type="time" name="prayer-chain" value="<%= thisReport.data.prayerChain[3] %>" class="form-control m-2"
                                 id="prayer-chain-afternoon-from">
-                            To:<input type="time" name="prayer-chain" class="form-control m-2"
+                            To:<input type="time" name="prayer-chain" value="<%= thisReport.data.prayerChain[4] %>" class="form-control m-2"
                                 id="prayer-chain-afternoon-to">
                         </div><br><br>
 
                         <label for="prayer-chain-night">Night:</label><br>
 
                         <div class="d-inline-flex align-items-center cover">
-                            From:<input type="time" name="prayer-chain" class="form-control m-2"
+                            From:<input type="time" name="prayer-chain" value="<%= thisReport.data.prayerChain[5] %>" class="form-control m-2"
                                 id="prayer-chain-night-from">
-                            To:<input type="time" name="prayer-chain" class="form-control m-2"
+                            To:<input type="time" name="prayer-chain" value="<%= thisReport.data.prayerChain[6] %>" class="form-control m-2"
                                 id="prayer-chain-night-to">
                         </div><br>
                     </div>
@@ -87,19 +99,19 @@
                     <div class="d-inline=flex">
                         <label for="">How many disciples did you reach today?</label>
                         <p class=" notabene">* Put '0' if you reached none.</p>
-                            <input type="number" name="discipleship" min="0" class="form-control col-3" required>
+                            <input type="number" name="discipleship" min="0" class="form-control col-3" value="<%= thisReport.data.discipleship[0] %>" required>
                     </div>
                     <div class="d-inline=flex">
                         <label for="">Of those you reached, how many did you meet <b>physically</b>?</label>
                         <p class=" notabene">* Put '0' if you reached none physically.</p>
-                            <input type="number" name="discipleship" min="0" class="form-control col-3" required>
+                            <input type="number" name="discipleship" min="0" class="form-control col-3" value="<%= thisReport.data.discipleship[1] %>" required>
                     </div>
                     <!-- <label for="">Of those you reached, how many did you meet physically?</label> -->
                     <label class="text-justify" for="discipleship">What is / are the name(s) of the <b>disciple(s)</b>
                         you reached out to and what did you discuss?</label>
                     <p class="notabene">* Put 'NIL' if you reached none.</p>
                     <textarea name="discipleship" id="discipleship" class="form-control" cols="10" rows="5"
-                        required></textarea>
+                        required><%= thisReport.data.discipleship[2] %></textarea>
                     <br>
                 </fieldset>
 
@@ -111,6 +123,16 @@
                     <legend>3b. <b>Evangelism</b></legend>
                     <label class="text-justify" for="evangelism">Did you go out on <b>evangelism</b>?</label><br>
                     <div class="d-inline-flex">
+                    <% if( thisReport.data.evangelism[0] == "true") { %>
+                        <div class="mx-4">
+                            <label for="">Yes</label>
+                            <input type="radio" name="evangelism" value="true" checked required>
+                        </div>
+                        <div class="mx-4">
+                            <label for="">No</label>
+                            <input type="radio" name="evangelism" value="false">
+                        </div>
+                    <% } else { %>
                         <div class="mx-4">
                             <label for="">Yes</label>
                             <input type="radio" name="evangelism" value="true" required>
@@ -119,32 +141,33 @@
                             <label for="">No</label>
                             <input type="radio" name="evangelism" value="false" checked>
                         </div>
+                    <% } %>
                     </div><br>
                     <p class=" notabene">* Put '0' if your answer below is none.</p>
                     <div class="ml-3 d-inline=flex">
                         <label for=""">If yes, how many people did you reach?</label>
-                        <input type="number" min="0" name="evangelism" class="form-control col-3" required>
+                        <input type="number" min="0" name="evangelism" class="form-control col-3" value="<%= thisReport.data.evangelism[1] %>" required>
                     </div>
                     <div class="ml-3 d-inline=flex">
                         <label for="">Of those reached, how many ONLY got <b>saved</b> but not filled with the Holy Ghost?</label>
-                        <input type="number" min="0" name="evangelism" class="form-control col-3" required>
+                        <input type="number" min="0" name="evangelism" class="form-control col-3" value="<%= thisReport.data.evangelism[2] %>" required>
                     </div>
                     <div class="ml-3 d-inline=flex">
                         <label for="">Of those reached, how many ONLY got <b>filled with the Holy Ghost</b> but didn't prophesy?</label>
-                        <input type="number" min="0" name="evangelism" class="form-control col-3" required>
+                        <input type="number" min="0" name="evangelism" class="form-control col-3" value="<%= thisReport.data.evangelism[3] %>" required>
                     </div>
                     <div class="ml-3 d-inline=flex">
                         <label for="">Of those reached, how many <b>prophesied</b>?</label>
-                        <input type="number" min="0" name="evangelism" class="form-control col-3" required>
+                        <input type="number" min="0" name="evangelism" class="form-control col-3" value="<%= thisReport.data.evangelism[4] %>" required>
                     </div>
                     <div class="ml-3 d-inline=flex">
                         <label for="">Of those reached, how many got <b>healed</b>?</label>
-                        <input type="number" min="0" name="evangelism" class="form-control col-3" required>
+                        <input type="number" min="0" name="evangelism" class="form-control col-3" value="<%= thisReport.data.evangelism[5] %>" required>
                     </div>
                     <div>
                         <label for="">If you went on evangelism, indicate names of those you reached out to and whether
                             they got saved, filled, prophesied or healed</label>
-                        <textarea name="evangelism" class="form-control" id="evangelism" cols="10" rows="5" required></textarea>
+                        <textarea name="evangelism" class="form-control" id="evangelism" cols="10" rows="5" required><%= thisReport.data.evangelism[6] %></textarea>
                     </div>
                 </fieldset>
 
@@ -157,15 +180,15 @@
                         (hh:mm)</label>
                     <p class="notabene">* Put '0' if you did not read.</p>
                     <div class="d-inline-flex align-items-center">
-                        <input type="number" name="bible-study" min="0" max="23" class="form-control ml-3" required>&nbsp;hour(s)
-                        <input type="number" name="bible-study" min="0" max="59" class="form-control ml-3" required>&nbsp;minutes(s)
+                        <input type="number" name="bible-study" min="0" max="23" value="<%= thisReport.data.bibleStudy[0][0] %>" class="form-control ml-3" required>&nbsp;hour(s)
+                        <input type="number" name="bible-study" min="0" max="59" value="<%= thisReport.data.bibleStudy[0][1] %>" class="form-control ml-3" required>&nbsp;minutes(s)
                     </div><br>
 
                     <br>
                     <label class="text-justify" for="bible-book-chapter">Bible Reading: Which book of the bible and what
                         chapter(s) did you read today?</label>
                     <p class="notabene">* Put 'NIL' if you read none.</p>
-                    <input type="text" name="bible-study" class="form-control" id="bible-book-chapter" required>
+                    <input type="text" name="bible-study" class="form-control" id="bible-book-chapter" value="<%= thisReport.data.bibleStudy[1] %>" required>
                 </fieldset>
 
                 <br><hr><br>
@@ -176,20 +199,31 @@
                     <label class="text-justify" for="facebook-true">Did you read the <b>doctrinal / spiritual</b>
                         articles on Pastor's Facebook page?</label>
                     <div class="d-inline-flex">
+                    <% if( thisReport.data.facebook[0] == "true" ){ %>
+                        <div class="mx-4">
+                            <label for="facebook-true">Yes</label>
+                            <input type="radio" name="facebook" id="facebook-true" value="true" checked required>
+                        </div>
+                        <div class="mx-4">
+                            <label for="facebook-false">No</label>
+                            <input type="radio" name="facebook" id="facebook-false" value="false">
+                        </div>
+                    <% } else { %>
                         <div class="mx-4">
                             <label for="facebook-true">Yes</label>
                             <input type="radio" name="facebook" id="facebook-true" value="true" required>
                         </div>
                         <div class="mx-4">
                             <label for="facebook-false">No</label>
-                            <input type="radio" name="facebook" id="facebook-false" value="false">
+                            <input type="radio" name="facebook" id="facebook-false" value="false" checked>
                         </div>
+                    <% } %>
                     </div><br>
                     <label class="text-justify" for="facebook-page">If yes, what were the <b>doctrinal / spiritual</b>
                         articles you read?</label>
                     <p class="notabene">* Put 'NIL' if you read none.</p>
                     <textarea class="form-control" name="facebook" id="facebook-page" cols="10" rows="5"
-                        required></textarea><br>
+                        required><%= thisReport.data.facebook[1] %></textarea><br>
                 </fieldset>
 
                 <br><hr><br>
@@ -201,11 +235,11 @@
                     <!-- <div class="d-inline-flex mt-2"> -->
                         <div class="d-inline-flex m-2">
                             <label for="">Track:&nbsp;</label>
-                            <input type="number" min="0" name="study-group" class="form-control">
+                            <input type="number" min="0" name="study-group" class="form-control" value="<%= thisReport.data.studyGroup[0] %>">
                         </div>
                         <div class="d-inline-flex m-2">
                             <label for="">Title:&nbsp;</label>
-                            <input type="text" name="study-group" class="form-control" id="" required>
+                            <input type="text" name="study-group" class="form-control" id="" value="<%= thisReport.data.studyGroup[1] %>" required>
                         <!-- </div> -->
                     </div>
                 </fieldset>
@@ -215,7 +249,7 @@
                 <!-- BROADCAST -->
                 <fieldset>
                     <legend>7. <b>Broadcast and Telecast</b></legend>
-                    <label class="text-justify" for="">Have you been watching the <b>broadcast</b> on YouTube and the <b>LivingWord Telecast</b> on WAP TV?</label>
+                    <label class="text-justify" for="">Did you watch the last <b>broadcast</b> on YouTube, Facebook and/or the <b>LivingWord Telecast</b> on WAP TV?</label>
                     <div class="d-inline-flex">
                         <div class="mx-4">
                             <label for="telecast-true">Yes</label>
@@ -226,6 +260,7 @@
                             <input type="radio" name="telecast" id="telecast-false" value="false">
                         </div>
                     </div>
+                    
                 </fieldset>
                 
                 
@@ -236,7 +271,7 @@
                     <legend>8. <b>Optional</b></legend>
                     <label class="text-justify" for="optional">What were the other things you did today to improve
                         yourself <b>naturally</b>?</label>
-                    <textarea class="form-control" name="optional" id="optional" cols="10" rows="5"></textarea>
+                    <textarea class="form-control" name="optional" id="optional" cols="10" rows="5"><%= thisReport.data.optional %></textarea>
                 </fieldset>
 
                 <input type="submit" class="mt-4 btn btn-warning">

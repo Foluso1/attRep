@@ -168,19 +168,6 @@ app.put("/profile", middleWare.isLoggedIn, async (req, res) => {
     }
 });
 
-const trimAll = async () => {
-    try {
-        const foundWorkers = await Worker.find();
-        foundWorkers.forEach(async (a) => {
-            a.firstname = a.firstname.trim();
-            a.surname = a.surname.trim();
-            await a.save();
-        })
-    } catch (e) {
-        console.log(e)
-    }
-}
-trimAll();
 
 app.listen(PORT, IP, () => console.log(`The server is listening at ${PORT}`));
 

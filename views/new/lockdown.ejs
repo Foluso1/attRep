@@ -13,7 +13,7 @@
                     <br>
                     <p></p>
                 <% } else { %>
-                    <a class="btn btn-sm btn-primary col-sm-6 col-md-4 col-lg-2 my-3" href="/new/lockdown/new">Write new report</a>
+                    <a class="btn btn-sm btn-primary col-md-4 col-lg-2 my-3" href="/new/lockdown/new">Write new report</a>
                 <%}%>
             </div>
             <div>
@@ -66,9 +66,14 @@
                             <% if(baseUrl == "/lma" || (Date.now() - elem.date.getTime()) >= 86400000 ){ %>
                             <% } else { %>
                                 <td>
-                                    <form action="/new/lockdown/<%= elem.id %>?_method=DELETE" method="POST">
-                                        <input type="submit" value="X" class="btn btn-sm btn-danger">
-                                    </form>
+                                    <div class="d-inline-flex">
+                                        <form action="/new/lockdown/<%= elem.id %>?_method=DELETE" method="POST" class="d-inline-flex mx-2">
+                                            <input type="submit" value="Delete" class="btn btn-sm btn-danger">
+                                        </form>
+                                        <form action="/new/lockdown/<%= elem.id %>/edit" method="GET" class="d-inline-flex mx-2">
+                                            <input type="submit" value="Edit" class="btn btn-sm btn-warning">
+                                        </form>
+                                    </div>
                                 </td>
                             <%}%>
                         </tr>
