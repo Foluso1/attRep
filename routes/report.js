@@ -13,7 +13,7 @@ reportRouter.use(methodOverride("_method"));
 
 reportRouter.route("/")
     // .get(middleware.isLoggedIn, middleware.signInWithGoogle, helper.getReports)
-    .get(middleware.isLoggedIn, middleware.validator, middleware.signInWithGoogle, helper.getReports)
+    .get(middleware.isLoggedIn, middleware.emailCheck, middleware.signInWithGoogle, helper.getReports)
     .post(middleware.isLoggedIn, helper.postNewReport);
 
 reportRouter.route("/new")

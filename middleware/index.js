@@ -49,6 +49,8 @@ module.exports = {
                 let worker = { _id: req.user._id }
                 let foundWorker = await Worker.findById(worker);
                 if (foundWorker.googleIdentity) {
+                    foundWorker.linkCount = undefined;
+                    await foundWorker.save()
                     return next();
                 } else {
                     foundWorker.linkCount++;
@@ -64,6 +66,22 @@ module.exports = {
             console.log(e)
             req.flash("error", "Please, sign up with Google or login by other methods if you have an account already")
             res.redirect("/login");
+        }
+    },
+
+    emailCheck: async (req, res, next) => {
+        console.log("emailCheck Middleware");
+        try {
+            let userId = req.user._id;
+            let foundWorker = await Worker.findById({ _id: userId});
+            console.log("foundWorker.email//", foundWorker.email);
+            if (!foundWorker.email){
+                res.render("email");
+            } else {
+                return next();
+            }
+        } catch (e) {
+            console.log(e)
         }
     },
 

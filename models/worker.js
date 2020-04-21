@@ -10,6 +10,7 @@ const                   mongoose    =   require("mongoose")
 workerSchema = new mongoose.Schema({
     username: {
         type: String,
+        unique: true,
         required: "You have to specify this"
     },
 
@@ -21,6 +22,16 @@ workerSchema = new mongoose.Schema({
     surname: {
         type: String,
         required: "You have to specify this"
+    },
+
+    email: {
+        type: String,
+        unique: true,
+    },
+
+    emailCheck: {
+        type: String,
+        required: false
     },
 
     googleIdentity: {
@@ -50,6 +61,16 @@ workerSchema = new mongoose.Schema({
     
     password: {
         type: String,
+        required: false
+    },
+
+    resetPasswordToken: {
+        type: String,
+        required: false
+    },
+
+    resetPasswordExpires: {
+        type:   Date,
         required: false
     },
 
