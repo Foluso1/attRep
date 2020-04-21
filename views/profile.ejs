@@ -3,8 +3,7 @@
 <section class="container">
     <div class="row justify-content-center">
         <div class="m-3 col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light">
-            <h1 class="text-center">Your Profile</h1>
-            <h5 class="m-2 text-center">Welcome <%= loggedInWorker.firstname %>&nbsp;<%= loggedInWorker.surname %></h5>
+            <h1 class="text-center">My Profile</h1>
             <form class="text-center p-2" action="/profile?_method=PUT" method="POST">
                 <fieldset class="m-4">
                     <legend>Login Credentials</legend>
@@ -16,16 +15,9 @@
                     <% } else { %>
                         <p>Would you like to link your Google account? <a class="btn btn-sm btn-primary" href="/google/auth/google">Yes</a></p>
                     <% } %>
-                    <% if(loggedInWorker.facebookIdentity){ %>
-                        <p>Your account is linked to 
-                            <b><span style="color: #4183F1">facebook</span></b>!
-                            </p>
-                    <% } else { %>
-                        <p>Would you like to link your facebook account? <a class="btn btn-sm btn-primary" href="/facebook/auth/facebook">Yes</a></p>
-                    <% } %>
+                    
                     <div class="d-flex m-2">
-                        <label class="m-2 float-left" for="username">Username:</label>
-                        <input class="m-1 float-left form-control" type="text" id="username" name="username" value="<%= loggedInWorker.username %>" placeholder="Firstname">
+                        <label class="m-2 float-left" for="username">Username:</label><span class="m-2 text-right">"<%= loggedInWorker.username %>"</span>
                     </div>
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="firstname">Firstname:</label>
@@ -87,7 +79,7 @@
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
-                            <input type="submit" class="btn btn-md btn-primary btn-block m-2"></input>
+                            <input type="submit" value="Update" class="btn btn-md btn-primary btn-block m-2"></input>
                         </div>
                     </div>
                 </fieldset>

@@ -79,7 +79,6 @@ app.use(methodOverride("_method"));
 app.locals.moment = moment; 
 
 
-
 app.listen(PORT, IP, () => console.log(`The server is listening at ${PORT}`));
 
 

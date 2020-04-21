@@ -6,6 +6,11 @@ const       express         =       require("express")
 ,           async           =       require("async")
 ,           nodemailer      =       require("nodemailer")
 ,           crypto          =       require("crypto")
+,           methodOverride  =       require("method-override")
+
+
+router.use(methodOverride("_method"));
+
 
 
 router.get("/", (req, res) => {
