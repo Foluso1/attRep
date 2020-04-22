@@ -32,6 +32,11 @@ lmaRouter
         .get(middleware.isLoggedIn, middleware.isLMA, controller.addRemoveOrDelWorker);
 
 lmaRouter
+    .route("/:id/profile")
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.getProfile)
+        .post(middleware.isLoggedIn, middleware.isLMA, controller.postProfile);
+
+lmaRouter
     .route("/:id/prayer")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getPrayerReport);
 
@@ -50,6 +55,7 @@ lmaRouter
 lmaRouter
     .route("/:id")
         .delete(middleware.isLoggedIn, middleware.isLMA, controller.deleteWorker);
+
 
 module.exports = lmaRouter;
 

@@ -359,6 +359,41 @@ module.exports = {
         }
 
     },
+
+    getProfile: async (req, res) => {
+        try {
+            let foundWorker = await Worker.findById({ _id: req.params.id})
+            let profile = {
+                id: foundWorker._id,
+                username: foundWorker.username,
+                firstname: foundWorker.firstname,
+                surname: foundWorker.surname,
+                email: foundWorker.email,
+                googleMail: foundWorker.googleMail,
+                church: foundWorker.church,
+                fellowship: foundWorker.fellowship,
+                department: foundWorker.department,
+                prayerGroup: foundWorker.prayerGroup,
+                isLMA: foundWorker.isLMA,
+            }
+            res.render("lma/profileLMA", {profile});
+        } catch (err) {
+            console.log(err);
+        }
+    },
+
+    postProfile: async (req, res) => {
+        try {
+            req.body;
+            let profile = {
+                isLMA: req.body.isLMA,
+            }
+            let foundWorker = await Worker.findOneAndUpdate({ _id: req.params.id }, profile, {new: true})
+            res.redirect("/lma");
+        } catch (err) {
+            console.log(err);
+        }
+    },
 }
  
 // Find all worker under LMA

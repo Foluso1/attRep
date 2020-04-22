@@ -123,7 +123,7 @@ router.post("/mail", async (req, res, next) => {
 
             await user.save();
 
-            async function main() {
+            const main = async () => {
                 let testAccount = await nodemailer.createTestAccount();
 
                 let transporter = nodemailer.createTransport({

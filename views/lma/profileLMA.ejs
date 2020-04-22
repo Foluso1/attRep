@@ -1,0 +1,73 @@
+<% include ../partials/header %>
+</div>
+<section class="container">
+    <div class="row justify-content-center">
+        <div class="m-3 col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light">
+            <h1 class="text-center"><%= profile.firstname %> <%= profile.surname %>'s  Profile</h1>
+            <form class="text-center p-2" action="/lma/<%= profile.id %>/profile/" method="POST">
+                <fieldset class="m-4">
+                    <legend>Login Credentials</legend>
+                    <hr>
+                    <% if(profile.googleMail){ %>
+                        <p>This account is linked to
+                            <span style="color: #4183F1">G</span><span style="color: #EA4335">o</span><span
+                                style="color: #FBBC05">o</span><span style="color: #4183F1">g</span><span
+                                style="color: #34A853">l</span><span style="color: #EA4335">e</span>!
+                        </p>
+                    <% } else { %>
+                        <p>This account is not linked to Google</p>
+                    <% } %>
+
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="username">Username:</label><span class="m-2 text-right"><%= profile.username %></span>
+                    </div>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="firstname">Firstname:</label><span class="m-2 text-right"><%= profile.firstname %></span>
+                    </div>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="surname">Surname:</label><span class="m-2 text-right"><%= profile.surname %></span>
+                    </div>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="email">Email:</label><span
+                            class="m-2 text-right"><%= profile.email %></span>
+                    </div>
+                </fieldset>
+                <fieldset class="m-4">
+                    <legend>Church Details</legend>
+                    <hr>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="church">Church:</label><span class="m-2 text-right"><%= profile.church %></span>
+                    </div>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="fellowship">Fellowship:</label><span class="m-2 text-right"><%= profile.fellowship %></span>
+                    </div>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="department">Department:</label><span class="m-2 text-right"><%= profile.department %></span>
+                    </div>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="prayerGroup">Prayer Group:</label><span class="m-2 text-right"><%= profile.prayerGroup %></span>
+                    </div>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="isLMA">LMA Status</label>
+                        <select name="isLMA" id="isLMA" class="form-control col-6">
+                        <% if(profile.isLMa == "true") { %>
+                            <option class="form-control" value="true">Yes</option>
+                            <option class="form-control" value="false">No</option>
+                        <% } else { %>
+                            <option class="form-control" value="false">No</option>
+                            <option class="form-control" value="true">Yes</option>
+                        <% } %>
+                        </select>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
+                            <input type="submit" value="Update" class="btn btn-md btn-primary btn-block m-2"></input>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+
+        </div>
+    </div>
+</section>
+<% include ../partials/footer %>
