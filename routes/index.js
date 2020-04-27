@@ -133,7 +133,9 @@ router.post("/mail", async (req, res, next) => {
                     auth: {
                         user: process.env.user, // generated ethereal user
                         pass: process.env.pass // generated ethereal password
-                    }
+                    }, 
+                    debug: true, // show debug output
+                    logger: true // log information in console
                 });
                 console.log("user.email", user.email);
                 // send mail with defined transport object
@@ -240,7 +242,9 @@ router.post('/forgot',  async (req, res, next) => {
                         auth: {
                             user: process.env.user, // generated ethereal user
                             pass: process.env.pass // generated ethereal password
-                        }
+                        },
+                        debug: true, // show debug output
+                        logger: true // log information in console
                     });
                     console.log("user.email", user.email);
                     // send mail with defined transport object
@@ -248,18 +252,18 @@ router.post('/forgot',  async (req, res, next) => {
                         // from: '"Foluso Ogunfile String.codePoint(0x1F637) String.codePoint(0x128567) 👻" <no-reply@scc.foz.ng>', // sender address; 0x1F637 is UNICODE CODEPOINT
                         from: `"Report App" <no-reply@foz.ng>`, // sender address; 0x1F637 is UNICODE CODEPOINT
                         to: req.body.email, // list of receivers
-                        subject: 'Report App | Password Change', // Subject line
+                        subject: 'SCC Report App | Password Change', // Subject line
                         text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                             'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
                             'http://' + req.headers.host + '/reset/' + token + '\n\n' +
                             'If you did not request this, please ignore this email and your password will remain unchanged.\n', // plain text body
                         html: `<p>Hello</p>
-                            <p>You are receiving this because you (or someone else) have requested the reset of the password for your account on the Report App.</p>
+                            <p>You are receiving this because you (or someone else) have requested the reset of the password for your account.</p>
                             <p>Please click the button below to change your password.</p>
                             <br>
                             <a style="background-color:rgb(0, 114, 245); border-radius: 4px; text-decoration: none; color: white; padding: 5px 14px; font-size: 12pt;" href="http://${req.headers.host}/reset/${token}">Confirm Mail</a>
                             <br>
-                            <p>If you are did not request this, please ignore this email and the password will not be changed.</p>`
+                            <p>If you did not request this, please ignore this email and the password will not be changed.</p>`
                     });
 
                     console.log("Message sent: %s", info.messageId);
@@ -318,7 +322,9 @@ router.post('/reset/:token', async (req, res) => {
                         auth: {
                             user: process.env.user, // generated ethereal user
                             pass: process.env.pass // generated ethereal password
-                        }
+                        },
+                        debug: true, // show debug output
+                        logger: true // log information in console
                     });
                     // send mail with defined transport object
                     let info = await transporter.sendMail({

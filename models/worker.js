@@ -141,6 +141,11 @@ workerSchema = new mongoose.Schema({
         default: false
     },
 
+    isAdmin: {
+        type: Boolean,
+        default: false,
+    },
+
     linkCount: {
         type: Number,
         default: 0

@@ -20,7 +20,9 @@
                             <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/prayer">Prayer Report</a>
                             <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/prayerChain">Prayer Chain Report</a>
                             <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/lockdown">Stay-Home Report</a>
-                            <a class="del-worker btn btn-sm btn-danger" href="" data-id="<%= foundWorker._id %>" data-name="<%= foundWorker.firstname %> <%= foundWorker.surname %>">Delete Account</a>
+                            <% if( loggedInWorker.isAdmin === true) { %>
+                                <a class="del-worker btn btn-sm btn-danger" href="" data-id="<%= foundWorker._id %>" data-name="<%= foundWorker.firstname %> <%= foundWorker.surname %>">Delete Account</a>
+                            <% } %>
                         </li>
                     </div>
                     <hr>

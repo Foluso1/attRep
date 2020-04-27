@@ -273,6 +273,11 @@ hr {
 
 .notabene {
     font-size: 11pt;
+    color: grey;
+}
+
+.notabene::before {
+    content: "*";
     color: red;
 }
 

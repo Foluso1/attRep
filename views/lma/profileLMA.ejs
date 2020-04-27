@@ -59,6 +59,18 @@
                         <% } %>
                         </select>
                     </div>
+                    <div class="d-flex m-2">
+                        <label class="m-2 float-left" for="isAdmin">Admin Status</label>
+                        <select name="isAdmin" id="isAdmin" class="form-control col-6">
+                            <% if(profile.isAdmin == "true") { %>
+                                <option class="form-control" value="true">Yes</option>
+                                <option class="form-control" value="false">No</option>
+                            <% } else { %>
+                                <option class="form-control" value="false">No</option>
+                                <option class="form-control" value="true">Yes</option>
+                            <% } %>
+                        </select>
+                    </div>
                     <div class="row justify-content-center">
                         <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
                             <input type="submit" value="Update" class="btn btn-md btn-primary btn-block m-2"></input>

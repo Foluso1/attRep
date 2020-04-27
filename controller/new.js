@@ -84,14 +84,14 @@ module.exports = {
                       prayerChain: req.body["prayer-chain"],
                       discipleship: req.body["discipleship"],
                       evangelism: req.body.evangelism,
-                        bibleStudy: [`${req.body["bible-study"][0]}:${req.body["bible-study"][1]}`, req.body["bible-study"][2]],
+                      bibleStudy: [`${req.body["bible-study"][0]}:${req.body["bible-study"][1].toString().padStart(2, "0")}`, req.body["bible-study"][2]],
                       facebook: req.body.facebook,
                       studyGroup: req.body["study-group"],
                       telecast: req.body.telecast,
                       optional: req.body.optional,
                     }),
                   };
-                // let abc = JSON.stringify(obj.data);
+                  console.log(obj);
                 let lockdown = await Lockdown.create(obj);
                 foundWorker.lockdown.push(lockdown);
                 foundWorker.save();
@@ -124,8 +124,15 @@ module.exports = {
             let reportId = req.params.id;
             let foundReport = await Lockdown.findById({ _id: reportId });
             let thisData = JSON.parse(foundReport.data);
-            let regEx = /([0-9]*[0-9]):([0-9][0-9])/;
+            let regEx = /([0-9]*[0-9]):([0-9]*[0-9])/;
             let abc = regEx.exec(thisData.bibleStudy[0]);
+            console.log(thisData.bibleStudy);
+            console.log(thisData.bibleStudy[0]);
+            console.log(abc);
+            if (abc[2] <= 9) {
+                abc[2] = abc[2].slice(1);
+            }
+            console.log("abc[2]", abc[2]);
             thisData.bibleStudy[0] = [abc[1], abc[2]]
             let thisReport = {
                 dateOfReport: foundReport.dateOfReport,
@@ -151,7 +158,7 @@ module.exports = {
                     prayerChain: req.body["prayer-chain"],
                     discipleship: req.body["discipleship"],
                     evangelism: req.body.evangelism,
-                    bibleStudy: [`${req.body["bible-study"][0]}:${req.body["bible-study"][1]}`, req.body["bible-study"][2]],
+                    bibleStudy: [`${req.body["bible-study"][0]}:${req.body["bible-study"][1].toString().padStart(2, "0")}`, req.body["bible-study"][2]],
                     facebook: req.body.facebook,
                     studyGroup: req.body["study-group"],
                     telecast: req.body.telecast,
