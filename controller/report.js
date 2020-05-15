@@ -166,7 +166,6 @@ module.exports = {
 
     deleteReport: (req, res) => {
         thisReportId = req.params.id;
-        console.log(thisReportId)
         Report.findByIdAndRemove({ _id: thisReportId })
         .then((good) => {
             res.json(good);

@@ -38,6 +38,7 @@ router.post("/register", async (req, res) => {
             // password: req.body.password,
             firstname: req.body.firstname.trim(),
             surname: req.body.surname.trim(),
+            email: req.body.email,
             church: req.body.church,
             fellowship: req.body.fellowship,
             department: req.body.department,
@@ -110,7 +111,6 @@ router.put("/profile", middleWare.isLoggedIn, async (req, res) => {
 router.post("/mail", async (req, res, next) => {
     try {
         if (req.body.email === req.body.email2) {
-            console.log(req.body.email);
             let abc = crypto.randomBytes(20);
             let token = abc.toString('hex');
             let user = await Worker.findById({ _id: req.user.id });
@@ -118,7 +118,6 @@ router.post("/mail", async (req, res, next) => {
             user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
             let email = Buffer.from(req.body.email, 'binary').toString('base64');//btoa(req.body.email);
-            console.log("email encoded", email);
             user.emailCheck = email;
 
             await user.save();
@@ -137,7 +136,6 @@ router.post("/mail", async (req, res, next) => {
                     debug: true, // show debug output
                     logger: true // log information in console
                 });
-                console.log("user.email", user.email);
                 // send mail with defined transport object
                 let info = await transporter.sendMail({
                     // from: '"Foluso Ogunfile String.codePoint(0x1F637) String.codePoint(0x128567) 👻" <no-reply@scc.foz.ng>', // sender address; 0x1F637 is UNICODE CODEPOINT
@@ -157,11 +155,11 @@ router.post("/mail", async (req, res, next) => {
                             <p>If you are not ${user.firstname} ${user.surname}, please ignore this email and this email will not be registered.</p>`
                 });
 
-                console.log("Message sent: %s", info.messageId);
+                // console.log("Message sent: %s", info.messageId);
                 // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
                 // Preview only available when sending through an Ethereal account
-                console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+                // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
                 // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
             }
 
@@ -182,9 +180,7 @@ router.post("/mail", async (req, res, next) => {
 router.get("/mail/:token/:email", async (req, res)=>{
     try {
         let email = Buffer.from(req.params.email, 'base64').toString('binary')//atob(req.params.email);
-        console.log("email after decoding", email)
         let foundWorker = await Worker.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } })
-        console.log("Hey here!!!");
         if (!foundWorker || foundWorker.emailCheck !== req.params.email ){
             req.flash('error', 'Email token is invalid or has expired OR the link has been tampered with');
             return res.redirect('/report');
@@ -219,7 +215,6 @@ router.post('/forgot',  async (req, res, next) => {
     try {
         if(req.body.email === req.body.confirm) {
             let givenEmail = req.body.email;
-            console.log(req.body.email);
             let user = await Worker.findOne({email: req.body.email});
             if(!user){
                 req.flash("error", "Email not found");
@@ -246,7 +241,6 @@ router.post('/forgot',  async (req, res, next) => {
                         debug: true, // show debug output
                         logger: true // log information in console
                     });
-                    console.log("user.email", user.email);
                     // send mail with defined transport object
                     let info = await transporter.sendMail({
                         // from: '"Foluso Ogunfile String.codePoint(0x1F637) String.codePoint(0x128567) 👻" <no-reply@scc.foz.ng>', // sender address; 0x1F637 is UNICODE CODEPOINT
@@ -266,11 +260,11 @@ router.post('/forgot',  async (req, res, next) => {
                             <p>If you did not request this, please ignore this email and the password will not be changed.</p>`
                     });
 
-                    console.log("Message sent: %s", info.messageId);
+                    // console.log("Message sent: %s", info.messageId);
                     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
                     // Preview only available when sending through an Ethereal account
-                    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+                    // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
                     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
                 }
 
@@ -310,7 +304,6 @@ router.post('/reset/:token', async (req, res) => {
             foundWorker.resetPasswordExpires = undefined;
 
             await foundWorker.save();
-            console.log("before login");
             req.logIn(foundWorker, () => {
                 async function main() {
                     let testAccount = await nodemailer.createTestAccount();
@@ -337,11 +330,11 @@ router.post('/reset/:token', async (req, res) => {
                         // html: `<b>${req.body.message}</b>` // html body
                     });
 
-                    console.log("Message sent: %s", info.messageId);
+                    // console.log("Message sent: %s", info.messageId);
                     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
                     // Preview only available when sending through an Ethereal account
-                    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+                    // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
                     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
                 }
 

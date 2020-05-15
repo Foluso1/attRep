@@ -233,7 +233,6 @@ module.exports = {
             let currentWorker = req.user.id;
             let ownerStatus;// = ownerId == currentWorker;
 
-            console.log(req.baseUrl, req.originalUrl);
 
             let thisWeekNum = moment().week() - 1;
             let allDayPrayed = [];
@@ -333,7 +332,6 @@ module.exports = {
         try {
             let workerId = req.params.id;
             let baseUrl = req.baseUrl
-            console.log("baseUrl", baseUrl)
             let foundWorker = await Worker.findById({ _id: workerId }).populate({
                 path: "lockdown",
                 options: { sort: { date: -1 }}

@@ -42,8 +42,6 @@ module.exports = {
     },
 
     signInWithGoogle: async (req, res, next) => {
-        console.log("////hey signInWithGoogle")
-        console.log(req.user._id);
         try {
             if (req.user._id) {
                 let worker = { _id: req.user._id }
@@ -70,11 +68,9 @@ module.exports = {
     },
 
     emailCheck: async (req, res, next) => {
-        console.log("emailCheck Middleware");
         try {
             let userId = req.user._id;
             let foundWorker = await Worker.findById({ _id: userId});
-            console.log("foundWorker.email//", foundWorker.email);
             if (!foundWorker.email){
                 res.render("email");
             } else {

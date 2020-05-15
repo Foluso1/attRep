@@ -49,7 +49,6 @@ module.exports = {
     
     postNewReport: async (req, res) => {
         try {
-            console.log(req.body);
             
             // Check if user already has a report for that date
             let dateOfReport = new Date(req.body.date)
@@ -63,14 +62,12 @@ module.exports = {
             // If array isn't empty
             if (allLockdownReports.length >= 1){
             reportCheck = allLockdownReports.reduce((acc, item) => {
-                  console.log(moment(item.dateOfReport).startOf("day")._d.getTime());
                   if (startDateOfReport == moment(item.dateOfReport).startOf("day")._d.getTime()) {
                     return acc = true;
                   } else {
                     return acc = false;
                   }
                 }, false);
-                console.log("reportCheck", reportCheck);
             }
             if (reportCheck == true) {
               req.flash("error", "You have already reported for that day!");
@@ -91,7 +88,6 @@ module.exports = {
                       optional: req.body.optional,
                     }),
                   };
-                  console.log(obj);
                 let lockdown = await Lockdown.create(obj);
                 foundWorker.lockdown.push(lockdown);
                 foundWorker.save();
@@ -109,7 +105,6 @@ module.exports = {
         try {
             lockdownId = req.params.id;
             foundLockdown = await Lockdown.findOneAndRemove({ _id: lockdownId});
-            console.log("DELETED!!!!!")
             req.flash("success", "Deleted successfully!");
             res.redirect("/new/lockdown");
         } catch (e) {
@@ -126,13 +121,9 @@ module.exports = {
             let thisData = JSON.parse(foundReport.data);
             let regEx = /([0-9]*[0-9]):([0-9]*[0-9])/;
             let abc = regEx.exec(thisData.bibleStudy[0]);
-            console.log(thisData.bibleStudy);
-            console.log(thisData.bibleStudy[0]);
-            console.log(abc);
             if (abc[2] <= 9) {
                 abc[2] = abc[2].slice(1);
             }
-            console.log("abc[2]", abc[2]);
             thisData.bibleStudy[0] = [abc[1], abc[2]]
             let thisReport = {
                 dateOfReport: foundReport.dateOfReport,
@@ -166,7 +157,6 @@ module.exports = {
                 }),
             };
             let thisReport = await Lockdown.findByIdAndUpdate({ _id: reportId }, obj, {new: true});
-            console.log(thisReport);
             req.flash("success", "Your edit was submitted successfully");
             res.redirect("/new/lockdown");
         } catch (e) {

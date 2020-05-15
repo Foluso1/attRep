@@ -29,7 +29,7 @@ module.exports = {
             if(ownerId == undefined) {
                 ownerId = req.user.id;
             }
-            console.log(req.baseUrl, req.originalUrl);
+            (req.baseUrl, req.originalUrl);
             let currentWorker = req.user.id;
             let ownerStatus = ownerId == currentWorker;
             let thisWeekNum = moment().week();

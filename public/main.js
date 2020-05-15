@@ -16,6 +16,9 @@ const deleteWorkerButton = document.querySelectorAll(".del-worker")
 const delWorkerBtn = Array.from(deleteWorkerButton);
 const deleteReportButton = document.querySelectorAll(".del-report")
 const delReportBtn = Array.from(deleteReportButton);
+const lockdownNoReport = document.querySelector("#generate-no-report-list");
+const lockdownNoReportCopy = document.querySelector("#copy-no-report-list");
+const textAreaNoReportLockdown = document.querySelector("#list-no-lockdown-reports");
 
 
 // let startOfDay = moment().startOf('day');
@@ -112,7 +115,6 @@ if(deleteReportButton) {
         delOne.addEventListener("click", (e) => {
             e.preventDefault();
             let id = e.target.dataset.id;
-            console.log(id)
             $.ajax({
               type: "DELETE",
               url: "/report/" + id,
@@ -150,12 +152,10 @@ if(prayerTable) {
         e.preventDefault();
         if(Array.from(e.target.classList).includes("prayer-del-btn")){
             let url = e.target.getAttribute("href");
-            console.log(url);
             $.ajax({
                 type: "DELETE",
                 url: url,
                 success: (data) => {
-                    // console.log(data);
                 }
             })
         e.target.parentNode.parentNode.remove();
@@ -189,12 +189,34 @@ if (prayerTable) {
 
 // LMA Lockdown
 if (dateLockdown) {
-    console.log(formLockdown.getAttribute("action"));
     dateLockdown.addEventListener("input", (e)=>{
         let date = e.target.value;
         formLockdown.setAttribute("action", `/lma/lockdown/${date}`);
     })
 }
+
+if (lockdownNoReport) {
+    let table1 = document.querySelector(".allLMALockdown:nth-of-type(2)");
+    let tdArr = Array.from(table1.querySelectorAll("tbody tr td:nth-of-type(2)"));
+    let namesArr = tdArr.map((e) => {
+        return e.innerText;
+    });
+    console.log(namesArr.join(",").replace(/,/gi, "\n"));
+    
+    if (lockdownNoReportCopy) {
+        textAreaNoReportLockdown.innerText = namesArr.join(",").replace(/,/gi, " \n ");
+        lockdownNoReportCopy.addEventListener("click", (e) => {
+            let txtArea = document.querySelector("#list-no-lockdown-reports");
+            txtArea.select();
+            txtArea.setSelectionRange(0, 99999); /*For mobile devices*/
+            document.execCommand("copy");
+        })
+    }
+    // let resu = lockdownNoReportCopy.innerText;
+    // console.log(resu);
+}
+
+
 
 
 $(document).ready(function () {
