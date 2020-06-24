@@ -21,40 +21,10 @@ router.get("/login", (req, res) => {
     res.render("login");
 });
 
-router.get("/register", (req, res) => {
-    res.render("register");
-});
 
-
-router.post("/register", async (req, res) => {
-    try {
-        if (!req.body.username) throw { name: "Error", message: "Please provide your firstname" };
-        if (!req.body.password) throw { name: "Error", message: "Please provide a password" };
-        if (!req.body.surname) throw { name: "Error", message: "Please provide your surname" };
-        if (req.body.password != req.body.password2) throw { name: "Error", message: "Password mismatch. Please, try again!" };
-
-        await Worker.register(new Worker({
-            username: req.body.username.trim(),
-            // password: req.body.password,
-            firstname: req.body.firstname.trim(),
-            surname: req.body.surname.trim(),
-            email: req.body.email,
-            church: req.body.church,
-            fellowship: req.body.fellowship,
-            department: req.body.department,
-            prayerGroup: req.body.prayerGroup
-        }), req.body.password)
-        req.flash("success", "Successfully Registered! Now login");
-        res.redirect("/login");
-    } catch (err) {
-        console.log(err)
-        req.flash("error", err.message);
-        res.redirect("/register");
-    }
-});
 
 router.post("/login", passport.authenticate("local", {
-    successRedirect: "/report",
+    successRedirect: "/validatemail",
     failureRedirect: "/login",
     failureFlash: true
 }), (req, res) => {
@@ -353,6 +323,118 @@ router.post('/reset/:token', async (req, res) => {
         console.log(e);
     }
 });
+
+
+
+////////////////////VALIDATE MAIL///////////////////////
+
+router.get("/validatemail", async (req, res) => {
+    try {
+        let thisUser = await req.user;
+        if (!thisUser.email){
+            req.logOut();
+            res.render("validatemail/regMail", {thisUser});
+        } else {
+            res.redirect("/report")
+        }
+    } catch (e) {
+        console.log(e)
+        req.flash("error", "There was a problem");
+        res.redirect("/login");
+    }
+})
+
+router.post("/validatemail/:id", async (req, res) => {
+    let host = "mail.foz.ng"
+    let email = req.body.email;
+    try {
+        // console.log("req.user 2//", req.user);
+        let foundUser = await Worker.findById({ _id: req.params.id });
+        if (!foundUser) {
+            console.log("user not found!")
+            req.flash("error", "User not found");
+            res.redirect("/login");
+        } else {
+            let token = crypto.randomBytes(20).toString('hex');
+            foundUser.email = email;
+            foundUser.resetPasswordToken = token;
+            foundUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+            await foundUser.save();
+
+            let testAccount = await nodemailer.createTestAccount();
+
+            // create reusable transporter object using the default SMTP transport
+            let transporter = nodemailer.createTransport({
+                host: host,
+                port: 465,
+                secure: true, // true for 465, false for other ports
+                auth: {
+                    user: process.env.user, // generated ethereal user
+                    pass: process.env.pass // generated ethereal password
+                },
+                logger: true, 
+                debug: true,
+            });
+
+            // send mail with defined transport object
+            let info = await transporter.sendMail({
+                from: `"Report App" <no-reply@foz.ng>`, // sender address
+                to: email, // list of receivers
+                subject: 'Report App | Email Validation', // Subject line
+                text: 'This is to validate your account on the Report App.\n\n' +
+                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                    'http://' + req.headers.host + '/validatemailtrue/' + token + '\n\n',
+                html: `<p>Hello</p>
+                        <p>This is to validate your account on the Report App.</p>
+                        <p>Please click the button below to complete the process.</p>
+                        <br>
+                        <a style="background-color:rgb(0, 114, 245); border-radius: 4px; text-decoration: none; color: white; padding: 5px 14px; font-size: 12pt;" href="http://${req.headers.host}/validatemailtrue/${token}">Confirm Mail</a>
+                        <br>`
+            });
+            // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+            console.log("Message sent: %s", info.messageId);
+            res.render("emailSent", {givenEmail: email});
+        }
+    } catch (e) {
+        console.log(e)
+        if (host !== e.hostname && e.hostname !== undefined) {
+            req.flash("error", "There was a problem. Check your network connection");
+            res.send("There was a problem. Check your network connection");
+        } else if (e.hostname === undefined && (e.errno === 'ECONNRESET' || e.errno === 'ETIMEDOUT')) {
+            req.flash("error", "There was a problem. Check your network connection");
+            res.redirect("/validatemail");
+        } else {
+            req.flash("error", "There was a problem. Contact Admin");
+            res.redirect("/validatemail");
+        }
+    }
+})
+
+router.get("/validatemailtrue/:token", async (req, res) => {
+    try {
+        let token = req.params.token
+
+        let foundWorker = await Worker.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
+        if (!foundWorker) {
+            req.flash('error', 'Email token is invalid or has expired.');
+            return res.redirect('validatemail/regMail');
+        }
+
+        foundWorker.resetPasswordToken = undefined;
+        foundWorker.resetPasswordExpires = undefined;
+        await foundWorker.save()
+        req.logIn(foundWorker, () => {
+            req.flash("success", "Email validated successfully")
+            res.redirect("/report");
+        })
+    } catch (e) {
+        console.log(e)
+        req.flash("error", "There was a problem")
+        res.redirect("/report")
+    }
+
+})
+
 
 
 module.exports = router;

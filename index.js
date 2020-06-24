@@ -3,7 +3,6 @@ const       express                 =   require("express")
         ,   app                     =   express()
         ,   db                      =   require("./models")
         ,   Worker                  =   require("./models/worker")
-        // ,   User                    =   require("./models/user")
         ,   GoogleStrategy          =   require('passport-google-oauth').OAuth2Strategy
         ,   flash                   =   require("connect-flash")
         ,   passport                =   require("passport")
@@ -16,6 +15,7 @@ const       express                 =   require("express")
         ,   lmaRouter               =   require("./routes/lma")
         ,   newRouter               =   require("./routes/new")
         ,   indexRouter             =   require("./routes/index")
+        ,   registerRouter          =   require("./routes/registerRoutes")
         ,   methodOverride          =   require("method-override")
         ,   expressSession          =   require("express-session")
         ,   googleRouter            =   require("./routes/auth/google-auth")
@@ -75,6 +75,7 @@ app.use('/new', newRouter);
 app.use('/google', googleRouter);
 app.use('/facebook', facebookRouter);
 app.use('/', indexRouter);
+app.use('/', registerRouter);
 app.use(methodOverride("_method"));
 app.locals.moment = moment; 
 

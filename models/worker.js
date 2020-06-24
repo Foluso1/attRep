@@ -157,6 +157,6 @@ workerSchema = new mongoose.Schema({
     }
 });
 
-workerSchema.plugin(passportLocalMongoose);
+workerSchema.plugin(passportLocalMongoose, { usernameQueryFields: ["email"] });
 
 module.exports = mongoose.model("Worker", workerSchema);

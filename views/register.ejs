@@ -2,10 +2,10 @@
 <section class="container">
     <div class="row justify-content-center">
         <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light">
-            <h1 class="text-center">Create Account</h1>
+            <h1 class="text-center">Complete Registration</h1>
             <h5 class="m-2 text-center">...so, you are able to send your reports</h5>
             <p></p>
-            <form class="text-center" action="/register" method="POST">
+            <form class="text-center" action="/regmail/<%= token %>" method="POST">
                 <fieldset class="m-4">
                     <legend>Login Credentials</legend>
                     <hr>
@@ -23,7 +23,7 @@
                     </div>
                     <div class="d-flex m-2 flex-column align-items-start">
                         <label class="m-2 float-left" for="emai">Email:</label>
-                        <input class="m-1 float-left form-control" type="emai" id="emai" name="emai" placeholder="Email Address" required>
+                        <input class="m-1 float-left form-control" type="email" id="email" name="email" value="<%= email %>" readonly>
                     </div>
                     <div class="d-flex m-2 flex-column align-items-start">
                         <label class="m-2 float-left" for="username">Password:</label>
