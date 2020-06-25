@@ -10,10 +10,15 @@ const reportSchema = new mongoose.Schema({
             ref: 'Disciple'
         }
     ],
+
+    title: {
+        type: String,
+    },
+
     date: {
         type: Date,
         default: Date.now
-    }
+    },
 });
 
 //Model and Export

@@ -218,7 +218,7 @@ module.exports = {
                     month.push(report.date.getMonth() + 1);
                     allDay.push(day);
                 });
-                res.render("report", { reports, dayWeek, month, allDay, foundWorker });
+                res.render("report/report", { reports, dayWeek, month, allDay, foundWorker });
             } catch (e) {
             console.log(e);
             req.flash("Error", "There was a problem")

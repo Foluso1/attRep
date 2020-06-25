@@ -1,4 +1,4 @@
-<% include partials/header %>
+<% include ../partials/header %>
 </div>
 <div class="heading">
     <a class="btn btn-primary btn-sm" href="/disciple/new">Add New Disciple</a>
@@ -9,6 +9,16 @@
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="list-workers">
             <h2>List of <span id="present"></span> Disciples</h2>
+            <div class="form-group d-flex">
+                <label for="title">Report Title:</label>
+                <select name="title" id="title" class="form-control">
+                    <option value="Weekly Discipleship / Evangelism Report">Weekly Discipleship / Evangelism Report</option>
+                    <option value="Sunday Attendance Report">Sunday Attendance Report</option>
+                    <option value="Mid-Week Attendance Report">Mid-Week Attendance Report</option>
+                    <option value="Miscellaneous">Miscellaneous</option>
+                </select>
+            </div>
+            <h2>Title: <%= moment().format("DD-MM-YYYY") %></h2>
             <ol class="list">
                 
             </ol>
@@ -39,4 +49,4 @@
     rows="8"></textarea>
 <button class="btn btn-success" id="copier">Copy Text</button>
 <p></p>
-<% include partials/footer %>
+<% include ../partials/footer %>

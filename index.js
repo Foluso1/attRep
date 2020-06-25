@@ -1,4 +1,4 @@
-require("dotenv").config();
+    require("dotenv").config({ path: `${__dirname}/../../Google\ Drive/Node/attRep.env/.env` });
 const       express                 =   require("express")
         ,   app                     =   express()
         ,   db                      =   require("./models")
@@ -79,6 +79,8 @@ app.use('/', registerRouter);
 app.use(methodOverride("_method"));
 app.locals.moment = moment; 
 
+console.log(__dirname);
+console.log(process.cwd());
 
 app.listen(PORT, IP, () => console.log(`The server is listening at ${PORT}`));
 

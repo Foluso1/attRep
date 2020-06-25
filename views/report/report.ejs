@@ -1,4 +1,4 @@
-<% include partials/header %>
+<% include ../partials/header %>
 
 </div>
 
@@ -9,6 +9,7 @@
             <div>
                 <% let day = dayWeek[i] %>
                 <h3>Report <%= i+1 %></h3>
+                <p><%= moment(reports[i].date).format("DD-MM-YYYY") %></p>
                 <p class="date"><i class="d-flex"><%= allDay[i] %>,&nbsp;&nbsp;<%= reports[i].date.getDate() %>/<%= month[i] %>/<%= reports[i].date.getFullYear() %>&nbsp;&nbsp;<%= reports[i].date.getHours() %>:<%= reports[i].date.getMinutes() %>:<%= reports[i].date.getSeconds() %></i></p>
                 <% let disciples = reports[i].disciples; %>
                 <ol>
@@ -41,4 +42,4 @@
 </main>
 <p></p>
 <p></p>
-<% include partials/footer %>
+<% include ../partials/footer %>
