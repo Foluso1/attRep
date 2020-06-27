@@ -1,0 +1,44 @@
+<% include ./../partials/header %>
+    <a class="btn btn-primary btn-sm" href="/lma/new">Add / Remove Worker</a>
+    <a class="btn btn-primary btn-sm" href="/lma/all">Collective Report</a>
+    <a class="btn btn-primary btn-sm" href="/lma/lockdown/<%= moment().format("YYYY-MM-DD") %> ">Lockdown Reports</a>
+</div>
+
+<main class="row">
+    <div class="col-md-12">
+        <div class="list-workers">
+            <h3></h3>
+            <ol>
+                <% subWorkers.forEach((foundWorker) => { %>
+                <div>
+                    <div class="d-flex">
+                        <li _id="<%= foundWorker._id %>" > <a href="/lma/<%= foundWorker._id %>/profile"><%= foundWorker.firstname %>&nbsp;<%= foundWorker.surname %></a>  
+                            <form action="/lma" method="POST">
+                                <input style="display: none" type="text" name="id" value="<%= foundWorker._id %>" >
+                            </form>
+                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/report">Report</a>
+                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/prayer">Prayer Report</a>
+                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/prayerChain">Prayer Chain Report</a>
+                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/lockdown">Stay-Home Report</a>
+                            <% if( loggedInWorker.isAdmin === true) { %>
+                                <a class="del-worker btn btn-sm btn-danger" href="" data-id="<%= foundWorker._id %>" data-name="<%= foundWorker.firstname %> <%= foundWorker.surname %>">Delete Account</a>
+                            <% } %>
+                        </li>
+                    </div>
+                    <hr>
+                </div>
+                <% });  %>
+            </ol>
+            <div class="col-lg-4 col-md-6 col-sm-8 col-xs-10">
+            </div>
+            <p></p>
+            <hr />
+            <p></p>
+            </br>
+        </div>
+        <p></p>
+    </div>
+</main>
+<p></p>
+<p></p>
+<% include ./../partials/footer %>

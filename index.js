@@ -1,4 +1,4 @@
-    require("dotenv").config({ path: `${__dirname}/../../Google\ Drive/Node/attRep.env/.env` });
+    require("dotenv").config({ path: `${__dirname}/../../Google\ Drive/Node/attRep/.env` });
 const       express                 =   require("express")
         ,   app                     =   express()
         ,   db                      =   require("./models")
