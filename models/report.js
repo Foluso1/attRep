@@ -15,6 +15,14 @@ const reportSchema = new mongoose.Schema({
         type: String,
     },
 
+    for: {
+        type: String,
+    },
+
+    info: {
+        type: String,
+    },
+
     date: {
         type: Date,
         default: Date.now

@@ -7,35 +7,45 @@
 
 <main class="row">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="list-workers">
-            <h2>List of <span id="present"></span> Disciples</h2>
-            <div class="form-group d-flex">
-                <label for="title">Report Title:</label>
-                <select name="title" id="title" class="form-control">
-                    <option value="Weekly Discipleship / Evangelism Report">Weekly Discipleship / Evangelism Report</option>
-                    <option value="Sunday Attendance Report">Sunday Attendance Report</option>
-                    <option value="Mid-Week Attendance Report">Mid-Week Attendance Report</option>
-                    <option value="Miscellaneous">Miscellaneous</option>
-                </select>
+            <div class="list-workers">
+                <h2><i class="fa fa-lg fa-pencil-square-o pr-3" aria-hidden="true"></i>New Report</h2>
+                <p class="notabene">Click on a name in the <a href="#disciples-pane">disciples pane</a> to add to this list OR click on a name here to remove from the list</p>
+                <div class="form-group d-flex form-box">
+                    <label for="title" class="mt-2">Title: </label>
+                    <select name="title" id="title" class="ml-2 scc-form small-text">
+                        <option value="" selected>[No Title]</option>
+                        <option value="Discipleship">Discipleship</option>
+                        <option value="To-be Attendee(s)">To-be Attendee(s)</option>
+                        <option value="Attendee(s)">Attendee(s)</option>
+                    </select>
+                </div>
+                <div class="form-group d-flex form-box">
+                    <label for="for" class="mt-2">For: </label>
+                    <select name="for" id="for" class="ml-2 scc-form small-text">
+                        <option value="Sunday" selected>Sunday</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                    </select>
+                </div>
+                <ol class="list disc-box">
+                    
+                </ol>
             </div>
-            <h2>Title: <%= moment().format("DD-MM-YYYY") %></h2>
-            <ol class="list">
-                
-            </ol>
-        </div>
-        
-        
-        <form action="/report" method="POST">
-            <button class="btn btn-primary" id="export">Submit Report</button>        
+        <form action="/report" method="POST" class="">
+            <button class="btn btn-primary text-center" id="export">Submit Report</button>        
         </form>
         <p></p>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div id="disciples-pane" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="list-workers">
-            <h2>List of All Disciples</h2>
+            <h2>Disciples Pane</h2>
             <ol class="absent">
                 <% allDisciples.forEach((disciple) => { %>
-                    <li class="hoverer hand" id="<%= disciple._id %>"><%= disciple.name %></li>
+                    <li class="hoverer hand scc-form" id="<%= disciple._id %>"><%= disciple.name %></li>
                 <% }); %>
             </ol>
         </div>
@@ -45,7 +55,7 @@
     </div>
 </main>
 <p></p>
-<textarea class="form-control" id="presentWorkers" val="" name="name" placeholder="Present workers appear here"
+<textarea class="form-control" id="info" val="" name="info" placeholder="Additional information"
     rows="8"></textarea>
 <button class="btn btn-success" id="copier">Copy Text</button>
 <p></p>

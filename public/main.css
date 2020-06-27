@@ -233,6 +233,10 @@ only screen and (max-width: 760px),
     color: grey;
 }
 
+.greyed {
+    color: grey;
+}
+
 .no-underline:hover {
     text-decoration: none;
 }
@@ -357,3 +361,34 @@ table.allLMALockdown {
    margin: -10px; 
  }
 
+
+
+
+/* DISCIPLESHIP / REPORT CORNER */
+
+.disc-box{
+    border: 1px solid lightgrey;
+    border-radius: 2px;
+    min-height: 100px;
+    width: 100%;
+    padding: 10px 25px;
+}
+
+.form-box{
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    width: 100%;
+    padding: 0 15px;
+    line-height: 0.7;
+}
+
+select.scc-form, li.scc-form {
+    width: 80%;
+}
+
+.scc-form {
+    padding-left: 10px;
+    border: none;
+    background-color: #F8EEDC;
+    color: black;
+}

@@ -1,5 +1,8 @@
 const route = window.location.pathname;
 
+const info           = document.querySelector("#info");
+const meeting        = document.querySelector("#for");
+const title          = document.querySelector("#title");
 const startTime      = document.querySelector("#starttime" );
 const startPrBtn     = document.querySelector("#startPrBtn");
 const endPrBtn       = document.querySelector("#endPrBtn"  );
@@ -217,6 +220,22 @@ if (lockdownNoReport) {
 }
 
 
+//FOR NEW REPORTS 
+if (title) {
+    title.addEventListener("click", (e) => {
+        if (e.target.value == "Discipleship") {
+            meeting.children[0].value = "The Week";
+            meeting.children[0].innerHTML = "The week";
+            meeting.setAttribute("disabled", "disabled");
+        } else if (meeting.getAttribute("disabled", "disabled")) {
+            meeting.children[0].value = "Sunday";
+            meeting.children[0].innerHTML = "Sunday";
+            meeting.removeAttribute("disabled");
+        }
+    })
+}
+
+
 
 
 $(document).ready(function () {
@@ -371,21 +390,23 @@ function splitText(presWorkers){
 
 function exporter(){
     var idsArray = [];
-    // var _id = {};
+    let list = document.getElementsByClassName("list")[0];   
 
-    let list = document.getElementsByClassName("list")[0];    
     let lister = Array.from(list.children);
     lister.forEach((item) => {
         let ids = item.getAttribute("id");
         objIds = { "_id": ids };
         idsArray.push(objIds);
     });
-    // $.post("/report", {ids: idsArray});
     $.post("/report",
         {
-            ids: idsArray
+            ids: idsArray,
+            title: title.value,
+            for: meeting.value,
+            info: info.value,
         },
         function (data) {
+            console.log("say hello")
             window.location.replace(`${window.location.origin}/report`)
         });
 }

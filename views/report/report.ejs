@@ -7,10 +7,17 @@
         <div class="list-workers">
         <% for(i = reports.length-1; i >= 0; i--){ %>
             <div>
-                <% let day = dayWeek[i] %>
-                <h3>Report <%= i+1 %></h3>
-                <p><%= moment(reports[i].date).format("DD-MM-YYYY") %></p>
-                <p class="date"><i class="d-flex"><%= allDay[i] %>,&nbsp;&nbsp;<%= reports[i].date.getDate() %>/<%= month[i] %>/<%= reports[i].date.getFullYear() %>&nbsp;&nbsp;<%= reports[i].date.getHours() %>:<%= reports[i].date.getMinutes() %>:<%= reports[i].date.getSeconds() %></i></p>
+                <div class="d-flex">
+                    <% let day = dayWeek[i] %>
+                    <% if(reports[i].title == "" || !reports[i].title){ %>
+                        <h3><%= i+1 %> <span class="greyed">[No Title]<span/></h3> 
+                    <% } else { %>
+                        <h3 class="pr-3"><%= i+1 %> </h3>
+                        <h3><%= reports[i].title %><span> for </span><%= reports[i].for %></h3> 
+                    <% } %>
+                </div>
+                <p class="date small-text pl-4"><i class="d-flex"><%= moment(reports[i].date).format('ddd[, ] l[, ] h:mm:ss a') %></i></p>
+                
                 <% let disciples = reports[i].disciples; %>
                 <ol>
                     <% disciples.forEach((disciple) => { %>
@@ -31,6 +38,9 @@
                 </div>
                 <% } %>
                 <p></p>
+                <% if (reports[i].info != "" || !reports[i].info) { %>
+                    <p><%= reports[i].info %></p>
+                <% } %>
                 <hr />
                 <p></p>
                 </br>

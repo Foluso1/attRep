@@ -39,32 +39,40 @@ module.exports = {
         let worker = {
             _id: req.user.id
         }
-        
-        let newReport = await Report.create(new Report)
+
+        console.log(req.body);
+
+        let thisReport = {
+            title: req.body.title,
+            for: req.body.for,
+            info: req.body.info,
+        };
+        console.log("thisReport", thisReport)
+        let newReport = await Report.create(thisReport)
         const ids = req.body.ids;
         
         try {
             const arr = [];
             
             let i = 0;
-            while (!(arr.length === ids.length)) {
-                let id = ids[i];
-                let foundDisciple = await Disciple.findById(id);
-                newReport.disciples.push(foundDisciple);
-                let yesSaved = await newReport.save();
-                // yesSaved;
-                if (yesSaved) {
-                    arr.push("yesSaved");
-                    i++; 
+            if (ids) {
+                while (!(arr.length === ids.length)) {
+                    let id = ids[i];
+                    let foundDisciple = await Disciple.findById(id);
+                    newReport.disciples.push(foundDisciple);
+                    let yesSaved = await newReport.save();
+                    // yesSaved;
+                    if (yesSaved) {
+                        arr.push("yesSaved");
+                        i++; 
+                    }
                 }
             }
-            // if (id) {
+            
             let foundWorker = await Worker.findById(worker);
             foundWorker.reports.push(newReport);
             let savedWorker = await foundWorker.save();
             if (savedWorker) {
-                // I learnt AJAX is designed not to change URL. So, the redirect wont work since AJAX is being used
-                // res.redirect("/report");
                 res.json("Done");
             }
         } catch (error) {
