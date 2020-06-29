@@ -398,17 +398,24 @@ function exporter(){
         objIds = { "_id": ids };
         idsArray.push(objIds);
     });
-    $.post("/report",
-        {
-            ids: idsArray,
-            title: title.value,
-            for: meeting.value,
-            info: info.value,
-        },
-        function (data) {
-            console.log("say hello")
-            window.location.replace(`${window.location.origin}/report`)
-        });
+    if(idsArray && idsArray.length == 0 && info.value == ""){
+        console.log("info", info.value)
+        console.log(idsArray && idsArray.length == 0 && info.value == "")
+        alert ("Empty Report. Please fill in this report");
+        return;
+    } else {
+        $.post("/report",
+            {
+                ids: idsArray,
+                title: title.value,
+                for: meeting.value,
+                info: info.value,
+            },
+            function() {
+                window.location.replace(`${window.location.origin}/report`)
+            }
+        )
+    }
 }
 
 function rmSubWorker(e) {

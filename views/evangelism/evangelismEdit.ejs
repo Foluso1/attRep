@@ -1,0 +1,82 @@
+<% include ../partials/header %>
+</div>
+
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="card p4 col-sm-10 col-md-8 col-lg-8">
+            <h3 class="pt-5 text-center"><b>Evangelism Report</b></h3>
+            <form class="p-4" action="/evangelism/<%= reportId %>?_method=PUT" method="POST">
+
+                <!-- DATE -->
+                <div class="form-group d-inline-flex align-items-center">
+                    <label class="pt-3" for="date">Date:</label>
+                    <input class="ml-2 mt-2 form-control" type="date" name="date" id="date" value="<%= moment(thisReport.dateOnReport).format("YYYY-MM-DD") %>" required>
+                </div>
+                <br>
+
+                <!-- LOCATION -->
+                <div class="form-group pb-3">
+                    <div class="pt-3 align-items-center">
+                        <label for="date">Location:</label>
+                        <input class="m-2 form-control" type="text" name="location" id="location" value="<%= thisReport.data.location %> " required>
+                    </div>
+                    <p class="notabene">Give precise address of where you reached.</p>
+                </div>
+
+                <!-- COUNT -->
+                <fieldset>
+                    <legend><b>A.  Count</b></legend>
+                    <p class=" notabene"> Put '0' if your answer below is none.</p>
+                    <div class="form-group">
+                        <label for="">How many people did you reach?</label>
+                        <input type="number" min="0" name="evangelism" value="<%= thisReport.data.stats[0]%>" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Of those reached, how many ONLY got <b>saved</b> but not filled with the Holy Ghost?</label>
+                        <input type="number" min="0" name="evangelism" value="<%= thisReport.data.stats[1]%>" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Of those reached, how many ONLY got <b>filled with the Holy Ghost</b> but didn't prophesy?</label>
+                        <input type="number" min="0" name="evangelism" value="<%= thisReport.data.stats[2]%>" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Of those reached, how many <b>prophesied</b>?</label>
+                        <input type="number" min="0" name="evangelism" value="<%= thisReport.data.stats[3]%>" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Of those reached, how many got <b>healed</b>?</label>
+                        <input type="number" min="0" name="evangelism" value="<%= thisReport.data.stats[4]%>" class="form-control" required>
+                    </div>
+                </fieldset>
+
+                
+                <fieldset>
+                    <!-- DETAILS -->
+                    <legend class="pt-5"><b>B.  Details</b></legend>
+                    <div class="form-group">
+                        <label for="" class="text-justify">Indicate <b>names</b> of those you reached out to and whether
+                            they got saved, filled or prophesied</label>
+                        <textarea name="details" class="form-control" id="details" cols="10" rows="10" required><%= thisReport.data.details %></textarea>
+                    </div>
+                </fieldset>
+                    
+                    
+                <fieldset>
+                    <!-- HEALING -->
+                    <legend class="pt-5"><b>C.  Healing Cases</b></legend>
+                    <div class="form-group">
+                        <label for="" class="text-justify">Indicate <b>names</b> of people who got healed, their age and how long they have been in that condition</label>
+                        <textarea name="healing" class="form-control" id="healing" cols="10" rows="7"><%= thisReport.data.healing %></textarea>
+                    </div>
+                </fieldset>
+
+                <br>
+
+                <input type="submit" class="mt-4 btn btn-warning">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<% include ../partials/footer %>

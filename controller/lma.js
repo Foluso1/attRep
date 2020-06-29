@@ -218,7 +218,7 @@ module.exports = {
                     month.push(report.date.getMonth() + 1);
                     allDay.push(day);
                 });
-                res.render("report/report", { reports, dayWeek, month, allDay, foundWorker });
+                res.render("lma/report", { reports, dayWeek, month, allDay, foundWorker });
             } catch (e) {
             console.log(e);
             req.flash("Error", "There was a problem")
@@ -390,6 +390,18 @@ module.exports = {
             res.redirect("/lma");
         } catch (err) {
             console.log(err);
+        }
+    },
+
+    getAllWeeklyReports: async (req, res) => {
+        try {
+            let lmaUser = req.user._id;
+            let workersUnder = await Worker.findById({ _id: lmaUser }).workers;
+            for(let i = 0; i < workersUnder.length; i++) {
+                thisWorkerReport = Worker.findworkersUnder[i].reports
+            }
+        } catch (e) {
+            console.log(e)
         }
     },
 }

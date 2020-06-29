@@ -8,6 +8,7 @@ const       express                 =   require("express")
         ,   passport                =   require("passport")
         ,   LocalStrategy           =   require("passport-local").Strategy
         ,   reportRouter            =   require("./routes/report")
+        ,   evangelismRouter        =   require("./routes/evangelismRoute")
         ,   discipleRouter          =   require("./routes/disciple")
         ,   prayerRouter            =   require("./routes/prayer")
         ,   prayerChainRouter       =   require("./routes/prayerChain")
@@ -67,6 +68,7 @@ app.use((req, res, next) => {
 
 app.use(flash());
 app.use('/report', reportRouter);
+app.use('/evangelism', evangelismRouter);
 app.use('/disciple', discipleRouter);
 app.use('/prayer', prayerRouter);
 app.use('/prayerChain', prayerChainRouter);
@@ -80,8 +82,6 @@ app.use(methodOverride("_method"));
 moment.locale("en-gb");
 app.locals.moment = moment; 
 
-console.log(__dirname);
-console.log(process.cwd());
 
 app.listen(PORT, IP, () => console.log(`The server is listening at ${PORT}`));
 

@@ -1,0 +1,90 @@
+<% include ../partials/header %>
+</div>
+
+<div class="container">
+    <div class="row card d-flex justify-content-center">
+            <% if(baseUrl == "/lma"){ %>
+                <h3 class="pt-5 text-center"><b> <%= workerDetails.firstname %> <%= workerDetails.surname %>'s Daily Activity Report</b></h3>
+            <% } else { %>
+                <h3 class="pt-5 text-center"><b>My Evangelism Reports</b></h3>
+            <%}%>
+            <div class="text-center">
+                <% if(baseUrl == "/lma"){ %>
+                    <br>
+                    <p></p>
+                <% } else { %>
+                    <a class="btn btn-sm btn-primary col-sm-6 col-md-4 col-lg-2 my-3" href="/evangelism/new">Write new report</a>
+                <%}%>
+            </div>
+            <div>
+                <table border="1" class="allLockdown" id="evangelismTable" style="overflow-x: auto;">
+                    <thead>
+                        <tr>
+                            <th><b>Date</b></th>
+                            <th><b>Location</b></th>
+                            <th><b>Reached</b></th>
+                            <th><b>Saved</b></th>
+                            <th><b>Filled</b></th>
+                            <th><b>Prophesied</b></th>
+                            <th><b>Healed</b></th>
+                            <th><b>Details</b></th>
+                            <th><b>Healing Cases</b></th>
+                            <% if(baseUrl == "/lma"){ %>
+                            <% } else { %>
+                                <th><b>Delete</b></th>
+                            <%}%>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% evangelismReports.forEach((elem) => { %>
+                        <tr>
+                            <td><%= moment(elem.data.dateOnReport).format("DD-MM-YYYY") %></td>
+                            <td><%= elem.data.location %></td>
+                            <% if(elem.data.stats[0] <= "1"){ %>
+                                <td><%= elem.data.stats[0] %> soul</td>
+                            <% } else { %>
+                                <td><%= elem.data.stats[0] %> souls</td>
+                            <% } %>
+                            <% if(elem.data.stats[1] <= "1"){ %>
+                                <td><%= elem.data.stats[1] %> soul</td>
+                            <% } else { %>
+                                <td><%= elem.data.stats[1] %> souls</td>
+                            <% } %>
+                            <% if(elem.data.stats[2] <= "1"){ %>
+                                <td><%= elem.data.stats[2] %> soul</td>
+                            <% } else { %>
+                                <td><%= elem.data.stats[2] %> souls</td>
+                            <% } %>
+                            <% if(elem.data.stats[3] <= "1"){ %>
+                                <td><%= elem.data.stats[3] %> soul</td>
+                            <% } else { %>
+                                <td><%= elem.data.stats[3] %> souls</td>
+                            <% } %>
+                            <% if(elem.data.stats[4] <= "1"){ %>
+                                <td><%= elem.data.stats[4] %> soul</td>
+                            <% } else { %>
+                                <td><%= elem.data.stats[4] %> souls</td>
+                            <% } %>
+                            <td class="text-paragraphs"><%= elem.data.details %></td>
+                            <td class="text-paragraphs"><%= elem.data.healing %></td>
+                            <% if(baseUrl == "/lma" || (Date.now() - elem.date.getTime()) >= 86400000 ){ %>
+                            <% } else { %>
+                                <td>
+                                    <div class="d-inline-flex">
+                                        <form action="/evangelism/<%= elem.id %>?_method=DELETE" method="POST" class="d-inline-flex mx-2">
+                                            <input type="submit" value="Delete" class="btn btn-sm btn-danger">
+                                        </form>
+                                        <form action="/evangelism/<%= elem.id %>/edit" method="GET" class="d-inline-flex mx-2">
+                                            <input type="submit" value="Edit" class="btn btn-sm btn-warning">
+                                        </form>
+                                    </div>
+                                </td>
+                            <%}%>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+    </div>
+</div>
+<% include ../partials/footer %>

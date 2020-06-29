@@ -5,6 +5,7 @@ const                   mongoose    =   require("mongoose")
         ,   Prayer                  =   require("./prayer")
         ,   PrayerChain             =   require("./prayerChain")
         ,   Lockdown                =   require("./lockdown")
+        ,   Evangelism              =   require("./evangelism")
         ;
 
 workerSchema = new mongoose.Schema({
@@ -133,6 +134,13 @@ workerSchema = new mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Lockdown'
+        }
+    ],
+
+    evangelism: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Evangelism'
         }
     ],
 

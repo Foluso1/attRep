@@ -362,6 +362,21 @@ table.allLMALockdown {
  }
 
 
+ /* EVANGELISM CORNER */
+
+ /* Label the data */
+#evangelismTable td:nth-of-type(1):before { content: "Date"; }
+#evangelismTable td:nth-of-type(2):before { content: "Location"; }
+#evangelismTable td:nth-of-type(3):before { content: "Total Reached"; }
+#evangelismTable td:nth-of-type(4):before { content: "Saved"; }
+#evangelismTable td:nth-of-type(5):before { content: "Filled"; }
+#evangelismTable td:nth-of-type(6):before { content: "Prophesied"; }
+#evangelismTable td:nth-of-type(7):before { content: "Healed"; }
+#evangelismTable td:nth-of-type(8):before { content: "Details"; }
+#evangelismTable td:nth-of-type(9):before { content: "Healing Case"; }
+#evangelismTable td:nth-of-type(10):before { content: "Delete / Edit"; }
+
+
 
 
 /* DISCIPLESHIP / REPORT CORNER */
