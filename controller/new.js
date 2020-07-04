@@ -33,7 +33,7 @@ module.exports = {
         } catch (e) {
             console.log(e);
             req.flash("error", "There was a problem");
-            res.redirect("/report");
+            res.redirect("/home");
         }
     },
 
@@ -134,7 +134,7 @@ module.exports = {
         } catch (e) {
             console.log(e)
             req.flash("error", "There was a problem");
-            res.redirect("/report");
+            res.redirect("/home");
         }
     },
 

@@ -104,6 +104,33 @@ button:not(#report) {
 }
 
 
+
+/* MENU / NAVIGATION */
+
+/* .abc:hover {
+    before:
+} */
+
+.home-link > p {
+    font-size: 14px;
+}
+
+.home-link {
+    color:  #7E6227; 
+}
+
+.home-link:hover {
+    color: #c92f10; ;
+    text-decoration: none;
+    scale: 1.05;
+}
+
+.admin-link:hover {
+    text-decoration: none;
+    scale: 1.05;
+}
+
+
 /* 
 Table Stylings
 */

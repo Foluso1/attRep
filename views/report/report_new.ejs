@@ -8,7 +8,7 @@
 <main class="row">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <div class="list-workers">
-                <h2><i class="fa fa-lg fa-pencil-square-o pr-3" aria-hidden="true"></i>New Report</h2>
+                <h2><i class="fas fa-pen-alt pr-3" aria-hidden="true"></i>New Report</h2>
                 <p class="notabene">Click on a name in the <a href="#disciples-pane">disciples pane</a> to add to this list OR click on a name here to remove from the list</p>
                 <div class="form-group d-flex form-box">
                     <label for="title" class="mt-2">Title: </label>
@@ -41,6 +41,7 @@
     <div id="disciples-pane" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="list-workers">
             <h2>Disciples Pane</h2>
+            <h5><a href="/disciple/new"> <i class="fas fa-plus-circle"></i></a> Add New Disciple</h5>
             <ol class="absent">
                 <% allDisciples.forEach((disciple) => { %>
                     <li class="hoverer hand scc-form" id="<%= disciple._id %>"><%= disciple.name %></li>

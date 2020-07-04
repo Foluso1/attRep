@@ -16,6 +16,36 @@ router.get("/", (req, res) => {
     res.render("index");
 });
 
+router.get("/home", async (req, res) => {
+    try {        
+        let thisUser = await Worker.findById({ _id: req.user.id })
+            .populate({
+                path: "evangelism",
+                options: {sort: {date: -1}, limit: 1}
+            })
+            .populate({
+                path: "prayerReport",
+                options: {sort: {date: -1}, limit: 1}
+            })
+            .populate({
+                path: "prayerChainReport",
+                options: {sort: {date: -1}, limit: 1}
+            })
+            .populate({
+                path: "reports",
+                options: {sort: {date: -1}, limit: 1}
+            });
+        let evangelism = thisUser.evangelism,
+        prayerGroupReport = thisUser.prayerReport,
+        prayerChainReport = thisUser.prayerChainReport,
+        reports = thisUser.reports;
+        let overview = { evangelism, prayerGroupReport, prayerChainReport, reports }
+        res.render("home", overview);
+    } catch (e) {
+        console.log(e)
+    }
+});
+
 router.get("/login", (req, res) => {
     res.render("login");
 });
@@ -136,12 +166,12 @@ router.post("/mail", async (req, res, next) => {
             res.render("emailSent", {givenEmail: req.body.email});
         } else {
             req.flash("error", "Email mismatch!");
-            res.redirect("/report")
+            res.redirect("/home")
         }
     } catch (e) {
         console.log(e);
         req.flash("error", "Something went wrong! Try again or contact the admin");
-        res.redirect("/report")
+        res.redirect("/home")
     }
 });
 
@@ -161,11 +191,13 @@ router.get("/mail/:token/:email", async (req, res)=>{
                 foundWorker.emailCheck = undefined;
                 await foundWorker.save()
                 req.flash("success", `Your email, ${email} has been added successfully. Thank you!`);
-                res.redirect("/report");
+                res.redirect("/home");
             });
         }
     } catch (e) {
         console.log(e)
+        req.flash("error", `Somethign went wrong`);
+        res.redirect("/home");
     }
 })
 
@@ -309,7 +341,7 @@ router.post('/reset/:token', async (req, res) => {
 
                 main().catch(console.error);
                 req.flash("success", "Password changed successfully");
-                res.redirect("/report")
+                res.redirect("/home")
             });
         } else {
             req.flash("error", "Passwords do not match.");
@@ -334,7 +366,7 @@ router.get("/validatemail", async (req, res) => {
             req.logOut();
             res.render("validatemail/regMail", {thisUser});
         } else {
-            res.redirect("/report")
+            res.redirect("/home")
         }
     } catch (e) {
         console.log(e)
@@ -424,12 +456,12 @@ router.get("/validatemailtrue/:token", async (req, res) => {
         await foundWorker.save()
         req.logIn(foundWorker, () => {
             req.flash("success", "Email validated successfully")
-            res.redirect("/report");
+            res.redirect("/home");
         })
     } catch (e) {
         console.log(e)
         req.flash("error", "There was a problem")
-        res.redirect("/report")
+        res.redirect("/home")
     }
 
 })

@@ -18,7 +18,7 @@ module.exports = {
         } catch (err) {
             console.log(err);
             req.flash("error", "There was a problem");
-            res.redirect("/report");
+            res.redirect("/home");
 
         }
     },
@@ -52,7 +52,7 @@ module.exports = {
         } catch (err) {
             console.log(err);
             req.flash("error", "There was a problem!")
-            res.redirect("/report")
+            res.redirect("/home")
         }
     },
 

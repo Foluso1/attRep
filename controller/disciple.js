@@ -11,7 +11,7 @@ module.exports = {
         } catch (e) {
             console.log(e);
             req.flash("error", "There was an error");
-            res.redirect("/report");
+            res.redirect("/home");
         }
     },
 

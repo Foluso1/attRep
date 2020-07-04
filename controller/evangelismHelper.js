@@ -62,7 +62,7 @@ module.exports = {
             let foundWorker =  await Worker.findById({ _id: req.user.id }).populate({ 
                 path: "evangelism",
                 options: {sort: {date: -1}, limit: 10}
-            });
+            });  //last 10 reports
             let lastTenReports = foundWorker.evangelism;
             for(let i = 0; i < lastTenReports.length; i++){
                 if(lastTenReports[i].data == data) {
@@ -85,7 +85,7 @@ module.exports = {
         } catch (error) {
             console.log(error)
             req.flash("error", "Something went wrong");
-            res.redirect("/report");
+            res.redirect("/home");
         }
     },
 
@@ -118,7 +118,7 @@ module.exports = {
         } catch (e) {
             console.log(e)
             req.flash("error", "There was a problem");
-            res.redirect("/report");
+            res.redirect("/home");
         }
     },
 

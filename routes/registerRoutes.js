@@ -137,7 +137,7 @@ router.post("/regmail/:token", async (req, res) => {
         }
         let regNewUser = await Worker.register(userRegister, req.body.password);
         req.logIn(regNewUser, () => {
-            res.redirect("/report");
+            res.redirect("/home");
         });
         foundTempUser.remove();
     } catch (e) {
