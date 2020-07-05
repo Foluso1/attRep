@@ -8,6 +8,7 @@ const       express                 =   require("express")
         ,   passport                =   require("passport")
         ,   LocalStrategy           =   require("passport-local").Strategy
         ,   reportRouter            =   require("./routes/report")
+        ,   attendanceRouter        =   require("./routes/attendanceRoute")
         ,   evangelismRouter        =   require("./routes/evangelismRoute")
         ,   discipleRouter          =   require("./routes/disciple")
         ,   prayerRouter            =   require("./routes/prayer")
@@ -67,6 +68,7 @@ app.use((req, res, next) => {
 })
 
 app.use(flash());
+app.use('/attendance', attendanceRouter);
 app.use('/report', reportRouter);
 app.use('/evangelism', evangelismRouter);
 app.use('/disciple', discipleRouter);

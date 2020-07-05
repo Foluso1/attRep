@@ -1,0 +1,62 @@
+<% include ../partials/header %>
+ 
+        <a class="btn btn-primary btn-sm" href="/disciple/new">Add New Disciple</a>
+</div>    
+
+<div class="heading">
+    <h1>Report <%= index + 1 %></h1>
+</div>
+
+<main class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="list-disciples">
+            <h2>Edit Report</h2>
+            <p class="notabene">Click on a name in the <a href="#disciples-pane">disciples pane</a> to add to this list OR click on a name here to remove from the list</p>
+            <h3><%= thisReport.title %> for <%= thisReport.for %></h3>
+            <ol class="list d-flex flex-column">
+               <% if (thisReport && thisReport.length !== 0) { %>
+                <% let discs = thisReport.disciples; %> <!-- Display all disciples here -->
+                    <% discs.forEach((disc) => { %>
+                        <div class="hoverer d-inline-flex justify-content-between p-1">
+                            <li id="<%= disc._id %>"><%= disc.name %></li>
+                            <form class="disciple-list-remove">
+                                <input style="display: none" type="text" name="id" value="<%= disc._id %>">
+                                <input type="button" value="Remove" class="select btn btn-sm btn-danger" _id="<%= disc._id %>"></input>
+                            </form>
+                        </div>
+                    <% }); %> 
+                <% } %>
+            </ol>
+        </div>
+
+        
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="list-disciples">
+            <h2 id="disciples-pane">Disciples Pane</h2>
+            <ol class="absent d-flex flex-column">
+                <% let allDiscs = thisReport.disciples; %> <!-- Display all disciples here -->
+                <% remDisciples.forEach((disc) => { %>
+                    <div class="hoverer d-inline-flex justify-content-between p-1">
+                        <li id="<%= disc._id %>"><%= disc.name %></li>
+                        <form class="disciple-list">
+                            <input style="display: none" type="text" name="id" value="<%= disc._id %>">
+                            <input type="button" value="Add" class="select btn btn-sm btn-primary" _id="<%= disc._id %>"></input>
+                        </form>
+                    </div>
+                <% }); %>
+            </ol>
+        </div>
+    </div>
+    <div>
+
+    </div>
+</main>
+<p></p>
+<textarea class="form-control" id="info" val="" name="info" placeholder="Present disciples appear here"
+    rows="8"><%= thisReport.info %></textarea>
+<form action="/report" method="POST" class="">
+    <button class="btn btn-primary text-center" id="export">Submit Editted Report</button>        
+</form>
+<p></p>
+<% include ../partials/footer %>

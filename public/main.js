@@ -220,23 +220,6 @@ if (lockdownNoReport) {
 }
 
 
-//FOR NEW REPORTS 
-if (title) {
-    title.addEventListener("click", (e) => {
-        if (e.target.value == "Discipleship") {
-            meeting.children[0].value = "The Week";
-            meeting.children[0].innerHTML = "The week";
-            meeting.setAttribute("disabled", "disabled");
-        } else if (meeting.getAttribute("disabled", "disabled")) {
-            meeting.children[0].value = "Sunday";
-            meeting.children[0].innerHTML = "Sunday";
-            meeting.removeAttribute("disabled");
-        }
-    })
-}
-
-
-
 
 $(document).ready(function () {
 

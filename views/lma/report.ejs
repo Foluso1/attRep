@@ -1,6 +1,5 @@
 <% include ../partials/header %>
 
-</div>
 
 <main class="row">
     <div class="col-md-12">
@@ -26,19 +25,14 @@
                     <% }); %>
                 </ol>
 
-                <% if( foundWorker._id.toString() === loggedInWorker._id.toString() ) { %>
+                <% if( foundWorker._id.toString()) { %>
                 <div class="col-md-12">
-                    <% if (reports[i].info != "") { %>
+                    <% if (reports[i].info) { %>
                         <p class="pl-2">Info: <span class="small-text"><%= reports[i].info %></span></p>
                     <% } %>
                     <% let dateReport = reports[i].date.getTime(); %>
                     <% let date = Date.now(); %>
                     <% let diffDate = date - dateReport; %>
-                    <% if(!(diffDate > 86400000)){ %>
-                        <a class="btn btn-sm btn-primary m-2" href="/report/<%= reports[i]._id %>">View</a>
-                        <a class="btn btn-sm btn-secondary m-2" >Edit</a>
-                        <a class="del-report btn btn-sm btn-danger m-2" href="#" data-id="<%= reports[i]._id %>">Delete</a>
-                    <% }; %>
                 </div>
                 <% } %>
                 <p></p>

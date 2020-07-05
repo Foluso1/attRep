@@ -5,22 +5,22 @@
     <div class="col-md-12">
         <div class="list-workers">
             <div class="text-center p-3">
-                <a class="btn btn-success btn-sm p-2" href="/report/new">New  Report</a>
+                <a class="btn btn-success btn-sm p-2" href="/attendance/new">New  Report</a>
             </div>
-        <% for(i = reports.length-1; i >= 0; i--){ %>
+        <% for(i = attendance.length-1; i >= 0; i--){ %>
             <div>
                 <div class="d-flex">
                     <% let day = dayWeek[i] %>
-                    <% if(reports[i].title == "" || !reports[i].title){ %>
+                    <% if(attendance[i].title == "" || !attendance[i].title){ %>
                         <h3><%= i+1 %> <span class="greyed">[No Title]<span/></h3> 
                     <% } else { %>
                         <h3 class="pr-3"><%= i+1 %> </h3>
-                        <h3><%= reports[i].title %><span> for </span><%= reports[i].for %></h3> 
+                        <h3><%= attendance[i].title %><span> for </span><%= attendance[i].for %></h3> 
                     <% } %>
                 </div>
-                <p class="date small-text pl-4"><i class="d-flex"><%= moment(reports[i].date).format('ddd[, ] l[, ] h:mm:ss a') %> <%= moment(reports[i].date).week() %></i></p>
+                <p class="date small-text pl-4"><i class="d-flex"><%= moment(attendance[i].date).format('ddd[, ] l[, ] h:mm:ss a') %> <%= moment(attendance[i].date).week() %></i></p>
                 
-                <% let disciples = reports[i].disciples; %>
+                <% let disciples = attendance[i].disciples; %>
                 <ol>
                     <% disciples.forEach((disciple) => { %>
                         <li><%= disciple.name %></li>
@@ -29,16 +29,16 @@
 
                 <% if( foundWorker._id.toString() === loggedInWorker._id.toString() ) { %>
                 <div class="col-md-12">
-                    <% if (reports[i].info != "") { %>
-                        <p class="pl-2">Info: <span class="small-text"><%= reports[i].info %></span></p>
+                    <% if (attendance[i].info != "") { %>
+                        <p class="pl-2">Info: <span class="small-text"><%= attendance[i].info %></span></p>
                     <% } %>
-                    <% let dateReport = reports[i].date.getTime(); %>
+                    <% let dateReport = attendance[i].date.getTime(); %>
                     <% let date = Date.now(); %>
                     <% let diffDate = date - dateReport; %>
                     <% if(!(diffDate > 86400000)){ %>
-                        <a class="btn btn-sm btn-primary m-2" href="/report/<%= reports[i]._id %>">View</a>
+                        <a class="btn btn-sm btn-primary m-2" href="/report/<%= attendance[i]._id %>">View</a>
                         <a class="btn btn-sm btn-secondary m-2" >Edit</a>
-                        <a class="del-report btn btn-sm btn-danger m-2" href="#" data-id="<%= reports[i]._id %>">Delete</a>
+                        <a class="del-report btn btn-sm btn-danger m-2" href="#" data-id="<%= attendance[i]._id %>">Delete</a>
                     <% }; %>
                 </div>
                 <% } %>
