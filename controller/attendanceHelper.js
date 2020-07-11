@@ -9,26 +9,14 @@ const   Worker  =   require("../models/worker")
 module.exports = {
     getReports: async (req, res) => {
         try {
-            let worker = {
-              _id: req.user.id
-            };
+            let worker = { _id: req.user.id };
             let foundWorker = await Worker.findById(worker)
-              .populate({ path: "attendance"})
-              .populate({ path: "disciples"})
+              .populate({ path: "attendance", populate: {path: "disciples"} })
+            //   .populate({ path: "disciples"})
               // populate("disciples")
                 let attendance = foundWorker.attendance;
-                let dayWeek = [];
-                let month = [];
-                let arrDay = [ [0, "Sunday"], [1, "Monday"], [2, "Tuesday"], [3, "Wednesday"], [4, "Thursday"], [5, "Friday"], [6, "Saturday"] ];
-                let allDay = [];
-                attendance.forEach(report => {
-                  let j = report.date.getDay();
-                  let reportDay = arrDay[j];
-                  let day = reportDay[1];
-                  month.push(report.date.getMonth() + 1);
-                  allDay.push(day);
-                })
-                res.render("attendance/attendance", { attendance, dayWeek, month, allDay, foundWorker });
+                console.log("attendance", attendance)
+                res.render("attendance/attendance", { attendance, foundWorker });
         } catch (e) {
             console.log(e);
             req.flash("error", "There was a problem");
@@ -71,7 +59,7 @@ module.exports = {
             }
             
             let foundWorker = await Worker.findById(worker);
-            foundWorker.reports.push(newReport);
+            foundWorker.attendance.push(newReport);
             let savedWorker = await foundWorker.save();
             if (savedWorker) {
                 res.json("Done");
@@ -109,7 +97,7 @@ module.exports = {
               .populate("disciples");
             //   .then(foundWorker => {
                 let allDisciples = foundWorker.disciples;
-                let allReports = foundWorker.reports;
+                let allReports = foundWorker.attendance;
                 // Look for the position of this report in the allReports array
                 // Map all ids into an array
                 let idsAllReports = allReports.map(elem => {
@@ -158,9 +146,9 @@ module.exports = {
             _id: req.user.id
         }
         try {
-            let foundWorker = await Worker.findById(worker).populate({ path: 'reports', populate: { path: 'disciples' } });
+            let foundWorker = await Worker.findById(worker).populate({ path: 'attendance', populate: { path: 'disciples' } });
             let thisReport = await Attendance.findById(thisReportId).populate("disciples")
-            let allReports = foundWorker.reports;
+            let allReports = foundWorker.attendance;
             
             let idsAllReports = allReports.map((elem) => {
                 return elem._id;
@@ -237,7 +225,7 @@ module.exports = {
             res.json("added");
             Worker.findById(worker)
             .then((foundWorker) => {
-                foundWorker.reports.push(newReport);
+                foundWorker.attendance.push(newReport);
                 foundWorker.save();
             })
             .catch((err) => {

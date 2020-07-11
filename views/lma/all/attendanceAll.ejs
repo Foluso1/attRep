@@ -1,0 +1,119 @@
+<% include ../../partials/header %>
+
+
+<main class="row">
+    <div class="col-md-12" style="overflow-x:auto;">
+        <br>
+        <h3 class="p-3">All Workers Stay-Home Activity Report</h3>
+        <div class="mx-3">
+            <% if (manyArr.length > 0 && manyArr[0]) { %>
+                <h3>Date: <%= moment(startOfToday).startOf("day").format("DD-MM-YYYY") %> </h3>
+            <% } else { %>
+                <h3>Date: </h3>
+            <% } %>
+            <p>Select a date to query for data</p>
+            <form action="/lma/lockdown/" id="form-lockdown">
+                <div class="d-inline-flex">
+                    <input type="date" name="date-lockdown" id="date-lockdown" class="form-control mx-2">
+                    <input type="submit" class="btn btn-sm btn-secondary mx-2">
+                </div>
+            </form>
+        </div>
+        <p></p>
+        <% if (manyArr.length < 1) { %>
+            <p class="pl-4">Nothing to show here </p>
+        <% } else { %>
+            <table border="1" class="allLMALockdown" id="table-lockdown-one" style="overflow-x: auto;">
+                <thead>
+                    <tr>
+                        <th><b>S/N</b></th>
+                        <th><b>Name</b></th>
+                        <th><b>Title</b></th>
+                        <th><b>For</b></th>
+                        <th><b>Disciples</b></th>
+                        <th><b>Info</b></th>
+                    </tr>
+                </thead>
+                <thead>
+                    
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Total</b></td>
+                        <td><b><%= manyArr.length %></b></td>
+                        <td><b>&nbsp;</b></td>
+                        <td><b>&nbsp;</b></td>
+                        <td><b><%= totalAttendees %></b></td>
+                        <td><b>&nbsp;</b></td>
+                    </tr>
+                    <% manyArr.forEach((elem, i) => { %>
+                        <tr>
+                            <td><%= manyArr.length-i %> </td>
+                            <td><a href="/lma/<%= elem.id %>/attendance"><%= elem['firstname'] %> <%= elem['surname'] %></a></td>
+                            <td><%= elem['title'] %></td>
+                            <td><%= elem['for'] %> </td>
+                            <td>
+                                
+                            </td>
+                            <td><%= elem['info'] %></td>
+                        </tr>
+                        <% elem['disciples'].forEach((item, j) => { %>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <% if ( elem['disciples'].length > 0 ) { %>
+                                            <%= item %>
+                                    <% } else { %>
+                                            0
+                                    <% } %>
+                                </td>
+                                <td></td>
+                            </tr>
+                        <% }); %>
+                        
+                            
+                    <% }); %>
+                </tbody>
+            </table>
+
+            <!-- WORKERS With NO REPORTS YET -->
+            <p></p>
+            <h3>Workers with no Reports Yet</h3>
+            <table border="1" class="allLMALockdown" style="overflow-x: auto;">
+                <thead>
+                    <tr>
+                        <th><b>S/N</b></th>
+                        <th><b>Name</b></th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <th><b>Total</b></th>
+                        <th><b> <%= noReportYet.length %></b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% noReportYet.forEach((elem, i) => { %>
+                    <tr>
+                        <td><%= i+1 %> </td>
+                        <td><a href="/lma/<%= elem.id %>/lockdown"><%= elem['firstname'] %> <%= elem['surname'] %></a></td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>#
+            <p></p>
+            <h3>List of Workers with no Reports</h3>
+            <button id="generate-no-report-list" class="btn btn-sm btn-secondary">Generate List</button>
+            <textarea id="list-no-lockdown-reports" class="form-control text-paragraphs" cols="30" rows="10"></textarea>
+            <button id="copy-no-report-list" class="btn btn-sm btn-secondary">Copy List</button>
+
+        <% } %> 
+        <input value="Export as CSV 2" type="button" onclick="$('#table-lockdown-one').table2CSV({header:['S/N','Worker Name','Title', 'For', 'Disciples', 'Info']})">
+    </div>
+</main>
+<p></p>
+<p></p>
+<% include ../../partials/footer %>

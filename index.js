@@ -1,4 +1,4 @@
-    require("dotenv").config({ path: `${__dirname}/../../Google\ Drive/Node/attRep/.env` });
+require("dotenv").config({ path: `${__dirname}/../../Google\ Drive/Node/attRep/.env` });
 const       express                 =   require("express")
         ,   app                     =   express()
         ,   db                      =   require("./models")
@@ -22,8 +22,7 @@ const       express                 =   require("express")
         ,   expressSession          =   require("express-session")
         ,   googleRouter            =   require("./routes/auth/google-auth")
         ,   facebookRouter          =   require("./routes/auth/facebook-auth")
-        ,   moment                  =   require("moment")
-            ;
+        ,   moment                  =   require("moment");
 
 const PORT = process.env.PORT;
 const IP = process.env.IP;

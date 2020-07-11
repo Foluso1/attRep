@@ -297,7 +297,14 @@ $(document).ready(function () {
 
     $("#export").on("click", function(e){
         e.preventDefault();
-        exporter();
+        let buttonId = "export"
+        exporter(buttonId);
+    })
+
+    $("#export-attendance").on("click", function(e){
+        e.preventDefault();
+        let buttonId = "export-attendance"
+        exporter(buttonId);
     })
 
     $("#copier").on("click", function () {
@@ -371,7 +378,7 @@ function restoreWorker2(worker) {
 function splitText(presWorkers){
 }
 
-function exporter(){
+function exporter(buttonId){
     var idsArray = [];
     let list = document.getElementsByClassName("list")[0];   
 
@@ -387,17 +394,32 @@ function exporter(){
         alert ("Empty Report. Please fill in this report");
         return;
     } else {
-        $.post("/report",
-            {
-                ids: idsArray,
-                title: title.value,
-                for: meeting.value,
-                info: info.value,
-            },
-            function() {
-                window.location.replace(`${window.location.origin}/report`)
-            }
-        )
+        console.log("buttonId", buttonId)
+        if (buttonId == "export") {
+            $.post("/report",
+                {
+                    ids: idsArray,
+                    title: title.value,
+                    for: meeting.value,
+                    info: info.value,
+                },
+                function() {
+                    window.location.replace(`${window.location.origin}/report`)
+                }
+            )
+        } else if (buttonId == "export-attendance") {
+            $.post("/attendance",
+                {
+                    ids: idsArray,
+                    title: title.value,
+                    for: meeting.value,
+                    info: info.value,
+                },
+                function() {
+                    window.location.replace(`${window.location.origin}/attendance`)
+                }
+            )
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 const       express     =   require("express")
-        ,   lmaRouter   =   express.Router()
+        ,   router      =   express.Router()
         ,   Worker      =   require("../models/worker")
         ,   controller  =   require("../controller/lma")
         ,   middleware  =   require("../middleware")
@@ -8,56 +8,77 @@ const       express     =   require("express")
 ;
 
 
-lmaRouter
+router
     .route("/")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getWorkers)
         .post(middleware.isLoggedIn, middleware.isLMA, controller.postWorker)
         .put(middleware.isLoggedIn, middleware.isLMA, controller.editWorker)
         .delete(middleware.isLoggedIn, middleware.isLMA, controller.removeWorker);
 
-lmaRouter
+router
     .route("/all")
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.getAll);
+
+router
+    .route("/all/prayer")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllPrayerReports);
 
-lmaRouter
+router
+    .route("/all/attendance")
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllAttendanceWithDate);
+
+router
+    .route("/attendance/:date")
+    .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllAttendanceWithDate);
+
+
+router
   .route("/lockdown")
   .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllLockdownWithDate);
 
-lmaRouter
+router
     .route("/lockdown/:date")
     .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllLockdownWithDate);
 
-lmaRouter
+router
     .route("/new")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.addRemoveOrDelWorker);
 
-lmaRouter
+router
     .route("/:id/profile")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getProfile)
         .post(middleware.isLoggedIn, middleware.isLMA, controller.postProfile);
 
-lmaRouter
+router
     .route("/:id/prayer")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getPrayerReport);
 
-lmaRouter
+router
     .route("/:id/report")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getDiscipleshipReport);
 
-lmaRouter
+router
+    .route("/:id/evangelism")
+    .get(middleware.isLoggedIn, middleware.isLMA, controller.getEvangelismReport);
+
+router
+    .route("/:id/attendance")
+    .get(middleware.isLoggedIn, middleware.isLMA, controller.getAttendanceReport);
+
+router
     .route("/:id/prayerChain")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getPrayerChainReport)
 
-lmaRouter
+router
     .route("/:id/lockdown")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getOneLockdown)
 
-lmaRouter
+router
     .route("/:id")
         .delete(middleware.isLoggedIn, middleware.isLMA, controller.deleteWorker);
 
 
-module.exports = lmaRouter;
+module.exports = router;
 
 // Do a looop
 // find the worker

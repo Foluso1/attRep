@@ -8,6 +8,11 @@ const       Worker     =       require("../models/worker")
 
 
 module.exports = {
+
+    getAll: (req, res) => {
+        res.render("lma/all/all");
+    },
+
     getWorkers: (req, res) => {
         let currentWorker = req.user.id;
         Worker.findById(currentWorker).populate("workers")
@@ -189,6 +194,87 @@ module.exports = {
         }
     },
 
+    getAllAttendanceWithDate: async (req, res) => {
+        try {
+            let dateForData = req.params.date;
+            let lmaWorkerId = { _id: req.user.id };
+            let foundWorker = await Worker.findById(lmaWorkerId).populate("workers");
+            let workersUnder = foundWorker.workers;
+            let startOfToday = 0;
+            console.log("dateForData", dateForData)
+            if (!dateForData) {
+                startOfToday = moment().startOf('day')._d.getTime();
+            } else {
+                startOfToday = moment(dateForData).startOf("day")._d.getTime();
+            }
+            console.log(startOfToday)
+            let manyArr = [];
+            let noReportYet = [];
+            let disciples = [];
+            let totalAttendees = 0;
+            for(let i = 0; i < workersUnder.length; i++) {
+                if(workersUnder.length > 0 && workersUnder[i].attendance.length > 0){
+                    let isReportToday = false;
+                    let thisWorker = await Worker.findById({ _id: workersUnder[i].id }).populate( {path: "attendance", populate: { path: "disciples"}});
+                    if (thisWorker.attendance.length > 0) {
+                        let attendanceArr = thisWorker.attendance;
+                        console.log("attendanceArr", attendanceArr)
+                        attendanceArr.filter( (item) => {
+                            let thisDay = moment(item.dateOfReport).startOf("day")._d.getTime();
+                            if (startOfToday == thisDay) {
+                                isReportToday = true;
+                                let abc = { 
+                                    date: item.date,
+                                    id: thisWorker.id,
+                                    firstname: thisWorker.firstname,
+                                    surname: thisWorker.surname,
+                                    title: item.title, 
+                                    for: item.for, 
+                                    info: item.info, 
+                                    disciples: disciples = item.disciples.map((each) => {
+                                        return each.name;
+                                    }),
+                                    totalAttendees: totalAttendees = (totalAttendees + item.disciples.length),
+                                }
+                                manyArr.push(abc)
+                            } 
+                        });
+                        if(!isReportToday) {
+                            let abc = {
+                                id: thisWorker.id,
+                                firstname: thisWorker.firstname,
+                                surname: thisWorker.surname,
+                            }
+                            noReportYet.push(abc);
+                        }
+                    } else {
+                        let abc = {
+                            id: thisWorker.id,
+                            firstname: thisWorker.firstname,
+                            surname: thisWorker.surname,
+                        }
+                        noReportYet.push(abc);
+                    }
+                } else if (workersUnder[i]) {
+                    let thisWorker = await Worker.findById({ _id: workersUnder[i].id });
+                    let abc = {
+                        id: thisWorker.id,
+                        firstname: thisWorker.firstname,
+                        surname: thisWorker.surname,
+                    }
+                    noReportYet.push(abc);
+                }
+            }
+            manyArr.sort((a, b) => {
+                return b.date.getTime() - a.date.getTime();
+            });
+            console.log("manyArr", manyArr, "totalAttendees", totalAttendees)
+            res.render("lma/all/attendanceAll", { manyArr, startOfToday, totalAttendees, noReportYet });
+        } catch (e) {
+            console.log(e)
+        }
+    },
+
     deleteWorker: async (req, res) => {
         try {
             let id = req.params.id
@@ -227,12 +313,71 @@ module.exports = {
         
     },
 
+    getEvangelismReport: async (req, res) => {
+        try {
+              let worker = {
+                _id: req.params.id
+              };
+              let foundWorker = await Worker.findById(worker)
+                .populate({ path: "evangelism", populate: { path: "disciples" } })
+                  let evangelismR = foundWorker.evangelism;
+                  let dayWeek = [];
+                  let month = [];
+                  let arrDay = [ [0, "Sunday"], [1, "Monday"], [2, "Tuesday"], [3, "Wednesday"], [4, "Thursday"], [5, "Friday"], [6, "Saturday"] ];
+                let allDay = [];
+
+                let evangelism = evangelismR.map((item)=>{
+                    return {
+                        id: item._id, 
+                        userId: foundWorker._id,
+                        firstname: foundWorker.firstname,
+                        surname: foundWorker.surname,
+                        date: item.date, //Time of report creation
+                        dateOnReport: moment(item.dateOnReport).format('DD/MM/YYYY'),  //Time stated on report by user
+                        data: JSON.parse(item.data)
+                    }
+                });
+                res.render("lma/evangelism", { evangelism, dayWeek, month, allDay, foundWorker });
+            } catch (e) {
+            console.log(e);
+            req.flash("Error", "There was a problem")
+            res.redirect("/lma");
+        }
+        
+    },
+
+    getAttendanceReport: async (req, res) => {
+        try {
+              let worker = {
+                _id: req.params.id
+              };
+              let foundWorker = await Worker.findById(worker)
+                .populate({ path: "attendance", populate: { path: "disciples" } })
+                  let attendance = foundWorker.attendance;
+                  let dayWeek = [];
+                  let month = [];
+                  let arrDay = [ [0, "Sunday"], [1, "Monday"], [2, "Tuesday"], [3, "Wednesday"], [4, "Thursday"], [5, "Friday"], [6, "Saturday"] ];
+                let allDay = [];
+                attendance.forEach(report => {
+                    let j = report.date.getDay();
+                    let reportDay = arrDay[j];
+                    let day = reportDay[1];
+                    month.push(report.date.getMonth() + 1);
+                    allDay.push(day);
+                });
+                res.render("lma/attendance", { attendance, dayWeek, month, allDay, foundWorker });
+            } catch (e) {
+            console.log(e);
+            req.flash("Error", "There was a problem")
+            res.redirect("/lma");
+        }
+    },
+
     getPrayerChainReport: async (req, res) => {
         try {
             let ownerId = req.params.id;
             let currentWorker = req.user.id;
             let ownerStatus;// = ownerId == currentWorker;
-
 
             let thisWeekNum = moment().week() - 1;
             let allDayPrayed = [];
