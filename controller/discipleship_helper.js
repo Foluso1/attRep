@@ -1,6 +1,6 @@
 const   Worker  =   require("../models/worker")
     ,   Disciple  =   require("../models/disciple")
-    ,   Report  =   require("../models/report")
+    ,   Report  =   require("../models/discipleship_model")
     , flash = require("connect-flash")
     ;
 
@@ -27,7 +27,7 @@ module.exports = {
                   month.push(report.date.getMonth() + 1);
                   allDay.push(day);
                 })
-                res.render("report/report", { reports, dayWeek, month, allDay, foundWorker });
+                res.render("discipleship/discipleship", { reports, dayWeek, month, allDay, foundWorker });
         } catch (e) {
             console.log(e);
             req.flash("error", "There was a problem");
@@ -89,7 +89,7 @@ module.exports = {
         Worker.findById(worker).populate("disciples")
             .then((thisWorker) => {
                 let allDisciples = thisWorker.disciples
-                res.render("report/report_new", { allDisciples });
+                res.render("discipleship/discipleship_new", { allDisciples });
             })
             .catch((err) => {
                 console.log(err);
@@ -142,7 +142,7 @@ module.exports = {
                         idsAllDisciples.splice(i, 1);
                       });
                     }
-                    res.render("report/report_edit", { thisReport, remDisciples, thisReportId, index, foundWorker });
+                    res.render("discipleship/discipleship_edit", { thisReport, remDisciples, thisReportId, index, foundWorker });
         } catch (e) {
             console.log(e)
         }
@@ -166,7 +166,7 @@ module.exports = {
             })
             // Look for position of thisReportId in that array
             let index = idsAllReports.indexOf(thisReportId);
-            res.render("report/report_one", { thisReport, thisReportId, index });            
+            res.render("discipleship/discipleship_one", { thisReport, thisReportId, index });            
         } catch (error) {
             console.log(err);
         }

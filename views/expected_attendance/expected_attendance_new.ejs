@@ -2,7 +2,7 @@
 </div>
 <div class="heading">
     <a class="btn btn-primary btn-sm" href="/disciple/new">Add New Disciple</a>
-    <a class="btn btn-success btn-sm" href="/discipleship">Back to All Reports</a>
+    <a class="btn btn-success btn-sm" href="/expected">Back to All Reports</a>
 </div>
 
 <main class="row">
@@ -13,7 +13,7 @@
                 <div class="form-group d-flex form-box">
                     <label for="title" class="mt-2">Title: </label>
                     <select name="title" id="title" class="ml-2 scc-form small-text">
-                        <option value="Attendee(s)">Attendee(s)</option>
+                        <option value="Expected Attendee(s)">Expected Attendee(s)</option>
                     </select>
                 </div>
                 <div class="form-group d-flex form-box">
@@ -38,7 +38,8 @@
     <div id="disciples-pane" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="list-workers">
             <h2>Disciples Pane</h2>
-            <h5><a href="/disciple/new"> <i class="fas fa-plus-circle"></i></a> Add New Disciple</h5>
+            <i></i>
+            <h5><a class="hoverer hand" href="/disciple/new"><i class="fas fa-user-plus"></i> Add New Disciple</a> <span class="notabene">(Adds new disciple to this list)</span></h5>
             <ol class="absent">
                 <% allDisciples.forEach((disciple) => { %>
                     <li class="hoverer hand scc-form" id="<%= disciple._id %>"><%= disciple.name %></li>
@@ -53,8 +54,8 @@
 <p></p>
 <textarea class="form-control" id="info" val="" name="info" placeholder="Additional information"
     rows="8"></textarea>
-    <form action="/attendance" method="POST" class="">
-        <button class="btn btn-primary text-center" id="export-attendance">Submit Report</button>        
+    <form action="/expected" method="POST" class="">
+        <button class="btn btn-primary text-center" id="export-expected-attendance">Submit Report</button>        
     </form>
 <p></p>
 <% include ../partials/footer %>

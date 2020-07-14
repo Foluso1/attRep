@@ -1,6 +1,6 @@
 const   Worker      =   require("../models/worker")
     ,   Disciple    =   require("../models/disciple")
-    ,   Report      =   require("../models/report")
+    ,   Report      =   require("../models/discipleship_model")
     ,   flash       =   require("connect-flash")
     ,   Lockdown    =   require("../models/lockdown")
     ,   moment      =   require("moment")
@@ -43,7 +43,7 @@ module.exports = {
         } catch (e) {
             console.log(e);
             req.flash("error", "There was a problem!");
-            res.render("/report");
+            res.render("/discipleship");
         }
     },
     
@@ -110,7 +110,7 @@ module.exports = {
         } catch (e) {
             console.log(e);
             req.flash("error", "There was a problem!");
-            res.render("/report");
+            res.render("/discipleship");
         }
     },
 

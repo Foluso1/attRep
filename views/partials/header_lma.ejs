@@ -49,15 +49,26 @@
         </div>
     <% if(loggedInWorker) { %>
         <div class="d-flex heading row justify-content-around">
-            <a class="text-center col-lg col-md col-sm-3 col-4 home-link m-1" href="/discipleship/"><i class="fas fa-2x fa-user-friends"></i><p>Discipleship</p></a>
-            <a class="text-center col-lg col-md col-sm-3 col-4 home-link m-1" href="/attendance/"><i class="fas fa-2x fa-handshake"></i><p>Attendance</p></a>
-            <a class="text-center col-lg col-md col-sm-3 col-4 home-link m-1" href="/expected/"><i class="fas fa-2x fa-handshake"></i><p>Expected Attendance</p></a>
-            <a class="text-center col-lg col-md col-sm-3 col-4 home-link m-1" href="/evangelism"><i class="fas fa-2x fa-globe-africa"></i><p>Evangelism</p></a>
-            <a class="text-center col-lg col-md col-sm-3 col-4 home-link m-1" href="/prayer"><i class="fas fa-2x fa-praying-hands"></i><p>Prayer Group</p></a>
-            <a class="text-center col-lg col-md col-sm-3 col-4 home-link m-1" href="/prayerchain"><i class="fas fa-2x fa-pray"></i><p>Prayer Chain</p></a>
-            <a class="text-center col-lg col-md col-sm-3 col-4 home-link m-1" href="/new/lockdown"><i class="fas fa-2x fa-house-user"></i><p>Stay-Home</p></a>
-    <% if(loggedInWorker.isLMA) { %>
-            <a class="text-center col-lg col-md col-sm-3 home-link m-1" href="/lma"><i class="fas fa-2x fa-users-cog"></i><p>LMA Admin</p></a>
-        <% } %>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/discipleship/"><i class="fas fa-2x fa-user-friends"></i><p>Discipleship</p></a>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/attendance/"><i class="fas fa-2x fa-handshake"></i><p>Attendance</p></a>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/expected/"><i class="fas fa-2x fa-map-marker-alt"></i><p>Expected Attendance</p></a>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/evangelism"><i class="fas fa-2x fa-globe-africa"></i><p>Evangelism</p></a>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/prayer"><i class="fas fa-2x fa-praying-hands"></i><p>Prayer Group</p></a>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/prayerchain"><i class="fas fa-2x fa-pray"></i><p>Prayer Chain</p></a>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/new/lockdown"><i class="fas fa-2x fa-house-user"></i><p>Stay-Home</p></a>
         </div>
+    
+    <% if(loggedInWorker.isLMA) { %>
+        <div class="d-flex heading row justify-content-around">
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/lma"><i class="fas fa-2x fa-users-cog"></i><p>LMA Admin</p></a>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/lma/all/discipleship"><i class="fas fa-2x fa-user-friends"></i><p>All Discipleship</p></a>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/lma/all/attendance"><i class="fas fa-2x fa-handshake"></i><p>All Attendance</p></a>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/lma/all/expected/"><i class="fas fa-2x fa-map-marker-alt"></i><p>All Expected</p></a>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/lma/all/evangelism"><i class="fas fa-2x fa-globe-africa"></i><p>All Evangelism</p></a>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/lma/all/prayer"><i class="fas fa-2x fa-praying-hands"></i><p>All Prayer Group</p></a>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/lma/all/prayerchain"><i class="fas fa-2x fa-pray"></i><p>All Prayer Chain</p></a>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/lma/lockdown"><i class="fas fa-2x fa-house-user"></i><p>All Stay-Home</p></a>
+            <a class="text-center col-lg col-md col-sm-3 col-2 home-link m-1" href="/lma/new"><i class="fas fa-2x fa-exchange-alt"></i><p>Add / Remove Worker</p></a>
+        </div>
+        <% } %>
     <% } %>

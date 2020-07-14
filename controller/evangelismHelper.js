@@ -1,6 +1,6 @@
 const   Worker  =   require("../models/worker")
     ,   Disciple  =   require("../models/disciple")
-    ,   Report  =   require("../models/report")
+    ,   Report  =   require("../models/discipleship_model")
     ,   Evangelism  =   require("../models/evangelism")
     ,   flash = require("connect-flash")
     ,   moment      =   require("moment")
@@ -44,7 +44,7 @@ module.exports = {
         } catch (e) {
             console.log(e);
             req.flash("error", "There was a problem!");
-            res.render("/report");
+            res.render("/discipleship");
         }
     },
     
@@ -98,7 +98,7 @@ module.exports = {
         } catch (e) {
             console.log(e);
             req.flash("error", "There was a problem!");
-            res.render("/report");
+            res.render("/discipleship");
         }
     },
 

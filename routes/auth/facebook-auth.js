@@ -55,7 +55,7 @@ facebookRouter.get('/auth/facebook/callback',
                     req.flash("error", "Sorry, your account is not linked with facebook. Please, try another login method")
                     res.redirect("/login");
                 } else {
-                    res.redirect('/report');
+                    res.redirect('/discipleship');
                 }
             }
         } catch (err) {

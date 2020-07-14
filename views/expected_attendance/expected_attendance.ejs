@@ -1,0 +1,57 @@
+<% include ../partials/header %>
+
+
+<main class="row">
+    <div class="col-md-12">
+        <div class="list-workers">
+            <div class="text-center p-3">
+                <a class="btn btn-success btn-sm p-2" href="/expected/new">New Report</a>
+            </div>
+        <% for(i = expected_attendance.length-1; i >= 0; i--){ %>
+            <div>
+                <div class="d-flex">
+                    <% if(expected_attendance[i].title == "" || !expected_attendance[i].title){ %>
+                        <h3><%= i+1 %> <span class="greyed">[No Title]</span></h3> 
+                    <% } else { %>
+                        <h3 class="pr-3"><%= i+1 %> </h3>
+                        <h3><%= expected_attendance[i].title %><span> for </span><%= expected_attendance[i].for %></h3> 
+                    <% } %>
+                </div>
+                <p class="date small-text pl-4"><i class="d-flex"><%= moment(expected_attendance[i].date).format('ddd[, ] l[, ] h:mm:ss a') %> <%= moment(expected_attendance[i].date).week() %></i></p>
+                
+                <% let disciples = expected_attendance[i].disciples; %>
+                <ol>
+                    <% disciples.forEach((disciple) => { %>
+                        <li><%= disciple.name %></li>
+                    <% }); %>
+                </ol>
+
+                <% if( foundWorker._id.toString() === loggedInWorker._id.toString() ) { %>
+                <div class="col-md-12">
+                    <% if (expected_attendance[i].info != "") { %>
+                        <p class="pl-2">Info: <span class="small-text"><%= expected_attendance[i].info %></span></p>
+                    <% } %>
+                    <% let dateReport = expected_attendance[i].date.getTime(); %>
+                    <% let date = Date.now(); %>
+                    <% let diffDate = date - dateReport; %>
+                    <% if(!(diffDate > 86400000)){ %>
+                        <a class="btn btn-sm btn-primary m-2" href="/expected/<%= expected_attendance[i]._id %>">View</a>
+                        <a class="btn btn-sm btn-secondary m-2" >Edit</a>
+                        <a class="del-attendance btn btn-sm btn-danger m-2" href="#" data-id="<%= expected_attendance[i]._id %>">Delete</a>
+                    <% }; %>
+                </div>
+                <% } %>
+                <p></p>
+                
+                <hr />
+                <p></p>
+                </br>
+            </div>
+        <% } %>
+        </div>
+        <p></p>
+    </div>
+</main>
+<p></p>
+<p></p>
+<% include ../partials/footer %>

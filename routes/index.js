@@ -46,6 +46,15 @@ router.get("/home", async (req, res) => {
     }
 });
 
+router.get("/discipleship", (req, res) => {
+    res.redirect("/discipleship")
+})
+
+router.get("/discipleship/:id", (req, res) => {
+    let id = req.params.id
+    res.redirect(`/discipleship/${id}`)
+})
+
 router.get("/login", (req, res) => {
     res.render("login");
 });
@@ -182,7 +191,7 @@ router.get("/mail/:token/:email", async (req, res)=>{
         let foundWorker = await Worker.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } })
         if (!foundWorker || foundWorker.emailCheck !== req.params.email ){
             req.flash('error', 'Email token is invalid or has expired OR the link has been tampered with');
-            return res.redirect('/report');
+            return res.redirect('/discipleship');
         } else {
             req.logIn(foundWorker, async () => {
                 foundWorker.email = email;

@@ -1,8 +1,4 @@
-<% include ./../partials/header %>
-    <a class="btn btn-primary btn-sm" href="/lma/new">Add / Remove Worker</a>
-    <a class="btn btn-primary btn-sm" href="/lma/all">Collective Report</a>
-    <a class="btn btn-primary btn-sm" href="/lma/lockdown/<%= moment().format("YYYY-MM-DD") %> ">Lockdown Reports</a>
-</div>
+<% include ./../partials/header_lma %>
 
 <main class="row">
     <div class="col-md-12">
@@ -16,12 +12,13 @@
                             <form action="/lma" method="POST">
                                 <input style="display: none" type="text" name="id" value="<%= foundWorker._id %>" >
                             </form>
-                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/report">Report</a>
-                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/prayer">Prayer Report</a>
-                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/evangelism">Evangelism Report</a>
-                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/prayerChain">Prayer Chain Report</a>
-                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/lockdown">Stay-Home Report</a>
-                            <% if( loggedInWorker.isAdmin === true) { %>
+                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/discipleship">Discipleship</a>
+                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/attendance">Attendance</a>
+                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/prayer">Prayer Group</a>
+                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/evangelism">Evangelism</a>
+                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/prayerChain">Prayer Chain</a>
+                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/lockdown">Stay-Home</a>
+                            <% if( loggedInWorker.isAdmin == true ) { %>
                                 <a class="del-worker btn btn-sm btn-danger" href="" data-id="<%= foundWorker._id %>" data-name="<%= foundWorker.firstname %> <%= foundWorker.surname %>">Delete Account</a>
                             <% } %>
                         </li>

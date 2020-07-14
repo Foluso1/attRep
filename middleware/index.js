@@ -1,6 +1,6 @@
 const Worker = require("../models/worker")
     , Disciple = require("../models/disciple")
-    , Report = require("../models/report")
+    , Report = require("../models/discipleship_model")
     , flash = require("connect-flash")
     ;
     

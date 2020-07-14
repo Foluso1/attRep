@@ -28,7 +28,7 @@ module.exports = {
             foundWorker.disciples.push(disc1);
             foundWorker.save();
             req.flash("success", `${req.body.name} has been added successfully!`);
-            res.redirect("/report/new");
+            res.redirect("/discipleship/new");
         } catch (error) {
             console.log(error);
         }
@@ -37,7 +37,7 @@ module.exports = {
     createNewDiscple: async (req, res) => {
         try {
              foundWorker = await Worker.findById(req.user._id);
-             res.render("new", {foundWorker});
+             res.render("disciple/disciple_new", {foundWorker});
         } catch (e) {
             console.log(e)
         }

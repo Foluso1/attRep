@@ -54,7 +54,7 @@ router
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getPrayerReport);
 
 router
-    .route("/:id/report")
+    .route("/:id/discipleship")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getDiscipleshipReport);
 
 router

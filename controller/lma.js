@@ -21,6 +21,13 @@ module.exports = {
             subWorkers.forEach((foundworker) => {
                 foundworker.password = undefined;
             })
+            subWorkers.sort((a, b) => {
+                if (a.firstname.toUpperCase() < b.firstname.toUpperCase()) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            });
             res.render("lma/lma", { subWorkers });
         })
         .catch((err) => {
@@ -211,6 +218,7 @@ module.exports = {
             let manyArr = [];
             let noReportYet = [];
             let disciples = [];
+            let noReportNames = "";
             let totalAttendees = 0;
             for(let i = 0; i < workersUnder.length; i++) {
                 if(workersUnder.length > 0 && workersUnder[i].attendance.length > 0){
@@ -246,6 +254,7 @@ module.exports = {
                                 surname: thisWorker.surname,
                             }
                             noReportYet.push(abc);
+                            noReportNames = noReportNames + `${thisWorker.firstname} ${thisWorker.surname} \n`;
                         }
                     } else {
                         let abc = {
@@ -254,6 +263,7 @@ module.exports = {
                             surname: thisWorker.surname,
                         }
                         noReportYet.push(abc);
+                        noReportNames = noReportNames + `${thisWorker.firstname} ${thisWorker.surname} \n`;
                     }
                 } else if (workersUnder[i]) {
                     let thisWorker = await Worker.findById({ _id: workersUnder[i].id });
@@ -263,13 +273,14 @@ module.exports = {
                         surname: thisWorker.surname,
                     }
                     noReportYet.push(abc);
+                    noReportNames = noReportNames + `${thisWorker.firstname} ${thisWorker.surname} \n`;
                 }
             }
             manyArr.sort((a, b) => {
                 return b.date.getTime() - a.date.getTime();
             });
-            console.log("manyArr", manyArr, "totalAttendees", totalAttendees)
-            res.render("lma/all/attendanceAll", { manyArr, startOfToday, totalAttendees, noReportYet });
+            console.log("noReportNames", noReportNames)
+            res.render("lma/all/attendanceAll", { manyArr, startOfToday, noReportNames, totalAttendees, noReportYet });
         } catch (e) {
             console.log(e)
         }
@@ -304,7 +315,7 @@ module.exports = {
                     month.push(report.date.getMonth() + 1);
                     allDay.push(day);
                 });
-                res.render("lma/report", { reports, dayWeek, month, allDay, foundWorker });
+                res.render("lma/discipleship", { reports, dayWeek, month, allDay, foundWorker });
             } catch (e) {
             console.log(e);
             req.flash("Error", "There was a problem")
@@ -415,6 +426,7 @@ module.exports = {
             }
             let manyArr = [];
             let noReportYet = [];
+            let noReportNames = "";
             for(let i = 0; i < workersUnder.length; i++) {
                 if(workersUnder.length > 0 && workersUnder[i].lockdown.length > 0){
                     let isReportToday = false;
@@ -443,6 +455,7 @@ module.exports = {
                                 surname: thisWorker.surname,
                             }
                             noReportYet.push(abc);
+                            noReportNames = noReportNames + `${thisWorker.firstname} ${thisWorker.surname} \n`;
                         }
                     } else {
                         let abc = {
@@ -451,6 +464,7 @@ module.exports = {
                             surname: thisWorker.surname,
                         }
                         noReportYet.push(abc);
+                        noReportNames = noReportNames + `${thisWorker.firstname} ${thisWorker.surname} \n`;
                     }
                 } else if (workersUnder[i]) {
                     let thisWorker = await Worker.findById({ _id: workersUnder[i].id });
@@ -460,6 +474,7 @@ module.exports = {
                         surname: thisWorker.surname,
                     }
                     noReportYet.push(abc);
+                    noReportNames = noReportNames + `${thisWorker.firstname} ${thisWorker.surname} \n`;
                 }
             }
             manyArr.sort((a, b) => {

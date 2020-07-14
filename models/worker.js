@@ -1,7 +1,7 @@
 const                   mongoose    =   require("mongoose")
         ,   passportLocalMongoose   =   require("passport-local-mongoose")
-        ,   Report                  =   require("./report")
-        ,   Attendance              =   require("./attendanceModel")
+        ,   Report                  =   require("./discipleship_model")
+        ,   Attendance              =   require("./attendance_model")
         ,   Disciple                =   require("./disciple")
         ,   Prayer                  =   require("./prayer")
         ,   PrayerChain             =   require("./prayerChain")
@@ -135,6 +135,13 @@ workerSchema = new mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Attendance'
+        }
+    ],
+
+    expected_attendance: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Expected'
         }
     ],
 

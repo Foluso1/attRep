@@ -120,7 +120,7 @@ if(deleteReportButton) {
             let id = e.target.dataset.id;
             $.ajax({
               type: "DELETE",
-              url: "/report/" + id,
+              url: "/discipleship/" + id,
             //   data: { id: idWorker }
             });
             e.target.parentNode.parentNode.remove();
@@ -198,26 +198,24 @@ if (dateLockdown) {
     })
 }
 
-if (lockdownNoReport) {
-    let table1 = document.querySelector(".allLMALockdown:nth-of-type(2)");
-    let tdArr = Array.from(table1.querySelectorAll("tbody tr td:nth-of-type(2)"));
-    let namesArr = tdArr.map((e) => {
-        return e.innerText;
-    });
-    console.log(namesArr.join(",").replace(/,/gi, "\n"));
+// if (lockdownNoReport) {
+//     let table1 = document.querySelector(".allLMALockdown:nth-of-type(2)");
+//     let tdArr = Array.from(table1.querySelectorAll("tbody tr td:nth-of-type(2)"));
+//     let namesArr = tdArr.map((e) => {
+//         return e.innerText;
+//     });
+//     console.log(namesArr.join(",").replace(/,/gi, "\n"));
     
     if (lockdownNoReportCopy) {
-        textAreaNoReportLockdown.innerText = namesArr.join(",").replace(/,/gi, " \n ");
         lockdownNoReportCopy.addEventListener("click", (e) => {
             let txtArea = document.querySelector("#list-no-lockdown-reports");
             txtArea.select();
             txtArea.setSelectionRange(0, 99999); /*For mobile devices*/
             document.execCommand("copy");
+            txtArea.setSelectionRange(0,0);
         })
     }
-    // let resu = lockdownNoReportCopy.innerText;
-    // console.log(resu);
-}
+// }
 
 
 
@@ -396,7 +394,7 @@ function exporter(buttonId){
     } else {
         console.log("buttonId", buttonId)
         if (buttonId == "export") {
-            $.post("/report",
+            $.post("/discipleship",
                 {
                     ids: idsArray,
                     title: title.value,
@@ -404,7 +402,7 @@ function exporter(buttonId){
                     info: info.value,
                 },
                 function() {
-                    window.location.replace(`${window.location.origin}/report`)
+                    window.location.replace(`${window.location.origin}/discipleship`)
                 }
             )
         } else if (buttonId == "export-attendance") {
@@ -417,6 +415,18 @@ function exporter(buttonId){
                 },
                 function() {
                     window.location.replace(`${window.location.origin}/attendance`)
+                }
+            )
+        } else if (buttonId == "export-expected-attendance") {
+            $.post("/expected",
+                {
+                    ids: idsArray,
+                    title: title.value,
+                    for: meeting.value,
+                    info: info.value,
+                },
+                function() {
+                    window.location.replace(`${window.location.origin}/expected`)
                 }
             )
         }
@@ -513,7 +523,7 @@ function rmaDisciple(e) {
     let id = e.children("button").attr("_id");//discipleThis = disciple[0];
     let btn = e.children("button");
     let formData = { "_id": id };
-    let formAction = "/report";
+    let formAction = "/discipleship";
     $.ajax({
         url: formAction,
         data: formData,

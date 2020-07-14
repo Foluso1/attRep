@@ -7,9 +7,10 @@ const       express                 =   require("express")
         ,   flash                   =   require("connect-flash")
         ,   passport                =   require("passport")
         ,   LocalStrategy           =   require("passport-local").Strategy
-        ,   reportRouter            =   require("./routes/report")
-        ,   attendanceRouter        =   require("./routes/attendanceRoute")
-        ,   evangelismRouter        =   require("./routes/evangelismRoute")
+        ,   discipleshipRouter            =   require("./routes/discipleship_route")
+        ,   attendanceRouter        =   require("./routes/attendance_route")
+        ,   expectedRouter          =   require("./routes/expected_attendance_route")
+        ,   evangelismRouter        =   require("./routes/evangelism_route")
         ,   discipleRouter          =   require("./routes/disciple")
         ,   prayerRouter            =   require("./routes/prayer")
         ,   prayerChainRouter       =   require("./routes/prayerChain")
@@ -17,7 +18,7 @@ const       express                 =   require("express")
         ,   lmaRouter               =   require("./routes/lma")
         ,   newRouter               =   require("./routes/new")
         ,   indexRouter             =   require("./routes/index")
-        ,   registerRouter          =   require("./routes/registerRoutes")
+        ,   registerRouter          =   require("./routes/register_route")
         ,   methodOverride          =   require("method-override")
         ,   expressSession          =   require("express-session")
         ,   googleRouter            =   require("./routes/auth/google-auth")
@@ -68,7 +69,8 @@ app.use((req, res, next) => {
 
 app.use(flash());
 app.use('/attendance', attendanceRouter);
-app.use('/report', reportRouter);
+app.use('/expected', expectedRouter);
+app.use('/discipleship', discipleshipRouter);
 app.use('/evangelism', evangelismRouter);
 app.use('/disciple', discipleRouter);
 app.use('/prayer', prayerRouter);

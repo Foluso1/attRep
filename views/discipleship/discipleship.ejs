@@ -5,7 +5,7 @@
     <div class="col-md-12">
         <div class="list-workers">
             <div class="text-center p-3">
-                <a class="btn btn-success btn-sm p-2" href="/report/new">New  Report</a>
+                <a class="btn btn-success btn-sm p-2" href="/discipleship/new">New  Report</a>
             </div>
         <% for(i = reports.length-1; i >= 0; i--){ %>
             <div>
@@ -36,7 +36,7 @@
                     <% let date = Date.now(); %>
                     <% let diffDate = date - dateReport; %>
                     <% if(!(diffDate > 86400000)){ %>
-                        <a class="btn btn-sm btn-primary m-2" href="/report/<%= reports[i]._id %>">View</a>
+                        <a class="btn btn-sm btn-primary m-2" href="/discipleship/<%= reports[i]._id %>">View</a>
                         <a class="btn btn-sm btn-secondary m-2" >Edit</a>
                         <a class="del-report btn btn-sm btn-danger m-2" href="#" data-id="<%= reports[i]._id %>">Delete</a>
                     <% }; %>

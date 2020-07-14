@@ -120,8 +120,9 @@ button:not(#report) {
 }
 
 .home-link:hover {
-    color: #c92f10; ;
+    color: #ad8413; ;
     text-decoration: none;
+    /* outline: thick; */
     scale: 1.05;
 }
 

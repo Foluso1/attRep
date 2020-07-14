@@ -1,6 +1,6 @@
 const    express         =   require("express")
     ,    router          =   express.Router()
-    ,    helper          =   require("../controller/attendanceHelper")
+    ,    helper          =   require("../controller/attendance_helper")
     ,    middleware      =   require("../middleware")
     ,    methodOverride  =   require("method-override")
     ,    flash           =   require("connect-flash")

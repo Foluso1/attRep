@@ -1,6 +1,6 @@
 const   Worker  =   require("../models/worker")
     ,   Disciple  =   require("../models/disciple")
-    ,   Attendance  =   require("../models/attendanceModel")
+    ,   Expected  =   require("../models/expected_attendance_model")
     , flash = require("connect-flash")
     ;
 
@@ -11,12 +11,12 @@ module.exports = {
         try {
             let worker = { _id: req.user.id };
             let foundWorker = await Worker.findById(worker)
-              .populate({ path: "attendance", populate: {path: "disciples"} })
+              .populate({ path: "expected_attendance", populate: {path: "disciples"} })
             //   .populate({ path: "disciples"})
               // populate("disciples")
-                let attendance = foundWorker.attendance;
-                console.log("attendance", attendance)
-                res.render("attendance/attendance", { attendance, foundWorker });
+                let expected_attendance = foundWorker.expected_attendance;
+                console.log("expected_attendance", expected_attendance)
+                res.render("expected_attendance/expected_attendance", { expected_attendance, foundWorker });
         } catch (e) {
             console.log(e);
             req.flash("error", "There was a problem");
@@ -37,7 +37,7 @@ module.exports = {
             info: req.body.info,
         };
         console.log("thisReport", thisReport)
-        let newReport = await Attendance.create(thisReport)
+        let newReport = await Expected.create(thisReport)
         const ids = req.body.ids;
         
         try {
@@ -59,7 +59,7 @@ module.exports = {
             }
             
             let foundWorker = await Worker.findById(worker);
-            foundWorker.attendance.push(newReport);
+            foundWorker.expected_attendance.push(newReport);
             let savedWorker = await foundWorker.save();
             if (savedWorker) {
                 res.json("Done");
@@ -78,7 +78,7 @@ module.exports = {
         Worker.findById(worker).populate("disciples")
             .then((thisWorker) => {
                 let allDisciples = thisWorker.disciples
-                res.render("attendance/attendance_new", { allDisciples });
+                res.render("expected_attendance/expected_attendance_new", { allDisciples });
             })
             .catch((err) => {
                 console.log(err);
@@ -93,11 +93,11 @@ module.exports = {
             };
             //get all disciples
             let foundWorker = await Worker.findById(worker)
-              .populate({ path: "attendance"})
+              .populate({ path: "expected_attendance"})
               .populate("disciples");
             //   .then(foundWorker => {
                 let allDisciples = foundWorker.disciples;
-                let allReports = foundWorker.attendance;
+                let allReports = foundWorker.expected_attendance;
                 // Look for the position of this report in the allReports array
                 // Map all ids into an array
                 let idsAllReports = allReports.map(elem => {
@@ -111,7 +111,7 @@ module.exports = {
                 });
 
                 //get ids of disciples in report
-                let thisReport = await Attendance.findById(thisReportId)
+                let thisReport = await Expected.findById(thisReportId)
                   .populate("disciples")
                     let discReport = thisReport.disciples;
                     if (discReport && discReport.length !== 0) {
@@ -131,7 +131,7 @@ module.exports = {
                         idsAllDisciples.splice(i, 1);
                       });
                     }
-                    res.render("report/report_edit", { thisReport, remDisciples, thisReportId, index, foundWorker });
+                    res.render("expected_attendance/expected_attendance_edit", { thisReport, remDisciples, thisReportId, index, foundWorker });
         } catch (e) {
             console.log(e)
         }
@@ -146,16 +146,16 @@ module.exports = {
             _id: req.user.id
         }
         try {
-            let foundWorker = await Worker.findById(worker).populate({ path: 'attendance', populate: { path: 'disciples' } });
-            let thisReport = await Attendance.findById(thisReportId).populate("disciples")
-            let allReports = foundWorker.attendance;
+            let foundWorker = await Worker.findById(worker).populate({ path: 'expected_attendance', populate: { path: 'disciples' } });
+            let thisReport = await Expected.findById(thisReportId).populate("disciples")
+            let allReports = foundWorker.expected_attendance;
             
             let idsAllReports = allReports.map((elem) => {
                 return elem._id;
             })
             // Look for position of thisReportId in that array
             let index = idsAllReports.indexOf(thisReportId);
-            res.render("report/report_one", { thisReport, thisReportId, index });            
+            res.render("expected_attendance/expected_attendance_one", { thisReport, thisReportId, index });            
         } catch (error) {
             console.log(err);
         }
@@ -163,7 +163,7 @@ module.exports = {
 
     deleteReport: (req, res) => {
         thisReportId = req.params.id;
-        Attendance.findByIdAndRemove({ _id: thisReportId })
+        Expected.findByIdAndRemove({ _id: thisReportId })
         .then((good) => {
             res.json(good);
         })
@@ -174,7 +174,7 @@ module.exports = {
 
     removeDisciple: (req, res) => {
         thisReportId = req.params.id;
-        Attendance.findById(thisReportId)
+        Expected.findById(thisReportId)
             .then((good) => {
                 Disciple.findById(req.body._id)
                 .then((found) => {
@@ -201,7 +201,7 @@ module.exports = {
 
     addDisciple: (req, res) => {
         thisReportId = req.params.id;
-        Attendance.findById(thisReportId)
+        Expected.findById(thisReportId)
             .then((good) => {
                 good.disciples.push(req.body._id);
                 good.save();
@@ -218,14 +218,14 @@ module.exports = {
             _id : req.user.id
         }
         
-        let newReport = await Attendance.create(new Attendance)
+        let newReport = await Expected.create(new Expected)
         try {
             newReport.disciples.push(req.body._id);
             newReport.save();
             res.json("added");
             Worker.findById(worker)
             .then((foundWorker) => {
-                foundWorker.attendance.push(newReport);
+                foundWorker.expected_attendance.push(newReport);
                 foundWorker.save();
             })
             .catch((err) => {

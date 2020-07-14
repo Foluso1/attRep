@@ -95,7 +95,7 @@ googleRouter.get('/auth/google/callback',
                     req.flash("error", "Sorry, your account is not linked with Google. Please, try another login method")
                     res.redirect("/login");
                 } else {
-                    res.redirect('/report');
+                    res.redirect('/discipleship');
                 }
             }
         } catch (err) {

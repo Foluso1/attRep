@@ -1,4 +1,4 @@
-<% include ./../partials/header %>
+<% include ./../partials/header_lma %>
     <a class="btn btn-primary btn-sm" href="/lma/new">Add / Remove Worker</a>
     <a class="btn btn-primary btn-sm" href="/lma/all">Collective Report</a>
     <a class="btn btn-primary btn-sm" href="/lma/lockdown/<%= moment().format("YYYY-MM-DD") %> ">Lockdown Reports</a>
@@ -16,7 +16,7 @@
                             <form action="/lma" method="POST">
                                 <input style="display: none" type="text" name="id" value="<%= foundWorker._id %>" >
                             </form>
-                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/report">Report</a>
+                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/discipleship">Report</a>
                             <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/prayer">Prayer Report</a>
                             <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/prayerChain">Prayer Chain Report</a>
                             <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/lockdown">Stay-Home Report</a>
