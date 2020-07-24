@@ -7,14 +7,13 @@ const       express                 =   require("express")
         ,   flash                   =   require("connect-flash")
         ,   passport                =   require("passport")
         ,   LocalStrategy           =   require("passport-local").Strategy
-        ,   discipleshipRouter            =   require("./routes/discipleship_route")
+        ,   discipleshipRouter      =   require("./routes/discipleship_route")
         ,   attendanceRouter        =   require("./routes/attendance_route")
         ,   expectedRouter          =   require("./routes/expected_attendance_route")
         ,   evangelismRouter        =   require("./routes/evangelism_route")
         ,   discipleRouter          =   require("./routes/disciple")
         ,   prayerRouter            =   require("./routes/prayer")
         ,   prayerChainRouter       =   require("./routes/prayerChain")
-        ,   middleWare              =   require("./middleware/index")
         ,   lmaRouter               =   require("./routes/lma")
         ,   newRouter               =   require("./routes/new")
         ,   indexRouter             =   require("./routes/index")
@@ -86,6 +85,6 @@ moment.locale("en-gb");
 app.locals.moment = moment; 
 
 
-app.listen(PORT, IP, () => console.log(`The server is listening at ${PORT}`));
+app.listen(PORT, () => console.log(`The server is listening at ${PORT}`));
 
 

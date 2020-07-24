@@ -14,6 +14,7 @@ const starttimeInput = document.querySelector("#starttime" );
 const endtimeInput   = document.querySelector("#endtime"   );
 const prayerTable = document.querySelector("#prayer-table");
 const dateLockdown  =   document.querySelector("#date-lockdown");
+const dateToQuery   = document.querySelector(".date-to-query");
 const formLockdown  =   document.querySelector("#form-lockdown");
 const deleteWorkerButton = document.querySelectorAll(".del-worker")
 const delWorkerBtn = Array.from(deleteWorkerButton);
@@ -191,10 +192,12 @@ if (prayerTable) {
 
 
 // LMA Lockdown
-if (dateLockdown) {
+if (dateToQuery) {
     dateLockdown.addEventListener("input", (e)=>{
+        let link = dateToQuery.getAttribute("action")
+        console.log(e.target.value, link);
         let date = e.target.value;
-        formLockdown.setAttribute("action", `/lma/lockdown/${date}`);
+        dateToQuery.setAttribute("action", `${link}/${date}`);
     })
 }
 
@@ -302,6 +305,12 @@ $(document).ready(function () {
     $("#export-attendance").on("click", function(e){
         e.preventDefault();
         let buttonId = "export-attendance"
+        exporter(buttonId);
+    })
+
+    $("#export-expected-attendance").on("click", function(e){
+        e.preventDefault();
+        let buttonId = "export-expected-attendance"
         exporter(buttonId);
     })
 

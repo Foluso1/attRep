@@ -28,6 +28,18 @@ router
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllAttendanceWithDate);
 
 router
+    .route("/all/attendance/:date")
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllAttendanceWithDate);
+
+router
+    .route("/all/expected/")
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllExpectedAttendanceWithDate);
+
+router
+    .route("/all/expected/:date")
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllExpectedAttendanceWithDate);
+
+router
     .route("/attendance/:date")
     .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllAttendanceWithDate);
 

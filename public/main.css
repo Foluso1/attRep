@@ -27,6 +27,21 @@ h2 {
     text-align: center;
 }
 
+/* nav {
+    border-bottom: 1px solid #7e6227;
+} */
+
+.nav-bg {
+    opacity: 0.8;
+    background-color: #CEBF9F;
+    /* border-bottom: 1px solid #ad8413; */
+}
+
+.nav-bg-2 {
+    background-color: #F5DEB3;
+    border-bottom: 1px solid #c7b073;
+}
+
 button:not(#report) {
     width: 100%;
     /* max-width: 200px; */
@@ -117,7 +132,9 @@ button:not(#report) {
 
 .home-link {
     color:  #7E6227; 
+    padding-left: 0;
 }
+
 
 .home-link:hover {
     color: #ad8413; ;

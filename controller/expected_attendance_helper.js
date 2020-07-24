@@ -1,7 +1,7 @@
-const   Worker  =   require("../models/worker")
-    ,   Disciple  =   require("../models/disciple")
-    ,   Expected  =   require("../models/expected_attendance_model")
-    , flash = require("connect-flash")
+const   Worker      = require("../models/worker")
+    ,   Disciple    = require("../models/disciple")
+    ,   Expected    = require("../models/expected_attendance_model")
+    ,   flash       = require("connect-flash")
     ;
 
 

@@ -228,7 +228,7 @@ module.exports = {
                         let attendanceArr = thisWorker.attendance;
                         console.log("attendanceArr", attendanceArr)
                         attendanceArr.filter( (item) => {
-                            let thisDay = moment(item.dateOfReport).startOf("day")._d.getTime();
+                            let thisDay = moment(item.date).startOf("day")._d.getTime();
                             if (startOfToday == thisDay) {
                                 isReportToday = true;
                                 let abc = { 
@@ -281,6 +281,90 @@ module.exports = {
             });
             console.log("noReportNames", noReportNames)
             res.render("lma/all/attendanceAll", { manyArr, startOfToday, noReportNames, totalAttendees, noReportYet });
+        } catch (e) {
+            console.log(e)
+        }
+    },
+
+    getAllExpectedAttendanceWithDate: async (req, res) => {
+        try {
+            let dateForData = req.params.date;
+            let lmaWorkerId = { _id: req.user.id };
+            let foundWorker = await Worker.findById(lmaWorkerId).populate("workers");
+            let workersUnder = foundWorker.workers;
+            let startOfToday = 0;
+            console.log("dateForData", dateForData)
+            if (!dateForData) {
+                startOfToday = moment().startOf('day')._d.getTime();
+            } else {
+                startOfToday = moment(dateForData).startOf("day")._d.getTime();
+            }
+            let manyArr = [];
+            let noReportYet = [];
+            let disciples = [];
+            let noReportNames = "";
+            let totalAttendees = 0;
+            for(let i = 0; i < workersUnder.length; i++) {
+                if(workersUnder.length > 0 && workersUnder[i].expected_attendance.length > 0){
+                    let isReportToday = false;
+                    let thisWorker = await Worker.findById({ _id: workersUnder[i].id }).populate( {path: "expected_attendance", populate: { path: "disciples"}});
+                    if (thisWorker.expected_attendance.length > 0) {
+                        let expectedArr = thisWorker.expected_attendance;
+                        console.log("expectedArr", expectedArr)
+                        expectedArr.filter( (item) => {
+                            let thisDay = moment(item.date).startOf("day")._d.getTime();
+                            if (startOfToday == thisDay) {
+                                isReportToday = true;
+                                let abc = { 
+                                    date: item.date,
+                                    id: thisWorker.id,
+                                    firstname: thisWorker.firstname,
+                                    surname: thisWorker.surname,
+                                    title: item.title, 
+                                    for: item.for, 
+                                    info: item.info, 
+                                    disciples: disciples = item.disciples.map((each) => {
+                                        return each.name;
+                                    }),
+                                    totalAttendees: totalAttendees = (totalAttendees + item.disciples.length),
+                                }
+                                manyArr.push(abc)
+                            } 
+                        });
+                        if(!isReportToday) {
+                            let abc = {
+                                id: thisWorker.id,
+                                firstname: thisWorker.firstname,
+                                surname: thisWorker.surname,
+                            }
+                            noReportYet.push(abc);
+                            noReportNames = noReportNames + `${thisWorker.firstname} ${thisWorker.surname} \n`;
+                        }
+                    } else {
+                        let abc = {
+                            id: thisWorker.id,
+                            firstname: thisWorker.firstname,
+                            surname: thisWorker.surname,
+                        }
+                        noReportYet.push(abc);
+                        noReportNames = noReportNames + `${thisWorker.firstname} ${thisWorker.surname} \n`;
+                    }
+                } else if (workersUnder[i]) {
+                    let thisWorker = await Worker.findById({ _id: workersUnder[i].id });
+                    let abc = {
+                        id: thisWorker.id,
+                        firstname: thisWorker.firstname,
+                        surname: thisWorker.surname,
+                    }
+                    noReportYet.push(abc);
+                    noReportNames = noReportNames + `${thisWorker.firstname} ${thisWorker.surname} \n`;
+                }
+            }
+            manyArr.sort((a, b) => {
+                return b.date.getTime() - a.date.getTime();
+            });
+            console.log("noReportNames", noReportNames)
+            res.render("lma/all/expected_attendanceAll", { manyArr, startOfToday, noReportNames, totalAttendees, noReportYet });
         } catch (e) {
             console.log(e)
         }

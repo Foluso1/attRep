@@ -12,7 +12,6 @@ router.use(methodOverride("_method"));
 
 
 router.route("/")
-    // .get(middleware.isLoggedIn, middleware.signInWithGoogle, helper.getReports)
     .get(middleware.isLoggedIn, middleware.emailCheck, middleware.signInWithGoogle, helper.getReports)
     .post(middleware.isLoggedIn, helper.postNewReport);
 
