@@ -468,6 +468,33 @@ module.exports = {
         }
     },
 
+    getExpectedReport: async (req, res) => {
+        try {
+              let worker = {
+                _id: req.params.id
+              };
+              let foundWorker = await Worker.findById(worker)
+                .populate({ path: "expected_attendance", populate: { path: "disciples" } })
+                  let expected_attendance = foundWorker.expected_attendance;
+                  let dayWeek = [];
+                  let month = [];
+                  let arrDay = [ [0, "Sunday"], [1, "Monday"], [2, "Tuesday"], [3, "Wednesday"], [4, "Thursday"], [5, "Friday"], [6, "Saturday"] ];
+                let allDay = [];
+                expected_attendance.forEach(report => {
+                    let j = report.date.getDay();
+                    let reportDay = arrDay[j];
+                    let day = reportDay[1];
+                    month.push(report.date.getMonth() + 1);
+                    allDay.push(day);
+                });
+                res.render("lma/expected_attendance", { expected_attendance, dayWeek, month, allDay, foundWorker });
+            } catch (e) {
+            console.log(e);
+            req.flash("Error", "There was a problem")
+            res.redirect("/lma");
+        }
+    },
+
     getPrayerChainReport: async (req, res) => {
         try {
             let ownerId = req.params.id;

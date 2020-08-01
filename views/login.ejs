@@ -1,24 +1,22 @@
 <% include partials/header2 %>
-<section class="container">
 
-    <div class="row justify-content-center">
-        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light" >
+<main class="container">
+    <div class="row justify-content-center p-5">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light transp" >
             <h1 class="text-center" >Welcome!</h1>
             <h5 class="m-2 text-center" >Let's log you in</h5>
             <br>
             <form class="text-center" action="/login" method="POST">
-                <div class="d-flex flex-column align-items-start">
+                <div class="d-flex form-group flex-column align-items-start">
                     <label for="username">Username:</label>
-                    <input class="form-control m-2" type="text" id="username" name="username" placeholder="Username or Email">
+                    <input class="form-control" type="text" id="username" name="username" placeholder="Username or Email">
                 </div>
-                <div class="d-flex flex-column align-items-start">
+                <div class="d-flex form-group flex-column align-items-start">
                     <label for="password">Password:</label>
-                    <input class="form-control m-2" type="password" id="password" name="password" placeholder="Password">
+                    <input class="form-control" type="password" id="password" name="password" placeholder="Password">
                 </div>
                 <div class="row justify-content-center">
-                    <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
-                        <button class="btn btn-md btn-primary btn-block m-2">Submit</button>
-                    </div>
+                    <button class="col-6 btn btn-primary">Submit</button>
                 </div>
             </form>
             <p class="text-center">or</p>
@@ -28,5 +26,5 @@
             <!-- <p class="text-center">Not a member? <a href="/register">Register</a></p> -->
         </div>
     </div>
-</section>
+</main>
 <% include partials/footer %>

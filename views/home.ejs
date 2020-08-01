@@ -1,17 +1,45 @@
 <% include partials/header %>
-    <!-- <div class="heading">
-        <p></p>
-        <h2>Welcome <%#= loggedInWorker.firstname %> <%#=  loggedInWorker.surname %></h2>
-        <p></p>
-    </div> -->
 
-    <main>
-        <div class="listings">
-            <h2>What would you like to do?</h2>
-            <p>Send report for people expected in tomorrow's meeting. Click here</p>
-            <p>Send evangelism report. Click here</p>
-            <p>Send report of discipleship / follow-up done during the week. Click here</p>
+
+    <div>
+        <div class="listings-heading">
+            <h1 class="text-center">Overview</h1>
         </div>
-    </main>
+        <div class="overview">
+            <main class="listings">
+                <div class="box p-3">
+                    <h2>Discipleship</h2>
+                    <p><%= moment(reports[0].date).subtract(6, 'day').format('DD/MM/YYYY') %> - <%= moment(reports[0].date).format('DD/MM/YYYY') %></p>
+                    <p><%= reports[0].title %> for <span><%= reports[0].for %></span></p>
+                    <ul>
+                        <% reports[0].disciples.forEach((item) => { %>
+                            <li><%= item.name %> </li>
+                        <% }) %>
+                    </ul>
+                    <p><%= reports[0].info %></p>
+                </div>
+                <p><a href="/discipleship/new">Send new discipleship report</a></p>
+            </main>
+            <aside class="listings">
+                <div class="box p-3">
+                    <h2>Last Attendance</h2>
+                    <% if (attendance && attendance.length > 0) { %>
+                    <p><%= moment(attendance[0].date).subtract(6, 'day').format('DD/MM/YYYY') %> - <%= moment(attendance[0].date).format('DD/MM/YYYY') %></p>
+                        <p><%= attendance[0].title %> for <span><%= attendance[0].for %></span></p>
+                        <ul>
+                            <% attendance[0].disciples.forEach((item) => { %>
+                                <li><%= item.name %> </li>
+                            <% }) %>
+                        </ul>
+                        <p><%= attendance[0].info %></p>
+                    <%= attendance %> 
+                    <% } else { %>
+                        <p><em>Nothing to show here</em></p>
+                    <% } %>
+                </div>
+                <p><a href="/attendance/new">Send new attendance report</a></p>
+            </aside>
+        </div>
+    </div>
     </section>
 <% include partials/footer %>

@@ -1,0 +1,51 @@
+<% include ../partials/header_lma %>
+
+
+<main class="row">
+    <div class="col-md-12">
+        <div class="list-workers">
+            <h1><%= foundWorker.firstname %> <%= foundWorker.surname %> </h1>
+        <% for(i = expected_attendance.length-1; i >= 0; i--){ %>
+            <div>
+                <div class="d-flex">
+                    <% let day = dayWeek[i] %>
+                    <% if(expected_attendance[i].title == "" || !expected_attendance[i].title){ %>
+                        <h3><%= i+1 %> <span class="greyed">[No Title]<span/></h3> 
+                    <% } else { %>
+                        <h3 class="pr-3"><%= i+1 %> </h3>
+                        <h3><%= expected_attendance[i].title %><span> for </span><%= expected_attendance[i].for %></h3> 
+                    <% } %>
+                </div>
+                <p class="date small-text pl-4"><i class="d-flex"><%= moment(expected_attendance[i].date).format('ddd[, ] l[, ] h:mm:ss a') %></i></p>
+                
+                <% let disciples = expected_attendance[i].disciples; %>
+                <ol>
+                    <% disciples.forEach((disciple) => { %>
+                        <li><%= disciple.name %></li>
+                    <% }); %>
+                </ol>
+
+                <% if( foundWorker._id.toString()) { %>
+                <div class="col-md-12">
+                    <% if (expected_attendance[i].info) { %>
+                        <p class="pl-2">Info: <span class="small-text"><%= expected_attendance[i].info %></span></p>
+                    <% } %>
+                    <% let dateReport = expected_attendance[i].date.getTime(); %>
+                    <% let date = Date.now(); %>
+                    <% let diffDate = date - dateReport; %>
+                </div>
+                <% } %>
+                <p></p>
+                
+                <hr />
+                <p></p>
+                </br>
+            </div>
+        <% } %>
+        </div>
+        <p></p>
+    </div>
+</main>
+<p></p>
+<p></p>
+<% include ../partials/footer %>

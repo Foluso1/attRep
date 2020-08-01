@@ -33,14 +33,20 @@ router.get("/home", async (req, res) => {
             })
             .populate({
                 path: "reports",
+                populate: {path: 'disciples'},
+                options: {sort: {date: -1}, limit: 1}
+            })
+            .populate({
+                path: "attendance",
+                populate: {path: 'disciples'},
                 options: {sort: {date: -1}, limit: 1}
             });
-        let evangelism = thisUser.evangelism,
-        prayerGroupReport = thisUser.prayerReport,
-        prayerChainReport = thisUser.prayerChainReport,
-        reports = thisUser.reports;
-        let overview = { evangelism, prayerGroupReport, prayerChainReport, reports }
-        res.render("home", overview);
+        let evangelism = thisUser.evangelism;
+        let prayerGroupReport = thisUser.prayerReport;
+        let prayerChainReport = thisUser.prayerChainReport;
+        let reports = thisUser.reports;
+        let attendance = thisUser.attendance;
+        res.render("home", {reports, evangelism, prayerChainReport, prayerGroupReport, attendance});
     } catch (e) {
         console.log(e)
     }

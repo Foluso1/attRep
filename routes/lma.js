@@ -78,6 +78,10 @@ router
     .get(middleware.isLoggedIn, middleware.isLMA, controller.getAttendanceReport);
 
 router
+    .route("/:id/expected")
+    .get(middleware.isLoggedIn, middleware.isLMA, controller.getExpectedReport);
+
+router
     .route("/:id/prayerChain")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getPrayerChainReport)
 

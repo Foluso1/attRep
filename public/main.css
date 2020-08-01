@@ -1,13 +1,90 @@
 body {
     background-color: wheat;
-    font-size: 1.2em;
+    font-size: 1em;
 }
 
 
 h1 {
-    font-family: 'Baloo', cursive;
+    font-family: 'Raleway', sans-serif;
     font-size: 2.5em;
-    color: black;
+    color: #7E6227;
+    font-weight: 600;
+}
+
+.listings-heading h1 {
+    color: #7E6227;
+}
+
+.overview {
+    display: flex;
+}
+
+.listings div {
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.overview > main  {
+    flex-basis: 50%;
+}
+
+.box {
+    border: 1px solid #c7b073;
+    border-radius: 4px;
+}
+
+.btn {
+    outline: none !important;
+    box-shadow: 1px 1px 0.5px #473816 !important;
+}
+
+.btn:active, .btn:focus {
+    outline: none !important;
+    box-shadow: 1px 1px 0.5px 1.5px #7E6227 !important;
+}
+
+.btn-primary {
+    background-color: #7E6227 !important;
+    border: 1px solid #473816;
+}
+
+.btn-primary:hover {
+    background-color: #66511f !important;
+    outline: none;
+}
+
+.btn-primary:active, .btn-primary:focus {
+    background-color: #66511f !important;
+    outline: none !important;
+    box-shadow: 1px 1px 0.5px 1.5px #7E6227 !important;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active {
+    border-color: #7E6227 !important;
+}
+
+.box + p {
+    padding-top: 1em;
+}
+
+.overview > aside {
+    flex-basis: 50%;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #7E6227;
+}
+
+a {
+    color: #473816;
+}
+
+@media screen and (max-width: 768px) { 
+    .overview {
+        display: block;
+    }
+
 }
 
 h1 span {
@@ -17,24 +94,22 @@ h1 span {
 h2.head {
     color: #7e6227;
     font-family: 'Lobster', cursive;
+    font-weight: 600;
     text-align: left;
 }
 
 h2 {
     color: #7e6227;
-    font-family: 'Baloo', cursive;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
     font-size: 200%;
     text-align: center;
 }
 
-/* nav {
-    border-bottom: 1px solid #7e6227;
-} */
 
 .nav-bg {
     opacity: 0.8;
     background-color: #CEBF9F;
-    /* border-bottom: 1px solid #ad8413; */
 }
 
 .nav-bg-2 {
@@ -107,6 +182,14 @@ button:not(#report) {
     border-radius: 5px;
     min-height: 300px;
     padding: 30px;
+    margin: 5px;
+}
+
+.listings-heading {
+    background-color: rgb(248, 238, 220);
+    border: 1px solid #7e622756;
+    border-radius: 5px;
+    padding: 5px;
     margin: 5px;
 }
 
