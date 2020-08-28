@@ -12,6 +12,8 @@ const noDisp         = document.querySelector(".nodisplay" );
 const startPr        = document.querySelector("#startPr"   );
 const starttimeInput = document.querySelector("#starttime" );
 const endtimeInput   = document.querySelector("#endtime"   );
+const copyText       = document.querySelectorAll(".copy-text");
+const copyTextArr    = Array.from(copyText);
 const prayerTable = document.querySelector("#prayer-table");
 const dateLockdown  =   document.querySelector("#date-lockdown");
 const dateToQuery   = document.querySelector(".date-to-query");
@@ -34,7 +36,7 @@ if (startPrBtn) {
         startPrBtn.classList.add("nodisplay");
         let regExTime = /([0-9]?[0-9]):([0-9][0-9])/;
         let regExTimeArrStarttime = regExTime.exec(starttimeInput.value);
-        let thisTime = moment().hour(regExTimeArrStarttime[1]).minute(regExTimeArrStarttime[2]).second(0).millisecond(0)._d.getTime();
+        let thisTime = moment().hour(regExTimeArrStarttime[1]).minute(regExTimeArrStarttime[2]).second(0).millisecond(0).valueOf();
         let time = { starttime: thisTime }
         $.ajax({
             type: "POST",
@@ -88,7 +90,7 @@ if (prChform) {
             let inputTarget = e.target.parentNode.parentNode.children[0];
             let regExTimeArrEndtime = regExTime.exec(inputTarget.value);
             // let regExTimeArrEndtime = regExTime.exec(endtimeInput.value);
-            let thisTime = moment().hour(regExTimeArrEndtime[1]).minute(regExTimeArrEndtime[2]).second(0).millisecond(0)._d.getTime();
+            let thisTime = moment().hour(regExTimeArrEndtime[1]).minute(regExTimeArrEndtime[2]).second(0).millisecond(0).valueOf();
             let time = { endtime: thisTime }
             ////
             let id = inputTarget.dataset.id;
@@ -209,16 +211,42 @@ if (dateToQuery) {
 //     });
 //     console.log(namesArr.join(",").replace(/,/gi, "\n"));
     
-    if (lockdownNoReportCopy) {
-        lockdownNoReportCopy.addEventListener("click", (e) => {
-            let txtArea = document.querySelector("#list-no-lockdown-reports");
-            txtArea.select();
-            txtArea.setSelectionRange(0, 99999); /*For mobile devices*/
-            document.execCommand("copy");
-            txtArea.setSelectionRange(0,0);
-        })
-    }
+// if (lockdownNoReportCopy) {
+//     lockdownNoReportCopy.addEventListener("click", (e) => {
+//         let txtArea = document.querySelector("#list-no-lockdown-reports");
+//         txtArea.select();
+//         txtArea.setSelectionRange(0, 99999); /*For mobile devices*/
+//         document.execCommand("copy");
+//         txtArea.setSelectionRange(0,0);
+//     })
 // }
+// }
+
+if (copyText) {
+    copyTextArr.forEach((each) => {
+        each.addEventListener("click", (e) => {
+            if (e.target.tagName == "BUTTON" ){
+                console.log("Clicked copy button")
+                let txtArea = e.target.parentNode.children[1];
+                console.log(txtArea);
+                txtArea.select();
+                txtArea.setSelectionRange(0, 99999); /*For mobile devices*/
+                document.execCommand("copy");
+                txtArea.setSelectionRange(0,0);
+                console.log(":) copied")
+                e.target.setAttribute("data-toggle", "tooltip");
+                e.target.setAttribute("data-placement", "top");
+                e.target.setAttribute("title", "Copied");
+                setTimeout(() => {
+                    e.target.removeAttribute("data-toggle")
+                    e.target.removeAttribute("data-placement")
+                    e.target.removeAttribute("title")
+                }, 2000)
+                // data-toggle="tooltip" data-placement="top" title="Copied" 
+            }
+        })
+    })
+}
 
 
 
@@ -391,7 +419,7 @@ function exporter(buttonId){
 
     let lister = Array.from(list.children);
     lister.forEach((item) => {
-        let ids = item.getAttribute("id");
+        let ids = item.children[0].getAttribute("id");
         objIds = { "_id": ids };
         idsArray.push(objIds);
     });
@@ -402,11 +430,12 @@ function exporter(buttonId){
         return;
     } else {
         console.log("buttonId", buttonId)
+        console.log(idsArray)
         if (buttonId == "export") {
             $.post("/discipleship",
                 {
                     ids: idsArray,
-                    title: title.value,
+                    title: title.innerText,
                     for: meeting.value,
                     info: info.value,
                 },
@@ -418,7 +447,7 @@ function exporter(buttonId){
             $.post("/attendance",
                 {
                     ids: idsArray,
-                    title: title.value,
+                    title: title.innerText,
                     for: meeting.value,
                     info: info.value,
                 },
@@ -426,11 +455,28 @@ function exporter(buttonId){
                     window.location.replace(`${window.location.origin}/attendance`)
                 }
             )
+            // let data = {
+            //     ids: idsArray,
+            //     title: title.innerText,
+            //     for: meeting.innerText,
+            //     info: info.value,
+            // }
+            // console.log(info);
+            // $.ajax({
+            //     url: "/attendance",
+            //     data: data,
+            //     type: "PUT",
+            //     success: function (data) {
+            //         console.log("DOOOOOOOOOOONE!")
+            //         console.log(data);
+            //     }
+            // })
+
         } else if (buttonId == "export-expected-attendance") {
             $.post("/expected",
                 {
                     ids: idsArray,
-                    title: title.value,
+                    title: title.innerText,
                     for: meeting.value,
                     info: info.value,
                 },

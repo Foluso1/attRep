@@ -8,7 +8,10 @@ module.exports = {
     postPrayerReport: async (req, res) => {
         try {
             let currentWorker = req.user.id;
-            let newPrayerChain = await PrayerChain.create({start: req.body.starttime});
+            let newPrayerChain = await PrayerChain.create({
+                start: req.body.starttime,
+                prayor: req.user.id,
+            });
             let foundWorker = await Worker.findById({ _id: currentWorker });
 
             foundWorker.prayerChainReport.push(newPrayerChain);
@@ -77,8 +80,8 @@ module.exports = {
                     endPrChReport = endPrChReport.getTime();
                 }
             }
-            let startOfDay = moment().startOf('day')._d.getTime();
-            let prChRange = moment().hour(23).minute(0).second(0).millisecond(0)._d.getTime();
+            let startOfDay = moment().startOf('day').valueOf();
+            let prChRange = moment().hour(23).minute(0).second(0).millisecond(0).valueOf();
 
             res.render("prayerChain/prayerChainNew", { lastPrChReportDate, startOfDay, prChRange, lastPrChReportId, endPrChReport });
         } catch (err) {
@@ -93,7 +96,7 @@ module.exports = {
             let endtime = {
                 end: req.body.endtime
             }
-            let updatedPrCh = await PrayerChain.findOneAndUpdate({ _id: id}, endtime, {new: true} );
+            let updatedPrCh = await PrayerChain.findOneAndUpdate({_id: id}, endtime, {new: true} );
             await updatedPrCh.save();
             res.json(updatedPrCh);
         } catch (err) {

@@ -1,8 +1,11 @@
-const   Worker  =   require("../models/worker")
-    ,   Disciple  =   require("../models/disciple")
-    ,   Attendance  =   require("../models/attendance_model")
-    , flash = require("connect-flash")
+const   Worker                  =   require("../models/worker")
+    ,   Disciple                =   require("../models/disciple")
+    ,   Attendance              =   require("../models/attendance_model")
+    ,   flash                   = require("connect-flash")
+    ,   duplicateCheck          =   require("../utils/duplicateCheck")
     ;
+const moment = require("moment");
+const { findByIdAndDelete } = require("../models/attendance_model");
 
 
 
@@ -15,7 +18,6 @@ module.exports = {
             //   .populate({ path: "disciples"})
               // populate("disciples")
                 let attendance = foundWorker.attendance;
-                console.log("attendance", attendance)
                 res.render("attendance/attendance", { attendance, foundWorker });
         } catch (e) {
             console.log(e);
@@ -25,22 +27,25 @@ module.exports = {
     },
     
     postNewReport: async (req, res) => {
-        let worker = {
-            _id: req.user.id
-        }
-
-        console.log(req.body);
-
-        let thisReport = {
-            title: req.body.title,
-            for: req.body.for,
-            info: req.body.info,
-        };
-        console.log("thisReport", thisReport)
-        let newReport = await Attendance.create(thisReport)
-        const ids = req.body.ids;
-        
         try {
+            let worker = {_id: req.user.id}
+            let startOfToday = moment().startOf('day').format();
+            console.log(startOfToday)
+            let att =  await Attendance.find({summoner: req.user.id, "date": {$gte: startOfToday}}).populate("disciples");
+            let db_Worker = JSON.parse(JSON.stringify(att));
+            console.log("//////", db_Worker);
+
+            let thisReport = {
+                title: req.body.title,
+                for: req.body.for,
+                info: req.body.info,
+                summoner: req.user.id,
+            };
+            console.log("thisReport", thisReport)
+            let newReport = await Attendance.create(thisReport)
+            newReportId = newReport._id;
+            const ids = req.body.ids;   
+        
             const arr = [];
             
             let i = 0;
@@ -55,14 +60,24 @@ module.exports = {
                         arr.push("yesSaved");
                         i++; 
                     }
-                }
+                } 
             }
             
             let foundWorker = await Worker.findById(worker);
-            foundWorker.attendance.push(newReport);
-            let savedWorker = await foundWorker.save();
-            if (savedWorker) {
-                res.json("Done");
+
+            let result = duplicateCheck(newReport, db_Worker);
+
+            if (result) {
+                req.flash("error", "Duplicate report detected");
+                res.json("ERROR, Duplicate Report")
+                await Attendance.findByIdAndDelete({_id: newReportId});
+            } else {
+                req.flash("success", "Succcessfully Reported");
+                foundWorker.attendance.push(newReport);
+                let savedWorker = await foundWorker.save();
+                if (savedWorker) {
+                    res.json("Done");
+                }
             }
         } catch (error) {
             console.log(error)
@@ -165,6 +180,7 @@ module.exports = {
         thisReportId = req.params.id;
         Attendance.findByIdAndRemove({ _id: thisReportId })
         .then((good) => {
+            res.redirect("/attendance")
             res.json(good);
         })
         .catch((err) => {
@@ -234,6 +250,22 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
-    } 
+    },
+
+    putReport: async (req, res) => {
+        console.log(req.body);
+        thisReportId = req.params.id;
+        Attendance.findById(thisReportId)
+        .then((good) => {
+            good.info = req.body.info;
+            good.for = req.body.for;
+            good.title = req.body.title;
+            good.save();
+            res.redirect("/attendance");
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
 }
 

@@ -4,6 +4,11 @@ const                   mongoose    =   require("mongoose")
 
 //Schema
 const reportSchema = new mongoose.Schema({
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Worker',
+    },
+    
     disciples: [
         {
             type: mongoose.Schema.Types.ObjectId,

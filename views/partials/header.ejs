@@ -67,7 +67,7 @@
         <% } else { %>
         <% } %>
     </div>
-    <% if ( moment()._d.getTime() >= moment([new Date().getFullYear(), 7, 1])._d.getTime() && moment()._d.getTime() < moment([new Date().getFullYear(), 7, 29])._d.getTime()) { %>
+    <% if ( moment().valueOf() >= moment([new Date().getFullYear(), 7, 1]).valueOf() && moment().valueOf() < moment([new Date().getFullYear(), 7, 29]).valueOf()) { %>
         <% if (moment().format("DD/MM/YYYY") == moment([new Date().getFullYear(), 7, 28]).format("DD/MM/YYYY")) { %>
             <div class="text-center alert alert-primary mt-2" role="alert"><i class="fas fa-birthday-cake"></i> Hurray!!! Today, this application is <%= new Date().getFullYear()-2019 %> year %> </div>
         <% } else { %>

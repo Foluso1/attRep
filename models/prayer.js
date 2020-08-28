@@ -3,6 +3,11 @@ const mongoose = require("mongoose")
 
 //Schema
 const prayerSchema = new mongoose.Schema({
+    prayor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Worker',
+    },
+    
     prayed: {
         type: Boolean,
         required: true

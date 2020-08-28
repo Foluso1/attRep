@@ -58,6 +58,7 @@ module.exports = {
                   stats: req.body.evangelism,
                   details: req.body.details,
                   healing: req.body.healing,
+                  author: req.user.id,
                 })
             let foundWorker =  await Worker.findById({ _id: req.user.id }).populate({ 
                 path: "evangelism",

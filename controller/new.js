@@ -52,7 +52,7 @@ module.exports = {
             
             // Check if user already has a report for that date
             let dateOfReport = new Date(req.body.date)
-            let startDateOfReport = moment(dateOfReport).startOf('day')._d.getTime();
+            let startDateOfReport = moment(dateOfReport).startOf('day').valueOf();
 
             // Find reports in DB
             let foundWorker =  await Worker.findById({ _id: req.user.id }).populate("lockdown");
@@ -62,7 +62,7 @@ module.exports = {
             // If array isn't empty
             if (allLockdownReports.length >= 1){
             reportCheck = allLockdownReports.reduce((acc, item) => {
-                  if (startDateOfReport == moment(item.dateOfReport).startOf("day")._d.getTime()) {
+                  if (startDateOfReport == moment(item.dateOfReport).startOf("day").valueOf()) {
                     return acc = true;
                   } else {
                     return acc = false;

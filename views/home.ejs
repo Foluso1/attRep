@@ -9,14 +9,18 @@
             <main class="listings">
                 <div class="box p-3">
                     <h2>Discipleship</h2>
-                    <p><%= moment(reports[0].date).subtract(6, 'day').format('DD/MM/YYYY') %> - <%= moment(reports[0].date).format('DD/MM/YYYY') %></p>
-                    <p><%= reports[0].title %> for <span><%= reports[0].for %></span></p>
-                    <ul>
-                        <% reports[0].disciples.forEach((item) => { %>
-                            <li><%= item.name %> </li>
-                        <% }) %>
-                    </ul>
-                    <p><%= reports[0].info %></p>
+                    <% if(reports && reports.length > 0) { %>
+                        <p><%= moment(reports[0].date).subtract(6, 'day').format('DD/MM/YYYY') %> - <%= moment(reports[0].date).format('DD/MM/YYYY') %></p>
+                        <p><%= reports[0].title %> for <span><%= reports[0].for %></span></p>
+                        <ul>
+                            <% reports[0].disciples.forEach((item) => { %>
+                                <li><%= item.name %> </li>
+                            <% }) %>
+                        </ul>
+                        <p><%= reports[0].info %></p>
+                    <% } else { %>
+                        <p><em>Nothing to show here</em></p>
+                    <% } %> 
                 </div>
                 <p><a href="/discipleship/new">Send new discipleship report</a></p>
             </main>
@@ -32,7 +36,6 @@
                             <% }) %>
                         </ul>
                         <p><%= attendance[0].info %></p>
-                    <%= attendance %> 
                     <% } else { %>
                         <p><em>Nothing to show here</em></p>
                     <% } %>

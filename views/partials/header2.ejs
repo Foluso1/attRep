@@ -33,5 +33,11 @@
             <% } %>
         </div>
     </section>
-    <div class="text-center alert alert-primary sticky-top" role="alert">By August 28, this application will be one year since its initial commit</div>
+    <% if ( moment().valueOf() >= moment([new Date().getFullYear(), 7, 1]).valueOf() && moment().valueOf() < moment([new Date().getFullYear(), 7, 29]).valueOf()) { %>
+        <% if (moment().format("DD/MM/YYYY") == moment([new Date().getFullYear(), 7, 28]).format("DD/MM/YYYY")) { %>
+            <div class="text-center alert alert-primary mt-2" role="alert"><i class="fas fa-birthday-cake"></i> Hurray!!! Today, this application is <%= new Date().getFullYear()-2019 %> year %> </div>
+        <% } else { %>
+            <div class="text-center alert alert-primary mt-2" role="alert">By August 28, this application will be <%= new Date().getFullYear()-2019 %> year since its initial commit </div>
+        <% } %>
+    <% } %>
         

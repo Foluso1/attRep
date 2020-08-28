@@ -86,5 +86,3 @@ app.locals.moment = moment;
 
 
 app.listen(PORT, () => console.log(`The server is listening at ${PORT}`));
-
-

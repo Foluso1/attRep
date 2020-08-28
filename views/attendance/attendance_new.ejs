@@ -2,7 +2,7 @@
 </div>
 <div class="heading">
     <a class="btn btn-primary btn-sm" href="/disciple/new">Add New Disciple</a>
-    <a class="btn btn-success btn-sm" href="/discipleship">Back to All Reports</a>
+    <a class="btn btn-success btn-sm" href="/attendance">Back to Attendee Reports</a>
 </div>
 
 <main class="row">
@@ -28,20 +28,26 @@
                         <option value="Saturday">Saturday</option>
                     </select>
                 </div>
-                <ol class="list disc-box">
-                    
+                <ol class="list d-flex flex-column">
                 </ol>
             </div>
         
         <p></p>
     </div>
-    <div id="disciples-pane" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="list-workers">
-            <h2>Disciples Pane</h2>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="list-disciples">
+            <h2 id="disciples-pane">Disciples Pane</h2>
             <h5><a href="/disciple/new"> <i class="fas fa-plus-circle"></i></a> Add New Disciple</h5>
-            <ol class="absent">
-                <% allDisciples.forEach((disciple) => { %>
-                    <li class="hoverer hand scc-form" id="<%= disciple._id %>"><%= disciple.name %></li>
+            <ol class="absent d-flex flex-column">
+                <% allDisciples.forEach((disc) => { %>
+                    <div class="hoverer d-inline-flex justify-content-between p-1">
+                        <li id="<%= disc._id %>"><%= disc.name %></li>
+                        <form class="disciple-list">
+                            <input style="display: none" type="text" name="id" value="<%= disc._id %>">
+                            <input type="button" value="Add" class="select btn btn-sm btn-primary" _id="<%= disc._id %>"></input>
+                        </form>
+                    </div>
+                    <!-- <li class="hoverer hand scc-form" id="<%#= disciple._id %>"><%#= disciple.name %></li> -->
                 <% }); %>
             </ol>
         </div>
@@ -51,8 +57,11 @@
     </div>
 </main>
 <p></p>
-<textarea class="form-control" id="info" val="" name="info" placeholder="Additional information"
-    rows="8"></textarea>
+<div class="list-workers">
+    <h2>Additional Information</h2>
+    <textarea class="form-control" id="info" val="" name="info" placeholder="Additional information"
+        rows="8"></textarea>
+</div>
     <form action="/attendance" method="POST" class="">
         <button class="btn btn-primary text-center" id="export-attendance">Submit Report</button>        
     </form>

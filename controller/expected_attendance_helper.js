@@ -1,10 +1,11 @@
-const   Worker      = require("../models/worker")
-    ,   Disciple    = require("../models/disciple")
-    ,   Expected    = require("../models/expected_attendance_model")
-    ,   flash       = require("connect-flash")
+const   Worker              = require("../models/worker")
+    ,   Disciple            = require("../models/disciple")
+    ,   Expected            = require("../models/expected_attendance_model")
+    ,   flash               = require("connect-flash")
+    ,   duplicateCheck      = require("../utils/duplicateCheck")
     ;
-
-
+const JSONTransport = require("nodemailer/lib/json-transport");
+    
 
 module.exports = {
     getReports: async (req, res) => {
@@ -15,7 +16,6 @@ module.exports = {
             //   .populate({ path: "disciples"})
               // populate("disciples")
                 let expected_attendance = foundWorker.expected_attendance;
-                console.log("expected_attendance", expected_attendance)
                 res.render("expected_attendance/expected_attendance", { expected_attendance, foundWorker });
         } catch (e) {
             console.log(e);
@@ -25,22 +25,21 @@ module.exports = {
     },
     
     postNewReport: async (req, res) => {
-        let worker = {
-            _id: req.user.id
-        }
-
-        console.log(req.body);
-
-        let thisReport = {
-            title: req.body.title,
-            for: req.body.for,
-            info: req.body.info,
-        };
-        console.log("thisReport", thisReport)
-        let newReport = await Expected.create(thisReport)
-        const ids = req.body.ids;
-        
         try {
+            let worker = {_id: req.user.id}
+
+            // console.log(req.body);
+
+            let thisReport = {
+                title: req.body.title,
+                for: req.body.for,
+                info: req.body.info,
+                summoner: req.user.id,
+            };
+            console.log("thisReport", thisReport)
+            let newReport = await Expected.create(thisReport)
+            const ids = req.body.ids;
+        
             const arr = [];
             
             let i = 0;
@@ -57,12 +56,28 @@ module.exports = {
                     }
                 }
             }
-            
+
+            //Find last DB item
+            let db_Worker =  await Worker.findById(worker).populate({ 
+                path: "expected_attendance",
+                options: {sort: {date: -1}, limit: 1},
+                populate: {path: "disciples"} 
+            });
+            let lastDB_item = db_Worker.expected_attendance[0];
             let foundWorker = await Worker.findById(worker);
-            foundWorker.expected_attendance.push(newReport);
-            let savedWorker = await foundWorker.save();
-            if (savedWorker) {
-                res.json("Done");
+
+            let result = duplicateCheck(newReport, lastDB_item);
+
+            if (result) {
+                req.flash("error", "Duplicate report detected");
+                res.json("ERROR, Duplicate Report")
+            } else {
+                req.flash("success", "Successfully Reported");
+                foundWorker.expected_attendance.push(newReport);
+                let savedWorker = await foundWorker.save();
+                if (savedWorker) {
+                    res.json("Done");
+                }
             }
         } catch (error) {
             console.log(error)
@@ -165,6 +180,7 @@ module.exports = {
         thisReportId = req.params.id;
         Expected.findByIdAndRemove({ _id: thisReportId })
         .then((good) => {
+            res.redirect("/expected")
             res.json(good);
         })
         .catch((err) => {
@@ -204,6 +220,8 @@ module.exports = {
         Expected.findById(thisReportId)
             .then((good) => {
                 good.disciples.push(req.body._id);
+                good.info = req.body.info;
+                console.log(good)
                 good.save();
                 res.json("added");
             })

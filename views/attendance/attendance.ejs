@@ -5,7 +5,7 @@
     <div class="col-md-12">
         <div class="list-workers">
             <div class="text-center p-3">
-                <a class="btn btn-success btn-sm p-2" href="/attendance/new">New Report</a>
+                <a class="btn btn-success btn-sm p-2" href="/attendance/new">New Attendance Report</a>
             </div>
         <% for(i = attendance.length-1; i >= 0; i--){ %>
             <div>
@@ -36,8 +36,10 @@
                     <% let diffDate = date - dateReport; %>
                     <% if(!(diffDate > 86400000)){ %>
                         <a class="btn btn-sm btn-primary m-2" href="/attendance/<%= attendance[i]._id %>">View</a>
-                        <a class="btn btn-sm btn-secondary m-2" >Edit</a>
-                        <a class="del-attendance btn btn-sm btn-danger m-2" href="#" data-id="<%= attendance[i]._id %>">Delete</a>
+                        <a class="btn btn-sm btn-secondary m-2" href="/attendance/<%= attendance[i]._id %>/edit">Edit</a>
+                        <form action="/attendance/<%= attendance[i]._id %>?_method=DELETE" method="POST" style="display: inline;">
+                            <input type="submit" value="Delete" class="del-attendance btn btn-sm btn-danger m-2">
+                        </form>
                     <% }; %>
                 </div>
                 <% } %>

@@ -46,6 +46,7 @@ module.exports = {
             title: req.body.title,
             for: req.body.for,
             info: req.body.info,
+            author: req.user.id,
         };
         console.log("thisReport", thisReport)
         let newReport = await Report.create(thisReport)

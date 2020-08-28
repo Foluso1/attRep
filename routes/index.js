@@ -211,7 +211,7 @@ router.get("/mail/:token/:email", async (req, res)=>{
         }
     } catch (e) {
         console.log(e)
-        req.flash("error", `Somethign went wrong`);
+        req.flash("error", `Something went wrong`);
         res.redirect("/home");
     }
 })

@@ -6,8 +6,8 @@
         <br>
         <h3 class="p-3">All Workers Attendance Report</h3>
         <div class="mx-3">
-            <% if (manyArr.length > 0 && manyArr[0]) { %>
-                <h3>Date: <%= moment(startOfToday).startOf("day").format("DD-MM-YYYY") %> </h3>
+            <% if (result.manyArr.length > 0 && result.manyArr[0]) { %>
+                <h3>Date: <%= moment(result.startOfToday).startOf("day").format("DD-MM-YYYY") %> </h3>
             <% } else { %>
                 <h3>Date: </h3>
             <% } %>
@@ -20,7 +20,7 @@
             </form>
         </div>
         <p></p>
-        <% if (manyArr.length < 1) { %>
+        <% if (result.manyArr.length < 1) { %>
             <p class="pl-4">Nothing to show here </p>
         <% } else { %>
             <table border="1" class="allLMALockdown" id="table-lockdown-one" style="overflow-x: auto;">
@@ -40,15 +40,15 @@
                 <tbody>
                     <tr>
                         <td><b>Total</b></td>
-                        <td><b><%= manyArr.length %></b></td>
+                        <td><b><%= result.manyArr.length %></b></td>
                         <td><b>&nbsp;</b></td>
                         <td><b>&nbsp;</b></td>
-                        <td><b><%= totalAttendees %></b></td>
+                        <td><b><%= result.totalAttendees %></b></td>
                         <td><b>&nbsp;</b></td>
                     </tr>
-                    <% manyArr.forEach((elem, i) => { %>
+                    <% result.manyArr.forEach((elem, i) => { %>
                         <tr>
-                            <td><%= manyArr.length-i %> </td>
+                            <td><%= result.manyArr.length-i %> </td>
                             <td><a href="/lma/<%= elem.id %>/attendance"><%= elem['firstname'] %> <%= elem['surname'] %></a></td>
                             <td><%= elem['title'] %></td>
                             <td><%= elem['for'] %> </td>
@@ -78,6 +78,11 @@
                     <% }); %>
                 </tbody>
             </table>
+            <div class="copy-text">
+                <h3>List of Workers with Reports</h3>
+                <textarea class="form-control text-paragraphs"><%= result.reportList %></textarea>
+                <button class="btn btn-sm btn-secondary">Copy List</button>
+            </div>
 
             <!-- WORKERS With NO REPORTS YET -->
             <p></p>
@@ -92,11 +97,11 @@
                 <thead>
                     <tr>
                         <th><b>Total</b></th>
-                        <th><b> <%= noReportYet.length %></b></th>
+                        <th><b> <%= result.noReportYet.length %></b></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% noReportYet.forEach((elem, i) => { %>
+                    <% result.noReportYet.forEach((elem, i) => { %>
                     <tr>
                         <td><%= i+1 %> </td>
                         <td><a href="/lma/<%= elem.id %>/attendance"><%= elem['firstname'] %> <%= elem['surname'] %></a></td>
@@ -105,13 +110,13 @@
                 </tbody>
             </table>
             <p></p>
-            <h3>List of Workers with no Reports</h3>
-            <button id="generate-no-report-list" class="btn btn-sm btn-secondary">Generate List</button>
-            <textarea id="list-no-lockdown-reports" class="form-control text-paragraphs" cols="30" rows="10"><%= noReportNames %> </textarea>
-            <button id="copy-no-report-list" class="btn btn-sm btn-secondary">Copy List</button>
+            <div class="copy-text">
+                <h3>List of Workers with no Reports</h3>
+                <textarea id="list-no-lockdown-reports" class="form-control text-paragraphs"><%= result.noReportNames %> </textarea>
+                <button id="copy-no-report-list" class="btn btn-sm btn-secondary">Copy List</button>
+            </div>
 
         <% } %> 
-        <input value="Export as CSV 2" type="button" onclick="$('#table-lockdown-one').table2CSV({header:['S/N','Worker Name','Title', 'For', 'Disciples', 'Info']})">
     </div>
 </main>
 <p></p>

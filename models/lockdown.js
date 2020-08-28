@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 //Schema
 const lockdownSchema = new mongoose.Schema({
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Worker',
+  },
+
   data: {
     type: String,
     required: true,

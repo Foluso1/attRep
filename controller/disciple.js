@@ -17,11 +17,10 @@ module.exports = {
 
     postDisciple: async (req, res) => {
         try {
-            let idWorker = {
-                _id: req.user.id
-            };
+            let idWorker = {_id: req.user.id};
             let data = {
-                name: req.body.name
+                name: req.body.name,
+                discipler: req.user.id,
             };
             let disc1 = await Disciple.create(data)
             let foundWorker = await Worker.findById(idWorker)
@@ -30,6 +29,7 @@ module.exports = {
             req.flash("success", `${req.body.name} has been added successfully!`);
             res.redirect("/discipleship/new");
         } catch (error) {
+            req.flash("error", "There was a problem! Please, try again!")
             console.log(error);
         }
     },

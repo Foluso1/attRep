@@ -36,8 +36,10 @@
                     <% let diffDate = date - dateReport; %>
                     <% if(!(diffDate > 86400000)){ %>
                         <a class="btn btn-sm btn-primary m-2" href="/expected/<%= expected_attendance[i]._id %>">View</a>
-                        <a class="btn btn-sm btn-secondary m-2" >Edit</a>
-                        <a class="del-attendance btn btn-sm btn-danger m-2" href="#" data-id="<%= expected_attendance[i]._id %>">Delete</a>
+                        <a class="btn btn-sm btn-secondary m-2" href="/expected/<%= expected_attendance[i]._id%>/edit">Edit</a>
+                        <form action="/expected/<%= expected_attendance[i]._id %>?_method=DELETE" method="POST" style="display:inline">
+                            <input type="submit" value="Delete" class="del-attendance btn btn-sm btn-danger m-2" href="/expected/<%= expected_attendance[i]._id %>?_method=DELETE" data-id="<%= expected_attendance[i]._id %>">
+                        </form>
                     <% }; %>
                 </div>
                 <% } %>

@@ -11,6 +11,10 @@ h1 {
     font-weight: 600;
 }
 
+.container {
+    padding-top: 10px;
+}
+
 .listings-heading h1 {
     color: #7E6227;
 }
@@ -534,4 +538,21 @@ select.scc-form, li.scc-form {
     border: none;
     background-color: #F8EEDC;
     color: black;
+}
+
+
+/* COPY TEXT */
+.copy-text {
+    display: flex;
+}
+
+.copy-text > h3 {
+    display: none;
+}
+
+.copy-text > textarea {
+    height: 0;
+    width: 0;
+    position: absolute;
+    left: -100px;
 }

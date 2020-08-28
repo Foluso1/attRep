@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 //Schema
 const evangelismSchema = new mongoose.Schema({
-     
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Worker',
+  },
+
   date: {
     type: Date,
     default: Date.now,

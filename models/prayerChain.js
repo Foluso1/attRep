@@ -3,6 +3,11 @@ const mongoose = require("mongoose")
 
 //Schema
 const prayerChainSchema = new mongoose.Schema({
+    prayor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Worker',
+    },
+
     start: {
         type: Date,
         required: true

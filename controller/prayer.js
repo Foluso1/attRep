@@ -18,7 +18,8 @@ module.exports = {
     }
     let data = {
       datePrayed: day,
-      prayed: yesOrNo
+      prayed: yesOrNo,
+      prayor: req.user.id,
     };
     let dayer = day.toString();
 

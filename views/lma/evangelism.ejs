@@ -32,9 +32,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% evangelism.forEach((elem) => { %>
+                        <% evangelism.forEach((elem) => { %> 
                         <tr>
-                            <td><%= moment(elem.data.dateOnReport).format("DD-MM-YYYY") %></td>
+                            <td><%= moment(elem.date).format("DD-MM-YYYY") %></td>
                             <td><%= elem.data.location %></td>
                             <% if(elem.data.stats[0] <= "1"){ %>
                                 <td><%= elem.data.stats[0] %> soul</td>
@@ -63,19 +63,6 @@
                             <% } %>
                             <td class="text-paragraphs"><%= elem.data.details %></td>
                             <td class="text-paragraphs"><%= elem.data.healing %></td>
-                            <% if(baseUrl == "/lma" || (Date.now() - elem.date.getTime()) >= 86400000 ){ %>
-                            <% } else { %>
-                                <td>
-                                    <div class="d-inline-flex">
-                                        <form action="/evangelism/<%= elem.id %>?_method=DELETE" method="POST" class="d-inline-flex mx-2">
-                                            <input type="submit" value="Delete" class="btn btn-sm btn-danger">
-                                        </form>
-                                        <form action="/evangelism/<%= elem.id %>/edit" method="GET" class="d-inline-flex mx-2">
-                                            <input type="submit" value="Edit" class="btn btn-sm btn-warning">
-                                        </form>
-                                    </div>
-                                </td>
-                            <%}%>
                         </tr>
                         <% }); %>
                     </tbody>
