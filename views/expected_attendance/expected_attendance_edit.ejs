@@ -53,10 +53,13 @@
     </div>
 </main>
 <p></p>
-<textarea class="form-control" id="info" name="info" placeholder="Additional information"
-    rows="8"><%= thisReport.info %></textarea>
-<form action="/expected" method="POST" class="">
-    <button class="btn btn-primary text-center" id="export-expected-attendance">Submit Edited Report</button>        
+<form action="/expected/<%= thisReport._id %>?_method=PUT" method="POST">
+    <div>
+        <h3>Additional Information</h3>
+        <textarea class="form-control" id="info" name="info" placeholder="Additional Information"><%= thisReport.info %></textarea>
+    </div>
+    <br>
+    <input type="submit" class="btn btn-primary text-center">       
 </form>
 <p></p>
 <% include ../partials/footer %>

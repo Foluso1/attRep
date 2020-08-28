@@ -2,6 +2,7 @@ const   Worker              = require("../models/worker")
     ,   Disciple            = require("../models/disciple")
     ,   Expected            = require("../models/expected_attendance_model")
     ,   flash               = require("connect-flash")
+    ,   moment              =   require("moment")
     ,   duplicateCheck      = require("../utils/duplicateCheck")
     ;
 const JSONTransport = require("nodemailer/lib/json-transport");
@@ -252,6 +253,22 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
-    } 
-}
+    },
 
+    putReport: async (req, res) => {
+        console.log(req.body);
+        thisReportId = req.params.id;
+        Expected.findById(thisReportId)
+        .then((good) => {
+            good.info = req.body.info;
+            good.for = req.body.for;
+            good.title = req.body.title;
+            good.save();
+            res.redirect("/expected");
+        })
+        .catch((err) => {
+            req.flash("error", "There was a problem")
+            console.log(err);
+        })
+    }
+}

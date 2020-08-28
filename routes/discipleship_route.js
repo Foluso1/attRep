@@ -12,7 +12,6 @@ router.use(methodOverride("_method"));
 
 
 router.route("/")
-    // .get(middleware.isLoggedIn, middleware.signInWithGoogle, helper.getReports)
     .get(middleware.isLoggedIn, middleware.emailCheck, middleware.signInWithGoogle, helper.getReports)
     .post(middleware.isLoggedIn, helper.postNewReport);
 
@@ -22,6 +21,7 @@ router.route("/new")
 
 router.route("/:id")
     .get(middleware.isLoggedIn, helper.getOneReport)
+    .put(middleware.isLoggedIn, helper.putReport)
     .delete(middleware.isLoggedIn, helper.deleteReport);
 
 router.route("/:id/edit")

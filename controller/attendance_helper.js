@@ -30,10 +30,8 @@ module.exports = {
         try {
             let worker = {_id: req.user.id}
             let startOfToday = moment().startOf('day').format();
-            console.log(startOfToday)
             let att =  await Attendance.find({summoner: req.user.id, "date": {$gte: startOfToday}}).populate("disciples");
             let db_Worker = JSON.parse(JSON.stringify(att));
-            console.log("//////", db_Worker);
 
             let thisReport = {
                 title: req.body.title,
@@ -41,7 +39,6 @@ module.exports = {
                 info: req.body.info,
                 summoner: req.user.id,
             };
-            console.log("thisReport", thisReport)
             let newReport = await Attendance.create(thisReport)
             newReportId = newReport._id;
             const ids = req.body.ids;   
@@ -264,6 +261,7 @@ module.exports = {
             res.redirect("/attendance");
         })
         .catch((err) => {
+            req.flash("error", "There was a problem")
             console.log(err);
         })
     }

@@ -1,14 +1,13 @@
 <% include ../partials/header %>
 </div>
 <div class="heading">
-    <a class="btn btn-primary btn-sm" href="/disciple/new">Add New Disciple</a>
-    <a class="btn btn-success btn-sm" href="/attendance">Back to Attendee Reports</a>
+    <a class="btn btn-success btn-sm" href="/attendance">Back to Attendance Reports</a>
 </div>
 
 <main class="row">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <div class="list-workers">
-                <h2><i class="fas fa-pen-alt pr-3" aria-hidden="true"></i>New Report</h2>
+                <h2><i class="fas fa-pen-alt pr-3" aria-hidden="true"></i>Attendance Report</h2>
                 <p class="notabene">Click on a name in the <a href="#disciples-pane">disciples pane</a> to add to this list OR click on a name here to remove from the list</p>
                 <div class="form-group d-flex form-box">
                     <label for="title" class="mt-2">Title: </label>
@@ -37,7 +36,7 @@
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="list-disciples">
             <h2 id="disciples-pane">Disciples Pane</h2>
-            <h5><a href="/disciple/new"> <i class="fas fa-plus-circle"></i></a> Add New Disciple</h5>
+            <h5><a href="/disciple/new"> <i class="fas fa-plus-circle"> Add New Disciple</i></a></h5>
             <ol class="absent d-flex flex-column">
                 <% allDisciples.forEach((disc) => { %>
                     <div class="hoverer d-inline-flex justify-content-between p-1">

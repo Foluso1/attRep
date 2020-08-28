@@ -54,9 +54,9 @@
 </main>
 <p></p>
 <form action="/attendance/<%= thisReport._id %>?_method=PUT" method="POST">
-    <div>
+    <div class="list-workers">
         <h3>Additional Information</h3>
-        <textarea class="form-control" id="info" name="info" placeholder="Additional Information"><%= thisReport.info %></textarea>
+        <textarea class="form-control" id="info" name="info" placeholder="Additional Information" rows="8"><%= thisReport.info %></textarea>
     </div>
     <br>
     <input type="submit" class="btn btn-primary text-center">       

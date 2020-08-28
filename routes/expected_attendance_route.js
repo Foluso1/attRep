@@ -21,6 +21,7 @@ router.route("/new")
 
 router.route("/:id")
     .get(middleware.isLoggedIn, helper.getOneReport)
+    .put(middleware.isLoggedIn, helper.putReport)
     .delete(middleware.isLoggedIn, helper.deleteReport);
 
 router.route("/:id/edit")

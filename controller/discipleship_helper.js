@@ -1,7 +1,9 @@
-const   Worker  =   require("../models/worker")
-    ,   Disciple  =   require("../models/disciple")
-    ,   Report  =   require("../models/discipleship_model")
-    , flash = require("connect-flash")
+const   Worker              =   require("../models/worker")
+    ,   Disciple            =   require("../models/disciple")
+    ,   Discipleship        =   require("../models/discipleship_model")
+    ,   flash               =   require("connect-flash")
+    ,   moment              =   require("moment")
+    ,   duplicateCheck      =   require("../utils/duplicateCheck")
     ;
 
 
@@ -36,23 +38,22 @@ module.exports = {
     },
     
     postNewReport: async (req, res) => {
-        let worker = {
-            _id: req.user.id
-        }
-
-        console.log(req.body);
-
-        let thisReport = {
-            title: req.body.title,
-            for: req.body.for,
-            info: req.body.info,
-            author: req.user.id,
-        };
-        console.log("thisReport", thisReport)
-        let newReport = await Report.create(thisReport)
-        const ids = req.body.ids;
-        
         try {
+            let startOfToday = moment().startOf('day').format();
+            let att =  await Discipleship.find({author: req.user.id, "date": {$gte: startOfToday}}).populate("disciples");
+            let prevReports = JSON.parse(JSON.stringify(att));
+            
+            let thisReport = {
+                title: req.body.title,
+                for: req.body.for,
+                info: req.body.info,
+                author: req.user.id,
+            };
+
+            let newReport = await Discipleship.create(thisReport)
+            newReportId = newReport._id;
+            const ids = req.body.ids;   
+            
             const arr = [];
             
             let i = 0;
@@ -70,11 +71,19 @@ module.exports = {
                 }
             }
             
-            let foundWorker = await Worker.findById(worker);
-            foundWorker.reports.push(newReport);
-            let savedWorker = await foundWorker.save();
-            if (savedWorker) {
-                res.json("Done");
+            let foundWorker = await Worker.findById({_id: req.user.id});
+            let result = duplicateCheck(newReport, prevReports);
+            if (result) {
+                req.flash("error", "Duplicate report detected");
+                res.json("ERROR, Duplicate Report");
+                await Discipleship.findByIdAndDelete({_id: newReportId})
+            } else {
+                req.flash("success", "Successfully Reported");
+                foundWorker.reports.push(newReport);
+                let savedWorker = await foundWorker.save();
+                if (savedWorker) {
+                    res.json("Done");
+                }
             }
         } catch (error) {
             console.log(error)
@@ -123,7 +132,7 @@ module.exports = {
                 });
 
                 //get ids of disciples in report
-                let thisReport = await Report.findById(thisReportId)
+                let thisReport = await Discipleship.findById(thisReportId)
                   .populate("disciples")
                     let discReport = thisReport.disciples;
                     if (discReport && discReport.length !== 0) {
@@ -159,7 +168,7 @@ module.exports = {
         }
         try {
             let foundWorker = await Worker.findById(worker).populate({ path: 'reports', populate: { path: 'disciples' } });
-            let thisReport = await Report.findById(thisReportId).populate("disciples")
+            let thisReport = await Discipleship.findById(thisReportId).populate("disciples")
             let allReports = foundWorker.reports;
             
             let idsAllReports = allReports.map((elem) => {
@@ -175,7 +184,7 @@ module.exports = {
 
     deleteReport: (req, res) => {
         thisReportId = req.params.id;
-        Report.findByIdAndRemove({ _id: thisReportId })
+        Discipleship.findByIdAndRemove({ _id: thisReportId })
         .then((good) => {
             res.json(good);
         })
@@ -186,7 +195,7 @@ module.exports = {
 
     removeDisciple: (req, res) => {
         thisReportId = req.params.id;
-        Report.findById(thisReportId)
+        Discipleship.findById(thisReportId)
             .then((good) => {
                 Disciple.findById(req.body._id)
                 .then((found) => {
@@ -213,7 +222,7 @@ module.exports = {
 
     addDisciple: (req, res) => {
         thisReportId = req.params.id;
-        Report.findById(thisReportId)
+        Discipleship.findById(thisReportId)
             .then((good) => {
                 good.disciples.push(req.body._id);
                 good.save();
@@ -230,7 +239,7 @@ module.exports = {
             _id : req.user.id
         }
         
-        let newReport = await Report.create(new Report)
+        let newReport = await Discipleship.create(new Report)
         try {
             newReport.disciples.push(req.body._id);
             newReport.save();
@@ -246,6 +255,23 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
-    } 
+    }, 
+
+    putReport: async (req, res) => {
+        console.log(req.body);
+        thisReportId = req.params.id;
+        Discipleship.findById(thisReportId)
+        .then((good) => {
+            good.info = req.body.info;
+            good.for = req.body.for;
+            good.title = req.body.title;
+            good.save();
+            res.redirect("/discipleship");
+        })
+        .catch((err) => {
+            req.flash("error", "There was a problem")
+            console.log(err);
+        })
+    }
 }
 
