@@ -40,7 +40,9 @@ module.exports = async (dateForData, foundWorker, path) => {
                                     totalAttendees: totalAttendees = (totalAttendees + item.disciples.length),
                                 }
                                 manyArr.push(abc)
-                                reportList = reportList + `${abc.firstname} ${abc.surname} \n\t ${abc.disciples.join("\n\t")} ${abc.info.split("\n").join("\n\t")}\n`;
+                                if (abc.info) {
+                                    reportList = reportList + `${abc.firstname} ${abc.surname} \n\t ${abc.disciples.join("\n\t")} ${abc.info.split("\n").join("\n\t")}\n`;
+                                }
                             } 
                         });
                         if(!isReportToday) {

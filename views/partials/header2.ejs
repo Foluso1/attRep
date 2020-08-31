@@ -34,7 +34,6 @@
         </div>
     </section>
     <% if ( moment().valueOf() >= moment("Aug 1 00:00:00", "MMM DD hh:mm:ss").valueOf() && moment().valueOf() < moment("Aug 29 00:00:00", "MMM DD hh:mm:ss").valueOf()) { %>
-        <p>Hellos</p>
         <% if (moment().format("DD/MM/YYYY") == moment([new Date().getFullYear(), 7, 28]).format("DD/MM/YYYY")) { %>
             <div class="text-center alert alert-primary mt-2" role="alert"><i class="fas fa-birthday-cake"></i> Hurray!!! Today, this application is <%= new Date().getFullYear()-2019 %> year %> </div>
         <% } else { %>

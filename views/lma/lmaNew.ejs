@@ -10,7 +10,7 @@
             <ol>
                 <% workerCheck.forEach((foundWorker) => { %>
                     <li style="display: flex; justify-content: space-between;" _id="<%= foundWorker._id %>">
-                        <%= foundWorker.firstname %>&nbsp;<%= foundWorker.surname %>
+                        <%= foundWorker.firstname %>&nbsp;<%= foundWorker.surname %> 
                         <form action="/lma" method="POST" class="worker-list-remove">
                             <input style="display: none" type="text" name="id" value="<%= foundWorker._id %>">
                             <button class="btn btn-sm btn-danger" _id="<%= foundWorker._id %>">Remove Worker</button>
@@ -37,7 +37,7 @@
             <div class="col-lg-4 col-md-6 col-sm-8 col-xs-10">
             </div>
             <p></p>
-            <hr />
+            <hr/>
             <p></p>
             </br>
         </div>
