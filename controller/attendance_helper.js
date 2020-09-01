@@ -185,85 +185,60 @@ module.exports = {
         })
     },
 
-    removeDisciple: (req, res) => {
-        thisReportId = req.params.id;
-        Attendance.findById(thisReportId)
-            .then((good) => {
-                Disciple.findById(req.body._id)
-                .then((found) => {
-                })
-                let allFoundDisciples = good.disciples;
-                allFoundDisciples.forEach((elem, i) => {
-                    if (elem === null) {
-                        allFoundDisciples.splice(i, 1);
-                    }
-                })
-                let idsAllFoundDisciples = allFoundDisciples.map((disc) => {
-                    return disc._id;
-                })
-                let index = idsAllFoundDisciples.indexOf(req.body._id);
-                idsAllFoundDisciples.splice(index, 1);
-                allFoundDisciples.splice(index, 1);
-                good.save();
-                res.json("removed");
+    removeDisciple: async (req, res) => {
+        try {
+            thisReportId = req.params.id;
+            
+            let good = await Attendance.findById(thisReportId)
+            let found = await Disciple.findById(req.body._id)
+            let allFoundDisciples = good.disciples;
+            allFoundDisciples.forEach((elem, i) => {
+                if (elem === null) {
+                    allFoundDisciples.splice(i, 1);
+                }
             })
-            .catch((err) => {
-                console.log(err);
+            let idsAllFoundDisciples = allFoundDisciples.map((disc) => {
+                return disc._id;
             })
+            let index = idsAllFoundDisciples.indexOf(req.body._id);
+            idsAllFoundDisciples.splice(index, 1);
+            allFoundDisciples.splice(index, 1);
+            await good.save();
+            res.json("removed");
+        } catch (e) {
+            console.log(e)
+            res.status(404).json("Not found")
+        }
     },
 
-    addDisciple: (req, res) => {
-        thisReportId = req.params.id;
-        Attendance.findById(thisReportId)
-            .then((good) => {
-                good.disciples.push(req.body._id);
-                good.save();
-                res.json("added");
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-    },
-
-    addNewDisciple: async (req, res) => {
-        thisReportId = req.params.id;
-        let worker = {
-            _id : req.user.id
+    addDisciple: async (req, res) => {
+        try {
+            thisReportId = req.params.id;
+            let good = await Attendance.findById(thisReportId)
+            good.disciples.push(req.body._id);
+            await good.save();
+            res.json("added");
+        } catch (e) {
+            console.log(e)
+            res.status(404).json("Not found")
         }
         
-        let newReport = await Attendance.create(new Attendance)
-        try {
-            newReport.disciples.push(req.body._id);
-            newReport.save();
-            res.json("added");
-            Worker.findById(worker)
-            .then((foundWorker) => {
-                foundWorker.attendance.push(newReport);
-                foundWorker.save();
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        } catch (error) {
-            console.log(error)
-        }
     },
 
     putReport: async (req, res) => {
-        console.log(req.body);
-        thisReportId = req.params.id;
-        Attendance.findById(thisReportId)
-        .then((good) => {
+        try {
+            thisReportId = req.params.id;
+            let good = await Attendance.findById(thisReportId)
             good.info = req.body.info;
             good.for = req.body.for;
             good.title = req.body.title;
-            good.save();
+            await good.save();
             res.redirect("/attendance");
-        })
-        .catch((err) => {
+        } catch (e) {
             req.flash("error", "There was a problem")
-            console.log(err);
-        })
+            console.log(e)
+        }
+        
     }
 }
 

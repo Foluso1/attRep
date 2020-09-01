@@ -90,7 +90,7 @@ module.exports = {
                   };
                 let lockdown = await Lockdown.create(obj);
                 foundWorker.lockdown.push(lockdown);
-                foundWorker.save();
+                await foundWorker.save();
                 req.flash("success", "Your report has been submitted successfully. Thank you!");
                 res.redirect("/new/lockdown");
             }

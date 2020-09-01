@@ -1,36 +1,28 @@
-<% include partials/header %>
+<% include ../partials/header %>
 
-<% if( foundWorker._id == loggedInWorker._id ) { %>
-    <a class="btn btn-primary btn-sm" href="/disciple/new">Add New Disciple</a>
-<% } %>
 
-</div>
 
-<main class="row">
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="list-workers">
-            <h2>List of <span id="present">All</span> Disciples</h2>
-            <ol class="list">
-                
-            </ol>
+
+<main class="column">
+    <div class="list-workers">
+        <h2>List of <span id="present">All</span> Disciples</h2>
+        <div class="text-center p-3">
+            <a class="btn btn-success btn-sm" href="/disciple/new">Add New Disciple</a>
         </div>
-        <button class="btn btn-primary" id="export">Submit Report</button>
-        <p></p>
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="list-workers">
-            <h2>List of Absent Disciples</h2>
-            <ol class="absent">
-            </ol>
-        </div>
-    </div>
-    <div>
-
+        <ol class="disciple-list">
+            <% disciples.forEach((disciple, i) => { %>
+                <li class="add-remove-worker">
+                    <div class="d-inline">
+                        <%= disciple.name%>
+                    </div>
+                    <div class="d-inline">
+                        <a href="/disciple/<%= disciple._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <a href="#" data-id="<%= disciple._id %>" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </div>
+                </li>
+            <% }); %>
+        </ol>
     </div>
 </main>
 <p></p>
-<textarea class="form-control" id="presentWorkers" val="" name="name" placeholder="Present workers appear here"
-    rows="8"></textarea>
-<button class="btn btn-success" id="copier">Copy Text</button>
-<p></p>
-<% include partials/footer %>
+<% include ../partials/footer %>

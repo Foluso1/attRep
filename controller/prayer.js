@@ -45,7 +45,7 @@ module.exports = {
       if (ifFoundIndex === -1) {
         let createPrayer = await Prayer.create(data);
         foundWorker.prayerReport.push(createPrayer);
-        foundWorker.save();
+        await foundWorker.save();
         req.flash("success", "You have successfully reported for the week!");
         res.redirect("/prayer");
       } else {

@@ -15,7 +15,7 @@ module.exports = {
             let foundWorker = await Worker.findById({ _id: currentWorker });
 
             foundWorker.prayerChainReport.push(newPrayerChain);
-            foundWorker.save();
+            await foundWorker.save();
 
             res.json(newPrayerChain);
         } catch (err) {

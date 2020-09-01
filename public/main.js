@@ -7,6 +7,7 @@ const startTime      = document.querySelector("#starttime" );
 const startPrBtn     = document.querySelector("#startPrBtn");
 const endPrBtn       = document.querySelector("#endPrBtn"  );
 const myDiv          = document.querySelector(".mydiv"     );
+const discipleList   = document.querySelector(".disciple-list")
 const prChform       = document.querySelector("#prChform"  );
 const noDisp         = document.querySelector(".nodisplay" );
 const startPr        = document.querySelector("#startPr"   );
@@ -203,24 +204,7 @@ if (dateToQuery) {
     })
 }
 
-// if (lockdownNoReport) {
-//     let table1 = document.querySelector(".allLMALockdown:nth-of-type(2)");
-//     let tdArr = Array.from(table1.querySelectorAll("tbody tr td:nth-of-type(2)"));
-//     let namesArr = tdArr.map((e) => {
-//         return e.innerText;
-//     });
-//     console.log(namesArr.join(",").replace(/,/gi, "\n"));
-    
-// if (lockdownNoReportCopy) {
-//     lockdownNoReportCopy.addEventListener("click", (e) => {
-//         let txtArea = document.querySelector("#list-no-lockdown-reports");
-//         txtArea.select();
-//         txtArea.setSelectionRange(0, 99999); /*For mobile devices*/
-//         document.execCommand("copy");
-//         txtArea.setSelectionRange(0,0);
-//     })
-// }
-// }
+
 
 if (copyText) {
     copyTextArr.forEach((each) => {
@@ -266,7 +250,6 @@ $(document).ready(function () {
     $(".list").on("click", "li", function (worker) {
         removeWorker($(this));
         $("#present").text("Present");
-        // let ch = document.gets
     })
 
     //For Report_edit template. It removes / adds from a list
@@ -280,17 +263,44 @@ $(document).ready(function () {
     })
 
     $(".worker-list").on("click", function (e) {
-        e.preventDefault();
-        let form = $(this);
-        let btn = $(this).children("button");
-        btn.removeClass("btn-primary").addClass("btn-danger");
-        btn.text("Remove Worker");
-        let id = btn.attr("_id"); 
-        let data = { "_id": id };
-        $.post("/lma", data);
-        if (form.hasClass("worker-list")) {
-            form.removeClass("worker-list").addClass("worker-list-remove");
-            form.off('click').on('click', rmaSubWorker);
+        if(e.target.tagName == "A"){
+            if(e.target.textContent.trim() == "Add"){
+                $.ajax({
+                    type: "PUT",
+                    url: "/lma",
+                    data: {add: e.target.parentNode.dataset.id},
+                    success:  (data) => {
+                        console.log(data)
+                        if(e.target.classList.contains("btn-outline-primary")){
+                            e.target.classList.remove("btn-outline-primary")
+                            e.target.classList.add("btn-warning")
+                            e.target.textContent = "Remove";
+                        }
+                    },
+                    error: () => {
+                        console.log("There was a problem!")
+                        alert("There was a problem!")
+                    }
+                })
+            } else if (e.target.textContent.trim() == "Remove"){
+                $.ajax({
+                    type: "PUT",
+                    url: "/lma",
+                    data: {remove: e.target.parentNode.dataset.id},
+                    success: (data) => {
+                        console.log(data)
+                        if(e.target.classList.contains("btn-warning")){
+                            e.target.classList.remove("btn-warning")
+                            e.target.classList.add("btn-outline-primary")
+                            e.target.textContent = "Add";
+                        }
+                    },
+                    error: () => {
+                        console.log("There was a problem!")
+                        alert("There was a problem!")
+                    }
+                })
+            }
         }
     })
 
@@ -298,21 +308,6 @@ $(document).ready(function () {
     $(".worker-list-remove").on("click", function (e) {
         e.preventDefault();
         rmSubWorker($(this));
-    })
-
-    $(".disciple-list").on("click", function (e) {
-        e.preventDefault();
-        let form = $(e);
-        let btn = $(this).children(".select");
-        btn.removeClass("btn-primary").addClass("btn-danger");
-        btn.text("Remove");
-        let id = btn.attr("_id");
-        let data = { "_id": id };
-        $.post(route, data);
-        if (form.hasClass("disciple-list")) {
-            form.removeClass("disciple-list").addClass("disciple-list-remove");
-            form.off('click').on('click', rmaDisciple);
-        }
     })
 
     $(".disciple-list-remove").on("click", function (e) {
@@ -455,22 +450,6 @@ function exporter(buttonId){
                     window.location.replace(`${window.location.origin}/attendance`)
                 }
             )
-            // let data = {
-            //     ids: idsArray,
-            //     title: title.innerText,
-            //     for: meeting.innerText,
-            //     info: info.value,
-            // }
-            // console.log(info);
-            // $.ajax({
-            //     url: "/attendance",
-            //     data: data,
-            //     type: "PUT",
-            //     success: function (data) {
-            //         console.log("DOOOOOOOOOOONE!")
-            //         console.log(data);
-            //     }
-            // })
 
         } else if (buttonId == "export-expected-attendance") {
             $.post("/expected",
@@ -555,26 +534,8 @@ function copyAll() {
 }
 
 
-function disciple (e) {
-    e.preventDefault();
-    let form = $(this);
-    let btn = $(this).children("button");
-    btn.text("Remove");
-    let id = btn.attr("_id");
-    let data = { "_id": id };
-    $.post(route, data);
-    btn.removeClass("btn-primary").addClass("btn-danger");
-    if (form.hasClass("disciple-list")) {
-        form.removeClass("disciple-list").addClass("disciple-list-remove");
-        form.off('click').on('click', rmaDisciple);
-    }
-}
-
-
 
 function rmaDisciple(e) {
-    // e.children("button").preventDefault();
-    // let discipleThis = disciple[0];
     let id = e.children("button").attr("_id");//discipleThis = disciple[0];
     let btn = e.children("button");
     let formData = { "_id": id };
@@ -612,4 +573,26 @@ function rmDisciple(e) {
         form.removeClass("disciple-list-remove").addClass("disciple-list");
         form.off('click').on('click', disciple);
     }
+}
+
+// DELETE DISCIPLE
+if(discipleList){
+    discipleList.addEventListener("click", (e) => {
+        let link = e.target
+        if(link.tagName == "A"){
+            if(link.textContent.trim() == "Delete"){
+                let id = link.dataset.id
+                $.ajax({
+                    url: `/disciple/${id}`,
+                    type: "DELETE",
+                    success: (data) => {
+                        link.parentNode.parentNode.remove();
+                    },
+                    error: (data) => {
+                        alert("There was a problem");
+                    }
+                })
+            }
+        }
+    })
 }

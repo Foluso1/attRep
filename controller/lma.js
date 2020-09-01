@@ -36,24 +36,23 @@ module.exports = {
         })
     },
 
-    postWorker: (req, res) => {
-        let currentWorker = req.user.id;
-        let input = { _id: req.body._id };
-        Worker.findById(input)
-        .then((foundWorker) => {
-            Worker.findById(currentWorker)
-            .then((lma) => {
-                lma.workers.push(foundWorker);
-                lma.save();
-                res.status(201).end();
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        })
+    postWorker: async (req, res) => {
+        try {
+            let currentWorker = req.user.id;
+            let input = { _id: req.body._id };
+            let foundWorker = await Worker.findById(input)
+            let lma = await Worker.findById(currentWorker)
+            lma.workers.push(foundWorker);
+            await lma.save();
+            res.status(201).end();
+        } catch (e) {
+            console.log(e)
+            res.status(404).json("There was a problem");
+        }
+        
     },
 
-    addRemoveOrDelWorker: (req, res) => {
+    addRemoveOrDelWorker: (req, res) => { 
         let currentWorker = req.user.id;
         let arrWorkers = [];
         let addWorker = [];
@@ -103,23 +102,45 @@ module.exports = {
             })
     },
 
-    editWorker: (req, res) => {
-        let currentWorker = req.user.id;
-        Worker.findById(currentWorker)
-            .then((foundWorker) => {
-                let arr = foundWorker.workers;
-                let index = arr.indexOf(req.body._id);
+    editWorker: async (req, res) => {
+        try {
+            console.log("///here.///", req.body);
+            let foundLMA = await Worker.findById({_id: req.user.id});
+
+            if (Object.keys(req.body)[0] == "add"){
+                foundLMA.workers.push(Object.values(req.body)[0]);
+            } else if (Object.keys(req.body)[0] == "remove"){
+                let index = foundLMA.workers.indexOf(Object.values(req.body)[0]);
                 if (index == -1){
-                    res.json("not removed")
+                    res.status(405).json('Not present')
                 } else {
-                    arr.splice(index, 1);
-                    foundWorker.save();
-                    res.json("removed");
+                    foundLMA.workers.splice(index, 1);
                 }
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+            }
+            await foundLMA.save();
+            console.log(foundLMA.workers)
+            res.json("success")
+            // res.status(403).json("forbidden");
+        } catch (e) {
+            console.log(e)
+            res.status(403).json("Forbidden");
+        }
+        // let currentWorker = req.user.id;
+        // Worker.findById(currentWorker)
+        //     .then((foundWorker) => {
+        //         let arr = foundWorker.workers;
+        //         let index = arr.indexOf(req.body._id);
+        //         if (index == -1){
+        //             res.json("not removed")
+        //         } else {
+        //             arr.splice(index, 1);
+        //             foundWorker.save();
+        //             res.json("removed");
+        //         }
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //     })
     },
 
     removeWorker: (req, res) => {

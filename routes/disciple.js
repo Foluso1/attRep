@@ -1,21 +1,29 @@
 const       express         =   require("express")
-        ,   discipleRouter  =   express.Router()
+        ,   router  =   express.Router()
         ,   helper          =   require("../controller/disciple")
         ,   middleware      =   require("../middleware")
+        ,   methodOverride  =   require("method-override")
         ;
 
-discipleRouter.use("/disciple", (req, res, next) => {
+router.use(methodOverride("_method"));
+        
+router.use("/disciple", (req, res, next) => {
     res.locals.req = req;
     next();
 });
 
-discipleRouter.route("/")
-    .get(helper.getDisciples)
+router.route("/")
+    .get(middleware.isLoggedIn, helper.getDisciples)
     .post(middleware.isLoggedIn, helper.postDisciple);
 
+router.route("/new")
+    .get(middleware.isLoggedIn, helper.createNewDiscple);
 
-discipleRouter.route("/new")
-    .get(helper.createNewDiscple);
+router.route("/:id")
+    .put(middleware.isLoggedIn, helper.editDisciple)
+    .delete(middleware.isLoggedIn, helper.deleteDisciple)
 
+router.route("/:id/edit")
+    .get(middleware.isLoggedIn, helper.getOneDisciple)
 
-module.exports = discipleRouter;
+module.exports = router;

@@ -1,7 +1,10 @@
+const disciple = require("../models/disciple");
+
 const       express         =       require("express")
 ,           router          =       express.Router()
 ,           passport        =       require("passport")
 ,           Worker          =       require("../models/worker")
+,           Disciple        =       require("../models/disciple")
 ,           middleWare      =       require("../middleware")
 ,           nodemailer      =       require("nodemailer")
 ,           crypto          =       require("crypto")
@@ -16,7 +19,7 @@ router.get("/", (req, res) => {
     res.render("index");
 });
 
-router.get("/home", async (req, res) => {
+router.get("/home", middleWare.isLoggedIn, async (req, res) => {
     try {        
         let thisUser = await Worker.findById({ _id: req.user.id })
             .populate({
@@ -40,7 +43,29 @@ router.get("/home", async (req, res) => {
                 path: "attendance",
                 populate: {path: 'disciples'},
                 options: {sort: {date: -1}, limit: 1}
-            });
+            })
+            .populate("disciples");
+        
+        if (thisUser.disciples && thisUser.disciples.length > 0) {
+            let arr = [];
+            let i = 0
+            while(!(arr.length == thisUser.disciples.length)){
+                // for(let i=0; i < thisUser.disciples.length; i++){
+                    discipleId = thisUser.disciples[i]._id;
+                    let foundDisciple = await Disciple.findById({_id: discipleId});
+                    foundDisciple.discipler = req.user.id;
+                    let saved = await foundDisciple.save()
+                    // console.log(saved);
+                    if(saved){
+                        arr.push("saved");
+                    }
+                    i++
+                // }
+            }
+        }
+        
+        await thisUser.save()
+        console.log(thisUser.disciples);
         let evangelism = thisUser.evangelism;
         let prayerGroupReport = thisUser.prayerReport;
         let prayerChainReport = thisUser.prayerChainReport;
@@ -52,11 +77,11 @@ router.get("/home", async (req, res) => {
     }
 });
 
-router.get("/discipleship", (req, res) => {
+router.get("/discipleship", middleWare.isLoggedIn, (req, res) => {
     res.redirect("/discipleship")
 })
 
-router.get("/discipleship/:id", (req, res) => {
+router.get("/discipleship/:id", middleWare.isLoggedIn, (req, res) => {
     let id = req.params.id
     res.redirect(`/discipleship/${id}`)
 })

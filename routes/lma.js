@@ -95,9 +95,3 @@ router
 
 
 module.exports = router;
-
-// Do a looop
-// find the worker
-// populate the prayer report
-// Get the "yes" of the array
-// 

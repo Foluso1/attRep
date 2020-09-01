@@ -189,86 +189,61 @@ module.exports = {
         })
     },
 
-    removeDisciple: (req, res) => {
-        thisReportId = req.params.id;
-        Expected.findById(thisReportId)
-            .then((good) => {
-                Disciple.findById(req.body._id)
-                .then((found) => {
-                })
-                let allFoundDisciples = good.disciples;
-                allFoundDisciples.forEach((elem, i) => {
-                    if (elem === null) {
-                        allFoundDisciples.splice(i, 1);
-                    }
-                })
-                let idsAllFoundDisciples = allFoundDisciples.map((disc) => {
-                    return disc._id;
-                })
-                let index = idsAllFoundDisciples.indexOf(req.body._id);
-                idsAllFoundDisciples.splice(index, 1);
-                allFoundDisciples.splice(index, 1);
-                good.save();
-                res.json("removed");
+    removeDisciple: async (req, res) => {
+        try {
+            thisReportId = req.params.id;
+            let good = await Expected.findById(thisReportId)
+            let found = await Disciple.findById(req.body._id)
+            let allFoundDisciples = good.disciples;
+            allFoundDisciples.forEach((elem, i) => {
+                if (elem === null) {
+                    allFoundDisciples.splice(i, 1);
+                }
             })
-            .catch((err) => {
-                console.log(err);
+            let idsAllFoundDisciples = allFoundDisciples.map((disc) => {
+                return disc._id;
             })
-    },
-
-    addDisciple: (req, res) => {
-        thisReportId = req.params.id;
-        Expected.findById(thisReportId)
-            .then((good) => {
-                good.disciples.push(req.body._id);
-                good.info = req.body.info;
-                console.log(good)
-                good.save();
-                res.json("added");
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-    },
-
-    addNewDisciple: async (req, res) => {
-        thisReportId = req.params.id;
-        let worker = {
-            _id : req.user.id
+            let index = idsAllFoundDisciples.indexOf(req.body._id);
+            idsAllFoundDisciples.splice(index, 1);
+            allFoundDisciples.splice(index, 1);
+            await good.save();
+            res.json("removed");
+        } catch (e) {
+            console.log(e)
+            res.status(404).json("Not found")
         }
         
-        let newReport = await Expected.create(new Expected)
+    },
+
+    addDisciple: async (req, res) => {
         try {
-            newReport.disciples.push(req.body._id);
-            newReport.save();
+            thisReportId = req.params.id;
+            let good = await Expected.findById(thisReportId)
+            good.disciples.push(req.body._id);
+            good.info = req.body.info;
+            await good.save();
             res.json("added");
-            Worker.findById(worker)
-            .then((foundWorker) => {
-                foundWorker.expected_attendance.push(newReport);
-                foundWorker.save();
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        } catch (error) {
-            console.log(error)
+        } catch (e) {
+            console.log(e)
+            res.status(404).json("There was a problem")
         }
+        
     },
 
     putReport: async (req, res) => {
-        console.log(req.body);
-        thisReportId = req.params.id;
-        Expected.findById(thisReportId)
-        .then((good) => {
+        try {
+            console.log(req.body);
+            thisReportId = req.params.id;
+            let good = await Expected.findById(thisReportId)
             good.info = req.body.info;
             good.for = req.body.for;
             good.title = req.body.title;
-            good.save();
+            await good.save();
             res.redirect("/expected");
-        })
-        .catch((err) => {
+        } catch (e) {
             req.flash("error", "There was a problem")
-            console.log(err);
-        })
+            console.log(e)
+        }
+        
     }
 }

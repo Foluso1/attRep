@@ -80,7 +80,7 @@ module.exports = {
                 
             let evangelism = await Evangelism.create(obj);
             foundWorker.evangelism.push(evangelism);
-            foundWorker.save();
+            await foundWorker.save();
             req.flash("success", "Your report has been submitted successfully. Thank you!");
             res.redirect("/evangelism");
         } catch (error) {

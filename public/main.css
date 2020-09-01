@@ -556,3 +556,23 @@ select.scc-form, li.scc-form {
     position: absolute;
     left: -100px;
 }
+
+/* ADD OR REMOVE WORKER */
+.add-remove-worker {
+    /* display: flex;
+    justify-content: space-between; */
+    border-bottom: 1px solid darkgray;
+    padding: 15px;
+}
+
+.add-remove-worker div a {
+    margin: 2px;
+}
+
+.list-no-left {
+    padding-left: 0;
+}
+
+ol.disciple-list li div:nth-of-type(2n) {
+    float: right;
+}
