@@ -1,10 +1,11 @@
-const       Worker     =       require("../models/worker")
-            , lastMondayfunction = require("../utils/lastMonday")
-            , refWeekFromMonfunction = require("../utils/refWeekFromMon")
-            , findThisWeekNumber = require("../utils/findThisWeekNumber")
-            , dMDYYYY                   =   require("../utils/dMDYYYY")
-            ,   moment  =   require("moment")
-            , listAllReports        =   require("../utils/listAllReports")
+const         Worker                    = require("../models/worker")
+            , Disciple                  = require("../models/disciple")
+            , lastMondayfunction        = require("../utils/lastMonday")
+            , refWeekFromMonfunction    = require("../utils/refWeekFromMon")
+            , findThisWeekNumber        = require("../utils/findThisWeekNumber")
+            , dMDYYYY                   = require("../utils/dMDYYYY")
+            , moment                    = require("moment")
+            , listAllReports            = require("../utils/listAllReports")
             ;
 
 
@@ -223,6 +224,24 @@ module.exports = {
         }
     },
 
+    getAllDisciples: async (req, res) => {
+        try {
+            let foundDisciples = await Disciple.find().populate('discipler');
+            let obj = {};
+            foundDisciples.forEach((e) => {
+                if(e.discipler){
+                    obj[`${e.discipler.firstname.trim()} ${e.discipler.surname.trim()}`] = obj[`${e.discipler.firstname.trim()} ${e.discipler.surname.trim()}`] + `\n\t${e.name.trim()}`;
+                } else {
+                    obj['no discipler'] = obj['no discipler'] +`\n\t${e.name}`;
+                }
+            });
+            console.log(obj)
+            res.render("lma/all/disciple_all", {obj});
+        } catch (e) {
+            console.log(e);
+        }
+    },
+
     getAllAttendanceWithDate: async (req, res) => {
         try {
             let dateForData = req.params.date;
@@ -260,6 +279,22 @@ module.exports = {
             res.json(toDelWorker);
         } catch (err) {
             console.log(err);
+        }
+    },
+
+    getDisciples: async (req, res) => {
+        try {
+            let worker = {_id: req.params.id};
+            let thisWorker = await Worker.findById(worker).populate('disciples');
+            let disciples = thisWorker.disciples;
+            let foundWorker = {
+                _id: thisWorker._id,
+                firstname: thisWorker.firstname,
+                surname: thisWorker.surname
+            }
+            res.render("lma/discipleLMA", {disciples, foundWorker})
+        } catch (e) {
+            console.log(e)
         }
     },
 

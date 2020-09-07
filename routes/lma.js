@@ -32,6 +32,10 @@ router
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllAttendanceWithDate);
 
 router
+    .route("/all/disciple")
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllDisciples);
+
+router
     .route("/all/expected/")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllExpectedAttendanceWithDate);
 
@@ -64,6 +68,10 @@ router
 router
     .route("/:id/prayer")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getPrayerReport);
+
+router
+    .route("/:id/disciple")
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.getDisciples);
 
 router
     .route("/:id/discipleship")

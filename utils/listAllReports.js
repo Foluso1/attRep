@@ -42,6 +42,8 @@ module.exports = async (dateForData, foundWorker, path) => {
                                 manyArr.push(abc)
                                 if (abc.info) {
                                     reportList = reportList + `${abc.firstname} ${abc.surname} \n\t ${abc.disciples.join("\n\t")} ${abc.info.split("\n").join("\n\t")}\n`;
+                                } else {
+                                    reportList = reportList + `${abc.firstname} ${abc.surname} \n\t ${abc.disciples.join("\n\t")}\n`;
                                 }
                             } 
                         });

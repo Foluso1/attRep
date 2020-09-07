@@ -1,0 +1,39 @@
+<% include ../../partials/header %>
+
+
+
+
+<main class="column">
+    <div class="list-workers">
+        <h2><%#= foundWorker.firstname %> <%#= foundWorker.surname %>'s Disciples</h2>
+        <% let head = Object.keys(obj) %> 
+        <ol class="disciple-list">
+            <% for( let i = 0; i < head.length; i++ ) { %>
+                <li><%= head[i] %>:</li>
+                <% obj[head[i]].split("\t").forEach((element, i) => { %>
+                    <% if(element != "undefined\n"){ %>
+                        <p style="padding-left: 20px; margin: 0;"><%=i%>.&#9; <%= element %></p>
+                    <% } %>
+                <% }); %>
+            <% } %>
+        </ol>
+    </div>
+    <div class="copy-text">
+        <h3>All Disciplers and Disciples</h3>     
+        <% let update = new String; %>
+        <% for( let i = 0; i < head.length; i++ ) { %>
+            <% update = `${update} ${head[i]}: ${obj[head[i]].split("\n\n\n").join("\n").split("undefined\n").join("\n")}\n` %>
+        <% } %> 
+        
+        <textarea id="list-reports" class="form-control text-paragraphs"><%= update %></textarea>
+        <button id="copy-report-list" class="btn btn-sm btn-secondary">Copy List</button>
+    </div>
+</main>
+<p></p>
+<% include ../../partials/footer %>
+<%#= head[i] %>:
+<%# obj[head[i]].split("\n\n\n\n").forEach((element, i) => { %>
+    <%# if(element != "undefined\n"){ %>
+        <%#= element.trim() %>
+    <%# } %>
+<%# }); %>

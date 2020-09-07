@@ -1,0 +1,21 @@
+<% include ../partials/header %>
+
+
+
+
+<main class="column">
+    <div class="list-workers">
+        <h2><%= foundWorker.firstname %> <%= foundWorker.surname %>'s Disciples</h2>
+        <ol class="disciple-list">
+            <% disciples.forEach((disciple) => { %>
+                <li class="add-remove-worker">
+                    <div class="d-inline">
+                        <%= disciple.name%>
+                    </div>
+                </li>
+            <% }); %>
+        </ol>
+    </div>
+</main>
+<p></p>
+<% include ../partials/footer %>

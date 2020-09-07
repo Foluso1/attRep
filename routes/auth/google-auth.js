@@ -87,7 +87,7 @@ googleRouter.get('/auth/google/callback',
                 let workerId = res.locals.loggedInWorker._id;
                 await Worker.findByIdAndUpdate({ _id: workerId }, googleProfile, { new: true });
                 req.flash("success", "You have successfully linked your Google account")
-                res.redirect('/profile');
+                res.redirect('/home');
             } else {
                 // SIGN IN WITH GOOGLE //check if user's google account is associated
                 let foundWorker = await Worker.findOne({ googleIdentity: req.user.googleId });
@@ -95,7 +95,7 @@ googleRouter.get('/auth/google/callback',
                     req.flash("error", "Sorry, your account is not linked with Google. Please, try another login method")
                     res.redirect("/login");
                 } else {
-                    res.redirect('/discipleship');
+                    res.redirect('/home');
                 }
             }
         } catch (err) {

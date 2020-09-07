@@ -212,7 +212,7 @@ if (copyText) {
             if (e.target.tagName == "BUTTON" ){
                 console.log("Clicked copy button")
                 let txtArea = e.target.parentNode.children[1];
-                console.log(txtArea);
+                console.log(txtArea.value);
                 txtArea.select();
                 txtArea.setSelectionRange(0, 99999); /*For mobile devices*/
                 document.execCommand("copy");

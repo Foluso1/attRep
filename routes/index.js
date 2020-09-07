@@ -46,7 +46,7 @@ router.get("/home", middleWare.isLoggedIn, async (req, res) => {
             })
             .populate("disciples");
         
-        if (thisUser.disciples && thisUser.disciples.length > 0) {
+        if (thisUser.disciples && thisUser.disciples.length > 0 && !thisUser.discAssoc) {
             let arr = [];
             let i = 0
             while(!(arr.length == thisUser.disciples.length)){
@@ -62,10 +62,10 @@ router.get("/home", middleWare.isLoggedIn, async (req, res) => {
                     i++
                 // }
             }
+            thisUser.discAssoc = true;
         }
         
         await thisUser.save()
-        console.log(thisUser.disciples);
         let evangelism = thisUser.evangelism;
         let prayerGroupReport = thisUser.prayerReport;
         let prayerChainReport = thisUser.prayerChainReport;

@@ -173,6 +173,11 @@ workerSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+
+    discAssoc: {
+        type: Boolean,
+        default: false,
+    },
  
     date: {
         type: Date,
