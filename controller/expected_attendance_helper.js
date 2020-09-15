@@ -29,15 +29,12 @@ module.exports = {
         try {
             let worker = {_id: req.user.id}
 
-            // console.log(req.body);
-
             let thisReport = {
                 title: req.body.title,
                 for: req.body.for,
                 info: req.body.info,
                 summoner: req.user.id,
             };
-            console.log("thisReport", thisReport)
             let newReport = await Expected.create(thisReport)
             const ids = req.body.ids;
         
@@ -232,7 +229,6 @@ module.exports = {
 
     putReport: async (req, res) => {
         try {
-            console.log(req.body);
             thisReportId = req.params.id;
             let good = await Expected.findById(thisReportId)
             good.info = req.body.info;

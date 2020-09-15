@@ -106,9 +106,7 @@ module.exports = {
     editReportForm: async (req, res) => {
         try {
             let reportId = req.params.id;
-            console.log(reportId);
             let foundReport = await Evangelism.findById({ _id: reportId });
-            console.log(foundReport);
             let thisData = JSON.parse(foundReport.data);
             let thisReport = {
                 dateOnReport: foundReport.dateOnReport,

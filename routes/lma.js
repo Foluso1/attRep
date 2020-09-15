@@ -74,6 +74,10 @@ router
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getDisciples);
 
 router
+    .route("/:id/disciple/:discId")
+        .put(middleware.isLoggedIn, middleware.isLMA, controller.associateDisc);
+
+router
     .route("/:id/discipleship")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getDiscipleshipReport);
 

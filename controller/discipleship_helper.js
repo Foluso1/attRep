@@ -234,7 +234,6 @@ module.exports = {
 
     putReport: async (req, res) => {
         try {
-            console.log(req.body);
             thisReportId = req.params.id;
             let good = await Discipleship.findById(thisReportId)
             good.info = req.body.info;

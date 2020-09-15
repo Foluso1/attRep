@@ -22,8 +22,6 @@ module.exports = (obj1_orig, arr) => {
             obj2.date = null;
             //Stringify the object
             let stringify_obj2 = JSON.stringify(obj2);
-            console.log("Obj1", stringify_obj1)
-            console.log("Obj2", stringify_obj2)
             if (date_obj1 == date_obj2 && stringify_obj1 == stringify_obj2) {
                 return test = true;
             } 

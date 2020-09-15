@@ -105,7 +105,6 @@ module.exports = {
 
     editWorker: async (req, res) => {
         try {
-            console.log("///here.///", req.body);
             let foundLMA = await Worker.findById({_id: req.user.id});
 
             if (Object.keys(req.body)[0] == "add"){
@@ -119,29 +118,12 @@ module.exports = {
                 }
             }
             await foundLMA.save();
-            console.log(foundLMA.workers)
             res.json("success")
             // res.status(403).json("forbidden");
         } catch (e) {
             console.log(e)
             res.status(403).json("Forbidden");
         }
-        // let currentWorker = req.user.id;
-        // Worker.findById(currentWorker)
-        //     .then((foundWorker) => {
-        //         let arr = foundWorker.workers;
-        //         let index = arr.indexOf(req.body._id);
-        //         if (index == -1){
-        //             res.json("not removed")
-        //         } else {
-        //             arr.splice(index, 1);
-        //             foundWorker.save();
-        //             res.json("removed");
-        //         }
-        //     })
-        //     .catch((err) => {
-        //         console.log(err);
-        //     })
     },
 
     removeWorker: (req, res) => {
@@ -235,7 +217,6 @@ module.exports = {
                     obj['no discipler'] = obj['no discipler'] +`\n\t${e.name}`;
                 }
             });
-            console.log(obj)
             res.render("lma/all/disciple_all", {obj});
         } catch (e) {
             console.log(e);
@@ -592,6 +573,19 @@ module.exports = {
             for(let i = 0; i < workersUnder.length; i++) {
                 thisWorkerReport = Worker.findworkersUnder[i].reports
             }
+        } catch (e) {
+            console.log(e)
+        }
+    },
+
+    associateDisc: async (req, res) => {
+        try {
+            let discipleId = req.params.discId;
+            let workerId = req.params.id;
+            let foundDisciple = await Disciple.findById({_id: discipleId});    
+            foundDisciple.discipler = workerId;
+            await foundDisciple.save();
+            res.json("Discipler associated!!");  
         } catch (e) {
             console.log(e)
         }

@@ -419,7 +419,6 @@ router.post("/validatemail/:id", async (req, res) => {
     let host = "mail.foz.ng"
     let email = req.body.email;
     try {
-        // console.log("req.user 2//", req.user);
         let foundUser = await Worker.findById({ _id: req.params.id });
         if (!foundUser) {
             console.log("user not found!")

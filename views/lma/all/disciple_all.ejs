@@ -1,11 +1,8 @@
-<% include ../../partials/header %>
-
-
-
+<% include ../../partials/header_lma %>
 
 <main class="column">
     <div class="list-workers">
-        <h2><%#= foundWorker.firstname %> <%#= foundWorker.surname %>'s Disciples</h2>
+        <h2>All Workers' Disciples</h2>
         <% let head = Object.keys(obj) %> 
         <ol class="disciple-list">
             <% for( let i = 0; i < head.length; i++ ) { %>
@@ -31,9 +28,3 @@
 </main>
 <p></p>
 <% include ../../partials/footer %>
-<%#= head[i] %>:
-<%# obj[head[i]].split("\n\n\n\n").forEach((element, i) => { %>
-    <%# if(element != "undefined\n"){ %>
-        <%#= element.trim() %>
-    <%# } %>
-<%# }); %>

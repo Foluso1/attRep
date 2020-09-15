@@ -6,6 +6,7 @@ const title          = document.querySelector("#title");
 const startTime      = document.querySelector("#starttime" );
 const startPrBtn     = document.querySelector("#startPrBtn");
 const endPrBtn       = document.querySelector("#endPrBtn"  );
+const assocDisc      = document.querySelectorAll(".assoc-disc");
 const myDiv          = document.querySelector(".mydiv"     );
 const discipleList   = document.querySelector(".disciple-list")
 const prChform       = document.querySelector("#prChform"  );
@@ -114,6 +115,29 @@ if (prChform) {
     });
 }
 
+// Associate Disciples
+if(assocDisc) {
+    for (let i = 0; i < assocDisc.length; i++) {
+        let oneAssocDisc = assocDisc[i]
+        oneAssocDisc.addEventListener("click", (e) => {
+            e.preventDefault();
+            let url = oneAssocDisc.getAttribute("href");
+            $.ajax({
+                type: "PUT",
+                url: url,
+                success: (done) => {
+                    console.log(done)
+                },
+                error: (err) => {
+                    console.log(err)
+                }
+            })
+            e.target.remove()
+        })
+    }
+}
+
+
 
 //Delete Report
 
@@ -203,7 +227,6 @@ if (dateToQuery) {
         dateToQuery.setAttribute("action", `${link}/${date}`);
     })
 }
-
 
 
 if (copyText) {

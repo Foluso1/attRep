@@ -11,6 +11,11 @@
                 <li class="add-remove-worker">
                     <div class="d-inline">
                         <%= disciple.name%>
+                        <%= foundWorker.discAssoc %> 
+                        <% if (foundWorker.discAssoc) { %>
+                        <% } else if (!disciple.discipler) { %>
+                            <a href="/lma/<%= foundWorker._id %>/disciple/<%= disciple._id %>" class="assoc-disc" style="float: right;">Link Discipler</a>
+                        <% } %>
                     </div>
                 </li>
             <% }); %>

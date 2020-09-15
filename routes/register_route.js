@@ -50,7 +50,6 @@ router.post("/register", async (req, res) => {
             logger: true, 
             debug: true,
         });
-        console.log("req.headers//", req.headers)
         // send mail with defined transport object
         let info = await transporter.sendMail({
             from: `"Report App" <no-reply@foz.ng>`, // sender address
@@ -100,7 +99,6 @@ router.get("/regmail/:token", async (req, res) => {
     let token = req.params.token;
     try {
         let foundTempUser = await TempUser.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
-        console.log("foundTempUser", foundTempUser)
             if (!foundTempUser) {
                 req.flash('error', 'Password reset token is invalid or has expired.');
                 return res.redirect('/register');
