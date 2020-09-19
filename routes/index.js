@@ -162,7 +162,6 @@ router.post("/mail", async (req, res, next) => {
             await user.save();
 
             const main = async () => {
-                let testAccount = await nodemailer.createTestAccount();
 
                 let transporter = nodemailer.createTransport({
                     host: "mail.foz.ng",
@@ -269,7 +268,6 @@ router.post('/forgot',  async (req, res, next) => {
                 await user.save()
 
                 async function main() {
-                    let testAccount = await nodemailer.createTestAccount();
 
                     let transporter = nodemailer.createTransport({
                         host: "mail.foz.ng",
@@ -347,7 +345,6 @@ router.post('/reset/:token', async (req, res) => {
             await foundWorker.save();
             req.logIn(foundWorker, () => {
                 async function main() {
-                    let testAccount = await nodemailer.createTestAccount();
 
                     let transporter = nodemailer.createTransport({
                         host: "mail.foz.ng",
@@ -431,7 +428,6 @@ router.post("/validatemail/:id", async (req, res) => {
             foundUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
             await foundUser.save();
 
-            let testAccount = await nodemailer.createTestAccount();
 
             // create reusable transporter object using the default SMTP transport
             let transporter = nodemailer.createTransport({

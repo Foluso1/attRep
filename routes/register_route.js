@@ -36,7 +36,6 @@ router.post("/register", async (req, res) => {
         regNewUser.resetPasswordToken = token;
         regNewUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
         await regNewUser.save();
-        let testAccount = await nodemailer.createTestAccount();
 
         // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
@@ -57,7 +56,7 @@ router.post("/register", async (req, res) => {
             subject: 'Report App | Complete Registration', // Subject line
             text: 'Hello,\n\n' +
                 'Complete the registration process by clicking on the link below, or paste this into your browser to complete the process:\n\n' +
-                'http://' + req.headers.host + '/mail/' + token + '\n\n', // plain text body
+                'http://' + req.headers.host + '/regmail/' + token + '\n\n', // plain text body
             html: `<p>Hello</p>
             <p>To complete your registration on the Report App,</p>
             <p>Please click on the button below to complete the process.</p>
