@@ -28,7 +28,10 @@ module.exports = {
     postNewReport: async (req, res) => {
         try {
             let worker = {_id: req.user.id}
-
+            let startOfToday = moment().startOf('day').format();
+            let att =  await Expected.find({summoner: req.user.id, "date": {$gte: startOfToday}}).populate("disciples");
+            let db_Worker = JSON.parse(JSON.stringify(att));
+            
             let thisReport = {
                 title: req.body.title,
                 for: req.body.for,
@@ -36,6 +39,7 @@ module.exports = {
                 summoner: req.user.id,
             };
             let newReport = await Expected.create(thisReport)
+            newReportId = newReport._id;
             const ids = req.body.ids;
         
             const arr = [];
@@ -55,20 +59,14 @@ module.exports = {
                 }
             }
 
-            //Find last DB item
-            let db_Worker =  await Worker.findById(worker).populate({ 
-                path: "expected_attendance",
-                options: {sort: {date: -1}, limit: 1},
-                populate: {path: "disciples"} 
-            });
-            let lastDB_item = db_Worker.expected_attendance[0];
             let foundWorker = await Worker.findById(worker);
 
-            let result = duplicateCheck(newReport, lastDB_item);
+            let result = duplicateCheck(newReport, db_Worker);
 
             if (result) {
                 req.flash("error", "Duplicate report detected");
                 res.json("ERROR, Duplicate Report")
+                await Expected.findByIdAndDelete({_id: newReportId});
             } else {
                 req.flash("success", "Successfully Reported");
                 foundWorker.expected_attendance.push(newReport);
@@ -178,6 +176,7 @@ module.exports = {
         thisReportId = req.params.id;
         Expected.findByIdAndRemove({ _id: thisReportId })
         .then((good) => {
+            req.flash("success", "Deleted successfully")
             res.redirect("/expected")
             res.json(good);
         })

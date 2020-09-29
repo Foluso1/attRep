@@ -135,9 +135,12 @@ module.exports = {
                 let thisReport = await Discipleship.findById(thisReportId)
                   .populate("disciples")
                     let discReport = thisReport.disciples;
-                    if (discReport && discReport.length !== 0) {
+                    if (discReport && discReport.length > 0 && !discReport.includes(null)) {
+                        console.log(discReport, discReport.length)
                       let idsDiscReport = discReport.map(disc => {
-                        return disc._id.toString();
+                        //   if(disc._id){
+                              return disc._id.toString();
+                        //   }
                       });
                       //find the index of ids of disciples in allDisciples and remove each {forEach} for list of remaining disciples
                       let idsAllDisciples = allDisciples.map(disc => {
@@ -186,6 +189,8 @@ module.exports = {
         thisReportId = req.params.id;
         Discipleship.findByIdAndRemove({ _id: thisReportId })
         .then((good) => {
+            req.flash("success", "Deleted successfully")
+            res.redirect("/discipleship");
             res.json(good);
         })
         .catch((err) => {

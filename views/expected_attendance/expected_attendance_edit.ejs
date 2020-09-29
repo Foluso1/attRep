@@ -4,7 +4,7 @@
 </div>    
 
 <div class="heading">
-    <h1>Report <%= index + 1 %></h1>
+    <h1>Report <%= index + 1 %> - Expected Attendance Report</h1>
 </div>
 
 <main class="row">
@@ -13,7 +13,7 @@
             <h2>Edit Report</h2>
             <p class="notabene">Click on a name in the <a href="#disciples-pane">disciples pane</a> to add to this list OR click on a name here to remove from the list</p>
             <h3><span id="title"><%= thisReport.title %></span> for <span id="for"><%= thisReport.for %></span></h3>
-            <ol class="list d-flex flex-column">
+            <ol class="list edit-report-remove d-flex flex-column" data-report="expected">
                <% if (thisReport && thisReport.length !== 0) { %>
                 <% let discs = thisReport.disciples; %> <!-- Display all disciples here -->
                     <% discs.forEach((disc) => { %>
@@ -21,7 +21,7 @@
                             <li id="<%= disc._id %>"><%= disc.name %></li>
                             <form class="disciple-list-remove">
                                 <input style="display: none" type="text" name="id" value="<%= disc._id %>">
-                                <input type="button" value="Remove" class="select btn btn-sm btn-danger" _id="<%= disc._id %>"></input>
+                                <input type="button" value="Remove" class="select btn btn-sm btn-danger" data-report-id="<%= thisReport._id %>" _id="<%= disc._id %>"></input>
                             </form>
                         </div>
                     <% }); %> 
@@ -34,14 +34,14 @@
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="list-disciples">
             <h2 id="disciples-pane">Disciples Pane</h2>
-            <ol class="absent d-flex flex-column">
+            <ol class="absent edit-report d-flex flex-column" data-report="expected">
                 <% let allDiscs = thisReport.disciples; %> <!-- Display all disciples here -->
                 <% remDisciples.forEach((disc) => { %>
                     <div class="hoverer d-inline-flex justify-content-between p-1">
                         <li id="<%= disc._id %>"><%= disc.name %></li>
                         <form class="disciple-list">
                             <input style="display: none" type="text" name="id" value="<%= disc._id %>">
-                            <input type="button" value="Add" class="select btn btn-sm btn-primary" _id="<%= disc._id %>"></input>
+                            <input type="button" value="Add" class="select btn btn-sm btn-primary" data-report-id="<%= thisReport._id %>" _id="<%= disc._id %>"></input>
                         </form>
                     </div>
                 <% }); %>
