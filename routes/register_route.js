@@ -111,6 +111,7 @@ router.get("/regmail/:token", async (req, res) => {
 
 router.post("/regmail/:token", async (req, res) => {
     let token = req.params.token;
+    console.log(req.body);
     try {
         let foundTempUser = await TempUser.findOne({resetPasswordToken: token})
         
@@ -126,7 +127,14 @@ router.post("/regmail/:token", async (req, res) => {
             church: req.body.church,
             fellowship: req.body.fellowship,
             department: req.body.department,
-            prayerGroup: req.body.prayerGroup
+            prayerGroup: req.body.prayerGroup,
+            membershipClass: new Date(req.body['membership-class']),
+            gender: req.body.gender,
+            dateOfBirth: new Date(req.body['date-of-birth']),
+            address: req.body.address,
+            mobileNumber: req.body['mobile-number'],
+            maritalStatus: req.body['marital-status'],
+            employmentStatus: req.body['employment-status']
         });
         if (req.body.password != req.body.password2) {
             req.flash("error", "Password mismatch");

@@ -1,3 +1,4 @@
+const { workers } = require("cluster");
 const disciple = require("../models/disciple");
 
 const       express         =       require("express")
@@ -64,14 +65,20 @@ router.get("/home", middleWare.isLoggedIn, async (req, res) => {
             }
             thisUser.discAssoc = true;
         }
-        
+
         await thisUser.save()
         let evangelism = thisUser.evangelism;
         let prayerGroupReport = thisUser.prayerReport;
         let prayerChainReport = thisUser.prayerChainReport;
         let reports = thisUser.reports;
         let attendance = thisUser.attendance;
-        res.render("home", {reports, evangelism, prayerChainReport, prayerGroupReport, attendance});
+       
+        if (!thisUser.dateOfBirth) {
+            req.flash("error", "Please fill in the following details");
+            res.redirect("/profile");
+        } else {
+            res.render("home", {reports, evangelism, prayerChainReport, prayerGroupReport, attendance});
+        }
     } catch (e) {
         console.log(e)
     }
@@ -126,21 +133,29 @@ router.get("/profile", middleWare.isLoggedIn, async (req, res) => {
 });
 
 router.put("/profile", middleWare.isLoggedIn, async (req, res) => {
-    let profile = {
-        username: req.body.username.trim(),
-        firstname: req.body.firstname.trim(),
-        surname: req.body.surname.trim(),
-        church: req.body.church,
-        fellowship: req.body.fellowship,
-        department: req.body.department,
-        prayerGroup: req.body.prayerGroup
-    }
     try {
+        let profile = {
+            firstname: req.body.firstname.trim(),
+            surname: req.body.surname.trim(),
+            church: req.body.church,
+            fellowship: req.body.fellowship,
+            department: req.body.department,
+            prayerGroup: req.body.prayerGroup,
+            membershipClass: req.body['membership-class'],
+            gender: req.body.gender,
+            dateOfBirth: req.body['date-of-birth'],
+            address: req.body.address,
+            mobileNumber: req.body['mobile-number'],
+            maritalStatus: req.body['marital-status'],
+            employmentStatus: req.body['employment-status']
+        }
         await Worker.findByIdAndUpdate({ _id: req.user._id }, profile)
-        req.logout();
-        res.redirect("/login");
+        req.flash("success", "Your change(s) was successful");
+        res.redirect("/home");
     } catch (err) {
         console.log(err);
+        req.flash("error", "There was a problem")
+        res.redirect("/login")
     }
 });
 
@@ -245,7 +260,7 @@ router.get("/mail/:token/:email", async (req, res)=>{
 
 
 
-// FORGOT PASSWORD
+// FORGOT PASSWORD //
 router.get('/forgot', (req, res) => {
     res.render('forgot');
 });
@@ -394,7 +409,7 @@ router.post('/reset/:token', async (req, res) => {
 
 
 
-////////////////////VALIDATE MAIL///////////////////////
+//////VALIDATE MAIL (FOR THOSE WHO HAVE PRE-EXISTING ACCOUNTS BUT MAILS HAVE NOT BEEN VALIDATED)/////
 
 router.get("/validatemail", async (req, res) => {
     try {

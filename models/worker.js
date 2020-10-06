@@ -31,6 +31,41 @@ workerSchema = new mongoose.Schema({
         unique: true,
     },
 
+    gender: {
+        type: String,
+        required: false,
+    },
+    
+    address: {
+        type: String,
+        required: false,
+    },
+
+    mobileNumber: {
+        type: String,
+        required: false,
+    },
+
+    maritalStatus: {
+        type: String,
+        required: false,
+    },
+
+    employmentStatus: {
+        type: String,
+        required: false,
+    },
+
+    dateOfBirth: {
+        type: Date,
+        required: false,
+    },
+
+    membershipClass: {
+        type: Date,
+        required: false,
+    },
+
     emailCheck: {
         type: String,
         required: false

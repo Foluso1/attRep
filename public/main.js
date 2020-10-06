@@ -10,6 +10,7 @@ const assocDisc = document.querySelectorAll(".assoc-disc");
 const myDiv = document.querySelector(".mydiv");
 const discipleList = document.querySelector(".disciple-list");
 const editReport = document.querySelector(".edit-report");
+const showPassword = document.querySelectorAll(".password-visible");
 const editReportRemove = document.querySelector(".edit-report-remove");
 const prChform = document.querySelector("#prChform");
 const noDisp = document.querySelector(".nodisplay");
@@ -608,4 +609,28 @@ if (editReportRemove) {
       });
     }
   });
+}
+
+
+// SHOW PASSWORD FUNCTIONALITY
+if(showPassword) {
+  for(let j = 0; j < showPassword.length; j++){
+    let eachPassword = showPassword[j];
+    eachPassword.addEventListener("change", function (e) {
+      let relatedElements = this.parentNode.parentNode.children;
+      if(this.checked){
+        for(let i = 0; i < relatedElements.length; i++){
+          if(relatedElements[i] && relatedElements[i].type == "password"){
+            relatedElements[i].setAttribute("type", "text");
+          }
+        }
+      } else {
+        for(let i = 0; i < relatedElements.length; i++){
+          if(relatedElements[i] && relatedElements[i].type == "text"){
+            relatedElements[i].setAttribute("type", "password");
+          }
+        }
+      }
+    });
+  }
 }

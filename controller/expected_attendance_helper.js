@@ -5,7 +5,7 @@ const   Worker              = require("../models/worker")
     ,   moment              =   require("moment")
     ,   duplicateCheck      = require("../utils/duplicateCheck")
     ;
-const JSONTransport = require("nodemailer/lib/json-transport");
+// const JSONTransport = require("nodemailer/lib/json-transport");
     
 
 module.exports = {

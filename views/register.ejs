@@ -28,12 +28,20 @@
                     <div class="d-flex m-2 flex-column align-items-start">
                         <label class="m-2 float-left" for="username">Password:</label>
                         <input class="m-1 form-control" type="password" id="password" name="password" placeholder="Password" required>
+                        <div class="d-flex">
+                            <input type="checkbox" class="my-2 mr-2 password-visible"/> <small class="my-2">Show Password</small>
+                        </div>
                     </div>
                     <div class="d-flex m-2 flex-column align-items-start">
                         <label class="m-2 float-left" for="username">Confirm password:</label>
                         <input class="m-1 form-control" type="password" id="password2" name="password2" placeholder="Confirm password" required>
+                        <div class="d-flex">
+                            <input type="checkbox" class="my-2 mr-2 password-visible"/> <small class="my-2">Show Password</small>
+                        </div>
                     </div>
                 </fieldset>
+
+                <!-- CHURCH DETAILS -->
                 <fieldset class="m-4">
                     <legend>Church Details</legend>
                     <hr>
@@ -78,6 +86,57 @@
                             <option value="Friday">Friday</option>
                             <option value="Saturday Morning">Saturday Morning</option>
                             <option value="Saturday Evening">Saturday Evening</option>
+                        </select>
+                    </div>
+                    <div class="d-flex m-2 flex-column align-items-start">
+                        <label>Date you completed the Membership Class:</label>
+                        <input type="date" name="membership-class" class="form-control" required/>
+                    </div>
+                </fieldset>
+
+                <!-- BIO -->
+                <fieldset class="m-2">
+                    <legend>Bio</legend>
+                    <hr/>
+                    <div class="d-flex m-2">
+                        <label class="p-3">Gender: </label>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <label class="px-3 pt-3">Male </label>
+                                <input type="radio" name="gender" value="Male" class="" />
+                            </div>
+                            <div>
+                                <label class="px-3 pt-3">Female </label>
+                                <input type="radio" name="gender" value="Female" class="" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex m-2 flex-column align-items-start">
+                        <label>Date of Birth:</label>
+                        <input type="date" name="date-of-birth" class="form-control" required/>
+                    </div>
+                    <div class="d-flex m-2 flex-column align-items-start">
+                        <label>Address:</label>
+                        <textarea type="text" name="address" placeholder="Address" class="form-control" required></textarea>
+                    </div>
+                    <div class="d-flex m-2 flex-column align-items-start">
+                        <label>Mobile Number:</label>
+                        <input type="tel" name="mobile-number" minlength="11" maxlength="11" placeholder="08012345678" class="form-control" required/>
+                    </div>
+                    <div class="d-flex m-2 flex-column align-items-start">
+                        <label>Marital Status:</label>
+                        <select name="marital-status" class="form-control" required>
+                            <option value="Single">Single</option>
+                            <option value="Engaged">Engaged</option>
+                            <option value="Married">Married</option>
+                        </select>
+                    </div>
+                    <div class="d-flex m-2 flex-column align-items-start">
+                        <label>Employment Status:</label>
+                        <select name="employment-status" class="form-control" required>
+                            <option value="Eemployed">Employed</option>
+                            <option value="Self-employed">Self-employed</option>
+                            <option value="Unemployed">Unemployed</option>
                         </select>
                     </div>
                 </fieldset>
