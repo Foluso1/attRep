@@ -45,12 +45,11 @@ module.exports = {
                 return res.redirect("/prayerchain")
             }
             await foundPrayerChain.save()
-            res.json(foundPrayerChain);
+            res.status(201).json(foundPrayerChain);
         } catch (err) {
             console.log(err);
             req.flash("error", "There was a problem");
             res.redirect("/home");
-
         }
     },
 
@@ -77,10 +76,11 @@ module.exports = {
 
     newPrayerReport: async (req, res) => {
         try {
+            let starttime = {};
             let foundPrayerChainArr = await newPrayerChain.find({
                 prayor: req.user.id,
                 week: moment().week(),
-            })
+            });
 
             let shouldSendReport = {};
             shouldSendReport['0'] = true;
@@ -89,7 +89,8 @@ module.exports = {
             if (foundPrayerChainArr && foundPrayerChainArr.length > 0){
                 foundPrayerChain = foundPrayerChainArr[0];
                 let day = moment().day();
-                if(foundPrayerChain[day].start){
+                starttime = foundPrayerChain[day].start;
+                if(starttime){
                     shouldSendReport['0'] = false;
                     if(foundPrayerChain[day].end){
                         // Both start and end reports sent already;
@@ -97,7 +98,7 @@ module.exports = {
                     }
                 }
             }
-            res.render("prayerChain/prayerChainNew", {shouldSendReport});
+            res.render("prayerChain/prayerChainNew", {shouldSendReport, starttime});
         } catch (err) {
             console.log(err);
         }
@@ -120,5 +121,5 @@ module.exports = {
             req.flash("error", "There was a problem!")
             res.redirect("/home")
         }
-    }
+    }, 
 }

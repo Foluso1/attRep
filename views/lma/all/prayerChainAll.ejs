@@ -1,0 +1,28 @@
+<%- include ./../../partials/header_lma %>
+
+<h1>All Prayer Chain Page</h1> 
+<input type="number" id="week-chooser-all-lma" value="" min="1" max="<%= moment().locale("en").weeksInYear() %>" /> <a id="this-week-pr-ch" class="btn btn-sm">This Week</a>
+<h4>Week <span id="week-span"></span></h4> 
+<h4>Total Participants: <span id="pr-ch-participants"></span></h4>
+<br>
+<table id="prayer-chain-table" >
+    <thead>
+        <td>Name</td>
+        <td>Sun</td>
+        <td>Mon</td>
+        <td>Tue</td>
+        <td>Wed</td>
+        <td>Thur</td>
+        <td>Fri</td>
+        <td>Sat</td>
+        <td>Ratio (n/7)</td>
+    </thead>
+    <tbody>
+    <% if(!foundPrayerChainArr){ %>
+    <% } else { %>
+        <td colspan="9">Nothing to show here, please select a week to query for data</td>
+    <% }; %>
+    </tbody>
+</table>
+
+<%- include ./../../partials/footer %>

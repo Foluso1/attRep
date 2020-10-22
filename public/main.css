@@ -127,6 +127,10 @@ button:not(#report) {
     margin: 10px;
 }
 
+.add-remove-worker > .btn { 
+    float: right;
+}
+
 .heading {
     background-color: rgb(248, 238, 220);
     border: 1px solid #7e622756;
@@ -508,7 +512,9 @@ table.allLMALockdown {
 #evangelismTable td:nth-of-type(9):before { content: "Healing Case"; }
 #evangelismTable td:nth-of-type(10):before { content: "Delete / Edit"; }
 
-
+thead {
+    font-weight: 600;
+}
 
 
 /* DISCIPLESHIP / REPORT CORNER */
@@ -576,3 +582,7 @@ select.scc-form, li.scc-form {
 ol.disciple-list li div:nth-of-type(2n) {
     float: right;
 }
+
+/* .hover-appear:hover {
+    border: 1px solid #F5DEB3;
+} */

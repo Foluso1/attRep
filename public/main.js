@@ -1,7 +1,11 @@
 const route = window.location.pathname;
 
 const info = document.querySelector("#info");
+const thisWeekPrCh = document.querySelector("#this-week-pr-ch");
+const hoverAppear = document.querySelectorAll(".hover-appear"); 
 const weekChooser = document.querySelector("#week-chooser");
+const weekChooserLMA = document.querySelector("#week-chooser-lma");
+const weekChooserAllLMA = document.querySelector("#week-chooser-all-lma");
 const prayerChainTable = document.querySelector("#prayer-chain-table");
 const prayerRatio = document.querySelector("#prayer-ratio");
 const prWeekNumber = document.querySelector("#prayer-week-number");
@@ -41,35 +45,25 @@ const textAreaNoReportLockdown = document.querySelector("#list-no-lockdown-repor
 
 if (startPrBtn) {
   startPrBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    myDiv.classList.add("nodisplay");
-    startPrBtn.classList.add("nodisplay");
+    $(".mydiv").html("");
+    $(".mydiv").append("<p>Please wait...</p>");
     $.ajax({
       type: "POST",
-      url: "/prayerChain",
-      success: () => {
-        let newPrCh = document.createElement("p");
-        let newDiv = document.createElement("div");
-        let newDiv2 = document.createElement("div");
-        newDiv.classList.add("d-flex");
-        newPrCh.setAttribute("class", "startPr");
-        // newPrCh.classList.add("text-center");
-        newPrCh.classList.add("p-2");
-        newPrCh.innerHTML =
-        `Good day sir/ma, </br>I have started praying.`
-        //Create an input for End Praying
-        //Create a div of class "d-flex"
-        let newDiv3 = document.createElement("div");
-        newDiv3.setAttribute("class", "d-flex");
-        //insert newInput
-        newDiv3.append(newDiv2);
-        let endPrBtn = document.createElement("button");
-        endPrBtn.setAttribute("id", "endPrBtn");
-        endPrBtn.innerText = "End Praying";
-        endPrBtn.setAttribute("class", "col-sm-10 btn btn-success btn-sm");
-        newDiv2.append(endPrBtn);
-        newDiv.append(newPrCh);
-        prChform.append(newDiv, newDiv3);
+      url: "/prayerchain",
+      success: (data) => {
+        let time = moment().format("LT");
+        if(data !== null && typeof data === 'object'){
+          $(".mydiv").remove();
+          $("#prChform").append(`<div class="newDiv">
+            <p class="newPrCh startPr p-2">Good day sir/ma, </br> I have started praying. </br>${time}</p>
+            <div class="newDiv2 d-flex">
+              <button id="endPrBtn" class="btn btn-success btn-sm">End Praying</button>
+            </div>
+          </div>`);
+        } else {
+          $(".mydiv").html("");
+          $(".mydiv").append("<p>There was a problem. Please re-login.</p>");
+        }
       },
     });
   });
@@ -79,20 +73,29 @@ if (prChform) {
   prChform.addEventListener("click", function(e) {
     e.preventDefault();
     if (e.target.getAttribute("id") == "endPrBtn") {
-      e.target.classList.add("nodisplay");
-      e.target.remove();
+      let thisNode = $(e.target.parentNode);
+      thisNode.html("");
+      thisNode.append("<p>Please wait...</p>");
       $.ajax({
         type: "POST",
         url: "/prayerChain/",
         success: (data) => {
-          let newPrCh = document.createElement("p");
-          let newDiv = document.createElement("div");
-          newPrCh.setAttribute("class", "p-2")
-          newPrCh.innerHTML =
-            `Good day sir/ma, </br>
-            I am done praying`;
-          newDiv.append(newPrCh);
-          prChform.append(newDiv);
+          let time = moment().format("LT");
+          if(data != null && typeof data === "object" ){
+            thisNode.html("");
+            let newPrCh = document.createElement("p");
+            let newDiv = document.createElement("div");
+            newPrCh.setAttribute("class", "p-2")
+            newPrCh.innerHTML =
+              `Good day sir/ma, </br>
+              I am done praying </br>
+              ${time}`;
+            newDiv.append(newPrCh);
+            prChform.append(newDiv);
+          } else {
+            thisNode.html("");
+            thisNode.append("<p>There was a problem, please re-login to end praying.</p>");
+          }
         },
       });
     }
@@ -635,7 +638,141 @@ if (weekChooser) {
       },
       error: (err) => {
         console.log(err);
+        $("tbody").html("");
+        $("tbody").append(`<td colspan="10">There was a problem. Please re-login.</td>`)
       }
     })
   })
+}
+
+
+// PRAYER CHAIN TIME FIXER (LMA)
+if (weekChooserLMA) {
+  let id = weekChooserLMA.getAttribute('user-id');
+  weekChooserLMA.addEventListener("change", (e) => {
+    console.log("///id", id);
+    $.ajax({
+      type: "GET",
+      url: `/api/prayerchain/${id}/${e.target.value}`,
+      data: e.target.value,
+      success: (data) => {
+          let prayerTimeArr = prayerChainTable.querySelectorAll("tbody tr td");
+          weekSpan.textContent = `${moment().week(e.target.value).startOf('week').format('ddd MMM Do')} - ${moment().week(e.target.value).endOf('week').format('ddd MMM Do')}`;
+          if(!data){
+            prayerRatio.textContent = 0;
+          }
+          for(let n = -1; n <= 5; n++ ){
+            for(let i = 1; i <= 2; i++){
+              prWeekNumber.textContent = e.target.value;
+              if(n % 2 !== 0){
+                if(data && data[n+1].start){
+                  prayerTimeArr[(3*n)+3+i].innerHTML = moment(data[n+1].start).format('LT');
+                  prayerRatio.textContent = data.frequency;
+                } else {
+                  prayerTimeArr[(3*n)+3+i].innerHTML = '--';
+                }
+              } else {
+                if(data && data[n+1].end){
+                  prayerTimeArr[(3*n)+3+i].innerHTML = moment(data[n+1].end).format('LT');
+                  prayerRatio.textContent = data.frequency;
+                } else {
+                  prayerTimeArr[(3*n)+3+i].innerHTML = '--';
+                }
+              }
+            }
+          }
+      },
+      error: (err) => {
+        console.log(err);
+        $("tbody").html("");
+        $("tbody").append(`<td colspan="10">There was a problem. Please re-login.</td>`)
+      }
+    })
+  })
+}
+
+// PRAYER CHAIN TIME FIXER (LMA ALL)
+const prChFunction = function () {
+  console.log(this);
+    $("tbody").html("");
+    $("tbody").append(`<td colspan="10">Please wait...</td>`);
+    $.ajax({
+    type: "GET",
+    url: `/api/prayerchain/${this.value}`,
+    data: this.value,
+    success: (data) => {
+      document.querySelector("#pr-ch-participants").textContent = data.length;
+      if(data && Array.isArray(data) && data.length > 0){
+        let tableBody = prayerChainTable.querySelectorAll("tbody");
+        $("tbody").html("");
+        weekSpan.textContent = `${weekChooserAllLMA.value}: ${moment().week(weekChooserAllLMA.value).startOf('week').format('ddd MMM Do')} - ${moment().week(weekChooserAllLMA.value).endOf('week').format('ddd MMM Do')}`;
+        let starttime = ""; 
+        let endtime = "";
+        data.forEach((item, j) => {
+          let row = $("tbody").append(`<tr></tr>`);
+          row.append(`<td>${item.prayor.firstname} ${item.prayor.surname}</td>`);
+          for(let i=0; i<7; i++){
+            if(item[i].start){
+              starttime = moment(item[i].start).locale("en-gb").format('LT');
+            } else {
+              starttime = "--";
+            }
+            if(item[i].end){
+              endtime = moment(item[i].end).locale("en-gb").format('LT');
+            } else {
+              endtime = "--";
+            }
+            if(starttime == "--" && endtime == "--"){
+              row.append(`<td> -- </td>`)
+            } else {
+              row.append(`<td>${starttime} - ${endtime}</td>`);
+            }
+          }
+          row.append(`<td>${item.frequency}</td>`)
+        });
+      } else if (!Array.isArray(data)) {
+        $("tbody").html("");
+        $("tbody").append(`<td colspan="10">There was a problem. Please re-login.</td>`);
+      } else {
+        $("tbody").html("");
+        $("tbody").append($(`<td colspan="10">Nothing to show here, please select a week to query for data</td>`));
+      }
+    },
+    error: (err) => {
+      $("tbody").html("");
+      $("tbody").append(`<td colspan="10">There was a problem. Please re-login.</td>`)
+      console.log(err);
+    }
+  })
+};
+
+if (weekChooserAllLMA) {
+  weekChooserAllLMA.addEventListener("change", prChFunction)
+}
+
+
+//THIS WEEK CHOOSER
+if(thisWeekPrCh){
+  thisWeekPrCh.addEventListener("click", function (e) {
+    weekChooserAllLMA.value = moment().week();
+    new Event("change", prChFunction);
+  });
+}
+
+
+// HOVER APPEAR
+if(hoverAppear){
+  for(let i=0; i<hoverAppear.length; i++){
+    hoverAppear[i].addEventListener("mouseover", function (e){
+      let thisNode = this.children[0].children[0].children;
+      for(let j=0; j<thisNode.length; j++){
+        if(thisNode[j].className == "nodisplay"){
+          thisNode[j].className = "";
+          hoverAppear[i].addEventListener("mouseout", function (e){
+            thisNode[j].className = "nodisplay";
+          });
+        }
+      }
+    });
+  }
 }

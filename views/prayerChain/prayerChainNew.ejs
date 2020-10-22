@@ -11,7 +11,6 @@
         <br>
         <form id="prChform" action="" method="POST">
             <% if (shouldSendReport['0']) { %>
-             
                 <div class="row mydiv p-1">
                     <div>
                         <button id="startPrBtn" class="btn btn-success btn-sm">Start Praying</button>
@@ -21,7 +20,9 @@
                 <div class="mydiv p-1">
                     <div>
                         <p>Good day sir/ma,</br>
-                        I have started praying</p>
+                        I have started praying</br>
+                        <%= moment(starttime).locale("en-us").format("LT") %> 
+                    </p>
                     </div>
                     <div>
                         <button id="endPrBtn" class="btn btn-success btn-sm">End Praying</button>

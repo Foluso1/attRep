@@ -17,11 +17,13 @@ module.exports = async (dateForData, foundWorker, path) => {
             let reportList = "";
             let totalAttendees = 0;
 
+            // 
+
             for(let i = 0; i < workersUnder.length; i++) {
-                if(workersUnder.length > 0 && workersUnder[i].expected_attendance.length > 0){
+                if(workersUnder.length > 0 && workersUnder[i][path].length > 0){
                     let isReportToday = false;
                     let thisWorker = await Worker.findById({ _id: workersUnder[i].id }).populate( {path: path, populate: { path: "disciples"}});
-                    if (thisWorker.expected_attendance.length > 0) {
+                    if (thisWorker[path].length > 0) {
                         let expectedArr = thisWorker[path];
                         expectedArr.filter( (item) => {
                             let thisDay = moment(item.date).startOf("day").valueOf();

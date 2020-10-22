@@ -1,5 +1,6 @@
 const         Worker                    = require("../models/worker")
             , Disciple                  = require("../models/disciple")
+            , newPrayerChain            = require("../models/newPrayerChain")
             , lastMondayfunction        = require("../utils/lastMonday")
             , refWeekFromMonfunction    = require("../utils/refWeekFromMon")
             , findThisWeekNumber        = require("../utils/findThisWeekNumber")
@@ -407,24 +408,20 @@ module.exports = {
 
     getPrayerChainReport: async (req, res) => {
         try {
-            let ownerId = req.params.id;
-            let currentWorker = req.user.id;
-            let ownerStatus;// = ownerId == currentWorker;
+            const foundWorker = await Worker.findById({ _id: req.params.id });
+            let owner = {
+                id: req.params.id,
+                firstname: foundWorker.firstname,
+                surname: foundWorker.surname,
+            };
+            let foundPrayerChainArr = await newPrayerChain.find({
+                prayor: owner.id,
+                week: moment().week(),
+            });
 
-            let thisWeekNum = moment().week() - 1;
-            let allDayPrayed = [];
-            let foundWorker = await Worker.findById({ _id: ownerId }).populate({path: "prayerChainReport"});
-            let prChRepAll = foundWorker.prayerChainReport;
-            prChRepAll.forEach((oneItem) => {
-                if (thisWeekNum == moment(oneItem.date).week()) {
-                    let dayPrayed = moment(oneItem.date).format("dddd");
-                    let startTime = moment(oneItem.start).format("h:mm a");
-                    let endTime = moment(oneItem.end).format("h:mm a");
-                    let dayData = [dayPrayed, startTime, endTime];
-                    allDayPrayed.push(dayData)
-                }
-            })
-            res.render("prayerChain/prayerChain", { thisWeekNum, allDayPrayed, foundWorker });
+            const weekPrChain = foundPrayerChainArr[0];
+
+            res.render("lma/lmaPrayerChain", {owner, weekPrChain});
         } catch (err) {
             console.log(err);
             req.flash("Error", "There was a problem");
@@ -598,6 +595,11 @@ module.exports = {
             console.log(e)
         }
     },
+
+    getAllPrayerChain: (req, res) => {
+        let foundPrayerChainArr = [];
+        res.render("lma/all/prayerChainAll", {foundPrayerChainArr});
+    }
 }
  
 // Find all worker under LMA

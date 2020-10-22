@@ -83,7 +83,7 @@ app.use('/facebook', facebookRouter);
 app.use('/', indexRouter);
 app.use('/', registerRouter);
 app.use(methodOverride("_method"));
-moment.locale("en-us");
+moment.locale("en-gb");
 app.locals.moment = moment; 
 
 

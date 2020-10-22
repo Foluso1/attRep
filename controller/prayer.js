@@ -6,8 +6,6 @@ const Worker = require("../models/worker")
     , dMDYYYY = require("../utils/dMDYYYY")
     ;
 
-
-
 module.exports = {
   postPrayerReport: async (req, res) => {
     let currentWorker = req.user.id;

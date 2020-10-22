@@ -36,6 +36,10 @@ router
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllDisciples);
 
 router
+    .route("/all/prayerchain")
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllPrayerChain);
+
+router
     .route("/all/expected/")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.chooseDateExpected);
 
