@@ -1,0 +1,22 @@
+<% include ../../partials/header_lma %>
+
+
+<main class="row">
+    <div class="col-md-12" style="overflow-x:auto;">
+        <br>
+        <div class="mx-3">
+            <h3>Select a date to query for data</h3>
+            <br/>
+            <form action="/lma/all/attendance" id="form-attendance" class="date-to-query">
+                <div class="d-inline-flex">
+                    <input type="date" name="date-lockdown" id="date-lockdown" class="form-control mx-2">
+                    <input type="submit" class="btn btn-sm btn-secondary mx-2">
+                </div>
+            </form>
+        </div>
+        <p></p>
+    </div>
+</main>
+<p></p>
+<p></p>
+<% include ../../partials/footer %>

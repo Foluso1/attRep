@@ -10,46 +10,29 @@
         <h3 class="pt-3">Report Prayer Chain</h3>
         <br>
         <form id="prChform" action="" method="POST">
-                <!-- last Prayer Chain start report less than 00:00 of today -->
-                <% if( (lastPrChReportDate < startOfDay || lastPrChReportDate == undefined) && Date.now() <= prChRange ) { %>
-                    <div class="row mydiv p-1">
-                        <div class="col-md-2">
-                            <label for="starttime">Start Time</label>
-                        </div>
-                        <div class="col-md-3">
-                            <input class="form-control" id="starttime" type="time" name="starttime" min="00:00" max="07:00" value="<%= (new Date(Date.now())).getHours().toString().padStart(2, "0") %>:<%= (new Date(Date.now())).getMinutes().toString().padStart(2, "0") %>"
-                                required>
-                        </div>
-                        <div>
-                            <button id="startPrBtn" class="btn btn-success btn-sm">Start Praying</button>
-                        </div>
+            <% if (shouldSendReport['0']) { %>
+             
+                <div class="row mydiv p-1">
+                    <div>
+                        <button id="startPrBtn" class="btn btn-success btn-sm">Start Praying</button>
                     </div>
-
-                <!-- last Prayer Chain start report within 00:00 and 07:00  -->
-                <% } else if (lastPrChReportDate >= startOfDay && lastPrChReportDate < prChRange && endPrChReport == undefined ) { %>
-                    <div class="inline-div d-flex">
-                        <p id="startPr" class="p-2 text-center" data-id="<%= lastPrChReportId %>">I started praying at <%= new Date(lastPrChReportDate).getHours().toString().padStart(2, "0")%>:<%= new Date(lastPrChReportDate).getMinutes().toString().padStart(2, "0")%> am</p>
+                </div>
+            <% } else if (!shouldSendReport['0'] && shouldSendReport['1']) { %>
+                <div class="mydiv p-1">
+                    <div>
+                        <p>Good day sir/ma,</br>
+                        I have started praying</p>
                     </div>
-                    <div class="inline-div d-flex">
-                        End praying at:
-                        <input class="form-control col-md-3" id="endtime" data-id="<%= lastPrChReportId %>" type="time" name="endtime" min="01:00" max="08:00" value="<%= (new Date(Date.now())).getHours().toString().padStart(2, "0") %>:<%= (new Date(Date.now())).getMinutes().toString().padStart(2, "0") %>" required>
-                        <div>
-                            <button id="endPrBtn" class="col-sm-10 btn btn-success btn-sm">End Praying</button>
-                        </div>
+                    <div>
+                        <button id="endPrBtn" class="btn btn-success btn-sm">End Praying</button>
                     </div>
-
-                <!-- If ended prayer chain -->
-                <% } else if (lastPrChReportDate >= startOfDay && lastPrChReportDate < prChRange && endPrChReport ) { %>
-                    <p id="startPr" class="p-2 text-center" data-id="<%= lastPrChReportId %>">I started praying at 
-                        <%= new Date(lastPrChReportDate).getHours().toString().padStart(2, "0")%>:<%= new Date(lastPrChReportDate).getMinutes().toString().padStart(2, "0")%> am
-                    </p>
-                    <p id="endPr" class="p-2 text-center" data-id="<%= lastPrChReportId %>">I ended praying at <%= new Date(endPrChReport).getHours().toString().padStart(2, "0")%>:<%= new Date(endPrChReport).getMinutes().toString().padStart(2, "0")%> am
-                    </p>
-
-                <!-- Time of now is greater than 07:00 and no start of prayer -->
-                <% } else if ( (lastPrChReportDate == undefined || lastPrChReportDate < startOfDay) && Date.now() > prChRange){ %>
-                    <p>Sorry, you wouldn't report prayer chain at this time.</p>
-                <% } %>
+                </div>
+            <% } else { %>
+                <p>
+                    Sorry, you cannot send a report now.</br>
+                    Thank you.
+                </p>
+            <% } %>
         </form>
     </div>
 </main>

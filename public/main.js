@@ -1,6 +1,11 @@
 const route = window.location.pathname;
 
 const info = document.querySelector("#info");
+const weekChooser = document.querySelector("#week-chooser");
+const prayerChainTable = document.querySelector("#prayer-chain-table");
+const prayerRatio = document.querySelector("#prayer-ratio");
+const prWeekNumber = document.querySelector("#prayer-week-number");
+const weekSpan = document.querySelector("#week-span");
 const meeting = document.querySelector("#for");
 const title = document.querySelector("#title");
 const startTime = document.querySelector("#starttime");
@@ -23,6 +28,7 @@ const prayerTable = document.querySelector("#prayer-table");
 const dateLockdown = document.querySelector("#date-lockdown");
 const dateToQuery = document.querySelector(".date-to-query");
 const formLockdown = document.querySelector("#form-lockdown");
+const formAttendance = document.querySelector("#form-attendance");
 const deleteWorkerButton = document.querySelectorAll(".del-worker");
 const delWorkerBtn = Array.from(deleteWorkerButton);
 const deleteReportButton = document.querySelectorAll(".del-report");
@@ -38,57 +44,25 @@ if (startPrBtn) {
     e.preventDefault();
     myDiv.classList.add("nodisplay");
     startPrBtn.classList.add("nodisplay");
-    let regExTime = /([0-9]?[0-9]):([0-9][0-9])/;
-    let regExTimeArrStarttime = regExTime.exec(starttimeInput.value);
-    let thisTime = moment()
-      .hour(regExTimeArrStarttime[1])
-      .minute(regExTimeArrStarttime[2])
-      .second(0)
-      .millisecond(0)
-      .valueOf();
-    let time = { starttime: thisTime };
     $.ajax({
       type: "POST",
       url: "/prayerChain",
-      data: time,
-      success: (data) => {
+      success: () => {
         let newPrCh = document.createElement("p");
         let newDiv = document.createElement("div");
         let newDiv2 = document.createElement("div");
         newDiv.classList.add("d-flex");
-        newPrCh.setAttribute("data-id", data._id);
         newPrCh.setAttribute("class", "startPr");
-        newPrCh.classList.add("text-center");
+        // newPrCh.classList.add("text-center");
         newPrCh.classList.add("p-2");
-        newPrCh.textContent =
-          "I started praying at " +
-          new Date(data.start).getHours().toString().padStart(2, "0") +
-          ":" +
-          new Date(data.start).getMinutes().toString().padStart(2, "0") +
-          " am";
+        newPrCh.innerHTML =
+        `Good day sir/ma, </br>I have started praying.`
         //Create an input for End Praying
-        let newInput = document.createElement("input");
-        newInput.setAttribute("class", "form-control col-md-3");
-        // newInput.setAttribute("class", );
-        newInput.setAttribute("id", "endtime");
-        newInput.setAttribute("data-id", data._id);
-        newInput.setAttribute("type", "time");
-        newInput.setAttribute("name", "endtime");
-        newInput.setAttribute("min", "01:00");
-        newInput.setAttribute("max", "08:00");
-        newInput.value = `${new Date(Date.now())
-          .getHours()
-          .toString()
-          .padStart(2, "0")}:${new Date(Date.now())
-          .getMinutes()
-          .toString()
-          .padStart(2, "0")}`;
         //Create a div of class "d-flex"
         let newDiv3 = document.createElement("div");
         newDiv3.setAttribute("class", "d-flex");
-        newDiv3.innerText = "I ended praying at ";
         //insert newInput
-        newDiv3.append(newInput, newDiv2);
+        newDiv3.append(newDiv2);
         let endPrBtn = document.createElement("button");
         endPrBtn.setAttribute("id", "endPrBtn");
         endPrBtn.innerText = "End Praying";
@@ -102,37 +76,21 @@ if (startPrBtn) {
 }
 
 if (prChform) {
-  prChform.addEventListener("click", (e) => {
+  prChform.addEventListener("click", function(e) {
     e.preventDefault();
     if (e.target.getAttribute("id") == "endPrBtn") {
-      let regExTime = /([0-9]?[0-9]):([0-9][0-9])/;
-      let inputTarget = e.target.parentNode.parentNode.children[0];
-      let regExTimeArrEndtime = regExTime.exec(inputTarget.value);
-      let thisTime = moment()
-        .hour(regExTimeArrEndtime[1])
-        .minute(regExTimeArrEndtime[2])
-        .second(0)
-        .millisecond(0)
-        .valueOf();
-      let time = { endtime: thisTime };
-      ////
-      let id = inputTarget.dataset.id;
-      inputTarget.classList.add("nodisplay");
-      e.target.parentNode.parentNode.remove();
+      e.target.classList.add("nodisplay");
+      e.target.remove();
       $.ajax({
-        type: "PUT",
-        url: id + "/prayerChain/",
-        data: time,
+        type: "POST",
+        url: "/prayerChain/",
         success: (data) => {
           let newPrCh = document.createElement("p");
           let newDiv = document.createElement("div");
-          newPrCh.setAttribute("data-id", data._id);
-          newPrCh.textContent =
-            "I ended praying at " +
-            new Date(data.end).getHours().toString().padStart(2, "0") +
-            ":" +
-            new Date(data.end).getMinutes().toString().padStart(2, "0") +
-            " am";
+          newPrCh.setAttribute("class", "p-2")
+          newPrCh.innerHTML =
+            `Good day sir/ma, </br>
+            I am done praying`;
           newDiv.append(newPrCh);
           prChform.append(newDiv);
         },
@@ -633,4 +591,51 @@ if(showPassword) {
       }
     });
   }
+}
+
+
+//FORM FOR CHANGING URL TO SUBMIT DATE
+if (formAttendance) {
+  console.log(window.location.pathname)
+} 
+
+// PRAYER CHAIN TIME FIXER
+if (weekChooser) {
+  weekChooser.addEventListener("change", (e) => {
+    $.ajax({
+      type: "GET",
+      url: `/prayerchain/${e.target.value}`,
+      data: e.target.value,
+      success: (data) => {
+          let prayerTimeArr = prayerChainTable.querySelectorAll("tbody tr td");
+          weekSpan.textContent = `${moment().week(e.target.value).startOf('week').format('ddd MMM Do')} - ${moment().week(e.target.value).endOf('week').format('ddd MMM Do')}`;
+          if(!data){
+            prayerRatio.textContent = 0;
+          }
+          for(let n = -1; n <= 5; n++ ){
+            for(let i = 1; i <= 2; i++){
+              prWeekNumber.textContent = e.target.value;
+              if(n % 2 !== 0){
+                if(data && data[n+1].start){
+                  prayerTimeArr[(3*n)+3+i].innerHTML = moment(data[n+1].start).format('LT');
+                  prayerRatio.textContent = data.frequency;
+                } else {
+                  prayerTimeArr[(3*n)+3+i].innerHTML = '--';
+                }
+              } else {
+                if(data && data[n+1].end){
+                  prayerTimeArr[(3*n)+3+i].innerHTML = moment(data[n+1].end).format('LT');
+                  prayerRatio.textContent = data.frequency;
+                } else {
+                  prayerTimeArr[(3*n)+3+i].innerHTML = '--';
+                }
+              }
+            }
+          }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  })
 }

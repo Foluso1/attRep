@@ -238,6 +238,14 @@ module.exports = {
         }
     },
 
+    chooseDateAttendance: async (req, res) => {
+        res.render("lma/all/choose_date_att");
+    },
+    
+    chooseDateExpected: async (req, res) => {
+        res.render("lma/all/choose_date_exp");
+    },
+
     getAllExpectedAttendanceWithDate: async (req, res) => {
         try {
             let dateForData = req.params.date;

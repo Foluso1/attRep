@@ -16,6 +16,7 @@ module.exports = async (dateForData, foundWorker, path) => {
             let noReportNames = "";
             let reportList = "";
             let totalAttendees = 0;
+
             for(let i = 0; i < workersUnder.length; i++) {
                 if(workersUnder.length > 0 && workersUnder[i].expected_attendance.length > 0){
                     let isReportToday = false;
@@ -34,17 +35,13 @@ module.exports = async (dateForData, foundWorker, path) => {
                                     title: item.title, 
                                     for: item.for, 
                                     info: item.info, 
+                                    fellowship: thisWorker.fellowship,
                                     disciples: disciples = item.disciples.map((each) => {
                                         return each.name;
                                     }),
                                     totalAttendees: totalAttendees = (totalAttendees + item.disciples.length),
                                 }
                                 manyArr.push(abc)
-                                if (abc.info) {
-                                    reportList = reportList + `${abc.firstname} ${abc.surname} \n\t ${abc.disciples.join("\n\t")} ${abc.info.split("\n").join("\n\t")}\n`;
-                                } else {
-                                    reportList = reportList + `${abc.firstname} ${abc.surname} \n\t ${abc.disciples.join("\n\t")}\n`;
-                                }
                             } 
                         });
                         if(!isReportToday) {
@@ -52,18 +49,18 @@ module.exports = async (dateForData, foundWorker, path) => {
                                 id: thisWorker.id,
                                 firstname: thisWorker.firstname,
                                 surname: thisWorker.surname,
+                                fellowship: thisWorker.fellowship,
                             }
                             noReportYet.push(abc);
-                            noReportNames = noReportNames + `${thisWorker.firstname} ${thisWorker.surname} \n`;
                         }
                     } else {
                         let abc = {
                             id: thisWorker.id,
                             firstname: thisWorker.firstname,
                             surname: thisWorker.surname,
+                            fellowship: thisWorker.fellowship,
                         }
                         noReportYet.push(abc);
-                        noReportNames = noReportNames + `${thisWorker.firstname} ${thisWorker.surname} \n`;
                     }
                 } else if (workersUnder[i]) {
                     let thisWorker = await Worker.findById({ _id: workersUnder[i].id });
@@ -71,14 +68,53 @@ module.exports = async (dateForData, foundWorker, path) => {
                         id: thisWorker.id,
                         firstname: thisWorker.firstname,
                         surname: thisWorker.surname,
+                        fellowship: thisWorker.fellowship,
                     }
                     noReportYet.push(abc);
-                    noReportNames = noReportNames + `${thisWorker.firstname} ${thisWorker.surname} \n`;
                 }
             }
+
+            // SORTING ALGORITHM
+            // According to time of reporting
             manyArr.sort((a, b) => {
                 return b.date.getTime() - a.date.getTime();
             });
+
+            // Sort by fellowship 
+            manyArr.forEach((elem) => {
+                if(elem.fellowship == "New Garage"){
+                    elem.fellowship = 0;
+                } else if (elem.fellowship == "Yabatech") {
+                    elem.fellowship = 1;
+                } else {
+                    elem.fellowship = 2;
+                }
+            })
+            noReportYet.forEach((elem) => {
+                if(elem.fellowship == "New Garage"){
+                    elem.fellowship = 0;
+                } else if (elem.fellowship == "Yabatech") {
+                    elem.fellowship = 1;
+                } else {
+                    elem.fellowship = 2;
+                }
+            })
+            manyArr.sort((a,b) => {
+                return a.fellowship - b.fellowship;
+            });
+            noReportYet.sort((a,b) => {
+                return a.fellowship - b.fellowship;
+            });
+            manyArr.forEach((abc) => {
+                if (abc.info) {
+                    reportList = reportList + `${abc.firstname} ${abc.surname} \n\t ${abc.disciples.join("\n\t")} \n\t${abc.info.split("\n").join("\n\t")}\n`;
+                } else {
+                    reportList = reportList + `${abc.firstname} ${abc.surname} \n\t ${abc.disciples.join("\n\t")}\n`;
+                }
+            })
+            noReportYet.forEach((abc) => {
+                noReportNames = noReportNames + `${abc.firstname} ${abc.surname} \n`;
+            })
             return { manyArr, startOfToday, noReportNames, totalAttendees, noReportYet, reportList }
         } catch (e) {
             console.log(e);

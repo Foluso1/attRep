@@ -25,7 +25,7 @@ router
 
 router
     .route("/all/attendance")
-        .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllAttendanceWithDate);
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.chooseDateAttendance);
 
 router
     .route("/all/attendance/:date")
@@ -37,7 +37,7 @@ router
 
 router
     .route("/all/expected/")
-        .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllExpectedAttendanceWithDate);
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.chooseDateExpected);
 
 router
     .route("/all/expected/:date")

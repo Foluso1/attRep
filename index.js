@@ -16,6 +16,7 @@ const       express                 =   require("express")
         ,   prayerChainRouter       =   require("./routes/prayerChain")
         ,   lmaRouter               =   require("./routes/lma")
         ,   newRouter               =   require("./routes/new")
+        ,   apiRouter               =   require("./routes/api")
         ,   indexRouter             =   require("./routes/index")
         ,   registerRouter          =   require("./routes/register_route")
         ,   methodOverride          =   require("method-override")
@@ -76,12 +77,13 @@ app.use('/prayer', prayerRouter);
 app.use('/prayerChain', prayerChainRouter);
 app.use('/lma', lmaRouter);
 app.use('/new', newRouter);
+app.use('/api', apiRouter);
 app.use('/google', googleRouter);
 app.use('/facebook', facebookRouter);
 app.use('/', indexRouter);
 app.use('/', registerRouter);
 app.use(methodOverride("_method"));
-moment.locale("en-gb");
+moment.locale("en-us");
 app.locals.moment = moment; 
 
 

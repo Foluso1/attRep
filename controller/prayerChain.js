@@ -1,5 +1,6 @@
 const Worker        =   require("../models/worker")
     , PrayerChain   =   require("../models/prayerChain")
+    , newPrayerChain   =   require("../models/newPrayerChain")
     , moment        =   require("moment")
     ;
 
@@ -7,17 +8,44 @@ const Worker        =   require("../models/worker")
 module.exports = {
     postPrayerReport: async (req, res) => {
         try {
-            let currentWorker = req.user.id;
-            let newPrayerChain = await PrayerChain.create({
-                start: req.body.starttime,
+            // req.body should have day number, and start / end time
+            //Does prayer chain for that week exist?
+            let thisWeekNumber = moment().week();
+
+            let foundPrayerChainArr = await newPrayerChain.find({
                 prayor: req.user.id,
-            });
-            let foundWorker = await Worker.findById({ _id: currentWorker });
-
-            foundWorker.prayerChainReport.push(newPrayerChain);
-            await foundWorker.save();
-
-            res.json(newPrayerChain);
+                week: thisWeekNumber,
+                date: { $gte: moment().startOf("year").format() }
+            })
+            if (!(foundPrayerChainArr && foundPrayerChainArr.length > 0)) {
+                foundPrayerChain = await newPrayerChain.create({
+                    // Set week number; set prayor
+                    week: thisWeekNumber,
+                    prayor: req.user.id,
+                })
+            } else {
+                foundPrayerChain = foundPrayerChainArr[0];
+            }
+            // What type is being sent (start or end?)
+            let day = moment().day();
+            // Set start / end time
+            if (!foundPrayerChain[day].start) {
+                foundPrayerChain[day]['start'] = new Date();
+                // If start, set prayed to true
+            } else if (!foundPrayerChain[day]['end']) {
+                foundPrayerChain[day]['end'] = new Date();
+                foundPrayerChain[day].prayed = true;
+                foundPrayerChain[day].duration = moment(foundPrayerChain[day].end).valueOf() - moment(foundPrayerChain[day].start).valueOf();
+                // Update frequency (add +1)
+                if(foundPrayerChain[day].duration >= (59 * 60 * 1000)) {
+                    foundPrayerChain.frequency++;
+                }
+            } else if (foundPrayerChain[day].start && foundPrayerChain[day].end){
+                req.flash("error", "You have reported your prayer chain today");
+                return res.redirect("/prayerchain")
+            }
+            await foundPrayerChain.save()
+            res.json(foundPrayerChain);
         } catch (err) {
             console.log(err);
             req.flash("error", "There was a problem");
@@ -28,30 +56,18 @@ module.exports = {
 
     getPrayerReports: async (req, res) => {
         try {
-            let ownerId = req.params.id;
-            if(ownerId == undefined) {
-                ownerId = req.user.id;
-            }
-            (req.baseUrl, req.originalUrl);
-            let currentWorker = req.user.id;
-            let ownerStatus = ownerId == currentWorker;
-            let thisWeekNum = moment().week();
-            let allDayPrayed = [];
-            let foundWorker = await Worker.findById({ _id: currentWorker }).populate({
-                path: "prayerChainReport"
+            let foundPrayerChainArr = await newPrayerChain.find({
+                prayor: req.user.id,
+                week: moment().week(),
             });
-
-            let prChRepAll = foundWorker.prayerChainReport;
-            prChRepAll.forEach((oneItem) => {
-                if(thisWeekNum == moment(oneItem.date).week()) {
-                    let dayPrayed = moment(oneItem.date).format("dddd");
-                    let startTime = moment(oneItem.start).format("h:mm a");
-                    let endTime = moment(oneItem.end).format("h:mm a");
-                    let dayData = [dayPrayed, startTime, endTime];
-                    allDayPrayed.push(dayData)
-                }
-            })
-            res.render("prayerChain/prayerChain", { thisWeekNum, allDayPrayed, foundWorker });
+            let weekPrChain = foundPrayerChainArr[0];
+            if(!weekPrChain){
+                weekPrChain = await newPrayerChain.create({
+                    prayor: req.user.id,
+                    week: moment().week(),
+                })
+            }
+            res.render("prayerChain/prayerChain", {weekPrChain});
         } catch (err) {
             console.log(err);
             req.flash("error", "There was a problem!")
@@ -61,47 +77,48 @@ module.exports = {
 
     newPrayerReport: async (req, res) => {
         try {
-            let currentWorker = req.user.id;
-            let foundWorker = await Worker.findById({ _id: currentWorker }).populate({
-                path: "prayerChainReport",
-                options: { sort: { date: -1 }, limit: 1 } 
-            });
-            let lastPrChReport = foundWorker.prayerChainReport;
-            let lastPrChReportId;
-            let endPrChReport;
-            let lastPrChReportDate; 
-            if (lastPrChReport.length != 0) {
-                lastPrChReportDate = foundWorker.prayerChainReport[0].date.getTime();
-                lastPrChReportId = foundWorker.prayerChainReport[0]._id;
-                endPrChReport = foundWorker.prayerChainReport[0].end
-                if (endPrChReport == undefined) {
-                    endPrChReport;
-                } else {
-                    endPrChReport = endPrChReport.getTime();
+            let foundPrayerChainArr = await newPrayerChain.find({
+                prayor: req.user.id,
+                week: moment().week(),
+            })
+
+            let shouldSendReport = {};
+            shouldSendReport['0'] = true;
+            shouldSendReport['1'] = true;
+
+            if (foundPrayerChainArr && foundPrayerChainArr.length > 0){
+                foundPrayerChain = foundPrayerChainArr[0];
+                let day = moment().day();
+                if(foundPrayerChain[day].start){
+                    shouldSendReport['0'] = false;
+                    if(foundPrayerChain[day].end){
+                        // Both start and end reports sent already;
+                        shouldSendReport['1'] = false;
+                    }
                 }
             }
-            let startOfDay = moment().startOf('day').valueOf();
-            let prChRange = moment().hour(23).minute(0).second(0).millisecond(0).valueOf();
-
-            res.render("prayerChain/prayerChainNew", { lastPrChReportDate, startOfDay, prChRange, lastPrChReportId, endPrChReport });
+            res.render("prayerChain/prayerChainNew", {shouldSendReport});
         } catch (err) {
             console.log(err);
         }
         
     }, 
 
-    updatePrayerReport: async (req, res) => {
+    getPrayerReportbyWeekNum: async (req, res) => {
         try {
-            let id = req.params.id;
-            let endtime = {
-                end: req.body.endtime
+            let foundPrayerChainArr = await newPrayerChain.find({
+                prayor: req.user.id,
+                week: req.params.weekNum,
+            });
+            let weekPrChain = foundPrayerChainArr[0];
+            if(!weekPrChain){
+                weekPrChain = null;
             }
-            let updatedPrCh = await PrayerChain.findOneAndUpdate({_id: id}, endtime, {new: true} );
-            await updatedPrCh.save();
-            res.json(updatedPrCh);
+            res.status(201).json(weekPrChain);
         } catch (err) {
             console.log(err);
+            req.flash("error", "There was a problem!")
+            res.redirect("/home")
         }
     }
-
 }

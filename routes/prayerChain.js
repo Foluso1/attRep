@@ -15,7 +15,7 @@ prayerChainRouter.route("/")
     .get(middleware.isLoggedIn, controller.getPrayerReports)
     .post(middleware.isLoggedIn, controller.postPrayerReport);
 
-prayerChainRouter.route("/:id")
-    .put(middleware.isLoggedIn, controller.updatePrayerReport);
+prayerChainRouter.route("/:weekNum")
+    .get(middleware.isLoggedIn, controller.getPrayerReportbyWeekNum);
 
 module.exports = prayerChainRouter;
