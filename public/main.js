@@ -74,30 +74,56 @@ if (prChform) {
     e.preventDefault();
     if (e.target.getAttribute("id") == "endPrBtn") {
       let thisNode = $(e.target.parentNode);
-      thisNode.html("");
-      thisNode.append("<p>Please wait...</p>");
-      $.ajax({
-        type: "POST",
-        url: "/prayerChain/",
-        success: (data) => {
-          let time = moment().format("LT");
-          if(data != null && typeof data === "object" ){
-            thisNode.html("");
-            let newPrCh = document.createElement("p");
-            let newDiv = document.createElement("div");
-            newPrCh.setAttribute("class", "p-2")
-            newPrCh.innerHTML =
-              `Good day sir/ma, </br>
-              I am done praying </br>
-              ${time}`;
-            newDiv.append(newPrCh);
-            prChform.append(newDiv);
-          } else {
-            thisNode.html("");
-            thisNode.append("<p>There was a problem, please re-login to end praying.</p>");
-          }
-        },
-      });
+      
+      const endPrFunction = () => {
+        thisNode.html("");
+        thisNode.append("<p>Please wait...</p>");
+        $.ajax({
+          type: "POST",
+          url: "/prayerChain/",
+          success: (data) => {
+            let time = moment().format("LT");
+            if(data != null && typeof data === "object" ){
+              thisNode.html("");
+              let newPrCh = document.createElement("p");
+              let newDiv = document.createElement("div");
+              newPrCh.setAttribute("class", "p-2")
+              newPrCh.innerHTML =
+                `Good day sir/ma, </br>
+                I am done praying </br>
+                ${time}`;
+              newDiv.append(newPrCh);
+              prChform.append(newDiv);
+            } else {
+              thisNode.html("");
+              thisNode.append("<p>There was a problem, please re-login to end praying.</p>");
+            }
+          },
+        });
+      }
+
+      thisNode.html("");     
+      thisNode.append(`<div>
+          <p>Are you sure?</p>
+          <div>
+            <button class="btn btn-sm btn-success px-4" id="true">Yes</button> <button class="btn btn-sm btn-danger px-4" id="false">No</button>
+          </div>
+        </div>`);
+      let yes = document.querySelector("#true");
+      let no = document.querySelector("#false");
+      yes.addEventListener("click", function (e) {
+        e.preventDefault();
+        endPrFunction();
+      })
+      no.addEventListener("click", function (e){
+        e.preventDefault();
+        thisNode.html("");
+        thisNode.append(`<div class="newDiv">
+            <div class="newDiv2 d-flex">
+              <button id="endPrBtn" class="btn btn-success btn-sm">End Praying</button>
+            </div>
+          </div>`)
+      })
     }
   });
 }
