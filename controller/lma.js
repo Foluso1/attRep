@@ -7,6 +7,7 @@ const         Worker                    = require("../models/worker")
             , dMDYYYY                   = require("../utils/dMDYYYY")
             , moment                    = require("moment")
             , listAllReports            = require("../utils/listAllReports")
+            , Sorter                    = require("../utils/sorter")
             ;
 
 
@@ -16,26 +17,51 @@ module.exports = {
         res.render("lma/all/all");
     },
 
-    getWorkers: (req, res) => {
-        let currentWorker = req.user.id;
-        Worker.findById(currentWorker).populate("workers")
-        .then((foundWorker) => {
-            let subWorkers = foundWorker.workers
-            subWorkers.forEach((foundworker) => {
-                foundworker.password = undefined;
-            })
-            subWorkers.sort((a, b) => {
+    getWorkers: async (req, res) => {
+        try {
+            let currentWorker = req.user.id;
+            let foundWorker = await Worker.findById(currentWorker, "id firstname surname")
+                .populate({
+                    path: "workers", 
+                    select: "id firstname surname fellowship"
+                });
+            let underWorkers = foundWorker.workers;
+            underWorkers.sort((a, b) => {
                 if (a.firstname.toUpperCase() < b.firstname.toUpperCase()) {
                     return -1;
                 } else {
                     return 1;
                 }
             });
-            res.render("lma/lma", { subWorkers });
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+            let subWorkers = new Sorter();
+            underWorkers.forEach((item) => {
+                subWorkers.create(item.fellowship);
+                subWorkers[item.fellowship].push(item);
+            });
+            // res.json(subWorkers);
+            res.render("lma/lma", {subWorkers});
+        } catch (e) {
+            console.log(e);
+        }
+        // Worker.findById(currentWorker).populate({path: "workers", select: "_id, firstname, surname"})
+        // .then((foundWorker) => {
+        //     let subWorkers = foundWorker.workers
+        //     subWorkers.forEach((foundworker) => {
+        //         foundworker.password = undefined; 
+        //     })
+        //     subWorkers.sort((a, b) => {
+        //         if (a.firstname.toUpperCase() < b.firstname.toUpperCase()) {
+        //             return -1;
+        //         } else {
+        //             return 1;
+        //         }
+        //     });
+            // res.render("lma/lma", { subWorkers });
+            // res.json(subWorkers);
+        // })
+        // .catch((err) => {
+        //     console.log(err);
+        // })
     },
 
     postWorker: async (req, res) => {
@@ -416,7 +442,7 @@ module.exports = {
             };
             let foundPrayerChainArr = await newPrayerChain.find({
                 prayor: owner.id,
-                week: moment().week(),
+                week: moment().locale("en-us").week(),
             });
 
             const weekPrChain = foundPrayerChainArr[0];

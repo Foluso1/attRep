@@ -4,35 +4,42 @@
     <div class="col-md-12">
         <div class="list-workers">
             <h3></h3>
+            <% let thisList = ''; %> 
             <ol>
-                <% subWorkers.forEach((foundWorker) => { %>
-                <div class="hover-appear">
-                    <div class="d-flex">
-                        <li _id="<%= foundWorker._id %>" > 
-                            <a href="/lma/<%= foundWorker._id %>/profile"><%= foundWorker.firstname %>&nbsp;<%= foundWorker.surname %></a>  
-                            <!-- <form action="/lma" method="POST">
-                                <input style="display: none" type="text" name="id" value="<%#= foundWorker._id %>" >
-                            </form> -->
-                            <div class="nodisplay"> 
-                                <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/discipleship">Discipleship</a>
-                                <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/disciple">Disciple</a>
-                                <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/attendance">Attendance</a>
-                                <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/expected">Expected</a>
-                                <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/prayer">Prayer Group</a>
-                                <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/evangelism">Evangelism</a>
-                                <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/prayerChain">Prayer Chain</a>
-                                <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/lockdown">Stay-Home</a>
-                                <% if( loggedInWorker.isAdmin == true ) { %>
-                                    <a class="del-worker btn btn-sm btn-danger" href="" data-id="<%= foundWorker._id %>" data-name="<%= foundWorker.firstname %> <%= foundWorker.surname %>">Delete Account</a>
-                                <% } %>
+                <% Object.keys(subWorkers).forEach((item) => { %>
+                    <h1><%= item %> <span>(<%= subWorkers[item].length %>)</span></h1>
+                    <% thisList = thisList + `\n===${item}===` %> 
+                    <% for(let i=0; i<subWorkers[item].length; i++){ %>
+                        <div class="hover-appear">
+                            <div class="d-flex">
+                                <% let foundWorker = subWorkers[item][i]; %>
+                                    <% thisList = thisList + `\n${foundWorker.firstname} ${foundWorker.surname}` %>
+                                    <li _id="<%= foundWorker._id %>" > 
+                                        <a href="/lma/<%= foundWorker._id %>/profile"><%= foundWorker.firstname %>&nbsp;<%= foundWorker.surname %></a>
+                                        <div class="nodisplay"> 
+                                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/discipleship">Discipleship</a>
+                                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/disciple">Disciple</a>
+                                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/attendance">Attendance</a>
+                                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/expected">Expected</a>
+                                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/prayer">Prayer Group</a>
+                                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/evangelism">Evangelism</a>
+                                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/prayerChain">Prayer Chain</a>
+                                            <a class="btn btn-sm btn-secondary m-1" href="/lma/<%= foundWorker._id %>/lockdown">Stay-Home</a>
+                                            <% if( loggedInWorker.isAdmin == true ) { %>
+                                                <a class="del-worker btn btn-sm btn-danger" href="" data-id="<%= foundWorker._id %>" data-name="<%= foundWorker.firstname %> <%= foundWorker.surname %>">Delete Account</a>
+                                            <% } %>
+                                        </div>
+                                    </li>
                             </div>
-                        </li>
-                    </div>
-                    <hr>
-                </div>
-                <% });  %>
+                            <hr>
+                        </div>
+                    <% } %>
+                <% }); %>
             </ol>
-            <div class="col-lg-4 col-md-6 col-sm-8 col-xs-10">
+            <div class="copy-text">
+                <h3>List of All Workers</h3>
+                <textarea class="form-control"><%= thisList %></textarea>
+                <button class="btn btn-sm btn-secondary">Copy List</button>
             </div>
             <p></p>
             <hr />

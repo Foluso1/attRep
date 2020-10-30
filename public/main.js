@@ -631,36 +631,14 @@ if (formAttendance) {
 // PRAYER CHAIN TIME FIXER
 if (weekChooser) {
   weekChooser.addEventListener("change", (e) => {
+    $("tbody").html("");
+    $("tbody").append(`<td colspan="10">Please wait...</td>`);
     $.ajax({
       type: "GET",
       url: `/prayerchain/${e.target.value}`,
       data: e.target.value,
       success: (data) => {
-          let prayerTimeArr = prayerChainTable.querySelectorAll("tbody tr td");
-          weekSpan.textContent = `${moment().week(e.target.value).startOf('week').format('ddd MMM Do')} - ${moment().week(e.target.value).endOf('week').format('ddd MMM Do')}`;
-          if(!data){
-            prayerRatio.textContent = 0;
-          }
-          for(let n = -1; n <= 5; n++ ){
-            for(let i = 1; i <= 2; i++){
-              prWeekNumber.textContent = e.target.value;
-              if(n % 2 !== 0){
-                if(data && data[n+1].start){
-                  prayerTimeArr[(3*n)+3+i].innerHTML = moment(data[n+1].start).format('LT');
-                  prayerRatio.textContent = data.frequency;
-                } else {
-                  prayerTimeArr[(3*n)+3+i].innerHTML = '--';
-                }
-              } else {
-                if(data && data[n+1].end){
-                  prayerTimeArr[(3*n)+3+i].innerHTML = moment(data[n+1].end).format('LT');
-                  prayerRatio.textContent = data.frequency;
-                } else {
-                  prayerTimeArr[(3*n)+3+i].innerHTML = '--';
-                }
-              }
-            }
-          }
+        createTable(data, e.target.value);
       },
       error: (err) => {
         console.log(err);
@@ -677,57 +655,69 @@ if (weekChooserLMA) {
   let id = weekChooserLMA.getAttribute('user-id');
   weekChooserLMA.addEventListener("change", (e) => {
     console.log("///id", id);
+    $("tbody").html("");
+    $("tbody").append(`<td colspan="10">Please wait...</td>`);
     $.ajax({
       type: "GET",
       url: `/api/prayerchain/${id}/${e.target.value}`,
       data: e.target.value,
       success: (data) => {
-          let prayerTimeArr = prayerChainTable.querySelectorAll("tbody tr td");
-          weekSpan.textContent = `${moment().week(e.target.value).startOf('week').format('ddd MMM Do')} - ${moment().week(e.target.value).endOf('week').format('ddd MMM Do')}`;
-          if(!data){
-            prayerRatio.textContent = 0;
-          }
-          for(let n = -1; n <= 5; n++ ){
-            for(let i = 1; i <= 2; i++){
-              prWeekNumber.textContent = e.target.value;
-              if(n % 2 !== 0){
-                if(data && data[n+1].start){
-                  prayerTimeArr[(3*n)+3+i].innerHTML = moment(data[n+1].start).format('LT');
-                  prayerRatio.textContent = data.frequency;
-                } else {
-                  prayerTimeArr[(3*n)+3+i].innerHTML = '--';
-                }
-              } else {
-                if(data && data[n+1].end){
-                  prayerTimeArr[(3*n)+3+i].innerHTML = moment(data[n+1].end).format('LT');
-                  prayerRatio.textContent = data.frequency;
-                } else {
-                  prayerTimeArr[(3*n)+3+i].innerHTML = '--';
-                }
-              }
-            }
-          }
+        createTable(data, e.target.value);
       },
       error: (err) => {
         console.log(err);
         $("tbody").html("");
-        $("tbody").append(`<td colspan="10">There was a problem. Please re-login.</td>`)
+        $("tbody").append(`<td colspan="10">There was a problem. Please re-login.</td>`);
       }
     })
   })
 }
 
+// CREATE TABLE FUNCTION
+const createTable = (data, weekVal) => {
+  prWeekNumber.textContent = weekVal;
+  weekSpan.textContent = `${moment().week(weekVal).startOf('week').format('ddd MMM Do')} - ${moment().week(weekVal).endOf('week').format('ddd MMM Do')}`;
+  if(!(data != null && typeof(data) === "object")){
+      prayerRatio.textContent = 0;
+      $("tbody").html("");
+      $("tbody").append(`<td colspan="10">Nothing to show here.</td>`);
+  } else {
+    $("tbody").html("");
+    prayerRatio.textContent = data.frequency;
+    for(let i=0; i<7; i++){
+      let apc = $("tbody").append(`<tr></tr>`);
+      for(let j=0; j<3; j++){
+        if(j==0){
+          apc.append(`<td>${moment().day(i).format("ddd")}</td>`);
+        } else if(j==1) {
+          if(data[i].start){
+            apc.append(`<td>${moment(data[i].start).format("LT")}</td>`);
+          } else {
+            apc.append(`<td>--</td>`);
+          }
+        } else if (j==2) {
+          if(data[i].end){
+            apc.append(`<td>${moment(data[i].end).format("LT")}</td>`);
+          } else {
+            apc.append(`<td>--</td>`);
+          }
+        }
+      }
+    }
+  }
+}
+
 // PRAYER CHAIN TIME FIXER (LMA ALL)
-const prChFunction = function () {
-  console.log(this);
+const prChFunction = function ( ) {
     $("tbody").html("");
     $("tbody").append(`<td colspan="10">Please wait...</td>`);
     $.ajax({
     type: "GET",
-    url: `/api/prayerchain/${this.value}`,
-    data: this.value,
+    url: `/api/prayerchain/${this}`, //Value}`,
+    data: this, //Value || this,
     success: (data) => {
       document.querySelector("#pr-ch-participants").textContent = data.length;
+      data = data || {};
       if(data && Array.isArray(data) && data.length > 0){
         let tableBody = prayerChainTable.querySelectorAll("tbody");
         $("tbody").html("");
@@ -780,8 +770,8 @@ if (weekChooserAllLMA) {
 //THIS WEEK CHOOSER
 if(thisWeekPrCh){
   thisWeekPrCh.addEventListener("click", function (e) {
-    weekChooserAllLMA.value = moment().week();
-    new Event("change", prChFunction);
+    weekChooserAllLMA.value = moment().locale("en-us").week();
+    prChFunction(); //moment().locale("en-us").week()); 
   });
 }
 

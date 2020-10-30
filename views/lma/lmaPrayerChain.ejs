@@ -6,12 +6,16 @@
         <h3><%= owner.firstname %> <%= owner.surname %>'s Prayer Chain Report</h3>
         <div>
             <label>Choose a Week Number: </label>
-            <input type="number" name="week-number" id="week-chooser-lma" user-id="<%= owner.id %>" min="1" max="<%= moment().weeksInYear()%>" value="<%= moment().week() %>""/>
+            <input type="number" name="week-number" id="week-chooser-lma" user-id="<%= owner.id %>" min="1" max="<%= moment().weeksInYear()%>" value="<%= moment().locale("en-us").week() %>""/>
         </div>
         </br>
-        <% if (weekPrChain) { %>
-            <h5>Week <span id="prayer-week-number"><%= weekPrChain.week %></span>: <span id="week-span"><%= moment().startOf('week').format('ddd MMM Do') %> - <%= moment().endOf('week').format('ddd MMM Do') %></span></h5>
-            <h5>Prayer Ratio: <span id="prayer-ratio"><%= weekPrChain.frequency %></span>/7</h5>
+            <% if(!weekPrChain) { %>
+                <h5>Week <span id="prayer-week-number"><%= moment().locale("en-us").week() %></span>: <span id="week-span"><%= moment().startOf('week').format('ddd MMM Do') %> - <%= moment().endOf('week').format('ddd MMM Do') %></span></h5>
+                <h5>Prayer Ratio: <span id="prayer-ratio">0</span>/7</h5>
+            <% } else { %>
+                <h5>Week <span id="prayer-week-number"><%= weekPrChain.week %></span>: <span id="week-span"><%= moment().startOf('week').format('ddd MMM Do') %> - <%= moment().endOf('week').format('ddd MMM Do') %></span></h5>
+                <h5>Prayer Ratio: <span id="prayer-ratio"><%= weekPrChain.frequency %></span>/7</h5>
+            <% } %>
             <table class="allLMALockdown" id="prayer-chain-table">
                 <thead>
                     <td><b>Day</b></td>
@@ -19,27 +23,30 @@
                     <td><b>End</b></td>
                 </thead>
                 <tbody>
-                <% for(let i = 0; i <= 6; i++){ %>
+                <% if (weekPrChain) { %>
+                    <% for(let i = 0; i <= 6; i++){ %>
+                            <tr>
+                                <% if(weekPrChain[i].start){ %>
+                                    <td><%= moment(weekPrChain[i].start).format('ddd') %> </td>
+                                    <td><%= moment(weekPrChain[i].start).format('LT') %> </td>
+                                <% } else { %>
+                                    <td><%= moment().day(i).format('ddd') %></td>
+                                    <td> - </td>
+                                <% } %>
+                                <% if(weekPrChain[i].end){ %>
+                                    <td><%= moment(weekPrChain[i].end).format('LT') %> </td>
+                                <% } else { %>
+                                    <td> - </td>
+                                <% } %>
+                            </tr>
+                        <% } %>
+                <% } else { %>
                     <tr>
-                        <% if(weekPrChain[i].start){ %>
-                            <td><%= moment(weekPrChain[i].start).format('ddd') %> </td>
-                            <td><%= moment(weekPrChain[i].start).format('LT') %> </td>
-                        <% } else { %>
-                            <td><%= moment().day(i).format('ddd') %></td>
-                            <td> - </td>
-                        <% } %>
-                        <% if(weekPrChain[i].end){ %>
-                            <td><%= moment(weekPrChain[i].end).format('LT') %> </td>
-                        <% } else { %>
-                            <td> - </td>
-                        <% } %>
+                        <td colspan="10">Nothing to show here yet!</td>
                     </tr>
                 <% } %>
                 </tbody>
             </table>
-        <% } else { %>
-            <p>Nothing to show here yet!</p>
-        <% } %>
     </div>
 </main>
 <p></p>
