@@ -1,5 +1,5 @@
 const route = window.location.pathname;
-
+const specialMeeting = document.querySelector("#special-meeting");
 const info = document.querySelector("#info");
 const thisWeekPrCh = document.querySelector("#this-week-pr-ch");
 const hoverAppear = document.querySelectorAll(".hover-appear"); 
@@ -31,6 +31,7 @@ const copyTextArr = Array.from(copyText);
 const prayerTable = document.querySelector("#prayer-table");
 const dateLockdown = document.querySelector("#date-lockdown");
 const dateToQuery = document.querySelector(".date-to-query");
+const meetingToQuery = document.querySelector(".meeting-to-query");
 const formLockdown = document.querySelector("#form-lockdown");
 const formAttendance = document.querySelector("#form-attendance");
 const deleteWorkerButton = document.querySelectorAll(".del-worker");
@@ -354,6 +355,24 @@ $(document).ready(() => {
     exporter(buttonId);
   });
 
+  $("#edit-expected").on("click", function(e) {
+    e.preventDefault();
+    let buttonId = "edit-expected";
+    editExporter(buttonId);
+  })
+
+  $("#edit-discipleship").on("click", function(e) {
+    e.preventDefault();
+    let buttonId = "edit-discipleship";
+    editExporter(buttonId);
+  })
+
+  $("#edit-attendance").on("click", function(e) {
+    e.preventDefault();
+    let buttonId = "edit-attendance";
+    editExporter(buttonId);
+  })
+
   $("#copier").on("click", function () {
     copyAll();
   });
@@ -458,12 +477,52 @@ function exporter(buttonId) {
           for: meeting.value,
           info: info.value,
         },
+        
         function () {
+          console.log({
+            ids: idsArray,
+            title: title.innerText,
+            for: meeting.value,
+            info: info.value,
+          })
           window.location.replace(`${window.location.origin}/expected`);
         }
       );
     }
   }
+}
+
+function editExporter(buttonId) {
+  let title = $("#title").text();
+  let reportFor = $("#for").text();
+  let info = $("#info").val();
+  let reportId = $(".submitter").attr("data-report-id");
+  let preUrl = "";
+  if (buttonId == "edit-expected") {
+    preUrl = "expected";
+  } else if (buttonId == "edit-attendance"){
+    preUrl = "attendance";
+  } else if (buttonId == "edit-discipleship"){
+    preUrl = "discipleship";
+  }
+  console.log(title, reportFor, info, reportId);
+  $.ajax({
+    type: 'PUT',
+    url: `/${preUrl}/${reportId}`,
+    data: {
+      info: info,
+      for: reportFor,
+      title: title
+    },
+    success: () => {
+      console.log("success!");
+      window.location.replace(`${window.location.origin}/${preUrl}`);
+    },
+    error: () => {
+      console.log("error");
+      window.location.replace(`${window.location.origin}/${preUrl}`);
+    }
+  })
 }
 
 function subWorker(e) {
@@ -553,6 +612,9 @@ if (editReport) {
       // Get this Report ID
       let reportId = e.target.dataset.reportId;
       let id = e.target.getAttribute("_id");
+      let title = $('#title').text();
+      let reportFor = $('#for').text();
+      console.log(title, reportFor)
       let report = e.target.parentNode.parentNode.parentNode.dataset.report;
       console.log(report);
       // Send a request (PUT) and add to ids
@@ -561,6 +623,8 @@ if (editReport) {
         url: `/${report}/${reportId}/edit`,
         data: {
           _id: id,
+          for: reportFor,
+          title: title,
         },
         success: (data) => {
           console.log(data);
@@ -791,4 +855,34 @@ if(hoverAppear){
       }
     });
   }
+}
+
+
+// SPECIAL MEETINGS CHOOSER
+if (specialMeeting) {
+  specialMeeting.addEventListener("change", (e) => {
+    let meetingName = e.target.value;
+    $.ajax({
+      url: `/api/expected/${meetingName}`,
+      type: 'GET',
+      success: (data) => {
+        console.log(data);
+        let list = "";
+        $('tbody').html('');
+        data.forEach((item) => {
+          list = list + `${item.summoner.firstname} ${item.summoner.surname}`
+          let thisRow = $('tbody').append(`<tr><td colspan="10">${item.summoner.firstname} ${item.summoner.surname}</td></tr>`);
+          item.disciples.forEach((elem) => {
+            list = list + `\n\t${elem.name}`
+            thisRow.append(`<tr><td></td><td>${elem.name}</td><td></td></tr>`);
+          });
+          list = list + `\n\t${item.info}`;
+          thisRow.append(`<tr><td></td><td></td><td>${item.info}</td></tr>`);
+        })
+      },
+      error: (e) => {
+        console.log(e);
+      }
+    })
+  })
 }

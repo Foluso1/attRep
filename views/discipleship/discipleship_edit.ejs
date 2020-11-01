@@ -12,7 +12,7 @@
         <div class="list-disciples">
             <h2>Edit Report</h2>
             <p class="notabene">Click on a name in the <a href="#disciples-pane">disciples pane</a> to add to this list OR click on a name here to remove from the list</p>
-            <h3><%= thisReport.title %> for <%= thisReport.for %></h3>
+            <h3><span id="title"><%= thisReport.title %></span> for <span id="for"><%= thisReport.for %></span></h3>
             <ol class="list edit-report-remove d-flex flex-column" data-report="discipleship">
                <% if (thisReport && thisReport.length !== 0) { %>
                 <% let discs = thisReport.disciples; %> <!-- Display all disciples here -->
@@ -53,13 +53,13 @@
     </div>
 </main>
 <p></p>
-<form action="/discipleship/<%= thisReport._id %>?_method=PUT" method="POST">
+<form class="submitter" data-report-id="<%= thisReport._id %>" action="/discipleship/<%= thisReport._id %>?_method=PUT" method="POST">
     <div class="list-workers">
         <h3>Additional Information</h3>
         <textarea class="form-control" id="info" name="info" placeholder="Additional Information" rows="8"><%= thisReport.info %></textarea>
     </div>
     <br>
-    <input type="submit" class="btn btn-primary text-center" id="exporter-edit">       
+    <input type="submit" class="btn btn-primary text-center" id="edit-discipleship">       
 </form>
 <p></p>
 <% include ../partials/footer %>

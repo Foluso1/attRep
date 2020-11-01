@@ -1,0 +1,34 @@
+<% include ../../partials/header_lma %>
+
+
+<main class="row">
+    <div class="col-md-12" style="overflow-x:auto;">
+        <br>
+        <div class="mx-3">
+            <h3>Select a meeting to query for data</h3>
+            <br/>
+            <form action="/lma/expected/" id="form-attendance" class="meeting-to-query">
+                <div class="d-inline-flex">
+                    <select type="date" name="special-meeting" id="special-meeting" class="form-control mx-2">
+                        <option name="Believer's Convention" id="">Believer's Convention</option>
+                        <option name="Charis Campmeeting" id="">Charis Campmeeting</option>
+                    </select>
+                </div>
+            </form>
+            <table >
+                <thead>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <p></p>
+    </div>
+</main>
+<p></p>
+<p></p>
+<% include ../../partials/footer %>

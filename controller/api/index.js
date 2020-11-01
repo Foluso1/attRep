@@ -1,5 +1,6 @@
 const           newPrayerChain  = require("../../models/newPrayerChain");
-const           Worker          = require("../../models/worker")
+const           Worker          = require("../../models/worker");
+const           Expected        = require("../../models/expected_attendance_model");
 const           moment          = require("moment");
 
 module.exports = {
@@ -84,6 +85,20 @@ module.exports = {
             })
             foundPrayerChainArr = [...foundPrayerChainArr, ...newPrChNoPrCh];
             res.status(201).json(foundPrayerChainArr);
+        } catch (e) {
+            console.log(e);
+            res.status(500);
+        }
+    },
+
+    getAllSpecialMeetings: async (req, res) => {
+        try {
+            let foundResult = await Expected.find({
+                for: req.params.meetingName
+            })
+            .populate({ path: "summoner", select: "firstname surname" })
+            .populate({ path: "disciples", select: "name" });
+            res.status(200).json(foundResult);
         } catch (e) {
             console.log(e);
             res.status(500);

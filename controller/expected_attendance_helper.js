@@ -167,7 +167,7 @@ module.exports = {
             // Look for position of thisReportId in that array
             let index = idsAllReports.indexOf(thisReportId);
             res.render("expected_attendance/expected_attendance_one", { thisReport, thisReportId, index });            
-        } catch (error) {
+        } catch (err) {
             console.log(err);
         }
     },
@@ -229,10 +229,12 @@ module.exports = {
     putReport: async (req, res) => {
         try {
             thisReportId = req.params.id;
+            console.log(req.body);
             let good = await Expected.findById(thisReportId)
             good.info = req.body.info;
             good.for = req.body.for;
             good.title = req.body.title;
+            console.log("good", good);
             await good.save();
             res.redirect("/expected");
         } catch (e) {

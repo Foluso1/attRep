@@ -48,6 +48,10 @@ router
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllExpectedAttendanceWithDate);
 
 router
+    .route("/expected/special")
+        .get(middleware.isLoggedIn, controller.getAllExpectedSpecialMeetings);
+
+router
     .route("/attendance/:date")
     .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllAttendanceWithDate);
 
