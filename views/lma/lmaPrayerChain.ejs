@@ -10,10 +10,10 @@
         </div>
         </br>
             <% if(!weekPrChain) { %>
-                <h5>Week <span id="prayer-week-number"><%= moment().locale("en-us").week() %></span>: <span id="week-span"><%= moment().startOf('week').format('ddd MMM Do') %> - <%= moment().endOf('week').format('ddd MMM Do') %></span></h5>
+                <h5>Week <span id="prayer-week-number"><%= moment().locale("en-us").week() %></span>: <span id="week-span"><%= moment().locale("en-us").startOf('week').format('ddd MMM Do') %> - <%= moment().locale("en-us").endOf('week').format('ddd MMM Do') %></span></h5>
                 <h5>Prayer Ratio: <span id="prayer-ratio">0</span>/7</h5>
             <% } else { %>
-                <h5>Week <span id="prayer-week-number"><%= weekPrChain.week %></span>: <span id="week-span"><%= moment().startOf('week').format('ddd MMM Do') %> - <%= moment().endOf('week').format('ddd MMM Do') %></span></h5>
+                <h5>Week <span id="prayer-week-number"><%= weekPrChain.week %></span>: <span id="week-span"><%= moment().locale("en-us").startOf('week').format('ddd MMM Do') %> - <%= moment().locale("en-us").endOf('week').format('ddd MMM Do') %></span></h5>
                 <h5>Prayer Ratio: <span id="prayer-ratio"><%= weekPrChain.frequency %></span>/7</h5>
             <% } %>
             <table class="allLMALockdown" id="prayer-chain-table">

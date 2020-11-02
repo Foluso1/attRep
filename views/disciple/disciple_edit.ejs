@@ -3,12 +3,35 @@
 </div>
     <div class="row justify-content-center">
         <div class="m-5 col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light" >
-            <i class="text-center fas fa-user-plus fa-3x"></i>
-            <h5 class="m-2 text-center">Add new disciple to database</h5>
+            <i class="text-center fas fa-user-edit fa-3x"></i>
+            <h5 class="m-2 text-center">Edit Disciple</h5>
             <div class="container">
             </div>
             <form class="text-center p-2" action="/disciple/<%= foundDisciple._id %>?_method=PUT" method="POST">
                 <input class="form-control m-2" type="text" name="name" value="<%= foundDisciple.name %> " placeholder="Disciple's Fullname">
+                <input class="form-control m-2" type="tel" name="mobile" placeholder="Phone Number" minlength="11" maxlength="11" value="<%= foundDisciple.mobileNumber %>">
+                <input class="form-control m-2" type="email" name="email" placeholder="Email" value="<%= foundDisciple.email %> ">
+                <textarea class="form-control m-2" name="address" placeholder="Home Address"><%= foundDisciple.address %></textarea>
+                <label>Does he / she need accommodation for Believer's Convention: </label>
+                <select class="form-control m-2" name="believers-convention-accommodation">
+                    <% if (foundDisciple.believersConventionAccommodation) { %>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    <% } else { %>
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
+                    <% } %>
+                </select>
+                <label>Does he / she need accommodation for Charis Campmeeting: </label>
+                <select class="form-control m-2" name="charis-campmeeting-accommodation">
+                    <% if (foundDisciple.believersConventionAccommodation) { %>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    <% } else { %>
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
+                    <% } %>
+                </select>
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
                         <button class="btn btn-md btn-primary btn-block m-2">Submit</button>

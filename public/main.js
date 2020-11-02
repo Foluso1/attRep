@@ -870,15 +870,16 @@ if (specialMeeting) {
         let list = "";
         $('tbody').html('');
         data.forEach((item) => {
-          list = list + `${item.summoner.firstname} ${item.summoner.surname}`
+          list = list + `\n${item.summoner.firstname} ${item.summoner.surname}`
           let thisRow = $('tbody').append(`<tr><td colspan="10">${item.summoner.firstname} ${item.summoner.surname}</td></tr>`);
           item.disciples.forEach((elem) => {
             list = list + `\n\t${elem.name}`
             thisRow.append(`<tr><td></td><td>${elem.name}</td><td></td></tr>`);
           });
-          list = list + `\n\t${item.info}`;
+          list = list + `\n\tINFO:${item.info}`;
           thisRow.append(`<tr><td></td><td></td><td>${item.info}</td></tr>`);
         })
+        console.log(list);
       },
       error: (e) => {
         console.log(e);

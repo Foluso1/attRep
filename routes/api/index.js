@@ -8,5 +8,6 @@ router.route("/workers").get(helper.workersDetails);
 router.route("/prayerchain/:id/:weekNum").get(middleware.isLoggedIn, helper.getPrayerChainReportsforOne);
 router.route("/prayerchain/:weekNum").get(middleware.isLoggedIn, helper.getAllPrayerChain);
 router.route("/expected/:meetingName").get(middleware.isLoggedIn, helper.getAllSpecialMeetings);
+router.route("/bc").get(middleware.isLoggedIn, helper.belCovDetails);
 
 module.exports = router;

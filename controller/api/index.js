@@ -2,6 +2,7 @@ const           newPrayerChain  = require("../../models/newPrayerChain");
 const           Worker          = require("../../models/worker");
 const           Expected        = require("../../models/expected_attendance_model");
 const           moment          = require("moment");
+const           fs              = require("fs");
 
 module.exports = {
     workersDetails: async (req, res) => {
@@ -102,6 +103,28 @@ module.exports = {
         } catch (e) {
             console.log(e);
             res.status(500);
+        }
+    },
+
+    belCovDetails: async (req, res) => {
+        try {
+            let foundWorkers = await Worker.find()
+            .select("firstname surname gender mobileNumber address email church fellowship");
+            const thisWorkers = foundWorkers.map((item) => {
+                return {
+                    NAME: `${item.firstname} ${item.surname}`,
+                    GENDER: item.gender,
+                    PHONE:  item.mobileNumber,
+                    ADDRESS:  item.address,
+                    EMAIL:  item.email,
+                    CHURCH:  item.church,
+                    FELLOWSHIP:  item.fellowship,
+                }
+            })
+            let data = JSON.stringify(thisWorkers);
+            fs.writeFileSync("workers_details2.json", data);
+        } catch (e) {
+            console.log(e);
         }
     }
 };

@@ -34,6 +34,11 @@ module.exports = {
             let data = {
                 name: req.body.name,
                 discipler: req.user.id,
+                email: req.body.email,
+                mobileNumber: req.body.mobile,
+                address: req.body.address,
+                believersConventionAccommodation: req.body['believers-convention-accommodation'],
+                charisCampmeetingAccommodation: req.body['charis-campmeeting-accommodation']
             };
             let disc1 = await Disciple.create(data)
             let foundWorker = await Worker.findById(idWorker)
@@ -51,6 +56,11 @@ module.exports = {
         try {
             let data = {
                 name: req.body.name,
+                email: req.body.email,
+                mobileNumber: req.body.mobile,
+                address: req.body.address,
+                believersConventionAccommodation: req.body['believers-convention-accommodation'],
+                charisCampmeetingAccommodation: req.body['charis-campmeeting-accommodation']
             };
             let foundDisciple = await Disciple.findByIdAndUpdate({_id: req.params.id}, data)
             await foundDisciple.save();

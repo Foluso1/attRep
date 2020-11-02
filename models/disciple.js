@@ -10,6 +10,32 @@ discipleSchema = new mongoose.Schema({
     name: {
         type: String,
     },
+
+    gender: {
+        type: String,
+    },
+
+    email: {
+        type: String,
+    },
+
+    mobileNumber: {
+        type: Number,
+    },
+
+    address: {
+        type: String,
+    },
+
+    believersConventionAccommodation: {
+        type: Boolean,
+        default: false
+    },
+
+    charisCampmeetingAccommodation: {
+        type: Boolean,
+        default: false
+    },
     
     date: {
         type: Date,
