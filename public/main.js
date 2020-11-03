@@ -862,24 +862,31 @@ if(hoverAppear){
 if (specialMeeting) {
   specialMeeting.addEventListener("change", (e) => {
     let meetingName = e.target.value;
+    $('tbody').html('');
+    $('tbody').append('<tr><td colspan="10">Please wait...</td></tr>');
     $.ajax({
-      url: `/api/expected/${meetingName}`,
+      url: `/api/bcdisc`,
       type: 'GET',
       success: (data) => {
-        console.log(data);
-        let list = "";
-        $('tbody').html('');
-        data.forEach((item) => {
-          list = list + `\n${item.summoner.firstname} ${item.summoner.surname}`
-          let thisRow = $('tbody').append(`<tr><td colspan="10">${item.summoner.firstname} ${item.summoner.surname}</td></tr>`);
-          item.disciples.forEach((elem) => {
-            list = list + `\n\t${elem.name}`
-            thisRow.append(`<tr><td></td><td>${elem.name}</td><td></td></tr>`);
-          });
-          list = list + `\n\tINFO:${item.info}`;
-          thisRow.append(`<tr><td></td><td></td><td>${item.info}</td></tr>`);
-        })
-        console.log(list);
+        console.log(data)
+        if(data && Array.isArray(data) && data.length > 0) {
+          let list = "";
+          $('tbody').html('');
+          data.forEach((item) => {
+            list = list + `\n${item.summoner.firstname} ${item.summoner.surname}`
+            let thisRow = $('tbody').append(`<tr><td colspan="10">${item.summoner.firstname} ${item.summoner.surname}</td></tr>`);
+            item.disciples.forEach((elem) => {
+              list = list + `\n\t${elem.name}`
+              thisRow.append(`<tr><td></td><td>${elem.name}</td><td>${elem.gender}</td><td>${elem.mobileNumber}</td><td>${elem.address}</td><td>${elem.email}</td><td>${elem.believersConventionAccommodation}</td><td>${item.fellowship}</td><td>${item.church}</td></tr>`);
+            });
+            list = list + `\n\tINFO:${item.info}`;
+            thisRow.append(`<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>${item.info}</td></tr>`);
+          })
+          console.log(list);
+        } else {
+          $('tbody').html('');
+          $('tbody').append('<tr><td colspan="10">Nothing to show here</td></tr>');
+        }
       },
       error: (e) => {
         console.log(e);

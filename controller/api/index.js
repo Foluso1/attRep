@@ -3,6 +3,7 @@ const           Worker          = require("../../models/worker");
 const           Expected        = require("../../models/expected_attendance_model");
 const           moment          = require("moment");
 const           fs              = require("fs");
+const { RSA_NO_PADDING } = require("constants");
 
 module.exports = {
     workersDetails: async (req, res) => {
@@ -109,22 +110,42 @@ module.exports = {
     belCovDetails: async (req, res) => {
         try {
             let foundWorkers = await Worker.find()
-            .select("firstname surname gender mobileNumber address email church fellowship");
-            const thisWorkers = foundWorkers.map((item) => {
-                return {
-                    NAME: `${item.firstname} ${item.surname}`,
-                    GENDER: item.gender,
-                    PHONE:  item.mobileNumber,
-                    ADDRESS:  item.address,
-                    EMAIL:  item.email,
-                    CHURCH:  item.church,
-                    FELLOWSHIP:  item.fellowship,
+            .select("firstname surname gender mobileNumber address email church fellowship")
+            let thisWorkers = foundWorkers.map((item) => {
+                return obj = {
+                    name: `${item.firstname} ${item.surname}`,
+                    name: item.firstname,
+                    gender: item.gender,
+                    phone:  item.mobileNumber,
+                    address:  item.address,
+                    email:  item.email,
+                    church:  item.church,
+                    fellowship:  item.fellowship,
                 }
             })
+            // res.json(thisWorkers);
             let data = JSON.stringify(thisWorkers);
+            console.log(data)
+            // res.json(data);
+            // res.json(foundWorkers);
             fs.writeFileSync("workers_details2.json", data);
         } catch (e) {
             console.log(e);
         }
-    }
+    },
+
+    belCovDisc: async (req, res) => {
+        try {
+            let foundBC = await Expected.find({
+                for: "Believer's Convention",
+            })
+            .populate({path: "disciples", select:"name gender mobileNumber address email believersConventionAccommodation"})
+            .populate({path: "summoner", select:"firstname surname fellowship church"})
+            let data = JSON.stringify(foundBC);
+            fs.writeFileSync("disciples_details.json", data);
+            res.json(foundBC);
+        } catch (e) {
+            console.log(e)
+        }
+    },
 };
