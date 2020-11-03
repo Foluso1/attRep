@@ -34,6 +34,7 @@ module.exports = {
             let data = {
                 name: req.body.name,
                 discipler: req.user.id,
+                gender: req.body.gender,
                 email: req.body.email,
                 mobileNumber: req.body.mobile,
                 address: req.body.address,
@@ -56,6 +57,7 @@ module.exports = {
         try {
             let data = {
                 name: req.body.name,
+                gender: req.body.gender,
                 email: req.body.email,
                 mobileNumber: req.body.mobile,
                 address: req.body.address,

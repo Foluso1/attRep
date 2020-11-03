@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="m-5 col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light" >
             <i class="text-center fas fa-user-edit fa-3x"></i>
-            <h5 class="m-2 text-center">Edit Disciple</h5>
+            <h5 class="m-2 text-center">Edit <%= foundDisciple.name %></h5>
             <div class="container">
             </div>
             <form class="text-center p-2" action="/disciple/<%= foundDisciple._id %>?_method=PUT" method="POST">
@@ -14,15 +14,15 @@
                 <div class="form-control m-2">
                     <% if (foundDisciple.gender == "Female") { %>
                         <label class="float-left">Gender: </label>
-                        <label class="pr-2">Male</label> 
+                        <label class="pr-2">Female</label> 
                         <input type="radio" name="gender" value="Female" checked>
-                        <label class="pl-5 px-2">Female</label>
+                        <label class="pl-5 px-2">Male</label>
                         <input type="radio" name="gender" value="Male">
                     <% } else { %>
                         <label class="float-left">Gender: </label>
-                        <label class="pr-2">Male</label> 
+                        <label class="pr-2">Female</label> 
                         <input type="radio" name="gender" value="Female">
-                        <label class="pl-5 px-2">Female</label>
+                        <label class="pl-5 px-2">Male</label>
                         <input type="radio" name="gender" value="Male" checked>
                     <% } %>
                 </div>
