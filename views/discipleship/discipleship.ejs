@@ -38,7 +38,7 @@
                     <% let dateReport = reports[i].date.getTime(); %>
                     <% let date = Date.now(); %>
                     <% let diffDate = date - dateReport; %>
-                    <% if(!(diffDate > 86400000)){ %>
+                    <% if(!(diffDate > 604800000)){ %>
                         <a class="btn btn-sm btn-primary m-2" href="/discipleship/<%= reports[i]._id %>">View</a>
                         <a class="btn btn-sm btn-secondary m-2" href="/discipleship/<%= reports[i]._id %>/edit">Edit</a>
                         <form action="/discipleship/<%= reports[i]._id %>?_method=DELETE" method="POST" style="display: inline;">

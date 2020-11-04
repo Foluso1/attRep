@@ -875,9 +875,10 @@ if (specialMeeting) {
           data.forEach((item) => {
             list = list + `\n${item.summoner.firstname} ${item.summoner.surname}`
             let thisRow = $('tbody').append(`<tr><td colspan="10">${item.summoner.firstname} ${item.summoner.surname}</td></tr>`);
+            console.log(item);
             item.disciples.forEach((elem) => {
               list = list + `\n\t${elem.name}`
-              thisRow.append(`<tr><td></td><td>${elem.name}</td><td>${elem.gender}</td><td>${elem.mobileNumber}</td><td>${elem.address}</td><td>${elem.email}</td><td>${elem.believersConventionAccommodation}</td><td>${item.fellowship}</td><td>${item.church}</td></tr>`);
+              thisRow.append(`<tr><td></td><td>${elem.name}</td><td>${elem.gender}</td><td>${elem.mobileNumber}</td><td>${elem.address}</td><td>${elem.email}</td><td>${elem.believersConventionAccommodation}</td><td>${item.summoner.fellowship}</td><td>${item.summoner.church}</td><td></td></tr>`);
             });
             list = list + `\n\tINFO:${item.info}`;
             thisRow.append(`<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>${item.info}</td></tr>`);
