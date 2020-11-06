@@ -413,8 +413,8 @@ router.post('/reset/:token', async (req, res) => {
 
 router.get("/validatemail", async (req, res) => {
     try {
-        let thisUser = await req.user;
-        if (!thisUser.email){
+        if (!req.user.email){
+            let thisUser = await req.user;
             req.logOut();
             res.render("validatemail/regMail", {thisUser});
         } else {

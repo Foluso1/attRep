@@ -10,7 +10,7 @@
                 <div class="d-flex">
                     <% let day = dayWeek[i] %>
                     <% if(expected_attendance[i].title == "" || !expected_attendance[i].title){ %>
-                        <h3><%= i+1 %> <span class="greyed">[No Title]<span/></h3> 
+                        <h3><%= i+1 %> <span class="greyed">[No Title]</span> for <%= expected_attendance[i].for %></h3> 
                     <% } else { %>
                         <h3 class="pr-3"><%= i+1 %> </h3>
                         <h3><%= expected_attendance[i].title %><span> for </span><%= expected_attendance[i].for %></h3> 

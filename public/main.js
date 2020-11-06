@@ -772,13 +772,13 @@ const createTable = (data, weekVal) => {
 }
 
 // PRAYER CHAIN TIME FIXER (LMA ALL)
-const prChFunction = function ( ) {
-    $("tbody").html("");
-    $("tbody").append(`<td colspan="10">Please wait...</td>`);
-    $.ajax({
+const prChFunction = function (thisValue) {
+  $("tbody").html("");
+  $("tbody").append(`<td colspan="10">Please wait...</td>`);
+  $.ajax({
     type: "GET",
-    url: `/api/prayerchain/${this}`, //Value}`,
-    data: this, //Value || this,
+    url: `/api/prayerchain/${thisValue}`, //Value}`,
+    data: thisValue, //Value || this,
     success: (data) => {
       document.querySelector("#pr-ch-participants").textContent = data.length;
       data = data || {};
@@ -827,7 +827,9 @@ const prChFunction = function ( ) {
 };
 
 if (weekChooserAllLMA) {
-  weekChooserAllLMA.addEventListener("change", prChFunction)
+  weekChooserAllLMA.addEventListener("change", (e) => {
+    prChFunction(e.target.value);
+  })
 }
 
 
@@ -835,7 +837,7 @@ if (weekChooserAllLMA) {
 if(thisWeekPrCh){
   thisWeekPrCh.addEventListener("click", function (e) {
     weekChooserAllLMA.value = moment().locale("en-us").week();
-    prChFunction(); //moment().locale("en-us").week()); 
+    prChFunction(moment().locale("en-us").week()); 
   });
 }
 

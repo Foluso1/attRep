@@ -3,7 +3,7 @@ const           Worker          = require("../../models/worker");
 const           Expected        = require("../../models/expected_attendance_model");
 const           moment          = require("moment");
 const           fs              = require("fs");
-const { RSA_NO_PADDING } = require("constants");
+
 
 module.exports = {
     workersDetails: async (req, res) => {

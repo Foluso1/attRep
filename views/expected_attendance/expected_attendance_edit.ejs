@@ -11,7 +11,8 @@
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="list-disciples">
             <h2>Edit Report</h2>
-            <p class="notabene">Click on a name in the <a href="#disciples-pane">disciples pane</a> to add to this list OR click on a name here to remove from the list</p>
+            <p class="notabene">Add DISCIPLES here by clicking on a name from the <a href="#disciples-pane">disciples pane</a> NON-DISCIPLES should be written in the INFO pane below.</p>
+        
             <h3><span id="title"><%= thisReport.title %></span> for <span id="for"><%= thisReport.for %></span></h3>
             <ol class="list edit-report-remove d-flex flex-column" data-report="expected">
                <% if (thisReport && thisReport.length !== 0) { %>
@@ -28,8 +29,6 @@
                 <% } %>
             </ol>
         </div>
-
-        
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="list-disciples">
@@ -55,7 +54,8 @@
 <p></p>
 <form class="submitter" data-report-id="<%= thisReport._id %>" action="/expected/<%= thisReport._id %>?_method=PUT" method="POST">
     <div>
-        <h3>Additional Information</h3>
+        <h3>INFO Pane</h3>
+        <p class="notabene">NON-DISCIPLES and other additional information comes here</p>
         <textarea class="form-control" id="info" name="info" placeholder="Additional Information"><%= thisReport.info %></textarea>
     </div>
     <br>

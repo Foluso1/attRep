@@ -563,6 +563,10 @@ select.scc-form, li.scc-form {
     left: -100px;
 }
 
+textarea {
+    min-height: 200px !important
+}
+
 /* ADD OR REMOVE WORKER */
 .add-remove-worker {
     /* display: flex;
