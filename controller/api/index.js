@@ -1,6 +1,7 @@
 const           newPrayerChain  = require("../../models/newPrayerChain");
 const           Worker          = require("../../models/worker");
 const           Expected        = require("../../models/expected_attendance_model");
+const           Attendance      = require("../../models/attendance_model");
 const           moment          = require("moment");
 const           fs              = require("fs");
 
@@ -93,14 +94,22 @@ module.exports = {
         }
     },
 
-    getAllSpecialMeetings: async (req, res) => {
+    getAllSpecialMeetingsExpected: async (req, res) => {
         try {
-            let foundResult = await Expected.find({
-                for: req.params.meetingName
+            let accomm = "";
+            if (req.params.meetingName == "Believer's Convention") {
+                accomm = "believersConventionAccommodation"
+            } else {
+                accomm = "charisCampmeeetingAccommodation"
+            }
+            let foundBC = await Expected.find({
+                for: req.params.meetingName,
             })
-            .populate({ path: "summoner", select: "firstname surname" })
-            .populate({ path: "disciples", select: "name" });
-            res.status(200).json(foundResult);
+            .populate({path: "disciples", select:`name gender mobileNumber address email ${accomm}`})
+            .populate({path: "summoner", select:"firstname surname fellowship church"})
+            let data = JSON.stringify(foundBC);
+            fs.writeFileSync("disciples_details.json", data);
+            res.json(foundBC);
         } catch (e) {
             console.log(e);
             res.status(500);
@@ -134,10 +143,10 @@ module.exports = {
         }
     },
 
-    belCovDisc: async (req, res) => {
+    getAllSpecialMeetingsAttendance: async (req, res) => {
         try {
-            let foundBC = await Expected.find({
-                for: "Believer's Convention",
+            let foundBC = await Attendance.find({
+                for: req.params.meetingName,
             })
             .populate({path: "disciples", select:"name gender mobileNumber address email believersConventionAccommodation"})
             .populate({path: "summoner", select:"firstname surname fellowship church"})

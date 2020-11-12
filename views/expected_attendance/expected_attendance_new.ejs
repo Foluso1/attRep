@@ -8,7 +8,7 @@
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <div class="list-workers">
                 <h2><i class="fas fa-pen-alt pr-3" aria-hidden="true"></i>Expected Attendance Report</h2>
-                <p class="notabene">Add DISCIPLES here by clicking on a name from the <a href="#disciples-pane">disciples pane</a> NON-DISCIPLES should be written in the INFO pane below.</p>
+                <p class="notabene">Add disciples/invitees here by clicking on a name from the <a href="#disciples-pane">disciples pane</a> OTHER information should be written in the INFO pane below.</p>
                 <div class="form-group d-flex form-box">
                     <label for="title" class="mt-2">Title: </label>
                     <select name="title" id="title" class="ml-2 scc-form small-text">
@@ -26,6 +26,7 @@
                         <option value="Friday">Friday</option>
                         <option value="Saturday">Saturday</option>
                         <option value="Believer's Convention">Believer's Convention</option>
+                        <option value="Charis Campmeeting">Charis Campmeeting</option>
                     </select>
                 </div>
                 <ol class="list d-flex flex-column">
@@ -38,17 +39,16 @@
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="list-disciples">
             <h2 id="disciples-pane">Disciples Pane</h2>
-            <h5><a href="/disciple/new"> <i class="fas fa-plus-circle"> Add New Disciple</i></a></h5>
+            <h5><a href="/disciple/new"> <i class="fas fa-plus-circle"> Add New Disciple / Invitee</i></a></h5>
             <ol class="absent d-flex flex-column">
                 <% allDisciples.forEach((disc) => { %>
                     <div class="hoverer d-inline-flex justify-content-between p-1">
-                        <li id="<%= disc._id %>"><%= disc.name %></li>
+                        <li id="<%= disc._id %>"><%= disc.name %> (<%= disc.type %>)</li>
                         <form class="disciple-list">
                             <input style="display: none" type="text" name="id" value="<%= disc._id %>">
                             <input type="button" value="Add" class="select btn btn-sm btn-primary" _id="<%= disc._id %>"></input>
                         </form>
                     </div>
-                    <!-- <li class="hoverer hand scc-form" id="<%#= disciple._id %>"><%#= disciple.name %></li> -->
                 <% }); %>
             </ol>
         </div>
@@ -60,7 +60,7 @@
 <p></p>
 <div class="list-workers">
     <h2>INFO Pane</h2>
-    <p class="notabene">NON-DISCIPLES and other additional information comes here</p>
+    <p class="notabene">Other additional information comes here</p>
     <textarea class="form-control" id="info" val="" name="info" placeholder="Additional information"
         rows="8"></textarea>
 </div>

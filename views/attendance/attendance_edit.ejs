@@ -36,7 +36,7 @@
                 <% let allDiscs = thisReport.disciples; %> <!-- Display all disciples here -->
                 <% remDisciples.forEach((disc) => { %>
                     <div class="hoverer d-inline-flex justify-content-between p-1">
-                        <li id="<%= disc._id %>"><%= disc.name %></li>
+                        <li id="<%= disc._id %>"><%= disc.name %> (<%= disc.type %>)</li>
                         <form class="disciple-list">
                             <input style="display: none" type="text" name="id" value="<%= disc._id %>">
                             <input type="button" value="Add" class="select btn btn-sm btn-primary" data-report-id="<%= thisReport._id %>" _id="<%= disc._id %>"/>

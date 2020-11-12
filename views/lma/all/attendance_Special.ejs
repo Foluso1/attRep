@@ -1,0 +1,46 @@
+<% include ../../partials/header_lma %>
+
+
+<main class="row">
+    <div class="col-md-12" style="overflow-x:auto;">
+        <br>
+        <div class="mx-3">
+            <h3>Select a meeting to query for data</h3>
+            <br/>
+            <form action="/lma/attendance/" id="form-attendance" class="meeting-to-query">
+                <div class="d-inline-flex">
+                    <select type="date" name="special-meeting" id="special-meeting-attendance" class="form-control mx-2">
+                        <option value="null">--Choose a Special Meeting--</option>
+                        <option value="Believer's Convention Friday evening">Believer's Convention Friday evening</option>
+                        <option value="Believer's Convention Saturday morning">Believer's Convention Saturday morning</option>
+                        <option value="Believer's Convention Saturday afternoon">Believer's Convention Saturday afternoon</option>
+                        <option value="Believer's Convention Saturday evening">Believer's Convention Saturday evening</option>
+                        <option value="Believer's Convention Sunday morning">Believer's Convention Sunday morning</option>
+                        <option value="Believer's Convention Sunday afternoon">Believer's Convention Sunday afternoon</option>
+                    </select>
+                </div>
+            </form>
+            <table class="m-3">
+                <thead>
+                    <td>Summoner</td>
+                    <td>Name</td>
+                    <td>Gender</td>
+                    <td>Mobile Number</td>
+                    <td>Address</td>
+                    <td>Email</td>
+                    <td>Accommodation</td>
+                    <td>Fellowship</td>
+                    <td>Church</td>
+                    <td>Info</td>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <p></p>
+    </div>
+</main>
+<p></p>
+<p></p>
+<% include ../../partials/footer %>

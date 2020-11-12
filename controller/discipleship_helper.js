@@ -4,6 +4,7 @@ const   Worker              =   require("../models/worker")
     ,   flash               =   require("connect-flash")
     ,   moment              =   require("moment")
     ,   duplicateCheck      =   require("../utils/duplicateCheck")
+    ,   Sorter              =   require("../utils/sorter")
     ;
 
 
@@ -99,7 +100,7 @@ module.exports = {
         Worker.findById(worker).populate("disciples")
             .then((thisWorker) => {
                 let allDisciples = thisWorker.disciples
-                res.render("discipleship/discipleship_new", { allDisciples });
+                res.render("discipleship/discipleship_new", {allDisciples});
             })
             .catch((err) => {
                 console.log(err);
@@ -155,7 +156,12 @@ module.exports = {
                         idsAllDisciples.splice(i, 1);
                       });
                     }
-                    res.render("discipleship/discipleship_edit", { thisReport, remDisciples, thisReportId, index, foundWorker });
+                    let subDisciples = new Sorter;
+                    remDisciples.forEach((disciple) => {
+                        subDisciples.create(disciple.type);
+                        subDisciples[disciple.type].push(disciple); 
+                    })
+                    res.render("discipleship/discipleship_edit", { thisReport, subDisciples, thisReportId, index, foundWorker });
         } catch (e) {
             console.log(e)
         }

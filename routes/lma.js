@@ -16,6 +16,10 @@ router
         .delete(middleware.isLoggedIn, middleware.isLMA, controller.removeWorker);
 
 router
+    .route("/special")
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.special)
+
+router
     .route("/all")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getAll);
 
@@ -50,6 +54,10 @@ router
 router
     .route("/expected/special")
         .get(middleware.isLoggedIn, controller.getAllExpectedSpecialMeetings);
+
+router
+    .route("/attendance/special")
+    .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllAttendanceSpecialMeetings);
 
 router
     .route("/attendance/:date")

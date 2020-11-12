@@ -569,10 +569,8 @@ textarea {
 
 /* ADD OR REMOVE WORKER */
 .add-remove-worker {
-    /* display: flex;
-    justify-content: space-between; */
     border-bottom: 1px solid darkgray;
-    padding: 15px;
+    padding-bottom: 40px;
 }
 
 .add-remove-worker div a {

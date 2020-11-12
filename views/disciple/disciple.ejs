@@ -5,22 +5,37 @@
 
 <main class="column">
     <div class="list-workers">
-        <h2>List of <span id="present">All</span> Disciples</h2>
+        <h2>List of <span id="present">All</span> Disciples / Invitees</h2>
         <div class="text-center p-3">
-            <a class="btn btn-success btn-sm" href="/disciple/new">Add New Disciple</a>
+            <a class="btn btn-success btn-sm" href="/disciple/new">Add New Disciple / Invitee </a>
         </div>
         <ol class="disciple-list">
-            <% disciples.forEach((disciple, i) => { %>
+            <% Object.keys(subDisciples).forEach((item) => { %>
+                <h4 class="p-2 pt-5"><%= item %>s (<%= subDisciples[item].length %>) </h4>
+                <% for(let i = 0; i < subDisciples[item].length; i++){ %>
+                    <li class="add-remove-worker">
+                        <div class="d-inline">
+                            <%= subDisciples[item][i].name%>
+                        </div>
+                        <div class="d-inline">
+                            <a href="/disciple/<%= subDisciples[item][i]._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a href="#" data-id="<%= subDisciples[item][i]._id %>" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </div>
+                    </li>
+                <% } %>
+            <% }); %>
+
+            <!-- <%# disciples.forEach((disciple, i) => { %>
                 <li class="add-remove-worker">
                     <div class="d-inline">
-                        <%= disciple.name%>
+                        <%#= disciple.name%>
                     </div>
                     <div class="d-inline">
-                        <a href="/disciple/<%= disciple._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
-                        <a href="#" data-id="<%= disciple._id %>" class="btn btn-sm btn-outline-danger">Delete</a>
+                        <a href="/disciple/<%#= disciple._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <a href="#" data-id="<%#= disciple._id %>" class="btn btn-sm btn-outline-danger">Delete</a>
                     </div>
                 </li>
-            <% }); %>
+            <%# }); %> -->
         </ol>
     </div>
 </main>

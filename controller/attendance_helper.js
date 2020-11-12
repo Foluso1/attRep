@@ -1,10 +1,11 @@
-const Worker = require("../models/worker"),
-  Disciple = require("../models/disciple"),
-  Attendance = require("../models/attendance_model"),
-  flash = require("connect-flash"),
-  duplicateCheck = require("../utils/duplicateCheck");
-const moment = require("moment");
-const { findByIdAndDelete } = require("../models/attendance_model");
+const 
+  Worker                = require("../models/worker"),
+  Disciple              = require("../models/disciple"),
+  Attendance            = require("../models/attendance_model"),
+  flash                 = require("connect-flash"),
+  duplicateCheck        = require("../utils/duplicateCheck"),
+  // specialReportCheck    = require("../utils/specailReportCheck"),
+  moment                = require("moment");
 
 module.exports = {
   getReports: async (req, res) => {
@@ -28,20 +29,36 @@ module.exports = {
   postNewReport: async (req, res) => {
     try {
       let worker = { _id: req.user.id };
-      let startOfToday = moment().startOf("day").format();
-      let att = await Attendance.find({
-        summoner: req.user.id,
-        date: { $gte: startOfToday },
-      }).populate("disciples");
-      let db_Worker = JSON.parse(JSON.stringify(att));
-
-      let thisReport = {
+      // Special Meeting Check
+      if (req.body.for.includes("Believer's") || req.body.for.includes("Charis")){
+        const startOfYear = moment().startOf("year");
+        let specialCheck = await Attendance.find({
+          summoner: req.user.id,
+          for: req.body.for,
+          date: { $gte: startOfYear },
+        });
+        if(Array.isArray(specialCheck) && specialCheck.length > 0){
+          req.flash("error", "Duplicate report detected, please edit previous report");
+          return res.json("ERROR, Duplicate Report");
+        }
+      } else {
+        let att = await Attendance.find({
+          summoner: req.user.id,
+          for: req.body.for,
+          date: { $gte: (Date.now() - (24*60*60*1000)) },
+        }).populate("disciples");
+        if (Array.isArray(att) && att.length > 0){
+          req.flash("error", "Duplicate report detected, please edit previous report");
+          return res.json("ERROR, Duplicate Report");
+        }
+      }
+      const thisReport = {
         title: req.body.title,
         for: req.body.for,
         info: req.body.info,
         summoner: req.user.id,
       };
-      let newReport = await Attendance.create(thisReport);
+      const newReport = await Attendance.create(thisReport);
       newReportId = newReport._id;
       const ids = req.body.ids;
 
@@ -61,22 +78,12 @@ module.exports = {
           }
         }
       }
-
       let foundWorker = await Worker.findById(worker);
-
-      let result = duplicateCheck(newReport, db_Worker);
-
-      if (result) {
-        req.flash("error", "Duplicate report detected");
-        res.json("ERROR, Duplicate Report");
-        await Attendance.findByIdAndDelete({ _id: newReportId });
-      } else {
-        req.flash("success", "Succcessfully Reported");
-        foundWorker.attendance.push(newReport);
-        let savedWorker = await foundWorker.save();
-        if (savedWorker) {
-          res.json("Done");
-        }
+      foundWorker.attendance.push(newReport);
+      let savedWorker = await foundWorker.save();
+      req.flash("success", "Succcessfully Reported");
+      if (savedWorker) {
+        res.json("Done");
       }
     } catch (error) {
       console.log(error);

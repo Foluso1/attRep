@@ -18,7 +18,7 @@
                 <% let discs = thisReport.disciples; %> <!-- Display all disciples here -->
                     <% discs.forEach((disc) => { %>
                         <div class="hoverer d-inline-flex justify-content-between p-1">
-                            <li id="<%= disc._id %>"><%= disc.name %></li>
+                            <li id="<%= disc._id %>"><%= disc.name %> (<%= disc.type %>)</li>
                             <form class="disciple-list-remove">
                                 <input style="display: none" type="text" name="id" value="<%= disc._id %>">
                                 <input type="button" value="Remove" class="select btn btn-sm btn-danger" data-report-id="<%= thisReport._id %>" _id="<%= disc._id %>"></input>
@@ -36,15 +36,18 @@
             <h2 id="disciples-pane">Disciples Pane</h2>
             <ol class="absent edit-report d-flex flex-column" data-report="discipleship">
                 <% let allDiscs = thisReport.disciples; %> <!-- Display all disciples here -->
-                <% remDisciples.forEach((disc) => { %>
-                    <div class="hoverer d-inline-flex justify-content-between p-1">
-                        <li id="<%= disc._id %>"><%= disc.name %></li>
-                        <form class="disciple-list ">
-                            <input style="display: none" type="text" name="id" value="<%= disc._id %>">
-                            <input type="button" value="Add" class="select btn btn-sm btn-primary" data-report-id="<%= thisReport._id %>" _id="<%= disc._id %>"/>
-                        </form>
-                    </div>
-                <% }); %>
+                <% Object.keys(subDisciples).forEach((item) => { %>
+                    <h4 class="p-3"><%= item %>s</h4> 
+                    <% for(let i=0; i<subDisciples[item].length; i++){ %>
+                        <div class="hoverer d-inline-flex justify-content-between p-1">
+                            <li id="<%= subDisciples[item][i]._id %>"><%= subDisciples[item][i].name %></li>
+                            <form class="disciple-list">
+                                <input style="display: none" type="text" name="id" value="<%= subDisciples[item][i]._id %>">
+                                <input type="button" value="Add" class="select btn btn-sm btn-primary" _id="<%= subDisciples[item][i]._id %>"></input>
+                            </form>
+                        </div>
+                    <% } %>
+                <% }) %> 
             </ol>
         </div>
     </div>

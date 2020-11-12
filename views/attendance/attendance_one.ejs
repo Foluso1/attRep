@@ -14,10 +14,10 @@
             <h2>List of Disciples in Report <%= index + 1 %></h2>
             <ol class="d-flex flex-column">
                <% if (thisReport && thisReport.length !== 0) { %>
-                <% let discs = thisReport.disciples; %> <!-- Display all disciples here -->
+                <% let discs = thisReport.disciples; %>
                     <% discs.forEach((disc) => { %>
                         <div class="hoverer d-inline-flex justify-content-between p-1">
-                            <li id="<%= disc._id %>"><%= disc.name %></li>
+                            <li id="<%= disc._id %>"><%= disc.name %> (<%= disc.type %>)</li>
                         </div>
                     <% }); %> 
                 <% } %>

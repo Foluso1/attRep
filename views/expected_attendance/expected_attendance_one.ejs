@@ -17,7 +17,7 @@
                 <% let discs = thisReport.disciples; %> <!-- Display all disciples here -->
                     <% discs.forEach((disc) => { %>
                         <div class="hoverer d-inline-flex justify-content-between p-1">
-                            <li id="<%= disc._id %>"><%= disc.name %></li>
+                            <li id="<%= disc._id %>"><%= disc.name %> (<%= disc.type %>)</li>
                         </div>
                     <% }); %> 
                 <% } %>

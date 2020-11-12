@@ -1,5 +1,6 @@
 const route = window.location.pathname;
 const specialMeeting = document.querySelector("#special-meeting");
+const specialMeetingAtt = document.querySelector("#special-meeting-attendance");
 const info = document.querySelector("#info");
 const thisWeekPrCh = document.querySelector("#this-week-pr-ch");
 const hoverAppear = document.querySelectorAll(".hover-appear"); 
@@ -859,41 +860,50 @@ if(hoverAppear){
   }
 }
 
+const specMeetingFunc = (meetingName, url) => {
+  console.log(meetingName);
+  $('tbody').html('');
+  $('tbody').append('<tr><td colspan="10">Please wait...</td></tr>');
+  $.ajax({
+    url: `${url}/${meetingName}`,
+    type: 'GET',
+    success: (data) => {
+      console.log(data)
+      if(data && Array.isArray(data) && data.length > 0) {
+        let list = "";
+        $('tbody').html('');
+        data.forEach((item) => {
+          list = list + `\n${item.summoner.firstname} ${item.summoner.surname}`
+          let thisRow = $('tbody').append(`<tr><td colspan="10">${item.summoner.firstname} ${item.summoner.surname}</td></tr>`);
+          console.log(item);
+          item.disciples.forEach((elem) => {
+            list = list + `\n\t${elem.name}`
+            thisRow.append(`<tr><td>${item.summoner.firstname} ${item.summoner.surname}</td><td>${elem.name}</td><td>${elem.gender}</td><td>${elem.mobileNumber}</td><td>${elem.address}</td><td>${elem.email}</td><td>${elem.believersConventionAccommodation}</td><td>${item.summoner.fellowship}</td><td>${item.summoner.church}</td><td></td></tr>`);
+          });
+          list = list + `\n\tINFO:${item.info}`;
+          thisRow.append(`<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>${item.info}</td></tr>`);
+        })
+        console.log(list);
+      } else {
+        $('tbody').html('');
+        $('tbody').append('<tr><td colspan="10">Nothing to show here</td></tr>');
+      }
+    },
+    error: (e) => {
+      console.log(e);
+    }
+  })
+}
 
 // SPECIAL MEETINGS CHOOSER
 if (specialMeeting) {
   specialMeeting.addEventListener("change", (e) => {
-    let meetingName = e.target.value;
-    $('tbody').html('');
-    $('tbody').append('<tr><td colspan="10">Please wait...</td></tr>');
-    $.ajax({
-      url: `/api/bcdisc`,
-      type: 'GET',
-      success: (data) => {
-        console.log(data)
-        if(data && Array.isArray(data) && data.length > 0) {
-          let list = "";
-          $('tbody').html('');
-          data.forEach((item) => {
-            list = list + `\n${item.summoner.firstname} ${item.summoner.surname}`
-            let thisRow = $('tbody').append(`<tr><td colspan="10">${item.summoner.firstname} ${item.summoner.surname}</td></tr>`);
-            console.log(item);
-            item.disciples.forEach((elem) => {
-              list = list + `\n\t${elem.name}`
-              thisRow.append(`<tr><td></td><td>${elem.name}</td><td>${elem.gender}</td><td>${elem.mobileNumber}</td><td>${elem.address}</td><td>${elem.email}</td><td>${elem.believersConventionAccommodation}</td><td>${item.summoner.fellowship}</td><td>${item.summoner.church}</td><td></td></tr>`);
-            });
-            list = list + `\n\tINFO:${item.info}`;
-            thisRow.append(`<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>${item.info}</td></tr>`);
-          })
-          console.log(list);
-        } else {
-          $('tbody').html('');
-          $('tbody').append('<tr><td colspan="10">Nothing to show here</td></tr>');
-        }
-      },
-      error: (e) => {
-        console.log(e);
-      }
-    })
+    specMeetingFunc(e.target.value, `/api/expected`)
+  })
+}
+
+if (specialMeetingAtt) {
+  specialMeetingAtt.addEventListener("change", (e) => {
+    specMeetingFunc(e.target.value, `/api/attendance`)
   })
 }

@@ -25,7 +25,7 @@
                 <% let disciples = expected_attendance[i].disciples; %>
                 <ol>
                     <% disciples.forEach((disciple) => { %>
-                        <li><%= disciple.name %></li>
+                        <li><%= disciple.name %> (<%= disciple.type %>)</li>
                     <% }); %>
                 </ol>
 
@@ -37,7 +37,7 @@
                     <% let dateReport = expected_attendance[i].date.getTime(); %>
                     <% let date = Date.now(); %>
                     <% let diffDate = date - dateReport; %>
-                    <% if(!(diffDate > 604800000)){ %>
+                    <% if(!(diffDate > 86400000) || (attendance[i].for.includes("Believer's") && (Date.now() < moment("2020-11-16").valueOf())) || (attendance[i].for.includes("Charis") && (Date.now() < moment("2021-04-06").valueOf()))){ %>
                         <a class="btn btn-sm btn-primary m-2" href="/expected/<%= expected_attendance[i]._id %>">View</a>
                         <a class="btn btn-sm btn-secondary m-2" href="/expected/<%= expected_attendance[i]._id%>/edit">Edit</a>
                         <form action="/expected/<%= expected_attendance[i]._id %>?_method=DELETE" method="POST" style="display:inline">

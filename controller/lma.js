@@ -627,9 +627,17 @@ module.exports = {
         res.render("lma/all/prayerChainAll", {foundPrayerChainArr});
     },
 
+    special: (req, res) => {
+        res.render("lma/all/special_Meetings");
+    },
+
     getAllExpectedSpecialMeetings: (req, res) => {
         res.render("lma/all/expected_Special");
     },
+
+    getAllAttendanceSpecialMeetings: (req, res) => {
+        res.render("lma/all/attendance_Special")
+    }
 }
  
 // Find all worker under LMA

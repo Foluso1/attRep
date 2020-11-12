@@ -1,6 +1,7 @@
 const           Worker      =   require("../models/worker")
             ,   Disciple      =   require("../models/disciple")
             ;
+const Sorter = require("../utils/sorter");
 
 
 module.exports = {
@@ -8,7 +9,12 @@ module.exports = {
         try {
             let foundWorker = await Worker.findById({_id: req.user.id}).populate("disciples");
             let disciples = foundWorker.disciples;
-            res.render("disciple/disciple", {disciples});
+            let subDisciples = new Sorter;
+            disciples.forEach((disciple) => {
+               subDisciples.create(disciple.type);
+               subDisciples[disciple.type].push(disciple); 
+            })
+            res.render("disciple/disciple", {subDisciples});
         } catch (e) {
             console.log(e);
             req.flash("error", "There was an error");
@@ -34,6 +40,7 @@ module.exports = {
             let data = {
                 name: req.body.name,
                 discipler: req.user.id,
+                type: req.body.type,
                 gender: req.body.gender,
                 email: req.body.email,
                 mobileNumber: req.body.mobile,
@@ -58,6 +65,7 @@ module.exports = {
             let data = {
                 name: req.body.name,
                 gender: req.body.gender,
+                type: req.body.type,
                 email: req.body.email,
                 mobileNumber: req.body.mobile,
                 address: req.body.address,
