@@ -37,10 +37,10 @@
                     <% let dateReport = attendance[i].date.getTime(); %>
                     <% let date = Date.now(); %>
                     <% let diffDate = date - dateReport; %>
-                    <% if(!(diffDate > 86400000) || (attendance[i].for.includes("Believer's") && (Date.now() < moment("2020-11-16").valueOf())) || (attendance[i].for.includes("Charis") && (Date.now() < moment("2021-04-06").valueOf()))){ %>
+                    <% if(!(diffDate > 86400000) || (attendance[i] && attendance[i].for.includes("Believer's") && (Date.now() < moment("2020-11-16").valueOf())) || (attendance[i] && attendance[i].for.includes("Charis") && (Date.now() < moment("2021-04-06").valueOf()))){ %>
                         <a class="btn btn-sm btn-primary m-2" href="/attendance/<%= attendance[i]._id %>">View</a>
                         <a class="btn btn-sm btn-secondary m-2" href="/attendance/<%= attendance[i]._id %>/edit">Edit</a>
-                        <form action="/attendance/<%= attendance[i]._id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <form action=" /attendance/<%= attendance[i]._id %>?_method=DELETE" method="POST" style="display: inline;">
                             <input type="submit" value="Delete" class="del-attendance btn btn-sm btn-danger m-2">
                         </form>
                     <% }; %>
