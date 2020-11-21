@@ -1,32 +1,20 @@
 const           newPrayerChain  = require("../../models/newPrayerChain");
 const           Worker          = require("../../models/worker");
+const           Disciple          = require("../../models/disciple");
 const           Expected        = require("../../models/expected_attendance_model");
+const           BelConv         = require("../../models/believers_convention_model");
 const           Attendance      = require("../../models/attendance_model");
 const           moment          = require("moment");
 const           fs              = require("fs");
+const discipleship_model = require("../../models/discipleship_model");
 
 
 module.exports = {
     workersDetails: async (req, res) => {
         try {
-            let allWorkers = await Worker.find();
-            allWorkers.forEach((elem) => {
-                elem.password = undefined;
-                elem.resetPasswordToken = undefined;
-                elem.resetPasswordExpires = undefined;
-                elem.googleIdentity = undefined;
-                elem.googleName = undefined;
-                elem.googleMail = undefined;
-                elem.isLMA = undefined;
-                elem.isAdmin	= undefined;
-                elem.linkCount = undefined;
-                elem.discAssoc = undefined;
-                elem._id = undefined;
-                elem.__v = undefined;
-                elem.data = undefined;
-                elem.username = undefined;
-            })
-            res.json(allWorkers);
+            let allWorkers = await Worker.find().select("firstname surname church fellowship department prayerGroup email address dateOfBirth employementStatus gender maritalStatus membershipClass mobileNumber");
+        ;
+        res.json(allWorkers);
         } catch (e) {
             console.log(e)
         }
@@ -132,12 +120,113 @@ module.exports = {
                     fellowship:  item.fellowship,
                 }
             })
-            // res.json(thisWorkers);
             let data = JSON.stringify(thisWorkers);
             console.log(data)
-            // res.json(data);
-            // res.json(foundWorkers);
             fs.writeFileSync("workers_details2.json", data);
+        } catch (e) {
+            console.log(e);
+        }
+    },
+
+    getCumulativeAttendance: async (req, res) => {
+        try {
+
+            // let bcfiles = await BelConv.deleteMany();
+            // console.log(bcfiles);
+
+            // let countDisc = 0
+            // let allDisciples = await Disciple.find();
+            // for (let i = 0; i < allDisciples.length; i++){
+            //     let newBelConv = new BelConv({
+            //         year: moment().year().toString(),
+            //         attendee: allDisciples[i]._id,
+            //     })
+            //     await newBelConv.save();
+            //     allDisciples[i].belConv = [];
+            //     allDisciples[i].belConv.push(newBelConv._id);
+            //     countDisc++;
+            // }
+            // console.log("countDisc", countDisc);
+
+            // let countWorkers = 0;
+            // let allWorkers = await Worker.find();
+            // for (let i = 0; i < allWorkers.length; i++){
+            //     let newBelConv = new BelConv({
+            //         year: moment().year().toString(),
+            //         attendee: allWorkers[i]._id,
+            //     })
+            //     await newBelConv.save();
+            //     allWorkers[i].belConv = [];
+            //     allWorkers[i].belConv.push(newBelConv._id);
+            //         countWorkers++;
+            // }
+            // console.log("countWorkers", countWorkers);
+/////
+
+            // let foundRes = await Attendance.find({
+            //     for: new RegExp(req.params.meetingName, "i"),
+            //     // summoner: req.user.id
+            // })
+
+            // for(let j=0; j<foundRes.length; j++) {
+            //     let item = foundRes[j];
+
+            //     //function
+            //     const fixBelConvAttendance = async (item, day, timeOfDay) => {
+            //         console.log("item.for", item.for)
+            //         try {
+            //             for(let i = 0; i< item.disciples.length; i++){
+            //                 let bcAtt = {};
+            //                 let findBc = await BelConv.findOne({
+            //                     attendee: item.disciples[i],
+            //                     year: moment().year().toString(),
+            //                 });
+            //                 console.log("findBc", findBc)
+
+            //                 if(!findBc){
+            //                     let foundElement = await Disciple.findById(item.disciples[i]);
+            //                     findBc = await new BelConv({
+            //                         attendee: foundElement._id,
+            //                         attendance: true,
+            //                         year: moment().year().toString(),
+            //                     })
+            //                     findBc[day][timeOfDay] = true,
+            //                     await findBc.save();       
+            //                 } else {
+            //                     console.log("found");
+            //                     findBc[day][timeOfDay] = true;
+            //                     findBc.attendance = true;
+            //                     await findBc.save();
+            //                 }
+            //             }
+            //         } catch (e) {
+            //             console.log(e)
+            //         }
+            //     }
+            // // }
+            // //     ///end function
+
+            //     if(item.for == "Believer's Convention Friday evening"){
+            //         console.log("Believer's Convention Friday evening")
+            //         fixBelConvAttendance(item, 5, 2);
+            //     } else if(item.for == "Believer's Convention Saturday morning"){
+            //         console.log("Believer's Convention Saturday morning")
+            //         fixBelConvAttendance(item, 6, 0);
+            //     } else if(item.for == "Believer's Convention Saturday afternoon"){
+            //         console.log("Believer's Convention Saturday afternoon")
+            //         fixBelConvAttendance(item, 6, 1);
+            //     } else if (item.for == "Believer's Convention Sunday morning"){
+            //         console.log("Believer's Convention Sunday morning")
+            //         fixBelConvAttendance(item, 0, 0);
+            //     } else if (item.for == "Believer's Convention Sunday afternoon"){
+            //         console.log("Believer's Convention Sunday afternoon")
+            //         fixBelConvAttendance(item, 0, 1);
+            //     }
+            // };
+
+            
+
+
         } catch (e) {
             console.log(e);
         }

@@ -41,6 +41,13 @@
             <h2 id="disciples-pane">Disciples Pane</h2>
             <h5><a href="/disciple/new"> <i class="fas fa-plus-circle"> Add New Disciple / Invitee</i></a></h5>
             <ol class="absent d-flex flex-column">
+                <div class="hoverer d-inline-flex justify-content-between p-1">
+                    <li id="<%= loggedInWorker._id %>"><%= loggedInWorker.firstname %> <%= loggedInWorker.surname %>  (Me)</li>
+                    <form class="disciple-list">
+                        <input style="display: none" type="text" name="id" value="<%= loggedInWorker._id %>">
+                        <input type="button" value="Add" class="select btn btn-sm btn-primary" _id="<%= loggedInWorker._id %>"></input>
+                    </form>
+                </div>
                 <% allDisciples.forEach((disc) => { %>
                     <div class="hoverer d-inline-flex justify-content-between p-1">
                         <li id="<%= disc._id %>"><%= disc.name %> (<%= disc.type %>)</li>

@@ -42,6 +42,13 @@ discipleSchema = new mongoose.Schema({
         default: "Disciple"
     },
     
+    belConv: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'BelConv'
+        }
+    ],
+
     date: {
         type: Date,
         default: Date.now

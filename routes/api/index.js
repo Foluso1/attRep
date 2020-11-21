@@ -10,5 +10,6 @@ router.route("/prayerchain/:weekNum").get(middleware.isLoggedIn, helper.getAllPr
 router.route("/expected/:meetingName").get(middleware.isLoggedIn, helper.getAllSpecialMeetingsExpected);
 router.route("/bc").get(middleware.isLoggedIn, helper.belCovDetails);
 router.route("/attendance/:meetingName").get(middleware.isLoggedIn, helper.getAllSpecialMeetingsAttendance);
+router.route("/attendance/cumulative/:meetingName").get(middleware.isLoggedIn, helper.getCumulativeAttendance);
 
 module.exports = router;

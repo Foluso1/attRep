@@ -4,6 +4,7 @@ const   Worker              = require("../models/worker")
     ,   flash               = require("connect-flash")
     ,   moment              = require("moment")
     ,   duplicateCheck      = require("../utils/duplicateCheck")
+    ,   postReport          = require("../utils/postReport")
     ;
 const Sorter = require("../utils/sorter");
 // const JSONTransport = require("nodemailer/lib/json-transport");
@@ -28,63 +29,64 @@ module.exports = {
     
     postNewReport: async (req, res) => {
         try {
-            let worker = {_id: req.user.id}
-            // Special Meeting Check
-            if(req.body.for.include("Believer's") || req.body.for.includes("Charis")){
-                const startOfYear = moment().startOf("year");
-                let specialCheck = await Expected.find({
-                    summoner: req.user.id,
-                    for: req.body.for,
-                    date: { $gte: startOfYear },
-                });
-                if(Array.isArray(specialCheck) && specialCheck.length > 0){
-                    req.flash("error", "Duplicate report detected, please edit previous report");
-                    return res.json("ERROR, Duplicate Report");                 
-                }
-            } else {
-                let exp = await Expected.find({
-                    summoner: req.user.id,
-                    for: req.body.for,
-                    date: { $gte: (Date.now() - (24*60*60*1000)) },
-                }).populate("disciples");
-                if(Array.isArray(exp) && exp.length > 0){
-                    req.flash("error", "Duplicate report detected, please edit previous report");
-                    return res.json("ERROR, Duplicate Report");
-                }
-            }
-           const thisReport = {
-                title: req.body.title,
-                for: req.body.for,
-                info: req.body.info,
-                summoner: req.user.id,
-            };
-            let newReport = await Expected.create(thisReport)
-            newReportId = newReport._id;
-            const ids = req.body.ids;
+        postReport(req, res, Expected, "summoner");
+        //     let worker = {_id: req.user.id}
+        //     // Special Meeting Check
+        //     if(req.body.for.includes("Believer's") || req.body.for.includes("Charis")){
+        //         const startOfYear = moment().startOf("year");
+        //         let specialCheck = await Expected.find({
+        //             summoner: req.user.id,
+        //             for: req.body.for,
+        //             date: { $gte: startOfYear },
+        //         });
+        //         if(Array.isArray(specialCheck) && specialCheck.length > 0){
+        //             req.flash("error", "Duplicate report detected, please edit previous report");
+        //             return res.json("ERROR, Duplicate Report");                 
+        //         }
+        //     } else {
+        //         let exp = await Expected.find({
+        //             summoner: req.user.id,
+        //             for: req.body.for,
+        //             date: { $gte: (Date.now() - (24*60*60*1000)) },
+        //         }).populate("disciples");
+        //         if(Array.isArray(exp) && exp.length > 0){
+        //             req.flash("error", "Duplicate report detected, please edit previous report");
+        //             return res.json("ERROR, Duplicate Report");
+        //         }
+        //     }
+        //    const thisReport = {
+        //         title: req.body.title,
+        //         for: req.body.for,
+        //         info: req.body.info,
+        //         summoner: req.user.id,
+        //     };
+        //     let newReport = await Expected.create(thisReport)
+        //     newReportId = newReport._id;
+        //     const ids = req.body.ids;
         
-            const arr = [];
+        //     const arr = [];
             
-            let i = 0;
-            if (ids) {
-                while (!(arr.length === ids.length)) {
-                    let id = ids[i];
-                    let foundDisciple = await Disciple.findById(id);
-                    newReport.disciples.push(foundDisciple);
-                    let yesSaved = await newReport.save();
-                    // yesSaved;
-                    if (yesSaved) {
-                        arr.push("yesSaved");
-                        i++; 
-                    }
-                }
-            }
-            let foundWorker = await Worker.findById(worker);
-            foundWorker.expected_attendance.push(newReport);
-            let savedWorker = await foundWorker.save();
-            req.flash("success", "Successfully Reported");
-            if (savedWorker) {
-                res.json("Done");
-            }
+        //     let i = 0;
+        //     if (ids) {
+        //         while (!(arr.length === ids.length)) {
+        //             let id = ids[i];
+        //             let foundDisciple = await Disciple.findById(id);
+        //             newReport.disciples.push(foundDisciple);
+        //             let yesSaved = await newReport.save();
+        //             // yesSaved;
+        //             if (yesSaved) {
+        //                 arr.push("yesSaved");
+        //                 i++; 
+        //             }
+        //         }
+        //     }
+        //     let foundWorker = await Worker.findById(worker);
+        //     foundWorker.expected_attendance.push(newReport);
+        //     let savedWorker = await foundWorker.save();
+        //     req.flash("success", "Successfully Reported");
+        //     if (savedWorker) {
+        //         res.json("Done");
+        //     }
         } catch (error) {
             console.log(error)
             req.flash("error", "You must complete your profile first");

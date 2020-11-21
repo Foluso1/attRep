@@ -194,6 +194,13 @@ workerSchema = new mongoose.Schema({
         }
     ],
 
+    belConv: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'BelConv'
+        }
+    ],
+
     isLMA: {
         type: Boolean,
         default: false

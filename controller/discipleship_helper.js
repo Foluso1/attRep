@@ -94,9 +94,7 @@ module.exports = {
     },
 
     newReport: (req, res) => {
-        let worker = {
-            _id: req.user.id
-        }
+        let worker = { _id: req.user.id };
         Worker.findById(worker).populate("disciples")
             .then((thisWorker) => {
                 let allDisciples = thisWorker.disciples
