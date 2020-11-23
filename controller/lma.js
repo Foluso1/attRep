@@ -1,4 +1,5 @@
 const         Worker                    = require("../models/worker")
+            , Attendance                = require("../models/attendance_model")
             , Disciple                  = require("../models/disciple")
             , newPrayerChain            = require("../models/newPrayerChain")
             , lastMondayfunction        = require("../utils/lastMonday")
@@ -252,12 +253,18 @@ module.exports = {
 
     getAllAttendanceWithDate: async (req, res) => {
         try {
-            let dateForData = req.params.date;
-            let lmaWorkerId = { _id: req.user.id };
-            let foundWorker = await Worker.findById(lmaWorkerId).populate("workers");
-            path = "attendance";
-            let result = await listAllReports(dateForData, foundWorker, path)
-            res.render("lma/all/attendanceAll", { result });
+            // let dateForData = req.params.date;
+            // let lmaWorkerId = { _id: req.user.id };
+            // let foundWorker = await Worker.findById(lmaWorkerId).populate("workers");
+            // path = "attendance";
+            // let result = await listAllReports(dateForData, foundWorker, path)
+            let abc = await Attendance.find({
+                for: "Sunday",
+                date: {$gte: req.params.date}
+            }).populate({path: "disciples", select: "name type"}).populate({path: "summoner", select: "firstname surname"})
+            console.log(abc);
+            res.json(abc);
+            // res.render("lma/all/attendanceAll", { result });
         } catch(e) {
             console.log(e)
             req.flash("error", "There was a problem");

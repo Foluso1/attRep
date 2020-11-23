@@ -2,13 +2,13 @@ const       Disciple    = require("../models/disciple"),
             Worker      = require("../models/worker")
 ;
 
-module.exports = async (req, res, report, user)  => {
+module.exports = async (req, res, report, userType, reportType)  => {
     let worker = {_id: req.user.id}; 
     // Special Meeting Check
     if(req.body.for.includes("Believer's") || req.body.for.includes("Charis")){
         const startOfYear = moment().startOf("year");
         let specialCheck = await report.find({
-            [user]: req.user.id,
+            [userType]: req.user.id,
             for: req.body.for,
             date: { $gte: startOfYear },
         });
@@ -18,18 +18,17 @@ module.exports = async (req, res, report, user)  => {
         }
     } else {
         let exp = await report.find({
-            [user]: req.user.id,
+            [userType]: req.user.id,
             for: req.body.for,
             date: { $gte: (Date.now() - (24*60*60*1000)) },
         }).populate("disciples");
         console.log(exp);
         if(Array.isArray(exp) && exp.length > 0){
-            // await report.findOneAndDelete({
-            //     [user]: req.user.id,
-            //     for: req.body.for,
-            //     date: { $gte: (Date.now() - (24*60*60*1000)) },
-            // })
-            // req.flash("error", "Deleted");
+            await report.find({
+                [userType]: req.user.id,
+                for: req.body.for,
+                date: { $gte: (Date.now() - (24*60*60*1000)) },
+            })
             req.flash("error", "Duplicate report detected, please edit previous report");
             return res.json("ERROR, Duplicate Report");
         }
@@ -38,9 +37,10 @@ module.exports = async (req, res, report, user)  => {
         title: req.body.title,
         for: req.body.for,
         info: req.body.info,
-        [user]: req.user.id,
+        [userType]: req.user.id,
     };
     let newReport = await report.create(thisReport)
+    console.log(newReport);
     newReportId = newReport._id;
     const ids = req.body.ids;
 
@@ -61,7 +61,7 @@ module.exports = async (req, res, report, user)  => {
         }
     }
     let foundWorker = await Worker.findById(worker);
-    foundWorker.expected_attendance.push(newReport);
+    foundWorker[reportType].push(newReport);
     let savedWorker = await foundWorker.save();
     req.flash("success", "Successfully Reported");
     if (savedWorker) {

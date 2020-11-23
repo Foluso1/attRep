@@ -5,18 +5,45 @@
     <div class="col-md-12" style="overflow-x:auto;">
         <br>
         <div class="mx-3">
+            <h2>Attendance for All</h2>
             <h3>Select a date to query for data</h3>
             <br/>
-            <form action="/lma/all/attendance" id="form-attendance" class="date-to-query">
-                <div class="d-inline-flex">
-                    <input type="date" name="date-lockdown" id="date-lockdown" class="form-control mx-2">
-                    <input type="submit" class="btn btn-sm btn-secondary mx-2">
-                </div>
-            </form>
+            <div class="d-inline-flex">
+                <label class="m-2">For: </label>
+                <select class="report-for form-control mx-2">
+                    <option value="<%= moment().format("dddd")%>" selected><%= moment().format("dddd")%></option>
+                    <option value="Sunday">Sunday</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                </select>
+                <label class="m-2 pl-2">Date: </label>
+                <input type="date" name="date-lockdown" id="attendance" class="date-chooser form-control mx-2" />
+            </div>
+            <div class="m-2">
+                <div class="my-2">Total Workers: <span class="total-workers"></span></div>
+                <div class="my-2">Total Disciples: <span class="total-disciples"></span></div>
+            </div>
         </div>
         <p></p>
     </div>
 </main>
 <p></p>
+<table border="1" class="allLMALockdown" id="table-lockdown-one" style="overflow-x: auto;">
+    <thead>
+        <tr>
+            <th><b>S/N</b></th>
+            <th><b>Summoner</b></th>
+            <th><b>Disciples / Invitees</b></th>
+            <th><b>Info</b></th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
 <p></p>
 <% include ../../partials/footer %>

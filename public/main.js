@@ -42,6 +42,8 @@ const delReportBtn = Array.from(deleteReportButton);
 const lockdownNoReport = document.querySelector("#generate-no-report-list");
 const lockdownNoReportCopy = document.querySelector("#copy-no-report-list");
 const textAreaNoReportLockdown = document.querySelector("#list-no-lockdown-reports");
+const dateChooser = document.querySelector(".date-chooser");
+const reportFor = document.querySelector(".report-for");
 
 // Prayer Chain
 
@@ -905,5 +907,74 @@ if (specialMeeting) {
 if (specialMeetingAtt) {
   specialMeetingAtt.addEventListener("change", (e) => {
     specMeetingFunc(e.target.value, `/api/attendance`)
+  })
+}
+
+const attendanceAllFunc = (attendanceType, date) => {
+    console.log(date);
+    $('tbody').html('');
+    $('tbody').append('<tr><td colspan="10">Please wait...</td></tr>');
+    $.ajax({
+      url: `/api/${attendanceType}/date/${date}/for/${reportFor.value}`,
+      type: 'GET',
+      success: (data) => {
+        console.log(data);
+        $('tbody').html('');
+        if(data && Array.isArray(data) && data.length > 0){
+          let count = 1;
+          let totalDisciples = 0;
+          data.forEach((elem) => {
+            let thisRow = $('tbody');
+            if(elem.disciples.length != 0){
+              //Disciples that came
+              elem.disciples.forEach((item, i)=>{
+                //First on the disciples list
+                if(i == 0){
+                  thisRow.append(`<tr>
+                  <td>${count}</td>
+                  <td>${elem.summoner.firstname} ${elem.summoner.surname} (${elem.disciples.length})</td>
+                  <td>${item.name} (${item.type})</td>
+                  <td></td>
+                </tr>`)
+                totalDisciples = totalDisciples + elem.disciples.length;
+                } else {
+                  thisRow.append(`<tr>
+                    <td></td>
+                    <td>${elem.summoner.firstname} ${elem.summoner.surname}</td>
+                    <td>${item.name} (${item.type})</td>
+                    <td></td>
+                  </tr>`)
+                }
+              })
+            } else {
+              //No one came
+              if(elem.info){
+              thisRow.append(`<tr>
+                <td>${count}</td>
+                <td>${elem.summoner.firstname} ${elem.summoner.surname}</td>
+                <td></td>
+                <td>${elem.info}</td>
+              </tr>`)
+              }
+            }
+            count++;
+          })
+          console.log(totalDisciples);
+          document.querySelector(".total-disciples").textContent = totalDisciples;
+          document.querySelector(".total-workers").textContent = data.length;
+        } else {
+          $('tbody').append('<tr><td colspan="10">Nothing to show here</td></tr>');
+        }
+      },
+      error: (e) => {
+        console.log(e);
+      }
+    })
+  }
+
+if(dateChooser){
+  dateChooser.addEventListener("input", function (e) {
+    let id = e.target.getAttribute("id");
+    attendanceAllFunc(id, this.value);
   })
 }

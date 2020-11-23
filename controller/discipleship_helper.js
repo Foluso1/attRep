@@ -5,6 +5,7 @@ const   Worker              =   require("../models/worker")
     ,   moment              =   require("moment")
     ,   duplicateCheck      =   require("../utils/duplicateCheck")
     ,   Sorter              =   require("../utils/sorter")
+    ,   postReport          =   require("../utils/postReport")
     ;
 
 
@@ -40,52 +41,8 @@ module.exports = {
     
     postNewReport: async (req, res) => {
         try {
-            let startOfToday = moment().startOf('day').format();
-            let att =  await Discipleship.find({author: req.user.id, "date": {$gte: startOfToday}}).populate("disciples");
-            let prevReports = JSON.parse(JSON.stringify(att));
-            
-            let thisReport = {
-                title: req.body.title,
-                for: req.body.for,
-                info: req.body.info,
-                author: req.user.id,
-            };
+            postReport(req, res, Discipleship, "author", "reports");
 
-            let newReport = await Discipleship.create(thisReport)
-            newReportId = newReport._id;
-            const ids = req.body.ids;   
-            
-            const arr = [];
-            
-            let i = 0;
-            if (ids) {
-                while (!(arr.length === ids.length)) {
-                    let id = ids[i];
-                    let foundDisciple = await Disciple.findById(id);
-                    newReport.disciples.push(foundDisciple);
-                    let yesSaved = await newReport.save();
-                    // yesSaved;
-                    if (yesSaved) {
-                        arr.push("yesSaved");
-                        i++; 
-                    }
-                }
-            }
-            
-            let foundWorker = await Worker.findById({_id: req.user.id});
-            let result = duplicateCheck(newReport, prevReports);
-            if (result) {
-                req.flash("error", "Duplicate report detected");
-                res.json("ERROR, Duplicate Report");
-                await Discipleship.findByIdAndDelete({_id: newReportId})
-            } else {
-                req.flash("success", "Successfully Reported");
-                foundWorker.reports.push(newReport);
-                let savedWorker = await foundWorker.save();
-                if (savedWorker) {
-                    res.json("Done");
-                }
-            }
         } catch (error) {
             console.log(error)
             req.flash("error", "You must complete your profile first");

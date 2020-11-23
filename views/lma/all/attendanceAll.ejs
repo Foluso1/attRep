@@ -20,9 +20,22 @@
             </form>
         </div>
         <p></p>
-        <% if (result.manyArr.length < 1) { %>
+        <table border="1" class="allLMALockdown" id="table-lockdown-one" style="overflow-x: auto;">
+            <thead>
+                <tr>
+                    <th><b>S/N</b></th>
+                    <th><b>Summoner</b></th>
+                    <th><b>Disciples / Invitees</b></th>
+                    <th><b>Info</b></th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+        <!-- <%# if (result.manyArr.length < 1) { %>
             <p class="pl-4">Nothing to show here </p>
-        <% } else { %>
+        <%# } else { %>
             <table border="1" class="allLMALockdown" id="table-lockdown-one" style="overflow-x: auto;">
                 <thead>
                     <tr>
@@ -40,52 +53,52 @@
                 <tbody>
                     <tr>
                         <td><b>Total</b></td>
-                        <td><b><%= result.manyArr.length %></b></td>
+                        <td><b><%#= result.manyArr.length %></b></td>
                         <td><b>&nbsp;</b></td>
                         <td><b>&nbsp;</b></td>
-                        <td><b><%= result.totalAttendees %></b></td>
+                        <td><b><%#= result.totalAttendees %></b></td>
                         <td><b>&nbsp;</b></td>
                     </tr>
-                    <% result.manyArr.forEach((elem, i) => { %>
+                    <%# result.manyArr.forEach((elem, i) => { %>
                         <tr>
-                            <td><%= result.manyArr.length-i %> </td>
+                            <td><%#= result.manyArr.length-i %> </td>
                             <td><a href="/lma/<%= elem.id %>/attendance"><%= elem['firstname'] %> <%= elem['surname'] %></a></td>
-                            <td><%= elem['title'] %></td>
-                            <td><%= elem['for'] %> </td>
+                            <td><%#= elem['title'] %></td>
+                            <td><%#= elem['for'] %> </td>
                             <td>
                                 
                             </td>
-                            <td><%= elem['info'] %></td>
+                            <td><%#= elem['info'] %></td>
                         </tr>
-                        <% elem['disciples'].forEach((item, j) => { %>
+                        <%# elem['disciples'].forEach((item, j) => { %>
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td>
-                                    <% if ( elem['disciples'].length > 0 ) { %>
+                                    <%# if ( elem['disciples'].length > 0 ) { %>
                                             <%= item %>
-                                    <% } else { %>
+                                    <%# } else { %>
                                             0
-                                    <% } %>
+                                    <%# } %>
                                 </td>
                                 <td></td>
                             </tr>
-                        <% }); %>
+                        <%# }); %>
                         
                             
-                    <% }); %>
+                    <%# }); %>
                 </tbody>
             </table>
             <div class="copy-text">
                 <h3>List of Workers with Reports</h3>
-                <textarea class="form-control text-paragraphs"><%= result.reportList %></textarea>
+                <textarea class="form-control text-paragraphs"><%#= result.reportList %></textarea>
                 <button class="btn btn-sm btn-secondary">Copy List</button>
             </div>
 
-            <!-- WORKERS With NO REPORTS YET -->
-            <p></p>
+            WORKERS With NO REPORTS YET -->
+            <!-- <p></p>
             <h3>Workers with no Reports Yet</h3>
             <table border="1" class="allLMALockdown" style="overflow-x: auto;">
                 <thead>
@@ -97,16 +110,16 @@
                 <thead>
                     <tr>
                         <th><b>Total</b></th>
-                        <th><b> <%= result.noReportYet.length %></b></th>
+                        <th><b> <%#= result.noReportYet.length %></b></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% result.noReportYet.forEach((elem, i) => { %>
+                    <%# result.noReportYet.forEach((elem, i) => { %>
                     <tr>
-                        <td><%= i+1 %> </td>
-                        <td><a href="/lma/<%= elem.id %>/attendance"><%= elem['firstname'] %> <%= elem['surname'] %></a></td>
+                        <td><%#= i+1 %> </td>
+                        <td><a href="/lma/<%#= elem.id %>/attendance"><%#= elem['firstname'] %> <%#= elem['surname'] %></a></td>
                     </tr>
-                    <% }); %>
+                    <%# }); %>
                 </tbody>
             </table>
             <p></p>
@@ -116,7 +129,7 @@
                 <button id="copy-no-report-list" class="btn btn-sm btn-secondary">Copy List</button>
             </div>
 
-        <% } %> 
+        <%# } %>  -->
     </div>
 </main>
 <p></p>

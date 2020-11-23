@@ -16,10 +16,10 @@ module.exports = {
             let worker = { _id: req.user.id };
             let foundWorker = await Worker.findById(worker)
               .populate({ path: "expected_attendance", populate: {path: "disciples"} })
-            //   .populate({ path: "disciples"})
-              // populate("disciples")
-                let expected_attendance = foundWorker.expected_attendance;
-                res.render("expected_attendance/expected_attendance", { expected_attendance, foundWorker });
+            let expected_attendance = await Expected.find({
+                summoner: req.user.id
+            }).populate("disciples");
+            res.render("expected_attendance/expected_attendance", { expected_attendance, foundWorker });
         } catch (e) {
             console.log(e);
             req.flash("error", "There was a problem");
@@ -29,64 +29,7 @@ module.exports = {
     
     postNewReport: async (req, res) => {
         try {
-        postReport(req, res, Expected, "summoner");
-        //     let worker = {_id: req.user.id}
-        //     // Special Meeting Check
-        //     if(req.body.for.includes("Believer's") || req.body.for.includes("Charis")){
-        //         const startOfYear = moment().startOf("year");
-        //         let specialCheck = await Expected.find({
-        //             summoner: req.user.id,
-        //             for: req.body.for,
-        //             date: { $gte: startOfYear },
-        //         });
-        //         if(Array.isArray(specialCheck) && specialCheck.length > 0){
-        //             req.flash("error", "Duplicate report detected, please edit previous report");
-        //             return res.json("ERROR, Duplicate Report");                 
-        //         }
-        //     } else {
-        //         let exp = await Expected.find({
-        //             summoner: req.user.id,
-        //             for: req.body.for,
-        //             date: { $gte: (Date.now() - (24*60*60*1000)) },
-        //         }).populate("disciples");
-        //         if(Array.isArray(exp) && exp.length > 0){
-        //             req.flash("error", "Duplicate report detected, please edit previous report");
-        //             return res.json("ERROR, Duplicate Report");
-        //         }
-        //     }
-        //    const thisReport = {
-        //         title: req.body.title,
-        //         for: req.body.for,
-        //         info: req.body.info,
-        //         summoner: req.user.id,
-        //     };
-        //     let newReport = await Expected.create(thisReport)
-        //     newReportId = newReport._id;
-        //     const ids = req.body.ids;
-        
-        //     const arr = [];
-            
-        //     let i = 0;
-        //     if (ids) {
-        //         while (!(arr.length === ids.length)) {
-        //             let id = ids[i];
-        //             let foundDisciple = await Disciple.findById(id);
-        //             newReport.disciples.push(foundDisciple);
-        //             let yesSaved = await newReport.save();
-        //             // yesSaved;
-        //             if (yesSaved) {
-        //                 arr.push("yesSaved");
-        //                 i++; 
-        //             }
-        //         }
-        //     }
-        //     let foundWorker = await Worker.findById(worker);
-        //     foundWorker.expected_attendance.push(newReport);
-        //     let savedWorker = await foundWorker.save();
-        //     req.flash("success", "Successfully Reported");
-        //     if (savedWorker) {
-        //         res.json("Done");
-        //     }
+            postReport(req, res, Expected, "summoner", "expected_attendance");
         } catch (error) {
             console.log(error)
             req.flash("error", "You must complete your profile first");

@@ -246,4 +246,34 @@ module.exports = {
             console.log(e)
         }
     },
+
+    getAllAttendanceWithDate: async (req, res) => {
+        try {
+            console.log("here")
+            let abc = await Attendance.find({
+                for: req.params.for,
+                date: {$gte: req.params.date, $lt: moment(req.params.date).add(24, "hour")}
+            }).populate({path: "disciples", select: "name type"}).populate({path: "summoner", select: "firstname surname"})
+            res.json(abc);
+        } catch(e) {
+            console.log(e)
+            req.flash("error", "There was a problem");
+            res.redirect("/")
+        }
+    },
+
+    getAllExpectedAttendanceWithDate: async (req, res) => {
+        try {
+            console.log("here")
+            let abc = await Expected.find({
+                for: req.params.for,
+                date: {$gte: req.params.date, $lt: moment(req.params.date).add(24, "hour")}
+            }).populate({path: "disciples", select: "name type"}).populate({path: "summoner", select: "firstname surname"})
+            res.json(abc);
+        } catch(e) {
+            console.log(e)
+            req.flash("error", "There was a problem");
+            res.redirect("/")
+        }
+    }
 };
