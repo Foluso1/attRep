@@ -56,12 +56,12 @@ router.post("/register", async (req, res) => {
             subject: 'Report App | Complete Registration', // Subject line
             text: 'Hello,\n\n' +
                 'Complete the registration process by clicking on the link below, or paste this into your browser to complete the process:\n\n' +
-                'http://' + req.headers.host + '/regmail/' + token + '\n\n', // plain text body
+                'https://' + req.headers.host + '/regmail/' + token + '\n\n', // plain text body
             html: `<p>Hello</p>
             <p>To complete your registration on the Report App,</p>
             <p>Please click on the button below to complete the process.</p>
             <br>
-            <a style="background-color:rgb(0, 114, 245); border-radius: 4px; text-decoration: none; color: white; padding: 5px 14px; font-size: 12pt;" href="http://${req.headers.host}/regmail/${token}">Register</a>
+            <a style="background-color:rgb(0, 114, 245); border-radius: 4px; text-decoration: none; color: white; padding: 5px 14px; font-size: 12pt;" href="https://${req.headers.host}/regmail/${token}">Register</a>
             <br>
             <p>If you did not initiate this, please ignore this email.</p>`
             // html body

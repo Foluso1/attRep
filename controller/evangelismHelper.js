@@ -58,7 +58,6 @@ module.exports = {
                   stats: req.body.evangelism,
                   details: req.body.details,
                   healing: req.body.healing,
-                  author: req.user.id,
                 })
             let foundWorker =  await Worker.findById({ _id: req.user.id }).populate({ 
                 path: "evangelism",
@@ -75,7 +74,8 @@ module.exports = {
             //Continue if no records match
             let obj = {
                     dateOnReport: new Date(req.body.date),
-                    data
+                    data,
+                    author: req.user.id,
                 }
                 
             let evangelism = await Evangelism.create(obj);

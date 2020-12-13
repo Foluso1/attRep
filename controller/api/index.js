@@ -2,6 +2,7 @@ const           newPrayerChain  = require("../../models/newPrayerChain");
 const           Worker          = require("../../models/worker");
 const           Disciple          = require("../../models/disciple");
 const           Expected        = require("../../models/expected_attendance_model");
+const           Evangelism      = require("../../models/evangelism");
 const           BelConv         = require("../../models/believers_convention_model");
 const           Attendance      = require("../../models/attendance_model");
 const           moment          = require("moment");
@@ -269,6 +270,21 @@ module.exports = {
                 for: req.params.for,
                 date: {$gte: req.params.date, $lt: moment(req.params.date).add(24, "hour")}
             }).populate({path: "disciples", select: "name type"}).populate({path: "summoner", select: "firstname surname"})
+            res.json(abc);
+        } catch(e) {
+            console.log(e)
+            req.flash("error", "There was a problem");
+            res.redirect("/")
+        }
+    },
+
+    getAllEvangelismWithDate: async (req, res) => {
+        try {
+            console.log("here")
+            let abc = await Evangelism.find({
+                date: {$gte: req.params.date, $lt: moment(req.params.date).add(24, "hour")}
+            }).populate({path: "author", select: "firstname surname"});
+            console.log(abc);
             res.json(abc);
         } catch(e) {
             console.log(e)

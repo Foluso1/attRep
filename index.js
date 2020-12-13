@@ -38,7 +38,6 @@ app.set("view engine", "ejs");
 
 app.use(expressSession({
     secret: process.env.secret,
-    maxAge: (2 * 60 * 60),
     resave: false,
     saveUninitialized: false
 }))

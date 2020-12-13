@@ -197,13 +197,13 @@ router.post("/mail", async (req, res, next) => {
                     subject: 'Report App | Confirm Email', // Subject line
                     // text: 'You are receiving this because you (or someone else) is registering this email on the Report App.\n\n' +
                     //     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                    //     'http://' + req.headers.host + '/mail/' + token + '/' + email + '\n\n' +
+                    //     'https://' + req.headers.host + '/mail/' + token + '/' + email + '\n\n' +
                     //     'If you did not request this, please ignore this email and this email will not be registered.\n', // plain text body
                     // html: `<b>${req.body.message}</b>` // html body
                     html: `<p>Hello, ${user.firstname} ${user.surname}</p>
                             <p>You are receiving this because you (or someone else) is registering this email on the Report App.</p>
                             <p>Please click the button below to complete the process:</p><br>
-                            <a style="background-color:rgb(0, 114, 245); border-radius: 4px; text-decoration: none; color: white; padding: 5px 12px; font-size: 12pt;" href="http://${req.headers.host}/mail/${token}/${email}">Confirm Mail</a>
+                            <a style="background-color:rgb(0, 114, 245); border-radius: 4px; text-decoration: none; color: white; padding: 5px 12px; font-size: 12pt;" href="https://${req.headers.host}/mail/${token}/${email}">Confirm Mail</a>
                             <br>
                             <p>If you are not ${user.firstname} ${user.surname}, please ignore this email and this email will not be registered.</p>`
                 });
@@ -303,13 +303,13 @@ router.post('/forgot',  async (req, res, next) => {
                         subject: 'SCC Report App | Password Change', // Subject line
                         text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                             'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                            'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+                            'https://' + req.headers.host + '/reset/' + token + '\n\n' +
                             'If you did not request this, please ignore this email and your password will remain unchanged.\n', // plain text body
                         html: `<p>Hello</p>
                             <p>You are receiving this because you (or someone else) have requested the reset of the password for your account.</p>
                             <p>Please click the button below to change your password.</p>
                             <br>
-                            <a style="background-color:rgb(0, 114, 245); border-radius: 4px; text-decoration: none; color: white; padding: 5px 14px; font-size: 12pt;" href="http://${req.headers.host}/reset/${token}">Confirm Mail</a>
+                            <a style="background-color:rgb(0, 114, 245); border-radius: 4px; text-decoration: none; color: white; padding: 5px 14px; font-size: 12pt;" href="https://${req.headers.host}/reset/${token}">Confirm Mail</a>
                             <br>
                             <p>If you did not request this, please ignore this email and the password will not be changed.</p>`
                     });
@@ -464,12 +464,12 @@ router.post("/validatemail/:id", async (req, res) => {
                 subject: 'Report App | Email Validation', // Subject line
                 text: 'This is to validate your account on the Report App.\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                    'http://' + req.headers.host + '/validatemailtrue/' + token + '\n\n',
+                    'https://' + req.headers.host + '/validatemailtrue/' + token + '\n\n',
                 html: `<p>Hello</p>
                         <p>This is to validate your account on the Report App.</p>
                         <p>Please click the button below to complete the process.</p>
                         <br>
-                        <a style="background-color:rgb(0, 114, 245); border-radius: 4px; text-decoration: none; color: white; padding: 5px 14px; font-size: 12pt;" href="http://${req.headers.host}/validatemailtrue/${token}">Confirm Mail</a>
+                        <a style="background-color:rgb(0, 114, 245); border-radius: 4px; text-decoration: none; color: white; padding: 5px 14px; font-size: 12pt;" href="https://${req.headers.host}/validatemailtrue/${token}">Confirm Mail</a>
                         <br>`
             });
             // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
