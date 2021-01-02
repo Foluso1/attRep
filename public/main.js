@@ -940,7 +940,7 @@ const attendanceAllFunc = (attendanceType, date) => {
                 } else {
                   thisRow.append(`<tr>
                     <td></td>
-                    <td>${elem.summoner.firstname} ${elem.summoner.surname}</td>
+                    <td></td>
                     <td>${item.name} (${item.type})</td>
                     <td></td>
                   </tr>`)

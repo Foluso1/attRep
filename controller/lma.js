@@ -240,7 +240,7 @@ module.exports = {
             let obj = {};
             foundDisciples.forEach((e) => {
                 if(e.discipler){
-                    obj[`${e.discipler.firstname.trim()} ${e.discipler.surname.trim()}`] = obj[`${e.discipler.firstname.trim()} ${e.discipler.surname.trim()}`] + `\n\t${e.name.trim()}`;
+                    obj[`${e.discipler.firstname.trim()} ${e.discipler.surname.trim()}`] = obj[`${e.discipler.firstname.trim()} ${e.discipler.surname.trim()}`] + `\n\t${e.name}`;
                 } else {
                     obj['no discipler'] = obj['no discipler'] +`\n\t${e.name}`;
                 }

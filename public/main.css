@@ -1,6 +1,10 @@
+* {
+    font-size: 14px;
+}
+
 body {
     background-color: wheat;
-    font-size: 1em;
+    font-size: 14px;
 }
 
 
@@ -217,9 +221,9 @@ button:not(#report) {
     before:
 } */
 
-.home-link > p {
+/* .home-link > p {
     font-size: 14px;
-}
+} */
 
 .home-link {
     color:  #7E6227; 
@@ -588,3 +592,18 @@ ol.disciple-list li div:nth-of-type(2n) {
 /* .hover-appear:hover {
     border: 1px solid #F5DEB3;
 } */
+
+
+/* MENU */
+.other-menu {
+    list-style-type: none;
+    display: flex;
+    justify-content: start;
+}
+
+.menu-wrap {
+    background-color: wheat;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    border-bottom: 1px solid #473816;
+}

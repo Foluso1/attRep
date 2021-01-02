@@ -51,10 +51,6 @@ app.use(passport.session());
 //Local Strategy
 passport.use(new LocalStrategy(Worker.authenticate()));
 
-// passport.serializeUser(Worker.serializeUser());
-// passport.deserializeUser(Worker.deserializeUser());
-
-
 
 ////////ROUTES//////////
 

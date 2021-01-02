@@ -20,41 +20,32 @@
 </head>
 
 <body>
-    <nav class="navbar sticky-top navbar-dark nav-bg d-flex justify-content-end">
-        <% if(loggedInWorker){ %>
-            <div class="justify-content-start">
-                <a class="btn btn-md" data-toggle="tooltip" data-placement="bottom" title="Home"  href="/home"><i class="fas fa-home"></i></a>
-                <a class="btn btn-md" data-toggle="tooltip" data-placement="bottom" title="My Profile"  href="/profile"><i class="fas fa-id-card"></i></a>
-            </div>
-            <div class="justify-content-end">
-                <a class="btn btn-md" data-toggle="tooltip" data-placement="bottom" title="Logout" href="/logout"><i class="fas fa-user"></i> <%= loggedInWorker.firstname %> <%= loggedInWorker.surname %></a>
-            </div>
-        <% } else { %>
-            <div class="d-flex">
-                <a class="btn btn-md p-2" href="/login">Login</a>
-            </div>
-        <% } %>
-    </nav>
-    <% if(loggedInWorker) { %>
-        <nav class="navbar navbar-expand-md navbar-dark sticky-top nav-bg-2">
-            <button class="navbar-toggler btn-primary" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar navbar-collapse collapse justify-content-center text-center row" id="collapsibleNavbar">
-                <div class="text-center col-lg col-md-3 col-sm-3 col-3"><a class="text-center home-link" href="/discipleship/"><i class="fas fa-user-friends"></i><p>Discipleship</p></a></div>
-                <div class="text-center col-lg col-md-3 col-sm-3 col-3"><a class="text-center home-link" href="/expected/"><i class="fas fa-map-marker-alt"></i><p class="text-center">Expected Attendance</p></a></div>
-                <div class="text-center col-lg col-md-3 col-sm-3 col-3"><a class="text-center home-link" href="/attendance/"><i class="fas fa-handshake text-center"></i><p class="text-center">Attendance</p></a></div>
-                <div class="text-center col-lg col-md-3 col-sm-3 col-3"><a class="text-center home-link" href="/evangelism"><i class="fas fa-globe-africa"></i><p>Evangelism</p></a></div>
-                <div class="text-center col-lg col-md-3 col-sm-3 col-3"><a class="text-center home-link" href="/prayer"><i class="fas fa-praying-hands"></i><p>Prayer Group</p></a></div>
-                <div class="text-center col-lg col-md-3 col-sm-3 col-3"><a class="text-center home-link" href="/prayerchain"><i class="fas fa-pray"></i><p>Prayer Chain</p></a></div>
-                <div class="text-center col-lg col-md-3 col-sm-3 col-3"><a class="text-center home-link" href="/new/lockdown"><i class="fas fa-house-user"></i><p>Stay-Home</p></a></div>
-                <div class="text-center col-lg col-md-3 col-sm-3 col-3"><a class="text-center home-link" href="/disciple"><i class="fas fa-users"></i><p>Disciples / Invitees</p></a></div>
-            <% if(loggedInWorker.isLMA) { %>
-                <div class="text-center col-lg col-md-3 col-sm-3 col-3"><a class="text-center home-link" href="/lma"><i class="fas fa-users-cog"></i><p>LMA Admin</p></a></div>
+    <!-- <nav class="navbar navbar-fixed-top navbar-dark nav-bg d-flex justify-content-end"> -->
+    <div class="menu-wrap sticky-top">
+        <nav class="navbar sticky-top d-flex">
+            <% if(loggedInWorker){ %>
+                <div class="d-flex justify-content-start">
+                    <a class="btn btn-md" data-toggle="tooltip" data-placement="bottom" data-id="Home" title="Home" href="/home"><i class="fas fa-home"></i></a>
+                    <a class="btn btn-md menu" data-toggle="tooltip" data-placement="bottom" data-id="discipleship" title="Discipleship"  ><i class="fas fa-users"></i></a>
+                    <a class="btn btn-md menu" data-toggle="tooltip" data-placement="bottom" data-id="attendance" title="Attendance"  ><i class="fas fa-handshake text-center"></i></a>
+                    <a class="btn btn-md menu" data-toggle="tooltip" data-placement="bottom" data-id="prayer" title="Prayer"  ><i class="fas fa-pray"></i></a>
+                    <a class="btn btn-md menu" data-toggle="tooltip" data-placement="bottom" data-id="evangelism" title="Evangelism"  ><i class="fas fa-globe-africa"></i></a>
+                <% if(loggedInWorker.isLMA){ %>
+                    <a class="btn btn-md" data-toggle="tooltip" data-placement="bottom" data-id="lma-admin" title="LMA Admin" href="/lma"  ><i class="fas fa-users-cog"></i></a>
+                <% } %>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <a class="btn btn-md" data-toggle="tooltip" data-placement="bottom" title="My Profile" href="/logout"><i class="fas fa-sign-out-alt"></i></a>
+                    <a class="btn btn-md" data-toggle="tooltip" data-placement="bottom" title="My Profile" href="/profile"><i class="fas fa-user"></i> <%= loggedInWorker.firstname %></a>
+                </div>
+            <% } else { %>
+                <div class="text-right">
+                    <a class="btn btn-md p-2" href="/login">Login</a>
+                </div>
             <% } %>
-            </div>
-        </nav> 
-    <% } %>
+        </nav>
+        <ul class="other-menu"></ul>
+    </div>
     
     <div class="container">
         <% if(success && success.length !== 0 ) { %>
