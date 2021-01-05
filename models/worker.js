@@ -138,6 +138,13 @@ workerSchema = new mongoose.Schema({
         }
     ],
 
+    overseer: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Worker'
+        }
+    ],
+
     disciples: [
         {
             type: mongoose.Schema.Types.ObjectId,

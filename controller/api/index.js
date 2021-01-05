@@ -8,6 +8,7 @@ const           Attendance      = require("../../models/attendance_model");
 const           moment          = require("moment");
 const           fs              = require("fs");
 const discipleship_model = require("../../models/discipleship_model");
+const { workers } = require("cluster");
 
 
 module.exports = {
@@ -250,12 +251,37 @@ module.exports = {
 
     getAllAttendanceWithDate: async (req, res) => {
         try {
-            console.log("here")
-            let abc = await Attendance.find({
+            let flpWrkrs = await Worker.find({
+                overseer: req.user.id,
+                fellowship: req.params.fellowship
+            });
+
+            let idsflpWrkrs = flpWrkrs.map((item) => {
+                return item._id;
+            });
+
+            let flpAtt = await Attendance.find({
                 for: req.params.for,
-                date: {$gte: req.params.date, $lt: moment(req.params.date).add(24, "hour")}
-            }).populate({path: "disciples", select: "name type"}).populate({path: "summoner", select: "firstname surname"})
-            res.json(abc);
+                summoner: {$in: idsflpWrkrs},
+                date: {$gte: req.params.date, $lt: moment(req.params.date).add(24, "hour")},
+            }).populate({path: "disciples", select: "name type"}).populate({path: "summoner", select: "firstname surname fellowship"});
+
+            let idsAtt = flpAtt.map((item) =>{
+                return item._id;
+            });
+
+            let noReport = await Worker.find({
+                attendance: {$nin: idsAtt},
+                overseer: req.user.id,
+                fellowship: req.params.fellowship
+            }).select("firstname surname");
+
+            let obj = {
+                present: flpAtt,
+                absent: noReport
+            };
+           
+            res.json(obj);
         } catch(e) {
             console.log(e)
             req.flash("error", "There was a problem");
@@ -265,12 +291,40 @@ module.exports = {
 
     getAllExpectedAttendanceWithDate: async (req, res) => {
         try {
-            console.log("here")
-            let abc = await Expected.find({
+            let flpWrkrs = await Worker.find({
+                overseer: req.user.id,
+                fellowship: req.params.fellowship
+            });
+
+            let idsflpWrkrs = flpWrkrs.map((item) => {
+                return item._id;
+            });
+
+            let flpExp = await Expected.find({
                 for: req.params.for,
-                date: {$gte: req.params.date, $lt: moment(req.params.date).add(24, "hour")}
-            }).populate({path: "disciples", select: "name type"}).populate({path: "summoner", select: "firstname surname"})
-            res.json(abc);
+                summoner: {$in: idsflpWrkrs},
+                date: {$gte: req.params.date, $lt: moment(req.params.date).add(24, "hour")},
+            }).populate({path: "disciples", select: "name type"}).populate({path: "summoner", select: "firstname surname fellowship"});
+
+            let idsAtt = flpExp.map((item) =>{
+                return item._id;
+            });
+
+            let noReport = await Worker.find({
+                expected_attendance: {$nin: idsAtt},
+                overseer: req.user.id,
+                fellowship: req.params.fellowship
+            }).select("firstname surname");
+
+            let obj = {
+                present: flpExp,
+                absent: noReport
+            };
+
+            console.log(obj)
+           
+            res.json(obj);
+            
         } catch(e) {
             console.log(e)
             req.flash("error", "There was a problem");
@@ -280,7 +334,6 @@ module.exports = {
 
     getAllEvangelismWithDate: async (req, res) => {
         try {
-            console.log("here")
             let abc = await Evangelism.find({
                 date: {$gte: req.params.date, $lt: moment(req.params.date).add(24, "hour")}
             }).populate({path: "author", select: "firstname surname"});

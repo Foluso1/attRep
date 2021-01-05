@@ -134,9 +134,48 @@ module.exports = {
     editWorker: async (req, res) => {
         try {
             let foundLMA = await Worker.findById({_id: req.user.id});
+            let workerToEdit = Object.values(req.body)[0];
+            let thisWorker = await Worker.findById({ _id: workerToEdit})
+
+            //To push LMA overseer into all workers in record.
+            // let lmaUser = await Worker.findById({ _id: req.user.id })
+            // for (let i=0; i<lmaUser.workers.length; i++){
+            //     let thisWorker = await Worker.findById({ _id: lmaUser.workers[i] })
+            //     // if (thisWorker === null) {
+            //     //     let index = lmaUser.workers.indexOf(null);
+            //     //     lmaUser.workers.splice(index, 1)
+            //     //     console.log("Null removed");
+            //     // } else {
+            //     //     console.log("///Nothing")
+            //     // }
+            //     if(thisWorker && thisWorker.overseer && thisWorker.overseer.includes(req.user.id)) {
+            //         console.log("present already");
+            //     } else if (thisWorker) {
+            //         thisWorker.overseer = [];
+            //         thisWorker.overseer.push(req.user.id);
+            //         thisWorker.save();
+            //         console.log("Saved overseer");
+            //     }
+            // }
+
+            // let thisUser = await Worker.find({
+            //     overseer: req.user.id
+            // })
+            // console.log(thisUser)
 
             if (Object.keys(req.body)[0] == "add"){
                 foundLMA.workers.push(Object.values(req.body)[0]);
+                //To push overseer into a worker
+                if (thisWorker.overseer && !thisWorker.overseer.includes(req.user.id)) {
+                    console.log("a");
+                    thisWorker.overseer.push(req.user.id);
+                } else if (!thisWorker.overseer) {
+                    console.log("b");
+                    thisWorker.overseer = [];
+                    thisWorker.overseer.push(req.user.id);
+                } else {
+                    console.log("Don't push");
+                }
             } else if (Object.keys(req.body)[0] == "remove"){
                 let index = foundLMA.workers.indexOf(Object.values(req.body)[0]);
                 if (index == -1){
@@ -144,7 +183,19 @@ module.exports = {
                 } else {
                     foundLMA.workers.splice(index, 1);
                 }
+                // To remove overseer from an Worker
+                // Check if it already exists
+                if (thisWorker.overseer && thisWorker.overseer.includes(req.user.id)){
+                    // True => remove
+                    let index = thisWorker.overseer.indexOf(req.user.id);
+                    thisWorker.overseer.splice(index, 1);
+                    console.log("Removed one!");
+                } else {
+                    // False => do nothing
+                    console.log("Not found!");
+                }
             }
+            await thisWorker.save();
             await foundLMA.save();
             res.json("success")
             // res.status(403).json("forbidden");

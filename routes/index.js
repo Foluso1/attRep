@@ -66,6 +66,33 @@ router.get("/home", middleWare.isLoggedIn, async (req, res) => {
             thisUser.discAssoc = true;
         }
 
+        // ==================================================
+
+        // let userRegister = new Worker({
+        //     username: "Dele",
+        //     firstname: "Dele",
+        //     surname: "May",
+        //     email: "abc@live.com",
+        //     church: "Yaba",
+        //     fellowship: "Yabatech",
+        //     department: "Technical",
+        //     prayerGroup: "Monday",
+        //     membershipClass: new Date(),
+        //     gender: "Male",
+        //     dateOfBirth: new Date(),
+        //     address: "This Address",
+        //     mobileNumber: "08012343",
+        //     maritalStatus: "Student",
+        //     employmentStatus: "Employed",
+        //     isLMA: true,
+        // });
+
+        // let regNewUser = await Worker.register(userRegister, "password");
+
+        // console.log(regNewUser);
+
+        // ==================================================
+
         await thisUser.save()
         let evangelism = thisUser.evangelism;
         let prayerGroupReport = thisUser.prayerReport;

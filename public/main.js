@@ -44,6 +44,12 @@ const lockdownNoReportCopy = document.querySelector("#copy-no-report-list");
 const textAreaNoReportLockdown = document.querySelector("#list-no-lockdown-reports");
 const dateChooser = document.querySelector(".date-chooser");
 const reportFor = document.querySelector(".report-for");
+const fellowshipChooser = document.querySelector(".fellowship-chooser");
+const noReport = document.querySelector(".no-report");
+const copyList = document.querySelector(".copy-list");
+const copyList2 = document.querySelector(".copy-list-2");
+let list = "";
+let list2 = "";
 
 // Prayer Chain
 
@@ -914,56 +920,74 @@ const attendanceAllFunc = (attendanceType, date) => {
     console.log(date);
     $('tbody').html('');
     $('tbody').append('<tr><td colspan="10">Please wait...</td></tr>');
+    $(noReport).html('');
+    $(noReport).append('<li><em>Please wait...</em></li>')
     $.ajax({
-      url: `/api/${attendanceType}/date/${date}/for/${reportFor.value}`,
+      url: `/api/${attendanceType}/date/${date}/for/${reportFor.value}/fellowship/${fellowshipChooser.value}`,
       type: 'GET',
-      success: (data) => {
-        console.log(data);
+      success: (result) => {
+        let data = result.present
         $('tbody').html('');
+        $(noReport).html('');
         if(data && Array.isArray(data) && data.length > 0){
+          list = "";
           let count = 1;
           let totalDisciples = 0;
+          // let elemCount = 0;
           data.forEach((elem) => {
-            let thisRow = $('tbody');
-            if(elem.disciples.length != 0){
-              //Disciples that came
-              elem.disciples.forEach((item, i)=>{
-                //First on the disciples list
-                if(i == 0){
-                  thisRow.append(`<tr>
-                  <td>${count}</td>
-                  <td>${elem.summoner.firstname} ${elem.summoner.surname} (${elem.disciples.length})</td>
-                  <td>${item.name} (${item.type})</td>
-                  <td></td>
-                </tr>`)
-                totalDisciples = totalDisciples + elem.disciples.length;
-                } else {
-                  thisRow.append(`<tr>
-                    <td></td>
-                    <td></td>
+            // if(elem.summoner.fellowship == fellowshipChooser.value){ //Displays result for a particular fellowship
+              list = list + `\n${elem.summoner.firstname} ${elem.summoner.surname}`
+              let thisRow = $('tbody');
+              if(elem.disciples.length != 0){
+                //Disciples that came
+                elem.disciples.forEach((item, i)=>{
+                  //First on the disciples list
+                  list = list + `\n\t${item.name} (${item.type})`
+                  if(i == 0){
+                    thisRow.append(`<tr>
+                    <td>${count}</td>
+                    <td>${elem.summoner.firstname} ${elem.summoner.surname} (${elem.disciples.length})</td>
                     <td>${item.name} (${item.type})</td>
                     <td></td>
                   </tr>`)
+                  totalDisciples = totalDisciples + elem.disciples.length;
+                  } else {
+                    thisRow.append(`<tr>
+                      <td></td>
+                      <td></td>
+                      <td>${item.name} (${item.type})</td>
+                      <td></td>
+                    </tr>`)
+                  }
+                })
+              } else {
+                //No one came
+                if(elem.info){
+                list = list + `\n\tINFO:${elem.info}`;
+                thisRow.append(`<tr>
+                  <td>${count}</td>
+                  <td>${elem.summoner.firstname} ${elem.summoner.surname}</td>
+                  <td></td>
+                  <td>${elem.info}</td>
+                </tr>`)
                 }
-              })
-            } else {
-              //No one came
-              if(elem.info){
-              thisRow.append(`<tr>
-                <td>${count}</td>
-                <td>${elem.summoner.firstname} ${elem.summoner.surname}</td>
-                <td></td>
-                <td>${elem.info}</td>
-              </tr>`)
               }
-            }
-            count++;
+              // elemCount++;
+              count++;
+            // }
           })
-          console.log(totalDisciples);
+          console.log(list);
           document.querySelector(".total-disciples").textContent = totalDisciples;
           document.querySelector(".total-workers").textContent = data.length;
+          list2 = "";
+          result.absent.forEach((item) => {
+            list2 = list2 + `\n${item.firstname} ${item.surname}`
+            $(noReport).append(`<li>${item.firstname} ${item.surname}</li>`)
+          });
+          console.log(list2)
         } else {
           $('tbody').append('<tr><td colspan="10">Nothing to show here</td></tr>');
+          $(noReport).append(`<li><em>Nothing to show here</em></li>`)
         }
       },
       error: (e) => {
@@ -972,9 +996,53 @@ const attendanceAllFunc = (attendanceType, date) => {
     })
   }
 
+if(copyList) {
+  copyList.addEventListener("click", (e) => {
+    function updateClipboard(list) {
+      navigator.clipboard.writeText(list).then(function() {
+        console.log("Clipboard write successful");
+      }, function() {
+        console.log("Clipboard write failed");
+      });
+    }
+    updateClipboard(list);
+  })
+}
+
+if(copyList2) {
+  copyList2.addEventListener("click", (e) => {
+
+    const queryOpts = { name: 'clipboard-read', allowWithoutGesture: false };
+    const permissionStatus = await navigator.permissions.query(queryOpts);
+    // Will be 'granted', 'denied' or 'prompt':
+    console.log(permissionStatus.state);
+
+    function updateClipboard(list) {
+      navigator.clipboard.writeText(list).then(function() {
+        console.log("Clipboard write successful");
+      }, function() {
+        console.log("Clipboard write failed");
+      });
+    }
+    updateClipboard(list2);
+  })
+}
+
 if(dateChooser){
-  dateChooser.addEventListener("input", function (e) {
-    let id = e.target.getAttribute("id");
-    attendanceAllFunc(id, this.value);
+    dateChooser.addEventListener("input", function (e) {
+      let id = e.target.getAttribute("id");
+      attendanceAllFunc(id, this.value);
+    })
+    reportFor.addEventListener("change", (e) => {
+        if (dateChooser.value) {
+          let id = dateChooser.getAttribute("id")
+          attendanceAllFunc(id, dateChooser.value);
+        }
+    })
+    fellowshipChooser.addEventListener("change", (e) => {
+      if (dateChooser.value) {
+        let id = dateChooser.getAttribute("id")
+        attendanceAllFunc(id, dateChooser.value);
+      }
   })
 }
