@@ -1010,7 +1010,7 @@ if(copyList) {
 }
 
 if(copyList2) {
-  copyList2.addEventListener("click", (e) => {
+  copyList2.addEventListener("click", async (e) => {
 
     const queryOpts = { name: 'clipboard-read', allowWithoutGesture: false };
     const permissionStatus = await navigator.permissions.query(queryOpts);
