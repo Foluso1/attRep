@@ -50,7 +50,7 @@ module.exports = {
     
     postNewReport: async (req, res) => {
         try {
-            
+            console.log("///", req.body);
             // Check if user already has a similar report
             let data = JSON.stringify({
                   date: req.body.date,
@@ -143,5 +143,13 @@ module.exports = {
             res.redirect("/evangelism");
         }
     },
+
+    evglsmOverview: (req, res) => {
+        try {
+            res.render("evangelism/overview_evglsm")
+        } catch (e) {
+            console.log(e)
+        }
+    }
 }
 

@@ -26,6 +26,10 @@ obj = {
         {
             0: "Evangelism",
             1: "/evangelism"
+        },
+        {
+            0: "Overview",
+            1: "/evangelism/overview"
         }
     ],
     'attendance': [

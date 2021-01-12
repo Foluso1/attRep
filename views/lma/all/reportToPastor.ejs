@@ -1,0 +1,293 @@
+<% include ../../partials/header %>
+</div>
+
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="card p4 col-sm-10 col-md-8 col-lg-8">
+            <h2 class="pt-5 text-center"><b>Report to Pastor</b></h2>
+            <form class="p-4 col-12" action="/lma/all/reportToPastor" method="POST">
+
+                <!-- MEETING -->
+                <fieldset>
+                    <legend class="pt-5"><b>A.  MEETING DETAILS</b></legend>
+                    <div class="form-group">
+                        <div class="pt-3 align-items-center">
+                            <label for="date">Name:</label>
+                            <input class="form-control" type="text" name="meeting-name" id="meeting-name" placeholder="Bariga 1" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="align-items-center">
+                            <label for="date">Type:</label>
+                            <input class="form-control" type="text" name="meeting-type" id="meeting-type" placeholder="Cell Meeting" required>
+                        </div>
+                    </div>
+
+                    <!-- DATE -->
+                    <div class="align-items-center">
+                        <label for="date">Date:</label>
+                        <input class="form-control" type="date" name="date" id="date" value="<%= new Date().getFullYear() %>-<%= (new Date().getMonth()+1).toString().padStart(2, "0") %>-<%= new Date().getDate().toString().padStart(2, "0") %>" required>
+                    </div>
+                    <br>
+
+                    <!-- VENUE -->
+                    <div class="form-group">
+                        <div class="align-items-center">
+                            <label for="date">Venue:</label>
+                            <input class="form-control" type="text" name="venue" id="venue" placeholder="6, Oweh Street, Jibowu, Yaba, Lagos State" required>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- TIMELINE -->
+                    <div class="form-group">
+                        <label for="" class="d-block">Timeline</label>
+                        <div class="row">
+                            <div class="col-sm-6 align-items-center">
+                                <input type="number" name="bible-study" min="0" max="23" class="form-control mb-2" placeholder="hour" required>
+                            </div><br>
+                            <div class="col-sm-6 align-items-center">
+                                <input type="number" name="bible-study" min="0" max="59" class="form-control mb-2" placeholder="min" required>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- PRAYER -->
+                <fieldset>
+                    <legend class="pt-5"><b>B.  PRAYER</b></legend>
+                    <div class="pt-3">
+                        <label for="" class="d-block">Prayer Duration</label>
+                        <div class="row">
+                            <div class="col-sm-6 align-items-center">
+                                <input type="number" name="prayer" min="0" max="23" class="form-control mb-2" placeholder="hour" required>
+                            </div><br>
+                            <div class="col-sm-6 align-items-center">
+                                <input type="number" name="prayer" min="0" max="59" class="form-control mb-2" placeholder="min" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="pt-3 align-items-center">
+                            <label for="">Prayer Leader:</label>
+                            <input class="form-control" type="text" name="prayer" id="prayer-leader" value="" required>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- WORSHIP -->
+                <fieldset>
+                    <legend class="pt-5"><b>C.  WORSHIP</b></legend>
+                    <div class="pt-3 ">
+                        <label for="">Worship Duration</label>
+                        <div class="row">
+                            <div class="col-sm-6 align-items-center">
+                                <input type="number" name="worship" min="0" max="23" class="form-control mb-2" placeholder="hour" required>
+                            </div><br>
+                            <div class="col-sm-6 align-items-center">
+                                <input type="number" name="worship" min="0" max="59" class="form-control mb-2" placeholder="min" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="pt-3 align-items-center">
+                            <label for="">Worship Leader:</label>
+                            <input class="form-control" type="text" name="worship" id="prayer-leader" value="" required>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="pt-3 align-items-center">
+                            <label for="">Songs:</label>
+                            <textarea class="form-control" type="text" name="worship" id="songs" value="" required></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- TEACHING -->
+                <fieldset>
+                    <legend class="pt-5"><b>D. TEACHING</b></legend>
+                    <div class="pt-3">
+                        <label for="">Teaching Duration</label>
+                        <div class="row">
+                            <div class="col-sm-6 align-items-center">
+                                <input type="number" name="teaching" min="0" max="23" class="form-control mb-2" placeholder="hour" required>
+                            </div><br>
+                            <div class="col-sm-6 align-items-center">
+                                <input type="number" name="teaching" min="0" max="59" class="form-control mb-2" placeholder="min" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="pt-3 align-items-center">
+                            <label for="">Speaker:</label>
+                            <input class="form-control" type="text" name="teaching" id="speaker" value="" required>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="pt-3 align-items-center">
+                            <label for="">Title:</label>
+                            <input class="form-control" type="text" name="teaching" id="title" placeholder="The Reality of Christianity" required>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="pt-3 align-items-center">
+                            <label for="">Emphasis:</label>
+                            <textarea class="form-control" type="text" name="teaching" id="emphasis" placeholder="I emphasised on the reality of the new creation in Christ Jesus" required></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- ANNOUNCEMENT -->
+                <fieldset>
+                    <legend class="pt-5"><b>E. ANNONCEMENT</b></legend>
+                    <div class="">
+                        <div class="pt-3 align-items-center">
+                            <label for="">Announcement:</label>
+                            <textarea class="form-control" type="text" name="announcement" id="announcement" value="" required></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- ATTENDANCE -->
+                <fieldset>
+                    <legend class="pt-5"><b>F. ATTENDANCE</b></legend>
+                    <div class="">
+                        <label for="">Attendance</label>
+                        <input type="number" min="0" name="attendance" class="form-control">
+                    </div>
+                    <div class="">
+                        <div class="pt-3 align-items-center">
+                            <label for="">Any improvement in attendance? If not, why?</label>
+                            <textarea class="form-control" type="text" name="improvement" id="improvement" value="" required></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                
+                    
+
+                <!-- ATTENDEES -->
+                <fieldset>
+                    <legend class="pt-5"><b>G. ATTENDEES</b></legend>
+                    <div class="">
+                        <div class="pt-3 align-items-center">
+                            <label for="">LMA:</label>
+                            <textarea class="form-control" type="text" name="attendees" id="lma" value="" required></textarea>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="pt-3 align-items-center">
+                            <label for="">Workers:</label>
+                            <textarea class="form-control" type="text" name="attendees" id="workers" value="" required></textarea>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="pt-3 align-items-center">
+                            <label for="">Members:</label>
+                            <textarea class="form-control" type="text" name="attendees" id="members" value="" required></textarea>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="pt-3 align-items-center">
+                            <label for="">First Timers:</label>
+                            <textarea class="form-control" type="text" name="attendees" id="first-timers" value="" required></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- OFFERING -->
+                <fieldset>
+                    <legend class="pt-5"><b>H. OFFERING</b></legend>
+                    <div class="form-group">
+                        <label for="">How much was it?</label>
+                        <div class="d-inline-flex">
+                            <span class="naira">₦</span><input type="number" min="0" name="offering" id="offering" class="form-control" placeholder="10,520" required>
+                        </div>
+                        <p class="d-block notabene-red"></p>
+                    </div>
+                </fieldset>
+
+                <!-- WORKER'S MEETING -->
+                <fieldset>
+                    <legend class="pt-5"><b>I. WORKER'S MEETING</b></legend>
+                    <div class="pt-3">
+                        <label for="">Duration</label>
+                        <div class="row">
+                            <div class="col-sm-6 align-items-center">
+                                <input type="number" name="workers-meeting" min="0" max="23" class="form-control mb-2" placeholder="hour" required>
+                            </div><br>
+                            <div class="col-sm-6 align-items-center">
+                                <input type="number" name="workers-meeting" min="0" max="59" class="form-control mb-2" placeholder="min" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="pt-3 align-items-center">
+                            <label for="">Leader:</label>
+                            <input class="form-control" type="text" name="workers-meeting" id="leader" value="" required>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="pt-3 align-items-center">
+                            <label for="">Emphasis:</label>
+                            <textarea class="form-control" type="text" name="workers-meeting" id="emphasis" value="" required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group pb-3">
+                        <div class="pt-3 align-items-center">
+                            <label for="">Attendees:</label>
+                            <textarea class="form-control" type="text" name="workers-meeting" id="workers-meeting-attendees" value="" required></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                
+                <!-- HYGIENE -->
+                <fieldset>
+                    <legend class="pt-5"><b>I.  HYGIENE</b></legend>
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            <label for="" class="d-block">Hand Wash:</label>
+                            <div class="d-inline-flex">
+                                <div class="mx-3">
+                                    <label for="">Yes</label>
+                                    <input type="radio" name="hygiene-hand-wash" value="true" required>
+                                </div>
+                                <div class="mx-3">
+                                    <label for="">No</label>
+                                    <input type="radio" name="hygiene-hand-wash" value="false">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="" class="d-block">Hand Sanitizer:</label>
+                            <div class="d-inline-flex">
+                                <div class="mx-3">
+                                    <label for="">Yes</label>
+                                    <input type="radio" name="hygiene-hand-sanitizer" value="true" required>
+                                </div>
+                                <div class="mx-3">
+                                    <label for="">No</label>
+                                    <input type="radio" name="hygiene-hand-sanitizer" value="false">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Face mask: How many people wore them?</label>
+                        <div class="align-items-center">
+                            <input type="number" name="workers-meeting" min="0" class="form-control" required>
+                        </div>
+                    </div>
+                </fieldset>
+                    
+                <br>
+
+                <input type="submit" class="mt-4 btn btn-warning">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<% include ../../partials/footer %>

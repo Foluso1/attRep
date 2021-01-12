@@ -25,4 +25,7 @@ router.route("/:id")
 router.route("/:id/edit")
     .get(middleware.isLoggedIn, helper.editReportForm)
 
+router.route("/overview")
+    .get(middleware.isLoggedIn, helper.evglsmOverview)
+
 module.exports = router;

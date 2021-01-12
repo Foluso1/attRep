@@ -13,6 +13,8 @@ router.route("/bc").get(middleware.isLoggedIn, helper.belCovDetails);
 router.route("/attendance/:meetingName").get(middleware.isLoggedIn, helper.getAllSpecialMeetingsAttendance);
 router.route("/attendance/date/:date/for/:for/fellowship/:fellowship").get(middleware.isLoggedIn, helper.getAllAttendanceWithDate);
 router.route("/attendance/cumulative/:meetingName").get(middleware.isLoggedIn, helper.getCumulativeAttendance);
-router.route("/evangelism/date/:date").get(middleware.isLoggedIn, helper.getAllEvangelismWithDate);
+// router.route("/evangelism/date/:date").get(middleware.isLoggedIn, helper.getAllEvangelismWithDate);
+router.route("/evangelism/:fellowship/:start/:end").get(middleware.isLoggedIn, helper.getAllEvangelismWithDate);
+router.route("/evangelism/:start/:end").get(middleware.isLoggedIn, helper.getOneEvangelismWithDate);
 
 module.exports = router;

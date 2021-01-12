@@ -1,0 +1,64 @@
+<% include ../partials/header_lma %>
+
+<div class="container">
+<main class="row">
+    <div class="col-md-12" style="overflow-x:auto;">
+        <br>
+        <div class="mx-3">
+            <h2>Overview Evangelism Reports</h2>
+            <h3>Select a date range to query for data</h3>
+            <br/>
+            <div class="row">
+                <!-- <div class="col-sm-4">
+                    <label class="m-2 pl-2">Fellowship: </label>
+                    <select class="fellowship-chooser form-control mx-2">
+                        <option value="New Garage">New Garage</option>
+                        <option value="Yabatech">Yabatech</option>
+                    </select>
+                </div> -->
+                <div class="col-sm-4">
+                    <label class="m-2 pl-2">Start Date: </label>
+                    <input type="date" name="" id="" class="date-chooser-evglsm form-control mx-2" />
+                </div>
+                <div class="col-sm-4">
+                    <label class="m-2 pl-2">End Date: </label>
+                    <input type="date" name="" id="" class="date-chooser-evglsm form-control mx-2" />
+                </div>
+            </div>
+        </div>
+        <p></p>
+    </div>
+</main>
+<p></p>
+<table border="1" class="allLMALockdown" id="evangelism" style="overflow-x: auto;">
+    <thead>
+        <tr>
+            <th><b>S/N</b></th>
+            <th><b>Date</b></th>
+            <th><b>Reached</b></th>
+            <th><b>Saved</b></th>
+            <th><b>Filled</b></th>
+            <th><b>Prophesied</b></th>
+            <th><b>Healing Case</b></th>
+            <th><b>Evangelism Details</b></th>
+            <th><b>Healing Details</b></th>
+        </tr>
+        <tr>
+            <th><b>Total</b></th>
+            <th></th>
+            <th id="reached"></th>
+            <th id="saved"></th>
+            <th id="filled"></th>
+            <th id="prophesied"></th>
+            <th id="healed"></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<a class="copy-list btn btn-sm mt-2">Copy</a>
+<p></p>
+</div>
+<% include ../partials/footer %>

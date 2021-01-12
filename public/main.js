@@ -48,6 +48,12 @@ const fellowshipChooser = document.querySelector(".fellowship-chooser");
 const noReport = document.querySelector(".no-report");
 const copyList = document.querySelector(".copy-list");
 const copyList2 = document.querySelector(".copy-list-2");
+const offering = document.querySelector("#offering");
+const dateChooserEvglsm = document.querySelectorAll(".date-chooser-evglsm");
+const newElement = document.querySelectorAll(".new-element");
+const delElement = document.querySelectorAll(".del-element");
+const firstNameElem = document.querySelector("#firstname");
+const elementPlayground = document.querySelectorAll(".element-playground");
 let list = "";
 let list2 = "";
 
@@ -1044,5 +1050,250 @@ if(dateChooser){
         let id = dateChooser.getAttribute("id")
         attendanceAllFunc(id, dateChooser.value);
       }
+  })
+}
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+if (offering){
+  offering.addEventListener("change", (e) => {
+    if (e.target.parentNode.parentNode.children[2]){
+      e.target.parentNode.parentNode.children[2].textContent = "";
+      e.target.parentNode.parentNode.children[2].style.backgroundColor = "";
+          e.target.parentNode.parentNode.children[2].style.border = "";
+    }
+    let val = e.target.value
+    e.target.type = "text";
+    let thisValue = val;
+    let strAmt = thisValue.toString();
+    if(isNaN(val)){
+        thisValue = strAmt.split(",").join("");
+        if(isNaN(thisValue)){
+          e.target.parentNode.parentNode.children[2].textContent = "Value is supposed to be a number";
+          e.target.parentNode.parentNode.children[2].style.backgroundColor = "#FFC7CE";
+          e.target.parentNode.parentNode.children[2].style.border = "1px solid red";
+        }
+    }
+    e.target.value = numberWithCommas(thisValue);
+  });
+}
+
+
+//////////////////////////// EVANGELISM //////////////////////////////
+
+const evangelismAllFunc = (fellowship, start, end) => {
+  $('tbody').html('');
+  $('tbody').append('<tr><td colspan="10">Please wait...</td></tr>');
+  $(noReport).html('');
+  $(noReport).append('<li><em>Please wait...</em></li>')
+  $.ajax({
+    url: `/api/evangelism/${fellowship}/${start}/${end}`,
+    type: 'GET',
+    success: (data) => {
+      console.log(data)
+      // let data = result.present
+      $('tbody').html('');
+      $(noReport).html('');
+      if(data && Array.isArray(data) && data.length > 0){
+        list = "";
+        let count = 1;
+        let reached = 0;
+        let saved = 0;
+        let filled = 0;
+        let prophesied = 0;
+        let healed = 0;
+        // let elemCount = 0;
+        data.forEach((elem) => {
+            let thisRow = $('tbody');
+            if(elem.data){
+              let thisData = JSON.parse(elem.data);
+              console.log(thisData)
+                reached = reached + Number(thisData.stats[0]);
+                saved = saved + Number(thisData.stats[1]);
+                filled = filled + Number(thisData.stats[2]);
+                prophesied = prophesied + Number(thisData.stats[3]);
+                healed = healed + Number(thisData.stats[4]);
+                thisRow.append(`<tr>
+                  <td>${count}</td>
+                  <td>${elem.author.firstname} ${elem.author.surname}</td>
+                  <td>${thisData.stats[0]}</td>
+                  <td>${thisData.stats[1]}</td>
+                  <td>${thisData.stats[2]}</td>
+                  <td>${thisData.stats[3]}</td>
+                  <td>${thisData.stats[4]}</td>
+                  <td>${thisData.details}</td>
+                  <td>${thisData.healing}</td>
+                </tr>`)
+                list = list + `\n${thisData.details}`
+            } else {
+            }
+            count++;
+            document.querySelector("#reached").textContent = reached
+            document.querySelector("#saved").textContent = saved
+            document.querySelector("#filled").textContent = filled
+            document.querySelector("#prophesied").textContent = prophesied
+            document.querySelector("#healed").textContent = healed
+        })
+        $('tbody').append(`<tr>
+                  <td>Total</td>
+                  <td></td>
+                  <td>${reached}</td>
+                  <td>${saved}</td>
+                  <td>${filled}</td>
+                  <td>${prophesied}</td>
+                  <td>${healed}</td>
+                  <td></td>
+                </tr>`)
+        list2 = "";
+        console.log(list2)
+      } else {
+        $('tbody').append('<tr><td colspan="10">Nothing to show here</td></tr>');
+        $(noReport).append(`<li><em>Nothing to show here</em></li>`)
+      }
+    },
+    error: (e) => {
+      console.log(e);
+    }
+  })
+}
+
+const evangelismOneFunc = (start, end) => {
+  $('tbody').html('');
+  $('tbody').append('<tr><td colspan="10">Please wait...</td></tr>');
+  $(noReport).html('');
+  $(noReport).append('<li><em>Please wait...</em></li>')
+  $.ajax({
+    url: `/api/evangelism/${start}/${end}`,
+    type: 'GET',
+    success: (data) => {
+      console.log(data)
+      // let data = result.present
+      $('tbody').html('');
+      // $(noReport).html('');
+      if(data && Array.isArray(data) && data.length > 0){
+        list = "";
+        let count = 1;
+        let reached = 0;
+        let saved = 0;
+        let filled = 0;
+        let prophesied = 0;
+        let healed = 0;
+        // let elemCount = 0;
+        data.forEach((elem) => {
+            let thisRow = $('tbody');
+            if(elem.data){
+              let thisData = JSON.parse(elem.data);
+              console.log(thisData)
+                reached = reached + Number(thisData.stats[0]);
+                saved = saved + Number(thisData.stats[1]);
+                filled = filled + Number(thisData.stats[2]);
+                prophesied = prophesied + Number(thisData.stats[3]);
+                healed = healed + Number(thisData.stats[4]);
+                thisRow.append(`<tr>
+                  <td>${count}</td>
+                  <td>${moment(elem.date).format("DD/MM/YYYY")}</td>
+                  <td>${thisData.stats[0]}</td>
+                  <td>${thisData.stats[1]}</td>
+                  <td>${thisData.stats[2]}</td>
+                  <td>${thisData.stats[3]}</td>
+                  <td>${thisData.stats[4]}</td>
+                  <td>${thisData.details}</td>
+                  <td>${thisData.healing}</td>
+                </tr>`)
+                list = list + `\n${thisData.details}`
+            } else {
+            }
+            count++;
+            document.querySelector("#reached").textContent = reached
+            document.querySelector("#saved").textContent = saved
+            document.querySelector("#filled").textContent = filled
+            document.querySelector("#prophesied").textContent = prophesied
+            document.querySelector("#healed").textContent = healed
+        })
+        $('tbody').append(`<tr>
+          <td>Total</td>
+          <td></td>
+          <td>${reached}</td>
+          <td>${saved}</td>
+          <td>${filled}</td>
+          <td>${prophesied}</td>
+          <td>${healed}</td>
+          <td></td>
+          <td></td>
+        </tr>`)
+        list2 = "";
+        console.log(list2)
+      } else {
+        $('tbody').append('<tr><td colspan="10">Nothing to show here</td></tr>');
+        $(noReport).append(`<li><em>Nothing to show here</em></li>`)
+      }
+    },
+    error: (e) => {
+      console.log(e);
+    }
+  })
+}
+
+
+if (dateChooserEvglsm) {
+  if(fellowshipChooser){
+      fellowshipChooser.addEventListener("change", (e) => {
+      if(dateChooserEvglsm[0].value && dateChooserEvglsm[1].value){
+        evangelismAllFunc(fellowshipChooser.value, dateChooserEvglsm[0].value, dateChooserEvglsm[1].value)
+      }
+    })
+  }
+
+  dateChooserEvglsm.forEach((item) => {
+    item.addEventListener("change", (e) => {
+      if(dateChooserEvglsm[0].value && dateChooserEvglsm[1].value){
+        if(fellowshipChooser){
+          evangelismAllFunc(fellowshipChooser.value, dateChooserEvglsm[0].value, dateChooserEvglsm[1].value)
+        } else {
+          evangelismOneFunc(dateChooserEvglsm[0].value, dateChooserEvglsm[1].value)
+        }
+      }
+    })
+  })
+}
+
+
+newElement.forEach((item) => {
+  // Duplicate Element
+  item.addEventListener("click", (e) => {
+    let thisParent = e.target.parentNode.previousElementSibling;
+    $("#firstname").removeAttr("id");
+    let thisElement = $(e.target.parentNode.previousElementSibling.querySelector(".duplicate-element").outerHTML).append(`<i class="del-element far fa-trash-alt fa-1.5x float-right"></i>`)
+    $(thisParent).append(thisElement);
+    thisParent.lastElementChild.firstElementChild.setAttribute("id", "firstname");
+    newElement[0].style.visibility = "hidden";
+  })
+})
+
+
+if(elementPlayground){
+  // Remove elements
+  elementPlayground.forEach((item) => {
+    item.addEventListener("click", (e) => {
+      let delName = "del-element";
+      if(e.target.className.includes(delName)){
+        e.target.parentNode.previousElementSibling.firstElementChild.setAttribute("id", "firstname");
+        e.target.parentNode.remove();
+      }
+    })
+  })
+
+  // Show or hide ADD button
+  elementPlayground.forEach((item) => {
+    item.addEventListener("input", (e) => {
+      if(e.target.getAttribute("id") == "firstname"){
+        if(e.target.value.length > 0){
+          newElement[0].style.visibility = "visible";
+        } else {
+          newElement[0].style.visibility = "hidden";
+        }
+      }
+    })
   })
 }

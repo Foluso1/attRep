@@ -334,15 +334,38 @@ module.exports = {
 
     getAllEvangelismWithDate: async (req, res) => {
         try {
-            let abc = await Evangelism.find({
-                date: {$gte: req.params.date, $lt: moment(req.params.date).add(24, "hour")}
+
+            let flpWrkrs = await Worker.find({
+                overseer: req.user.id,
+                fellowship: req.params.fellowship
+            });
+
+            let idsflpWrkrs = flpWrkrs.map((item) => {
+                return item._id;
+            });
+
+            let flpEvglsm = await Evangelism.find({
+                author: {$in: idsflpWrkrs},
+                date: {$gte: req.params.start, $lte: req.params.end}
             }).populate({path: "author", select: "firstname surname"});
-            console.log(abc);
-            res.json(abc);
-        } catch(e) {
+            
+            res.json(flpEvglsm);
+
+        } catch (e) {
             console.log(e)
-            req.flash("error", "There was a problem");
             res.redirect("/")
+        }
+    },
+
+    getOneEvangelismWithDate: async (req, res) => {
+        try {
+            const evglsmReports = await Evangelism.find({
+                author: req.user.id,
+                date: {$gte: req.params.start, $lte: req.params.end}
+            }).populate({path: "author", select: "firstname surname"});
+            res.json(evglsmReports);
+        } catch (e) {
+            console.log(e)
         }
     }
 };

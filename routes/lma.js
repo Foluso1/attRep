@@ -14,11 +14,16 @@ router
         .post(middleware.isLoggedIn, middleware.isLMA, controller.postWorker)
         .put(middleware.isLoggedIn, middleware.isLMA, controller.editWorker)
         .delete(middleware.isLoggedIn, middleware.isLMA, controller.removeWorker);
-
+        
 router
     .route("/special")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.special)
 
+router
+    .route("/all/reporttopastor")
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.getReportToPastor)
+        .post(middleware.isLoggedIn, middleware.isLMA, controller.reportToPastor)
+        
 router
     .route("/all")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getAll);
@@ -50,6 +55,10 @@ router
 router
     .route("/all/expected/:date")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllExpectedAttendanceWithDate);
+
+router
+    .route("/all/evangelism/")
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.getAllEvangelism);
 
 router
     .route("/expected/special")

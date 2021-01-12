@@ -695,6 +695,18 @@ module.exports = {
 
     getAllAttendanceSpecialMeetings: (req, res) => {
         res.render("lma/all/attendance_Special")
+    },
+
+    getReportToPastor: (req, res) => {
+        res.render("lma/all/reportToPastor");
+    },
+
+    reportToPastor: (req, res) => {
+        console.log(req.body);
+    },
+
+    getAllEvangelism: (req, res) => {
+        res.render("lma/all/choose_date_evglsm")
     }
 }
  

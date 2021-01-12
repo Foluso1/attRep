@@ -50,19 +50,35 @@
                 </fieldset>
 
                 
-                <fieldset>
-                    <!-- DETAILS -->
+                <!-- DETAILS -->
+                <fieldset class="element-playground">
                     <legend class="pt-5"><b>B.  Details</b></legend>
-                    <div class="form-group">
-                        <label for="" class="text-justify">Indicate <b>names</b> of those you reached out to and whether
-                            they got saved, filled or prophesied</label>
-                        <textarea name="details" class="form-control" id="details" cols="10" rows="5" required></textarea>
+                    <label for="" class="text-justify">Indicate <b>details</b> of those you reached out to and whether
+                        they got saved, filled or prophesied</label>
+                    <div class="form-group duplicate-element">
+                        <input class="form-control firstname" type="text" name="details[firstname]" placeholder="Firstname" id="firstname">
+                        <input class="form-control" type="text" name="details[lastname]" placeholder="Lastname">
+                        <input class="form-control" type="tel" name="details[mobile]" placeholder="Phone Number" minlength="11" maxlength="11">
+                        <input class="form-control" type="email" name="details[email]" placeholder="Email">
+                        <select class="form-control" name="details[gender]">
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                        </select>
+                        <select class="form-control" name="details[status]">
+                            <option value="Saved">Saved</option>
+                            <option value="Filled">Filled</option>
+                            <option value="Prophesied">Prophesied</option>
+                        </select>
+                        <textarea class="form-control" name="details[address]" placeholder="Address"></textarea>
                     </div>
                 </fieldset>
+                <div>
+                    <i class="fas fa-plus-circle new-element"></i>
+                </div>
                     
                     
+                <!-- HEALING -->
                 <fieldset>
-                    <!-- HEALING -->
                     <legend class="pt-5"><b>C.  Healing Cases</b></legend>
                     <div class="form-group">
                         <label for="" class="text-justify">Indicate <b>names</b> of people who got healed, their age and how long they have been in that condition</label>

@@ -50,16 +50,87 @@
                 </fieldset>
 
                 
-                <fieldset>
-                    <!-- DETAILS -->
+                <!-- DETAILS -->
+                <!-- <fieldset>
                     <legend class="pt-5"><b>B.  Details</b></legend>
                     <div class="form-group">
                         <label for="" class="text-justify">Indicate <b>names</b> of those you reached out to and whether
                             they got saved, filled or prophesied</label>
                         <textarea name="details" class="form-control" id="details" cols="10" rows="10" required><%= thisReport.data.details %></textarea>
                     </div>
-                </fieldset>
-                    
+                </fieldset> -->
+                <% let firstkey = Object.keys(thisReport.data.details)[0]; %>
+                <% let firstVal = thisReport.data.details[firstkey]; %>
+                <% let firstValLength = firstVal.length; %>
+                <% if(typeof(firstVal) == "object"){ %>
+                    <fieldset class="element-playground">
+                        <legend class="pt-5"><b>B.  Details</b></legend>
+                        <label for="" class="text-justify">Indicate <b>details</b> of those you reached out to and whether
+                            they got saved, filled or prophesied</label>
+                        <% for(let i=0; i<firstValLength; i++){ %>
+                            <div class="form-group duplicate-element">
+                                <input class="form-control" type="text" name="details[firstname]" placeholder="Firstname" value="<%= thisReport.data.details.firstname[i] %>">
+                                <input class="form-control" type="text" name="details[lastname]" placeholder="Lastname" value="<%= thisReport.data.details.lastname[i] %>">
+                                <input class="form-control" type="tel" name="details[mobile]" placeholder="Phone Number" minlength="11" maxlength="11" value="<%= thisReport.data.details.mobile[i] %>">
+                                <input class="form-control" type="email" name="details[email]" placeholder="Email" value="<%= thisReport.data.details.email[i] %>">
+                                <select class="form-control" name="details[gender]">
+                                    <option value="<%= thisReport.data.details.gender[i] %>"><%= thisReport.data.details.gender[i] %></option>
+                                    <option value="Female">Female</option>
+                                    <option value="Male">Male</option>
+                                </select>
+                                <select class="form-control" name="details[status]">
+                                    <option value="<%= thisReport.data.details.status[i] %>"><%= thisReport.data.details.status[i] %></option>
+                                    <option value="Saved">Saved</option>
+                                    <option value="Filled">Filled</option>
+                                    <option value="Prophesied">Prophesied</option>
+                                </select>
+                                <textarea class="form-control" name="details[address]" placeholder="Address"><%= thisReport.data.details.address[i] %></textarea>
+                                <% if(i != 0){ %>
+                                    <i class="del-element far fa-trash-alt fa-1.5x float-right"></i>
+                                <% } %>
+                            </div>
+                        <% } %>
+                    </fieldset>
+                    <div>
+                        <i class="fas fa-plus-circle new-element"></i>
+                    </div>
+                <% } else if (typeof(thisReport.data.details) == "string") { %>
+                    <fieldset>
+                        <legend class="pt-5"><b>B.  Details</b></legend>
+                        <div class="form-group">
+                            <label for="" class="text-justify">Indicate <b>names</b> of those you reached out to and whether
+                                they got saved, filled or prophesied</label>
+                            <textarea name="details" class="form-control" id="details" cols="10" rows="10" required><%= thisReport.data.details %></textarea>
+                        </div>
+                    </fieldset>
+                <% } else { %>
+                    <fieldset class="element-playground">
+                        <legend class="pt-5"><b>B.  Details</b></legend>
+                        <label for="" class="text-justify">Indicate <b>names</b> of those you reached out to and whether
+                            they got saved, filled or prophesied</label>
+                        <div class="form-group duplicate-element">
+                            <input class="form-control" type="text" name="details[firstname]" placeholder="Firstname" value="<%= thisReport.data.details.firstname %>">
+                            <input class="form-control" type="text" name="details[lastname]" placeholder="Lastname" value="<%= thisReport.data.details.lastname %>">
+                            <input class="form-control" type="tel" name="details[mobile]" placeholder="Phone Number" minlength="11" maxlength="11" value="<%= thisReport.data.details.mobile %>">
+                            <input class="form-control" type="email" name="details[email]" placeholder="Email" value="<%= thisReport.data.details.email %>">
+                            <select class="form-control" name="details[gender]">
+                                <option value="<%= thisReport.data.details.gender %>"><%= thisReport.data.details.gender %></option>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                            </select>
+                            <select class="form-control" name="details[status]">
+                                <option value="<%= thisReport.data.details.status %>"><%= thisReport.data.details.status %></option>
+                                <option value="Saved">Saved</option>
+                                <option value="Filled">Filled</option>
+                                <option value="Prophesied">Prophesied</option>
+                            </select>
+                            <textarea class="form-control" name="details[address]" placeholder="Address"><%= thisReport.data.details.address %></textarea>
+                        </div>
+                    </fieldset>
+                    <div>
+                        <i class="fas fa-plus-circle new-element"></i>
+                    </div>
+                <% } %>
                     
                 <fieldset>
                     <!-- HEALING -->

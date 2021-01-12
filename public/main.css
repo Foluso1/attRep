@@ -243,7 +243,6 @@ button:not(#report) {
     scale: 1.05;
 }
 
-
 /* 
 Table Stylings
 */
@@ -308,7 +307,8 @@ only screen and (max-width: 760px),
 		border: none;
 		border-bottom: 1px solid #CEBF9F; 
 		position: relative;
-		padding-left: 40%; 
+        padding-left: 40%; 
+        min-height: 50px;
 	}
 	
 	td:before { 
@@ -356,6 +356,22 @@ only screen and (max-width: 760px),
     #table-lockdown-one td:nth-of-type(10):before { content: "Study Group"; }
     #table-lockdown-one td:nth-of-type(11):before { content: "Telecast";}
     #table-lockdown-one td:nth-of-type(12):before { content: "Optional";}
+
+
+    #evangelism td:nth-of-type(1):before { content: "S/N"; }
+    #evangelism td:nth-of-type(2):before { content: "Date"; }
+    #evangelism td:nth-of-type(3):before { content: "Reached"; }
+    #evangelism td:nth-of-type(4):before { content: "Saved"; }
+    #evangelism td:nth-of-type(5):before { content: "Filled"; }
+    #evangelism td:nth-of-type(6):before { content: "Prophesied"; }
+    #evangelism td:nth-of-type(7):before { content: "Healed"; }
+    #evangelism td:nth-of-type(8):before { content: "Evangelism Details"; }
+    #evangelism td:nth-of-type(9):before { content: "Healing Cases"; }
+
+    .prayer-chain-table td:nth-of-type(1):before { content: "Day"; }
+    .prayer-chain-table td:nth-of-type(2):before { content: "Start"; }
+    .prayer-chain-table td:nth-of-type(3):before { content: "End"; }
+
 	
 }
 
@@ -384,6 +400,10 @@ only screen and (max-width: 760px),
 .prayer-del-btn {
     color: rgb(255, 37, 37);
     margin: auto;
+}
+
+.del-element {
+    color: red; 
 }
 
 .prayer-del-btn:hover {
@@ -425,6 +445,13 @@ hr {
     color: red;
 }
 
+.notabene-red {
+    color: #9C0006;
+    font-size: 9pt;
+    padding: 2px 5px;
+    border-radius: 3px;
+    width: 50%;
+}
 
 
 /* ALL LOCKDOWN TABLE */
@@ -457,6 +484,7 @@ table.allLMALockdown {
     border-bottom: 1px solid #CEBF9F; 
     position: relative;
     padding-left: 40%; 
+    min-height: 50px;
 }
 
 .allLockdown td:before { 
@@ -606,4 +634,34 @@ ol.disciple-list li div:nth-of-type(2n) {
     padding-bottom: 2px;
     padding-top: 2px;
     border-bottom: 1px solid #473816;
+}
+
+.naira {
+    font-size: 16px;
+    padding-top: 5px;
+    padding-right: 5px;
+}
+
+
+/* ADD OR REMOVE HTML ELEMENTS */
+
+.duplicate-element {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 30px;
+}
+
+.element-playground i {
+    font-size: 25px;
+}
+
+.new-element {
+    color: var(--blue);
+    font-size: 25px;
+    visibility: hidden;
+}
+
+ol {
+    padding-inline-start: 0px;
 }

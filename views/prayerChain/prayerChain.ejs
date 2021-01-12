@@ -5,7 +5,7 @@
         <a class="btn btn-primary btn-sm" href="/prayerchain/new">New Prayer Chain Report</a>
     </div>
 
-<main class="row">
+<main class="container">
     <div class="col-md-12">
             <h3>My Prayer Chain Report</h3>
         <div>
@@ -15,7 +15,7 @@
         </br>
         <h5>Week <span id="prayer-week-number"><%= weekPrChain.week %></span>: <span id="week-span"><%= moment().locale("en-us").startOf('week').format('ddd MMM Do') %> - <%= moment().locale("en-us").endOf('week').format('ddd MMM Do') %></span></h5>
         <h5>Prayer Ratio: <span id="prayer-ratio"><%= weekPrChain.frequency %></span>/7</h5>
-        <table class="allLMALockdown" id="prayer-chain-table">
+        <table class="prayer-chain-table">
             <thead>
                 <td><b>Day</b></td>
                 <td><b>Start</b></td>

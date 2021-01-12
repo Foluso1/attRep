@@ -5,14 +5,14 @@
     <div class="col-md-12" style="overflow-x:auto;">
         <br>
         <div class="mx-3">
-            <h2>Expected Attendance for All</h2>
-            <h3>Select a date to query for data</h3>
+            <h2>Evangelism Reports for All</h2>
+            <h3>Select a date range to query for data</h3>
             <br/>
             <div class="row">
-                <div class="col-sm-4">
+                <!-- <div class="col-sm-4">
                     <label class="m-2">For: </label>
                     <select class="report-for form-control mx-2">
-                        <option value="<%= moment().format("dddd")%>" selected><%= moment().format("dddd")%></option>
+                        <option value="<%#= moment().format("dddd")%>" selected><%#= moment().format("dddd")%></option>
                         <option value="Sunday">Sunday</option>
                         <option value="Monday">Monday</option>
                         <option value="Tuesday">Tuesday</option>
@@ -21,7 +21,7 @@
                         <option value="Friday">Friday</option>
                         <option value="Saturday">Saturday</option>
                     </select>
-                </div>
+                </div> -->
                 <div class="col-sm-4">
                     <label class="m-2 pl-2">Fellowship: </label>
                     <select class="fellowship-chooser form-control mx-2">
@@ -30,14 +30,18 @@
                     </select>
                 </div>
                 <div class="col-sm-4">
-                    <label class="m-2 pl-2">Date: </label>
-                    <input type="date" name="date-lockdown" id="expected" class="date-chooser form-control mx-2" />
+                    <label class="m-2 pl-2">Start Date: </label>
+                    <input type="date" name="" id="" class="date-chooser-evglsm form-control mx-2" />
+                </div>
+                <div class="col-sm-4">
+                    <label class="m-2 pl-2">End Date: </label>
+                    <input type="date" name="" id="" class="date-chooser-evglsm form-control mx-2" />
                 </div>
             </div>
-            <div class="m-2">
+            <!-- <div class="m-2">
                 <div class="my-2">Total Workers: <span class="total-workers"></span></div>
                 <div class="my-2">Total Disciples: <span class="total-disciples"></span></div>
-            </div>
+            </div> -->
         </div>
         <p></p>
     </div>
@@ -48,12 +52,27 @@
         <tr>
             <th><b>S/N</b></th>
             <th><b>Summoner</b></th>
-            <th><b>Disciples / Invitees</b></th>
-            <th><b>Info</b></th>
+            <th><b>Reached</b></th>
+            <th><b>Saved</b></th>
+            <th><b>Filled</b></th>
+            <th><b>Prophesied</b></th>
+            <th><b>Healing Case</b></th>
+            <th><b>Evangelism Details</b></th>
+            <th><b>Healing Details</b></th>
+        </tr>
+        <tr>
+            <th><b>Total</b></th>
+            <th></th>
+            <th id="reached"></th>
+            <th id="saved"></th>
+            <th id="filled"></th>
+            <th id="prophesied"></th>
+            <th id="healed"></th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-
     </tbody>
 </table>
 <a class="copy-list btn btn-sm mt-2">Copy</a>
