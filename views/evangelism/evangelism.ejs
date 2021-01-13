@@ -62,8 +62,19 @@
                                     <% for(let i=0; i<elem.data.details[Object.keys(elem.data.details)[0]].length; i++){ %>
                                             <li>
                                                 <%= elem.data.details.firstname[i] %> <%= elem.data.details.lastname[i] %> (<%= elem.data.details.status[i] %>)<br>
-                                                <%= elem.data.details.mobile[i] %> | <%= elem.data.details.email[i] %><br>
-                                                <%= elem.data.details.gender[i] %> | <%= elem.data.details.address[i] %><br>
+                                                <% if(elem.data.details.email[i]){ %>
+                                                    <% if(elem.data.details.mobile[i]){ %>
+                                                        <a href="tel:<%= elem.data.details.mobile[i] %>"><%= elem.data.details.mobile[i] %></a>
+                                                    <% } %> | <%= elem.data.details.email[i] %><br>
+                                                <% } else { %> 
+                                                    <% if(elem.data.details.mobile[i]){ %>
+                                                        <a href="tel:<%= elem.data.details.mobile[i] %>"><%= elem.data.details.mobile[i] %></a><br>
+                                                    <% } %>
+                                                <% } %> 
+                                                <%= elem.data.details.gender[i] %> 
+                                                <% if(elem.data.details.address[i]){ %>
+                                                    | <%= elem.data.details.address[i] %><br>
+                                                <% } %>
                                                 <% if(elem.data.details.language && elem.data.details.language[i] ){ %>
                                                     <%= elem.data.details.language[i] %>
                                                 <% } %>
@@ -77,7 +88,7 @@
                             <% } else if (elem.data.details && typeof(elem.data.details) == "object"){ %>
                                 <td class="">
                                     <%= elem.data.details.firstname %> <%= elem.data.details.lastname %> (<%= elem.data.details.status %>)<br>
-                                    <%= elem.data.details.mobile %> | <%= elem.data.details.email %><br>
+                                    <a href="tel:<%= elem.data.details.mobile %>"><%= elem.data.details.mobile %></a> | <%= elem.data.details.email %><br>
                                     <%= elem.data.details.gender %> | <%= elem.data.details.address %><br>
                                 </td>
                             <% } else { %>
