@@ -53,10 +53,9 @@
                 <!-- DETAILS -->
                 <fieldset class="element-playground">
                     <legend class="pt-5"><b>B.  Details</b></legend>
-                    <label for="" class="text-justify">Indicate <b>details</b> of those you reached out to and whether
-                        they got saved, filled or prophesied</label>
+                    <label for="" class="text-justify">Indicate <b>details</b> of each person you reached out to and whether they got saved, filled or prophesied. Fill this first and then use <i class="fas fa-plus-circle" id="sample-icon"></i> to add more souls.</label>
                     <div class="form-group duplicate-element">
-                        <input class="form-control firstname" type="text" name="details[firstname]" placeholder="Firstname" id="firstname">
+                        <input class="form-control firstname" type="text" name="details[firstname]" placeholder="Firstname" id="firstname" autofocus>
                         <input class="form-control" type="text" name="details[lastname]" placeholder="Lastname">
                         <input class="form-control" type="tel" name="details[mobile]" placeholder="Phone Number" minlength="11" maxlength="11">
                         <input class="form-control" type="email" name="details[email]" placeholder="Email">
@@ -69,7 +68,34 @@
                             <option value="Filled">Filled</option>
                             <option value="Prophesied">Prophesied</option>
                         </select>
+                        <select class="form-control" name="details[language]">
+                            <option value="--">-Select primary language-</option>
+                            <option value="Amhari">Amhari</option>
+                            <option value="Arabic">Arabic</option>
+                            <option value="Bengali">Bengali</option>
+                            <option value="Chinese">Chinese</option>
+                            <option value="English">English</option>
+                            <option value="English (Pidgin)">English (Pidgin)</option>
+                            <option value="French">French</option>
+                            <option value="German">German</option>
+                            <option value="Hausa">Hausa</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Igbo">Igbo</option>
+                            <option value="Indonesian">Indonesian</option>
+                            <option value="Italian">Italian</option>
+                            <option value="Japanese">Japanese</option>
+                            <option value="Lahnda">Lahnda</option>
+                            <option value="Oromo">Oromo</option>
+                            <option value="Portuguese">Portuguese</option>
+                            <option value="Russian">Russian</option>
+                            <option value="Spanish">Spanish</option>
+                            <option value="Swahili">Swahili</option>
+                            <option value="Shona">Shona</option>
+                            <option value="Yoruba">Yoruba</option>
+                            <option value="Zulu">Zulu</option>
+                        </select>
                         <textarea class="form-control" name="details[address]" placeholder="Address"></textarea>
+                        <textarea class="form-control" name="details[info]" placeholder="Additional Information"></textarea>
                     </div>
                 </fieldset>
                 <div>

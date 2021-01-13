@@ -64,16 +64,39 @@
                                                 <%= elem.data.details.firstname[i] %> <%= elem.data.details.lastname[i] %> (<%= elem.data.details.status[i] %>)<br>
                                                 <%= elem.data.details.mobile[i] %> | <%= elem.data.details.email[i] %><br>
                                                 <%= elem.data.details.gender[i] %> | <%= elem.data.details.address[i] %><br>
+                                                <% if(elem.data.details.language && elem.data.details.language[i] ){ %>
+                                                    <%= elem.data.details.language[i] %>
+                                                <% } %>
+                                                <% if(elem.data.details.info && elem.data.details.info[i] ){ %>
+                                                    | <%= elem.data.details.info[i] %><br>
+                                                <% } %>
                                             </li>
                                     <% } %>
                                 </ol>
                             </td>
+                            <% } else if (elem.data.details && typeof(elem.data.details) == "object"){ %>
+                                <td class="">
+                                    <%= elem.data.details.firstname %> <%= elem.data.details.lastname %> (<%= elem.data.details.status %>)<br>
+                                    <%= elem.data.details.mobile %> | <%= elem.data.details.email %><br>
+                                    <%= elem.data.details.gender %> | <%= elem.data.details.address %><br>
+                                </td>
                             <% } else { %>
-                            <td class="text-paragraphs">
-                                <%= elem.data.details.toString() %> 
-                            </td>
+                                <td class="">
+                                    <% let text = elem.data.details %>
+                                    <% let splitText = text.split("\n") %>
+                                    <% splitText.forEach((subText) => { %>
+                                        <%= subText %><br>
+                                    <% }) %>
+                                </td>
                             <% } %>
-                            <td class="text-paragraphs"><%= elem.data.healing %></td>
+                            <td class="">
+                                <%#= elem.data.healing %>
+                                <% let text = elem.data.healing %>
+                                <% let splitText = text.split("\n") %>
+                                <% splitText.forEach((subText) => { %>
+                                    <%= subText %><br>
+                                <% }) %>
+                            </td>
                             <% if(baseUrl == "/lma" || (Date.now() - elem.date.getTime()) >= 86400000 ){ %>
                                 <td>
                                     <form action="/evangelism/<%= elem.id %>/edit" method="GET" class="d-inline-flex mx-2">

@@ -63,13 +63,12 @@
                 <% let firstVal = thisReport.data.details[firstkey]; %>
                 <% let firstValLength = firstVal.length; %>
                 <% if(typeof(firstVal) == "object"){ %>
-                    <fieldset class="element-playground">
+                    <fieldset class="element-playground" id="edit-playground">
                         <legend class="pt-5"><b>B.  Details</b></legend>
-                        <label for="" class="text-justify">Indicate <b>details</b> of those you reached out to and whether
-                            they got saved, filled or prophesied</label>
+                        <label for="" class="text-justify">Indicate <b>details</b> of each person you reached out to and whether they got saved, filled or prophesied. Fill this first and then use the <i class="fas fa-plus-circle" id="sample-icon"></i> to add more souls.</label>
                         <% for(let i=0; i<firstValLength; i++){ %>
                             <div class="form-group duplicate-element">
-                                <input class="form-control" type="text" name="details[firstname]" placeholder="Firstname" value="<%= thisReport.data.details.firstname[i] %>">
+                                <input class="form-control" type="text" name="details[firstname]" placeholder="Firstname" id="firstname" value="<%= thisReport.data.details.firstname[i] %>">
                                 <input class="form-control" type="text" name="details[lastname]" placeholder="Lastname" value="<%= thisReport.data.details.lastname[i] %>">
                                 <input class="form-control" type="tel" name="details[mobile]" placeholder="Phone Number" minlength="11" maxlength="11" value="<%= thisReport.data.details.mobile[i] %>">
                                 <input class="form-control" type="email" name="details[email]" placeholder="Email" value="<%= thisReport.data.details.email[i] %>">
@@ -84,7 +83,42 @@
                                     <option value="Filled">Filled</option>
                                     <option value="Prophesied">Prophesied</option>
                                 </select>
+                                <select class="form-control" name="details[language]">
+                                    <% if( thisReport.data.details.language && thisReport.data.details.language[i] ){ %>
+                                        <option value="<%= thisReport.data.details.language[i] %>"><%= thisReport.data.details.language[i] %></option>
+                                    <% } else { %>
+                                        <option value="--">-Select primary language-</option>
+                                    <% } %>
+                                    <option value="Amhari">Amhari</option>
+                                    <option value="Arabic">Arabic</option>
+                                    <option value="Bengali">Bengali</option>
+                                    <option value="Chinese">Chinese</option>
+                                    <option value="English">English</option>
+                                    <option value="English (Pidgin)">English (Pidgin)</option>
+                                    <option value="French">French</option>
+                                    <option value="German">German</option>
+                                    <option value="Hausa">Hausa</option>
+                                    <option value="Hindi">Hindi</option>
+                                    <option value="Igbo">Igbo</option>
+                                    <option value="Indonesian">Indonesian</option>
+                                    <option value="Italian">Italian</option>
+                                    <option value="Japanese">Japanese</option>
+                                    <option value="Lahnda">Lahnda</option>
+                                    <option value="Oromo">Oromo</option>
+                                    <option value="Portuguese">Portuguese</option>
+                                    <option value="Russian">Russian</option>
+                                    <option value="Spanish">Spanish</option>
+                                    <option value="Swahili">Swahili</option>
+                                    <option value="Shona">Shona</option>
+                                    <option value="Yoruba">Yoruba</option>
+                                    <option value="Zulu">Zulu</option>
+                                </select>
                                 <textarea class="form-control" name="details[address]" placeholder="Address"><%= thisReport.data.details.address[i] %></textarea>
+                                <% if(thisReport.data.details.info && thisReport.data.details.info[i]){ %>
+                                    <textarea class="form-control" name="details[info]" placeholder="Additional Information"><%= thisReport.data.details.info[i] %></textarea>
+                                <% } else { %>
+                                    <textarea class="form-control" name="details[info]" placeholder="Additional Information"></textarea>
+                                <% } %>
                                 <% if(i != 0){ %>
                                     <i class="del-element far fa-trash-alt fa-1.5x float-right"></i>
                                 <% } %>
@@ -104,12 +138,11 @@
                         </div>
                     </fieldset>
                 <% } else { %>
-                    <fieldset class="element-playground">
+                    <fieldset class="element-playground" id="edit-playground">
                         <legend class="pt-5"><b>B.  Details</b></legend>
-                        <label for="" class="text-justify">Indicate <b>names</b> of those you reached out to and whether
-                            they got saved, filled or prophesied</label>
+                        <label for="" class="text-justify">Indicate <b>details</b> of each person you reached out to and whether they got saved, filled or prophesied. Fill this first and then use <i class="fas fa-plus-circle" id="sample-icon"></i> to add more souls.</label>
                         <div class="form-group duplicate-element">
-                            <input class="form-control" type="text" name="details[firstname]" placeholder="Firstname" value="<%= thisReport.data.details.firstname %>">
+                            <input class="form-control" type="text" name="details[firstname]" placeholder="Firstname" id="firstname" value="<%= thisReport.data.details.firstname %>">
                             <input class="form-control" type="text" name="details[lastname]" placeholder="Lastname" value="<%= thisReport.data.details.lastname %>">
                             <input class="form-control" type="tel" name="details[mobile]" placeholder="Phone Number" minlength="11" maxlength="11" value="<%= thisReport.data.details.mobile %>">
                             <input class="form-control" type="email" name="details[email]" placeholder="Email" value="<%= thisReport.data.details.email %>">
@@ -124,7 +157,42 @@
                                 <option value="Filled">Filled</option>
                                 <option value="Prophesied">Prophesied</option>
                             </select>
+                            <select class="form-control" name="details[language]">
+                                <% if( thisReport.data.details.language && thisReport.data.details.language[i] ){ %>
+                                    <option value="<%= thisReport.data.details.language[i] %>"><%= thisReport.data.details.language[i] %></option>
+                                <% } else { %>
+                                    <option value="--">-Select primary language-</option>
+                                <% } %>
+                                <option value="Amhari">Amhari</option>
+                                <option value="Arabic">Arabic</option>
+                                <option value="Bengali">Bengali</option>
+                                <option value="Chinese">Chinese</option>
+                                <option value="English">English</option>
+                                <option value="English (Pidgin)">English (Pidgin)</option>
+                                <option value="French">French</option>
+                                <option value="German">German</option>
+                                <option value="Hausa">Hausa</option>
+                                <option value="Hindi">Hindi</option>
+                                <option value="Igbo">Igbo</option>
+                                <option value="Indonesian">Indonesian</option>
+                                <option value="Italian">Italian</option>
+                                <option value="Japanese">Japanese</option>
+                                <option value="Lahnda">Lahnda</option>
+                                <option value="Oromo">Oromo</option>
+                                <option value="Portuguese">Portuguese</option>
+                                <option value="Russian">Russian</option>
+                                <option value="Spanish">Spanish</option>
+                                <option value="Swahili">Swahili</option>
+                                <option value="Shona">Shona</option>
+                                <option value="Yoruba">Yoruba</option>
+                                <option value="Zulu">Zulu</option>
+                            </select>
                             <textarea class="form-control" name="details[address]" placeholder="Address"><%= thisReport.data.details.address %></textarea>
+                            <% if(thisReport.data.details.info && thisReport.data.details.info[i]){ %>
+                                <textarea class="form-control" name="details[info]" placeholder="Additional Information"><%= thisReport.data.details.info[i] %></textarea>
+                            <% } else { %>
+                                <textarea class="form-control" name="details[info]" placeholder="Additional Information"></textarea>
+                            <% } %>
                         </div>
                     </fieldset>
                     <div>

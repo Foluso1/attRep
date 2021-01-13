@@ -51,9 +51,11 @@ const copyList2 = document.querySelector(".copy-list-2");
 const offering = document.querySelector("#offering");
 const dateChooserEvglsm = document.querySelectorAll(".date-chooser-evglsm");
 const newElement = document.querySelectorAll(".new-element");
+const newElementEdit = document.querySelectorAll(".new-element-edit");
 const delElement = document.querySelectorAll(".del-element");
 const firstNameElem = document.querySelector("#firstname");
 const elementPlayground = document.querySelectorAll(".element-playground");
+const editPlayground = document.querySelector("#edit-playground");
 let list = "";
 let list2 = "";
 
@@ -1259,17 +1261,53 @@ if (dateChooserEvglsm) {
 }
 
 
+
+$.fn.removeText = function(){
+  this.each(function(){
+
+     // Get elements contents
+     var $cont = $(this).contents();
+
+      // Loop through the contents
+      $cont.each(function(){
+         var $this = $(this);
+
+          // If it's a text node
+          if(this.nodeType == 3){
+            $this.value = ""; // Remove it 
+          } else if(this.nodeType == 1){ // If its an element node
+            // $this.removeText(); //Recurse
+          }
+      });
+  });
+}
+
 newElement.forEach((item) => {
   // Duplicate Element
   item.addEventListener("click", (e) => {
     let thisParent = e.target.parentNode.previousElementSibling;
     $("#firstname").removeAttr("id");
-    let thisElement = $(e.target.parentNode.previousElementSibling.querySelector(".duplicate-element").outerHTML).append(`<i class="del-element far fa-trash-alt fa-1.5x float-right"></i>`)
+    let thisElement = $(thisParent.querySelector(".duplicate-element").outerHTML).append(`<i class="del-element far fa-trash-alt fa-1.5x float-right"></i>`);
     $(thisParent).append(thisElement);
     thisParent.lastElementChild.firstElementChild.setAttribute("id", "firstname");
-    newElement[0].style.visibility = "hidden";
+      newElement[0].style.visibility = "hidden";
   })
+});
+
+window.addEventListener("load", function(e){
+  let abc = e.target.querySelector("#edit-playground");
+  if (abc) {
+    newElement[0].style.visibility = "visible";
+  }
 })
+
+if(editPlayground){
+  editPlayground.addEventListener("change", (e) => {
+    if(editPlayground.querySelector("#firstname").value.length != 0){
+      newElement[0].style.visibility = "visible";
+    }
+  })
+}
 
 
 if(elementPlayground){
@@ -1279,6 +1317,9 @@ if(elementPlayground){
       let delName = "del-element";
       if(e.target.className.includes(delName)){
         e.target.parentNode.previousElementSibling.firstElementChild.setAttribute("id", "firstname");
+        if(e.target.parentNode.previousElementSibling.firstElementChild.value.length > 0){
+          newElement[0].style.visibility = "visible";
+        }
         e.target.parentNode.remove();
       }
     })
@@ -1289,9 +1330,17 @@ if(elementPlayground){
     item.addEventListener("input", (e) => {
       if(e.target.getAttribute("id") == "firstname"){
         if(e.target.value.length > 0){
-          newElement[0].style.visibility = "visible";
+          if(newElement[0]){
+            newElement[0].style.visibility = "visible";
+          } else {
+            newElementEdit[0].style.visibility = "visible";
+          }
         } else {
-          newElement[0].style.visibility = "hidden";
+          if(newElement[0]){
+            newElement[0].style.visibility = "hidden";
+          } else {
+            newElementEdit[0].style.visibility = "hidden";
+          }
         }
       }
     })

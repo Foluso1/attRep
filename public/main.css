@@ -662,6 +662,11 @@ ol.disciple-list li div:nth-of-type(2n) {
     visibility: hidden;
 }
 
+#sample-icon {
+    font-size: 14px;
+    color: var(--blue);
+}
+
 ol {
     padding-inline-start: 0px;
 }
