@@ -22,7 +22,15 @@ router
 router
     .route("/all/reporttopastor")
         .get(middleware.isLoggedIn, middleware.isLMA, controller.getReportToPastor)
-        .post(middleware.isLoggedIn, middleware.isLMA, controller.reportToPastor)
+        // .post(middleware.isLoggedIn, middleware.isLMA, controller.reportToPastor)
+
+router
+    .route("/all/reporttopastor/:id/edit")
+        .get(middleware.isLoggedIn, middleware.isLMA, controller.editReportToPastor)
+
+router
+    .route("/all/reporttopastor/:id")
+        .put(middleware.isLoggedIn, middleware.isLMA, controller.updateReportToPastor)
         
 router
     .route("/all")

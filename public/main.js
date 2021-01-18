@@ -1055,31 +1055,31 @@ if(dateChooser){
   })
 }
 
-function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-if (offering){
-  offering.addEventListener("change", (e) => {
-    if (e.target.parentNode.parentNode.children[2]){
-      e.target.parentNode.parentNode.children[2].textContent = "";
-      e.target.parentNode.parentNode.children[2].style.backgroundColor = "";
-          e.target.parentNode.parentNode.children[2].style.border = "";
-    }
-    let val = e.target.value
-    e.target.type = "text";
-    let thisValue = val;
-    let strAmt = thisValue.toString();
-    if(isNaN(val)){
-        thisValue = strAmt.split(",").join("");
-        if(isNaN(thisValue)){
-          e.target.parentNode.parentNode.children[2].textContent = "Value is supposed to be a number";
-          e.target.parentNode.parentNode.children[2].style.backgroundColor = "#FFC7CE";
-          e.target.parentNode.parentNode.children[2].style.border = "1px solid red";
-        }
-    }
-    e.target.value = numberWithCommas(thisValue);
-  });
-}
+// function numberWithCommas(x) {
+//   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+// }
+// if (offering){
+//   offering.addEventListener("change", (e) => {
+//     if (e.target.parentNode.parentNode.children[2]){
+//       e.target.parentNode.parentNode.children[2].textContent = "";
+//       e.target.parentNode.parentNode.children[2].style.backgroundColor = "";
+//           e.target.parentNode.parentNode.children[2].style.border = "";
+//     }
+//     let val = e.target.value
+//     e.target.type = "text";
+//     let thisValue = val;
+//     let strAmt = thisValue.toString();
+//     if(isNaN(val)){
+//         thisValue = strAmt.split(",").join("");
+//         if(isNaN(thisValue)){
+//           e.target.parentNode.parentNode.children[2].textContent = "Value is supposed to be a number";
+//           e.target.parentNode.parentNode.children[2].style.backgroundColor = "#FFC7CE";
+//           e.target.parentNode.parentNode.children[2].style.border = "1px solid red";
+//         }
+//     }
+//     e.target.value = numberWithCommas(thisValue);
+//   });
+// }
 
 
 //////////////////////////// EVANGELISM //////////////////////////////
@@ -1303,7 +1303,7 @@ window.addEventListener("load", function(e){
 
 if(editPlayground){
   editPlayground.addEventListener("change", (e) => {
-    if(editPlayground.querySelector("#firstname").value.length != 0){
+    if(editPlayground.querySelector("#firstname").value && editPlayground.querySelector("#firstname").value.length != 0){
       newElement[0].style.visibility = "visible";
     }
   })
@@ -1316,8 +1316,9 @@ if(elementPlayground){
     item.addEventListener("click", (e) => {
       let delName = "del-element";
       if(e.target.className.includes(delName)){
-        e.target.parentNode.previousElementSibling.firstElementChild.setAttribute("id", "firstname");
-        if(e.target.parentNode.previousElementSibling.firstElementChild.value.length > 0){
+        let thisNode = e.target.parentNode.previousElementSibling.firstElementChild;
+        thisNode.setAttribute("id", "firstname");
+        if(thisNode.value && thisNode.value.length > 0){
           newElement[0].style.visibility = "visible";
         }
         e.target.parentNode.remove();

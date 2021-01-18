@@ -50,7 +50,7 @@
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="isLMA">LMA Status</label>
                         <select name="isLMA" id="isLMA" class="form-control col-6">
-                        <% if(profile.isLMa == "true") { %>
+                        <% if(profile.isLMA == true) { %>
                             <option class="form-control" value="true">Yes</option>
                             <option class="form-control" value="false">No</option>
                         <% } else { %>
@@ -62,7 +62,7 @@
                     <div class="d-flex m-2">
                         <label class="m-2 float-left" for="isAdmin">Admin Status</label>
                         <select name="isAdmin" id="isAdmin" class="form-control col-6">
-                            <% if(profile.isAdmin == "true") { %>
+                            <% if(profile.isAdmin == true) { %>
                                 <option class="form-control" value="true">Yes</option>
                                 <option class="form-control" value="false">No</option>
                             <% } else { %>

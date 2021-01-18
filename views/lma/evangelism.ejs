@@ -3,14 +3,9 @@
 
 <div class="container">
     <div class="row card d-flex justify-content-center">
-            <h3 class="pt-5 text-center"><b> <%= foundWorker.firstname %> <%= foundWorker.surname %>'s Evangelism Report</b></h3>
+            <h3 class="pt-5 text-center"><b><%= foundWorker.firstname %> <%= foundWorker.surname %>'s Evangelism Reports</b></h3>
             <div class="text-center">
-                <% if(baseUrl == "/lma"){ %>
-                    <br>
-                    <p></p>
-                <% } else { %>
-                    <a class="btn btn-sm btn-primary col-sm-6 col-md-4 col-lg-2 my-3" href="/evangelism/new">Write new report</a>
-                <%}%>
+            <!-- <a class="btn btn-sm btn-primary col-sm-6 col-md-4 col-lg-2 my-3" href="/evangelism/new">Write new report</a> -->
             </div>
             <div>
                 <table border="1" class="allLockdown" id="evangelismTable" style="overflow-x: auto;">
@@ -32,7 +27,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% evangelism.forEach((elem) => { %> 
+                        <% evangelism.forEach((elem) => { %>
                         <tr>
                             <td><%= moment(elem.date).format("DD-MM-YYYY") %></td>
                             <td><%= elem.data.location %></td>
@@ -61,8 +56,76 @@
                             <% } else { %>
                                 <td><%= elem.data.stats[4] %> souls</td>
                             <% } %>
-                            <td class="text-paragraphs"><%= elem.data.details %></td>
-                            <td class="text-paragraphs"><%= elem.data.healing %></td>
+                            <% if(elem.data.details && typeof(elem.data.details[Object.keys(elem.data.details)[0]]) == "object"){ %>
+                            <td>
+                                <ol>
+                                    <% for(let i=0; i<elem.data.details[Object.keys(elem.data.details)[0]].length; i++){ %>
+                                            <li>
+                                                <%= elem.data.details.firstname[i] %> <%= elem.data.details.lastname[i] %> (<%= elem.data.details.status[i] %>)<br>
+                                                <% if(elem.data.details.email[i]){ %>
+                                                    <% if(elem.data.details.mobile[i]){ %>
+                                                        <a href="tel:<%= elem.data.details.mobile[i] %>"><%= elem.data.details.mobile[i] %></a>
+                                                    <% } %> | <%= elem.data.details.email[i] %><br>
+                                                <% } else { %> 
+                                                    <% if(elem.data.details.mobile[i]){ %>
+                                                        <a href="tel:<%= elem.data.details.mobile[i] %>"><%= elem.data.details.mobile[i] %></a><br>
+                                                    <% } %>
+                                                <% } %> 
+                                                <%= elem.data.details.gender[i] %> 
+                                                <% if(elem.data.details.address[i]){ %>
+                                                    | <%= elem.data.details.address[i] %><br>
+                                                <% } %>
+                                                <% if(elem.data.details.language && elem.data.details.language[i] ){ %>
+                                                    <%= elem.data.details.language[i] %>
+                                                <% } %>
+                                                <% if(elem.data.details.info && elem.data.details.info[i] ){ %>
+                                                    | <%= elem.data.details.info[i] %><br>
+                                                <% } %>
+                                            </li>
+                                    <% } %>
+                                </ol>
+                            </td>
+                            <% } else if (elem.data.details && typeof(elem.data.details) == "object"){ %>
+                                <td class="">
+                                    <%= elem.data.details.firstname %> <%= elem.data.details.lastname %> (<%= elem.data.details.status %>)<br>
+                                    <a href="tel:<%= elem.data.details.mobile %>"><%= elem.data.details.mobile %></a> | <%= elem.data.details.email %><br>
+                                    <%= elem.data.details.gender %> | <%= elem.data.details.address %><br>
+                                </td>
+                            <% } else { %>
+                                <td class="">
+                                    <% let text = elem.data.details %>
+                                    <% let splitText = text.split("\n") %>
+                                    <% splitText.forEach((subText) => { %>
+                                        <%= subText %><br>
+                                    <% }) %>
+                                </td>
+                            <% } %>
+                            <td class="">
+                                <%#= elem.data.healing %>
+                                <% let text = elem.data.healing %>
+                                <% let splitText = text.split("\n") %>
+                                <% splitText.forEach((subText) => { %>
+                                    <%= subText %><br>
+                                <% }) %>
+                            </td>
+                            <% if(baseUrl == "/lma" || (Date.now() - elem.date.getTime()) >= 86400000 ){ %>
+                                <td>
+                                    <form action="/evangelism/<%= elem.id %>/edit" method="GET" class="d-inline-flex mx-2">
+                                        <input type="submit" value="Edit" class="btn btn-sm btn-warning">
+                                    </form>
+                                </td>
+                            <% } else { %>
+                                <td>
+                                    <div class="d-inline-flex">
+                                        <form action="/evangelism/<%= elem.id %>?_method=DELETE" method="POST" class="d-inline-flex mx-2">
+                                            <input type="submit" value="Delete" class="btn btn-sm btn-danger">
+                                        </form>
+                                        <form action="/evangelism/<%= elem.id %>/edit" method="GET" class="d-inline-flex mx-2">
+                                            <input type="submit" value="Edit" class="btn btn-sm btn-warning">
+                                        </form>
+                                    </div>
+                                </td>
+                            <%}%>
                         </tr>
                         <% }); %>
                     </tbody>

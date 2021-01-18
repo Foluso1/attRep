@@ -9,6 +9,7 @@ const           moment          = require("moment");
 const           fs              = require("fs");
 const discipleship_model = require("../../models/discipleship_model");
 const { workers } = require("cluster");
+const reportToPastor = require("../../models/reportToPastor");
 
 
 module.exports = {
@@ -346,7 +347,7 @@ module.exports = {
 
             let flpEvglsm = await Evangelism.find({
                 author: {$in: idsflpWrkrs},
-                date: {$gte: req.params.start, $lte: req.params.end}
+                date: {$gte: req.params.start, $lt: moment(req.params.end).add(24, "hour")}
             }).populate({path: "author", select: "firstname surname"});
             
             res.json(flpEvglsm);
@@ -361,11 +362,96 @@ module.exports = {
         try {
             const evglsmReports = await Evangelism.find({
                 author: req.user.id,
-                date: {$gte: req.params.start, $lte: req.params.end}
+                date: {$gte: req.params.start, $lt: moment(req.params.end).add(24, "hour")}
             }).populate({path: "author", select: "firstname surname"});
             res.json(evglsmReports);
         } catch (e) {
             console.log(e)
         }
     }, 
+
+    addOrRemoveLMA: async (req, res) => {
+        try {
+            let reportId = req.params.reportId;
+            let lmaId = req.params.lmaId;
+            let thisReport = await reportToPastor.findById({ _id: reportId });
+            if(thisReport.attendees.lma.includes(lmaId)){
+                console.log("includes");
+                let index = thisReport.attendees.lma.indexOf(lmaId);
+                console.log(index);
+                thisReport.attendees.lma.splice(index, 1);
+            } else {
+                console.log("doesn't include");
+                thisReport.attendees.lma.push(lmaId);
+            }
+            thisReport.save();
+            res.json(thisReport);
+        } catch (e) {
+            console.log(e)
+        }
+    }, 
+
+    getAllEvnglsmReports: async (req, res) => {
+        try {
+            let evglsmReports = await Evangelism.find({
+                date: {$gte: req.params.start, $lt: moment(req.params.end).add(24, "hour")}
+            }).populate({path: "author", select: "firstname surname fellowship"});
+
+            let allSouls = [];
+            evglsmReports.forEach((item)=>{
+                let thisDetails = JSON.parse(item.data);
+                let obj = {};
+                if(typeof(thisDetails.details) == "object" && thisDetails.details.firstname && Array.isArray(thisDetails.details.firstname)){
+                    let length = thisDetails.details.firstname.length;
+                    for(let i=0; i<length; i++){
+                        obj = {
+                            name: `${thisDetails.details.firstname[i]} ${thisDetails.details.lastname[i]}`,
+                            gender: thisDetails.details.gender[i],
+                            address: thisDetails.details.address[i],
+                            mobile: thisDetails.details.mobile[i],
+                            english: thisDetails.details.language && thisDetails.details.language[i]  == "English" ? "Yes" : 'No',
+                            language: thisDetails.details.language ? thisDetails.details.language[i] : 'Nil',
+                            status: thisDetails.details.status[i],
+                            worker: `${item.author.firstname} ${item.author.surname}`,
+                        }
+                        console.log(obj);
+                        allSouls.push(obj);
+                    }
+                } else {
+                    obj = {
+                        name: `${thisDetails.details.firstname} ${thisDetails.details.lastname}`,
+                        gender: thisDetails.details.gender,
+                        address: thisDetails.details.address,
+                        mobile: thisDetails.details.mobile,
+                        english: thisDetails.details.language  == "English" ? "Yes" : 'No',
+                        language: thisDetails.details.language,
+                        status: thisDetails.details.status,
+                        worker: `${item.author.firstname} ${item.author.surname}`,
+                    }
+                    allSouls.push(obj);
+                }
+            })
+            
+            // console.log("///", evglsmReports);
+            let data = JSON.stringify(allSouls);
+            fs.writeFileSync("souls_won_120121-180121.json", data);
+            res.json(allSouls);
+        } catch (e) {
+            console.log(e)
+        }
+    },
+
+    goFix: async (req, res) => {
+        try {
+            let thisEvglsmReport = await Evangelism.findById({ _id: "5ff9f13df6b3c900174a0791" });
+            let data = JSON.parse(thisEvglsmReport.data);
+            data.details = `Damilola Adebayo (attends white garment church). Available on Sundays goes to work from Mondays to Saturdays. Departs 8am and arrives 9pm.\nSaved, but not filled.\n07010535190\nEwenla Street, Berger, New Garage, Iyana-Oworo, Lagos`
+            JSON.stringify(data);
+            thisEvglsmReport.data = JSON.stringify(data);
+            thisEvglsmReport.save();
+            res.json(thisEvglsmReport);
+        } catch (e) {
+            console.log(e);
+        }
+    }
 };

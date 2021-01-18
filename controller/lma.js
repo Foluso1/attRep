@@ -1,6 +1,7 @@
 const         Worker                    = require("../models/worker")
             , Attendance                = require("../models/attendance_model")
             , Disciple                  = require("../models/disciple")
+            , ReportToPastor            = require("../models/reportToPastor")
             , newPrayerChain            = require("../models/newPrayerChain")
             , lastMondayfunction        = require("../utils/lastMonday")
             , refWeekFromMonfunction    = require("../utils/refWeekFromMon")
@@ -697,22 +698,54 @@ module.exports = {
         res.render("lma/all/attendance_Special")
     },
 
-    getReportToPastor: (req, res) => {
-        res.render("lma/all/reportToPastor");
+    getReportToPastor: async (req, res) => {
+        try {
+            let thisReport = await ReportToPastor.create({})
+            console.log(thisReport);
+            let thisReportId = thisReport._id;
+            res.redirect(`/lma/all/reportToPastor/${thisReportId}/edit`);
+        } catch (e) {
+            console.log(e);
+        }
     },
 
-    reportToPastor: (req, res) => {
-        console.log(req.body);
+    editReportToPastor: async (req, res) => {
+        try {
+            let thisReportId = req.params.id;
+            let thisReport = await ReportToPastor.findById({ _id: thisReportId })
+            .populate({path: "attendees.lma", select: "firstname surname"})
+            .populate({path: "attendees.workers", select: "firstname surname"});
+            console.log("thisReport////", thisReport);
+            let allWorkers = await Worker.find().select("firstname surname fellowship isLMA")
+            res.render("lma/all/editReportToPastor", {thisReport, allWorkers});
+        } catch (e) {
+            console.log(e)
+        }
+    },
+
+    updateReportToPastor: async (req, res) => {
+        try {
+            let thisReportId = req.params.id;
+            let thisReport = await ReportToPastor.findByIdAndUpdate({ _id: thisReportId }, req.body);
+            console.log(thisReport);
+            res.render("lma/all/updateReportToPastor");
+        } catch (e) {
+            console.log(e)
+        }
+    },
+
+    showReportToPastor: async (req, res) => {
+        try {
+            let thisReportId = req.params.id;
+            res.render
+        } catch (e) {
+            console.log(e);
+        }
     },
 
     getAllEvangelism: (req, res) => {
         res.render("lma/all/choose_date_evglsm")
     }
 }
- 
-// Find all worker under LMA
-// Do a loop
-// Don't forget to populate "Yes" / "datePrayed"
-// Have an array for each worker [name, datePrayed (week1), datePrayed (week1), datePrayed (week1)]
 
 
