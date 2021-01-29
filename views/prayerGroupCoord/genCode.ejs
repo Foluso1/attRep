@@ -1,0 +1,24 @@
+<% include ./../partials/header %>
+
+<div class="heading">
+    <h1 class="text-center">Welcome</h1>
+    <hr/>
+    <p class="text-center">Generate code for prayer group here!</p>
+</div>
+
+<main class="container" id="prayer-group-coord">
+    <div class="container">
+        <div class="form-group">
+            <a href="" class="btn btn-md" id="gen-code">Generate Code</a>
+            <input class="form-control col-md-3 my-3" data-user-id="<%= loggedInWorker._id %>" id="code" readonly />
+        </div>
+        <div class="container">
+            <ol>
+                <% foundPrayerGroup.forEach((item) => { %>
+                    <li><a href="/prayergroup/<%= item._id %>"><%= moment(item.date).format("YYYY/MM/DD")%></a></li>
+                <% }) %> 
+            </ol>
+        </div>
+    </div>
+</main>
+<% include ./../partials/footer %>

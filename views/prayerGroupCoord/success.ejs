@@ -1,0 +1,22 @@
+<% include ./../partials/header %>
+
+<div class="heading">
+    <h1 class="text-center">Success</h1>
+    <hr/>
+    <p class="text-center">You have reported your prayer group participation successfully</p>
+</div>
+
+<main class="container">
+    <div class="container">
+        <div class="container form-group">
+            <ol>
+                <% list = foundPrayerGroup.attendance[0] %> 
+                <% console.log("list", list) %> 
+                <% foundPrayerGroup.attendance.forEach((item)=>{ %>
+                    <li><%= item.firstname %> <%= item.surname %> (<%= item.status %>) | <%= item.arrivalTime %> | <%= item.zone %> </li>
+                <% }) %> 
+            </ol>
+        </div>
+    </div>
+</main>
+<% include ./../partials/footer %>

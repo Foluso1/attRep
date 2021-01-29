@@ -393,9 +393,31 @@ module.exports = {
 
     getAllEvnglsmReports: async (req, res) => {
         try {
+            console.log(req.params.fellowship)
+            console.log(req.params.start)
+            console.log(req.params.end)
+
+            let flpWrkrs = await Worker.find({
+                overseer: req.user.id,
+                fellowship: req.params.fellowship
+            });
+
+            let idsflpWrkrs = flpWrkrs.map((item) => {
+                return item._id;
+            });
+
             let evglsmReports = await Evangelism.find({
+                author: {$in: idsflpWrkrs},
                 date: {$gte: req.params.start, $lt: moment(req.params.end).add(24, "hour")}
             }).populate({path: "author", select: "firstname surname fellowship"});
+
+            if (req.params.fellowship == 'New Garage'){
+                fozEvglsmReports = await Evangelism.find({
+                    author: req.user.id,
+                    date: {$gte: req.params.start, $lt: moment(req.params.end).add(24, "hour")}
+                }).populate({path: "author", select: "firstname surname"});
+                evglsmReports = [...evglsmReports, ...fozEvglsmReports];
+            }
 
             let allSouls = [];
             evglsmReports.forEach((item)=>{
@@ -434,7 +456,7 @@ module.exports = {
             
             // console.log("///", evglsmReports);
             let data = JSON.stringify(allSouls);
-            fs.writeFileSync("souls_won_120121-180121.json", data);
+            fs.writeFileSync(`souls_won_${req.params.fellowship.trim()}_${req.params.start}_${req.params.end}.json`, data);
             res.json(allSouls);
         } catch (e) {
             console.log(e)
@@ -443,13 +465,8 @@ module.exports = {
 
     goFix: async (req, res) => {
         try {
-            let thisEvglsmReport = await Evangelism.findById({ _id: "5ff9f13df6b3c900174a0791" });
-            let data = JSON.parse(thisEvglsmReport.data);
-            data.details = `Damilola Adebayo (attends white garment church). Available on Sundays goes to work from Mondays to Saturdays. Departs 8am and arrives 9pm.\nSaved, but not filled.\n07010535190\nEwenla Street, Berger, New Garage, Iyana-Oworo, Lagos`
-            JSON.stringify(data);
-            thisEvglsmReport.data = JSON.stringify(data);
-            thisEvglsmReport.save();
-            res.json(thisEvglsmReport);
+            // let foundEvglsmReport = await Evangelism.find().populate({path: "author", select: "firstname surname"}).sort({date: -1}).limit(1);
+            // res.json(foundEvglsmReport);
         } catch (e) {
             console.log(e);
         }

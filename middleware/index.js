@@ -81,4 +81,21 @@ module.exports = {
         }
     },
 
+    codeCheck: async (req, res, next) => {
+        try {
+            console.log("////")
+            let foundWorker = await Worker.findById({ _id: req.body.coordinator });
+            let coordId = foundWorker._id;
+            let code = req.body.code;
+            if(foundWorker && foundWorker.prayerCode == code){
+                return next(); 
+            } else {
+            req.flash("error", "The credentials are invalid");
+                res.redirect("/prayergroup");
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    },
+
 }

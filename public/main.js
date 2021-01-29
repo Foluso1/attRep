@@ -56,6 +56,10 @@ const delElement = document.querySelectorAll(".del-element");
 const firstNameElem = document.querySelector("#firstname");
 const elementPlayground = document.querySelectorAll(".element-playground");
 const editPlayground = document.querySelector("#edit-playground");
+const prayerGroupCoord = document.querySelector("#prayer-group-coord");
+const numReached = document.querySelector("#reached");
+const prayerGroupReport = document.querySelector("#prayer-group-report");
+const prayerChainNew = document.querySelector("#prayer-chain-new");
 let list = "";
 let list2 = "";
 
@@ -106,6 +110,7 @@ if (prChform) {
               let newPrCh = document.createElement("p");
               let newDiv = document.createElement("div");
               newPrCh.setAttribute("class", "p-2")
+              newPrCh.setAttribute("class", "container")
               newPrCh.innerHTML =
                 `Good day sir/ma, </br>
                 I am done praying </br>
@@ -115,15 +120,47 @@ if (prChform) {
             } else {
               thisNode.html("");
               thisNode.append("<p>There was a problem, please re-login to end praying.</p>");
+              let prevLocation = window.location;
+              let str = `<div class="container">
+                              <div class="row justify-content-center p-2">
+                                  <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 card card-body bg-light transp" >
+                                      <h1 class="text-center" >Welcome!</h1>
+                                      <h5 class="m-2 text-center" >Let's log you in</h5>
+                                      <br>
+                                      <div class="text-center container" id="logger">
+                                          <div class="d-flex form-group flex-column align-items-start">
+                                              <label for="username">Username:</label>
+                                              <input class="form-control" type="text" id="username" name="username" placeholder="Username or Email">
+                                          </div>
+                                          <div class="d-flex form-group flex-column align-items-start">
+                                              <label for="password">Password:</label>
+                                              <input class="form-control" type="password" id="password" name="password" placeholder="Password">
+                                              <div class="d-flex">
+                                                  <input type="checkbox" class="my-2 mr-2 password-visible"/> <small class="my-2">Show Password</small>
+                                              </div>
+                                          </div>
+                                          <div class="row justify-content-center">
+                                              <button class="col-6 btn btn-primary" id="btn-logger">Submit</button>
+                                          </div>
+                                      </div>
+                                      <p class="text-center">or</p>
+                                      <p class="text-center">Sign in with <a class="no-underline" href="/google/auth/google"><span style="color: #4183F1">G</span><span style="color: #EA4335">o</span><span style="color: #FBBC05">o</span><span style="color: #4183F1">g</span><span style="color: #34A853">l</span><span style="color: #EA4335">e</span></a></p>
+                                      <p class="text-center"><a href="/forgot">Forgot Password</a></p>
+                                      <hr>
+                                  </div>
+                              </div>
+                          </div>`
+                $(prayerChainNew).html('');
+                $(prayerChainNew).append(str);
             }
           },
         });
       }
 
       thisNode.html("");     
-      thisNode.append(`<div>
+      thisNode.append(`<div class="container">
           <p>Are you sure?</p>
-          <div>
+          <div class="">
             <button class="btn btn-sm btn-success px-4" id="true">Yes</button> <button class="btn btn-sm btn-danger px-4" id="false">No</button>
           </div>
         </div>`);
@@ -144,6 +181,31 @@ if (prChform) {
       })
     }
   });
+}
+
+if(prayerChainNew){
+  prayerChainNew.addEventListener("click", (e)=>{
+    let logger = prayerChainNew.querySelector("#logger");
+    let submit = prayerChainNew.querySelector("#btn-logger");
+    if(submit){
+      // submit.preventDefault();
+      let username = logger.querySelector("#username").value;
+      let password = logger.querySelector("#password").value;
+      console.log(username, password);
+      $.ajax({
+        type: "POST",
+        url: "/logger",
+        data: { username: username, password: password },
+        success: (data) => {
+          console.log(data);
+          location.reload();
+        },
+        error: (e) => {
+          console.log("There was a problem!!!!!!!");
+        }
+      })
+    }
+  })
 }
 
 // Associate Disciples
@@ -725,6 +787,9 @@ if (weekChooser) {
         console.log(err);
         $("tbody").html("");
         $("tbody").append(`<td colspan="10">There was a problem. Please re-login.</td>`)
+        console.log("Heeeeeeeeeeeeeeeeey!");
+        console.log(window.location);
+        console.log(window.location.replace("/login"));
       }
     })
   })
@@ -838,6 +903,7 @@ const prChFunction = function (thisValue) {
     error: (err) => {
       $("tbody").html("");
       $("tbody").append(`<td colspan="10">There was a problem. Please re-login.</td>`)
+      window.location.hash = "/login";
       console.log(err);
     }
   })
@@ -1289,15 +1355,28 @@ newElement.forEach((item) => {
     $("#firstname").removeAttr("id");
     let thisElement = $(thisParent.querySelector(".duplicate-element").outerHTML).append(`<i class="del-element far fa-trash-alt fa-1.5x float-right"></i>`);
     $(thisParent).append(thisElement);
+    console.log("Duplicate Element", document.querySelectorAll(".duplicate-element").length);
+    numReached.value++;
     thisParent.lastElementChild.firstElementChild.setAttribute("id", "firstname");
       newElement[0].style.visibility = "hidden";
   })
 });
 
+
+
 window.addEventListener("load", function(e){
   let abc = e.target.querySelector("#edit-playground");
   if (abc) {
     newElement[0].style.visibility = "visible";
+  }
+  if(prayerGroupReport){
+    let status = prayerGroupReport.querySelector("select[name='status']");
+    console.log(status);
+    console.log(status.value);
+    if(status.value == "Member"){
+      let zone = prayerGroupReport.querySelector("select[name='zone']");
+      zone.required = false;
+    }
   }
 })
 
@@ -1309,6 +1388,9 @@ if(editPlayground){
   })
 }
 
+function getOccurrence(array, value) {
+  return array.filter((v) => (v === value)).length;
+}
 
 if(elementPlayground){
   // Remove elements
@@ -1322,9 +1404,13 @@ if(elementPlayground){
           newElement[0].style.visibility = "visible";
         }
         e.target.parentNode.remove();
+        console.log("Remove Duplicate Elements", document.querySelectorAll(".duplicate-element").length);
+        numReached.value--;
       }
     })
   })
+
+
 
   // Show or hide ADD button
   elementPlayground.forEach((item) => {
@@ -1345,5 +1431,81 @@ if(elementPlayground){
         }
       }
     })
+  });
+
+
+
+  //Saved, filled, prophesied Statistics
+  elementPlayground.forEach((item)=>{
+    item.addEventListener("change", (e)=>{
+      if(Array.from(e.target.classList).includes("status")){
+        const prevVal = [];
+        let statusStats = document.querySelectorAll(".status");
+        statusStats.forEach((item)=>{
+          prevVal.push(item.value);
+        })
+        document.querySelector("#saved").value = getOccurrence(prevVal, "Saved");
+        document.querySelector("#filled").value = getOccurrence(prevVal, "Filled");
+        document.querySelector("#prophesied").value = getOccurrence(prevVal, "Prophesied");
+      }
+    })
+  })
+}
+
+
+
+
+if(prayerGroupCoord){
+  console.log("prayer-group Coord");
+  prayerGroupCoord.addEventListener("click", (e) => {
+    if(e.target.tagName == "A" && e.target.getAttribute("id") == "gen-code"){
+      e.preventDefault();
+      const ranNum = () => {
+        let abc = Math.floor(10000*Math.random());
+        len = Math.ceil(Math.log10(abc + 1));
+        if (len < 4){
+            let pwr =  4 - len;
+            abc = abc* (10**pwr);
+        }
+        return abc;
+      }
+      let thisRanNum = ranNum();
+      prayerGroupCoord.querySelector("#code").value = "Wait...";
+      let userId = prayerGroupCoord.querySelector("#code").dataset.userId;
+      console.log(userId);
+      $.ajax({
+        type: 'POST',
+        url: '/prayergroup/admin',
+        data: {userId, thisRanNum},
+        success: (data) => {
+          console.log(data);
+          prayerGroupCoord.querySelector("#code").value = data;
+          // Say code expires in one hour;
+        },
+        error: (e) => {
+          console.log("There was a problem");
+          prayerGroupCoord.querySelector("#code").value = "Try Again...";
+        }
+      })
+    }
+  })
+}
+
+
+if(prayerGroupReport){
+  let status = prayerGroupReport.querySelector("select[name='status']");
+  console.log(status);
+  console.log(status.value);
+  if(status.value == "Member"){
+    let zone = prayerGroupReport.querySelector("select[name='zone']");
+    zone.required = false;
+  }
+  status.addEventListener("change", (e)=>{
+    let zone = prayerGroupReport.querySelector("select[name='zone']");
+    if(e.target.value == "Member"){
+      zone.required = false;
+    } else {
+      zone.required = true;
+    }
   })
 }

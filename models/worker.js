@@ -180,6 +180,14 @@ workerSchema = new mongoose.Schema({
         }
     ],
 
+    prayerCode: {
+        type: String,
+    },
+
+    prayerCodeExpires: {
+        type: Date,
+    },
+
     expected_attendance: [
         {
             type: mongoose.Schema.Types.ObjectId,

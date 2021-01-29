@@ -19,6 +19,7 @@ const       express                 =   require("express")
         ,   apiRouter               =   require("./routes/api")
         ,   indexRouter             =   require("./routes/index")
         ,   registerRouter          =   require("./routes/register_route")
+        ,   prayerGroupCoord        =   require("./routes/prayerGroupCoord")
         ,   methodOverride          =   require("method-override")
         ,   expressSession          =   require("express-session")
         ,   googleRouter            =   require("./routes/auth/google-auth")
@@ -71,6 +72,7 @@ app.use('/evangelism', evangelismRouter);
 app.use('/disciple', discipleRouter);
 app.use('/prayer', prayerRouter);
 app.use('/prayerChain', prayerChainRouter);
+app.use('/prayergroup', prayerGroupCoord);
 app.use('/lma', lmaRouter);
 app.use('/new', newRouter);
 app.use('/api', apiRouter);

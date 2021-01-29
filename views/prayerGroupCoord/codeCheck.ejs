@@ -1,0 +1,44 @@
+<% include ./../partials/header %>
+
+<div class="heading">
+    <h1 class="text-center">Welcome</h1>
+    <hr/>
+    <p class="text-center">Report, your prayer group participation here</p>
+</div>
+
+<main class="container">
+    <div class="container">
+        <form action="/prayergroup" method="POST" class="form-group" id="prayer-group-report">
+            <select class="form-control my-1 col-md-6" name="coordinator" required>
+                <option value="">-Select prayer group leader-</option>
+                <% foundLMA.forEach((item)=>{ %>
+                    <option value="<%= item._id %>"><%= item.firstname %> <%= item.surname %></option>
+                <% }) %> 
+            </select>
+            <input class="form-control my-1 col-md-6" type="text" name="firstname" placeholder="Firstname" required />
+            <input class="form-control my-1 col-md-6" type="text" name="surname" placeholder="Surname" required />
+            <input class="form-control my-1 col-md-6" type="time" name="arrival" required />
+            <select class="form-control my-1 col-md-6" name="status" required>
+                <option value="">-Select your Status-</option>
+                <option value="LMA">LMA</option>
+                <option value="Cell Leader">Cell Leader</option>
+                <option value="Worker">Worker</option>
+                <option value="Member">Member</option>
+            </select>
+            <select class="form-control my-1 col-md-6" name="zone" required>
+                <option value="">-Select your Zone-</option>
+                <option value="Akoka">Akoka</option>
+                <option value="Bariga">Bariga</option>
+                <option value="Ketu">Ketu</option>
+                <option value="Mushin">Mushin</option>
+                <option value="Sabo">Sabo</option>
+                <option value="Somolu">Somolu</option>
+                <option value="Surulere">Surulere</option>
+            </select>
+            
+            <input class="form-control my-1 col-md-6" type="text" name="code" placeholder="Code" required />
+            <input type="submit" value="Check Code" class="btn btn-sm" />
+        </form>
+    </div>
+</main>
+<% include ./../partials/footer %>

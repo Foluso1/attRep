@@ -1,5 +1,17 @@
 const menu = document.querySelectorAll(".menu");
 const otherMenu = document.querySelector(".other-menu");
+let isLMA = false;
+
+$.ajax({
+    url: '/isloggedin',
+    type: 'GET',
+    success: (data) => {
+        isLMA = data.isLMA;
+    },
+    error: (e) => {
+        // console.log("There was a problem");
+    }
+})
 
 obj = {
     'prayer': [
@@ -70,6 +82,10 @@ obj = {
         {
             0: "All Prayer Group",
             1: "/lma/all/prayer"
+        },
+        {
+            0: "Prayer Group Leader",
+            1: "/prayergroup/admin"
         }
     ],
     'lma-evangelism': [
@@ -83,7 +99,17 @@ obj = {
             0: "Special Meetings",
             1: "/lma/special"
         },
-    ]
+    ],
+    'lma-admin': [
+        {
+            0: "LMA Admin",
+            1: "/lma"
+        },
+        {
+            0: "Add or Remove Worker",
+            1: "/lma/new",
+        }
+    ],
 }
 
 menu.forEach((item) => {
@@ -96,5 +122,10 @@ menu.forEach((item) => {
         obj[id].forEach((item) => {
             $(otherMenu).append(`<li><a class="btn btn-sm" href="${item[1]}">${item[0]}</a></li>`);
         });
+        if(isLMA && obj[`lma-${id}`]){
+            obj[`lma-${id}`].forEach((item) => {
+                $(otherMenu).append(`<li><a class="btn btn-sm" href="${item[1]}">${item[0]}</a></li>`);
+            });
+        }
     })
 });

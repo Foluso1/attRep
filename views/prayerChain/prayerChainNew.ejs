@@ -1,11 +1,10 @@
 <% include ./../partials/header %>
-</div
-<div class="heading">
+<div class="container">
     <p></p>
     <a class="btn btn-primary btn-sm" href="/prayerchain">Back to Prayer Chain Reports</a>
 </div>
 
-<main class="row">
+<main class="container" id="prayer-chain-new">
     <div class="col-md-12">
         <h3 class="pt-3">Report Prayer Chain</h3>
         <br>
@@ -18,21 +17,23 @@
                 </div>
             <% } else if (!shouldSendReport['0'] && shouldSendReport['1']) { %>
                 <div class="mydiv p-1">
-                    <div>
+                    <div class="container">
                         <p>Good day sir/ma,</br>
                         I have started praying</br>
                         <%= moment(starttime).locale("en-us").format("LT") %> 
                     </p>
                     </div>
-                    <div>
+                    <div class="">
                         <button id="endPrBtn" class="btn btn-success btn-sm">End Praying</button>
                     </div>
                 </div>
             <% } else { %>
-                <p>
-                    Sorry, you cannot send a report now.</br>
-                    Thank you.
-                </p>
+                <div class="container">
+                    <p>
+                        Sorry, you cannot send a report now.</br>
+                        Thank you.
+                    </p>
+                </div>
             <% } %>
         </form>
     </div>
