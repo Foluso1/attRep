@@ -121,6 +121,11 @@ workerSchema = new mongoose.Schema({
         required: "You have to specify this"
     },
 
+    cell: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Church'
+    },
+
     department: {
         type: String,
         required: "You have to specify this"

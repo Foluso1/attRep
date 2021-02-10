@@ -19,6 +19,10 @@ prayerGroupRouter.route("/all")
     .get(controller.getAllReports);
 
 prayerGroupRouter.route("/:id")
-    .get(controller.getOneReport);
+    .get(controller.getOneReport)                  
+    .delete(controller.deleteReport);
 
+prayerGroupRouter.route("/:id/delete/:id2")
+    .delete(controller.deleteOneAttendee);
+    
 module.exports = prayerGroupRouter;

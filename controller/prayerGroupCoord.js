@@ -1,6 +1,8 @@
 const Worker = require("../models/worker")
     , PrayerGroup = require("../models/prayerGroup")
     , Prayer = require("../models/prayer")
+    , duplicateCheck2 = require("../utils/duplicateCheck2")
+    , flash = require("connect-flash")
 
     ;
 
@@ -16,8 +18,6 @@ module.exports = {
 
   checkCode: async (req, res) => {
     try {
-      console.log(req.body);
-      console.log(req.params);
       let foundPrayerGroup = await PrayerGroup.find({ coordinator: req.body.coordinator }).sort({date: -1}).limit(1);
       let obj = {
         firstname: req.body.firstname,
@@ -25,14 +25,20 @@ module.exports = {
         arrivalTime: req.body.arrival,
         status: req.body.status,
         zone: req.body.zone,
+        prayerGroup: req.body['prayer-group']
       }
-      console.log(foundPrayerGroup);
       foundPrayerGroup = foundPrayerGroup[0];
-      foundPrayerGroup.attendance.push(obj);
-      foundPrayerGroup.save();
-      // res.json(foundPrayerGroup);
-      //Let user see success report
-      res.render(`prayerGroupCoord/success`, {foundPrayerGroup});
+
+      let isEqual = foundPrayerGroup.attendance.some((item) => duplicateCheck2(obj, item))
+  
+      if(isEqual){
+        req.flash("error", "Duplicate report detected!"); 
+        res.redirect("/prayergroup");
+      } else {
+        foundPrayerGroup.attendance.push(obj);
+        foundPrayerGroup.save();
+        res.render(`prayerGroupCoord/success`, {foundPrayerGroup});
+      }
     } catch (e) {
       console.log(e);
     }
@@ -79,7 +85,40 @@ module.exports = {
   getOneReport: async (req, res) => {
     let id = req.params.id
     let oneReport = await PrayerGroup.findById({ _id: id });
-    res.render("prayerGroupCoord/onePrayerGroup", {oneReport});
+    let thisUser = req.user;
+    res.render("prayerGroupCoord/onePrayerGroup", {oneReport, thisUser});
   },
+
+  deleteReport: async (req, res) => {
+    try {
+      let id = req.params.id;
+      console.log("id///////", id)
+      let thisReport = await PrayerGroup.findByIdAndDelete({ _id: id });
+      console.log(thisReport);
+      res.json("deleted");
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
+  deleteOneAttendee: async (req, res) => {
+    try {
+      let id = req.params.id;
+      let id2 = req.params.id2;
+      let thisReport = await PrayerGroup.findById({ _id: id });
+      let thisAttendee = thisReport.attendance;
+      thisAttendee.forEach((obj, i) => {
+        console.log(obj._id == id2)
+        if(obj._id == req.params.id2){
+          thisAttendee.splice(i, 1);
+          return
+        }
+      })
+      thisReport.save();
+      res.json("deleted");
+    } catch (e) {
+      console.log(e);
+    }
+  }
 };
 

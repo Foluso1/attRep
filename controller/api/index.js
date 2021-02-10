@@ -7,15 +7,22 @@ const           BelConv         = require("../../models/believers_convention_mod
 const           Attendance      = require("../../models/attendance_model");
 const           moment          = require("moment");
 const           fs              = require("fs");
-const discipleship_model = require("../../models/discipleship_model");
-const { workers } = require("cluster");
+const           Church          = require("../../models/church");
 const reportToPastor = require("../../models/reportToPastor");
+const { create } = require("../../models/disciple");
 
 
 module.exports = {
     workersDetails: async (req, res) => {
         try {
-            let allWorkers = await Worker.find().select("firstname surname church fellowship department prayerGroup email address dateOfBirth employementStatus gender maritalStatus membershipClass mobileNumber");
+            let workersUnder = await Worker.findById({ _id: req.user.id });
+            workersUnder = workersUnder.workers;
+            workersUnder = workersUnder.map((item) => {
+                return item._id;
+            })
+            let allWorkers = await Worker.find({
+                _id: {$in: workersUnder}
+            }).select("firstname surname church fellowship department prayerGroup email address dateOfBirth employementStatus gender maritalStatus membershipClass mobileNumber");
         ;
         res.json(allWorkers);
         } catch (e) {
@@ -71,7 +78,7 @@ module.exports = {
                         prayed: false
                     }
                 }
-                obj.week = moment().locale("en-us").week();
+                obj.week = moment().locale("en-gb").week();
                 obj.frequency = 0;
                 obj.date = new Date();
                 obj.prayor = item;
@@ -113,7 +120,7 @@ module.exports = {
             .select("firstname surname gender mobileNumber address email church fellowship")
             let thisWorkers = foundWorkers.map((item) => {
                 return obj = {
-                    name: `${item.firstname} ${item.surname}`,
+                    name: `${item.author.firstname} ${item.author.surname}`,
                     name: item.firstname,
                     gender: item.gender,
                     phone:  item.mobileNumber,
@@ -133,100 +140,6 @@ module.exports = {
 
     getCumulativeAttendance: async (req, res) => {
         try {
-
-            // let bcfiles = await BelConv.deleteMany();
-            // console.log(bcfiles);
-
-            // let countDisc = 0
-            // let allDisciples = await Disciple.find();
-            // for (let i = 0; i < allDisciples.length; i++){
-            //     let newBelConv = new BelConv({
-            //         year: moment().year().toString(),
-            //         attendee: allDisciples[i]._id,
-            //     })
-            //     await newBelConv.save();
-            //     allDisciples[i].belConv = [];
-            //     allDisciples[i].belConv.push(newBelConv._id);
-            //     countDisc++;
-            // }
-            // console.log("countDisc", countDisc);
-
-            // let countWorkers = 0;
-            // let allWorkers = await Worker.find();
-            // for (let i = 0; i < allWorkers.length; i++){
-            //     let newBelConv = new BelConv({
-            //         year: moment().year().toString(),
-            //         attendee: allWorkers[i]._id,
-            //     })
-            //     await newBelConv.save();
-            //     allWorkers[i].belConv = [];
-            //     allWorkers[i].belConv.push(newBelConv._id);
-            //         countWorkers++;
-            // }
-            // console.log("countWorkers", countWorkers);
-/////
-
-            // let foundRes = await Attendance.find({
-            //     for: new RegExp(req.params.meetingName, "i"),
-            //     // summoner: req.user.id
-            // })
-
-            // for(let j=0; j<foundRes.length; j++) {
-            //     let item = foundRes[j];
-
-            //     //function
-            //     const fixBelConvAttendance = async (item, day, timeOfDay) => {
-            //         console.log("item.for", item.for)
-            //         try {
-            //             for(let i = 0; i< item.disciples.length; i++){
-            //                 let bcAtt = {};
-            //                 let findBc = await BelConv.findOne({
-            //                     attendee: item.disciples[i],
-            //                     year: moment().year().toString(),
-            //                 });
-            //                 console.log("findBc", findBc)
-
-            //                 if(!findBc){
-            //                     let foundElement = await Disciple.findById(item.disciples[i]);
-            //                     findBc = await new BelConv({
-            //                         attendee: foundElement._id,
-            //                         attendance: true,
-            //                         year: moment().year().toString(),
-            //                     })
-            //                     findBc[day][timeOfDay] = true,
-            //                     await findBc.save();       
-            //                 } else {
-            //                     console.log("found");
-            //                     findBc[day][timeOfDay] = true;
-            //                     findBc.attendance = true;
-            //                     await findBc.save();
-            //                 }
-            //             }
-            //         } catch (e) {
-            //             console.log(e)
-            //         }
-            //     }
-            // // }
-            // //     ///end function
-
-            //     if(item.for == "Believer's Convention Friday evening"){
-            //         console.log("Believer's Convention Friday evening")
-            //         fixBelConvAttendance(item, 5, 2);
-            //     } else if(item.for == "Believer's Convention Saturday morning"){
-            //         console.log("Believer's Convention Saturday morning")
-            //         fixBelConvAttendance(item, 6, 0);
-            //     } else if(item.for == "Believer's Convention Saturday afternoon"){
-            //         console.log("Believer's Convention Saturday afternoon")
-            //         fixBelConvAttendance(item, 6, 1);
-            //     } else if (item.for == "Believer's Convention Sunday morning"){
-            //         console.log("Believer's Convention Sunday morning")
-            //         fixBelConvAttendance(item, 0, 0);
-            //     } else if (item.for == "Believer's Convention Sunday afternoon"){
-            //         console.log("Believer's Convention Sunday afternoon")
-            //         fixBelConvAttendance(item, 0, 1);
-            //     }
-            // };
-
             
 
 
@@ -335,6 +248,7 @@ module.exports = {
 
     getAllEvangelismWithDate: async (req, res) => {
         try {
+            let obj = {};
 
             let flpWrkrs = await Worker.find({
                 overseer: req.user.id,
@@ -349,8 +263,20 @@ module.exports = {
                 author: {$in: idsflpWrkrs},
                 date: {$gte: req.params.start, $lt: moment(req.params.end).add(24, "hour")}
             }).populate({path: "author", select: "firstname surname"});
+
+            console.log(flpEvglsm);
+
+            flpEvglsm.forEach((item)=>{
+                if(obj[`${item.author.firstname} ${item.author.surname} ${item.author._id}`]){
+                    obj[`${item.author.firstname} ${item.author.surname} ${item.author._id}`].push(item);
+                } else {
+                    obj[`${item.author.firstname} ${item.author.surname} ${item.author._id}`] = [];
+                    obj[`${item.author.firstname} ${item.author.surname} ${item.author._id}`].push(item);
+                }
+            })
+            console.log(obj);
             
-            res.json(flpEvglsm);
+            res.json(obj);
 
         } catch (e) {
             console.log(e)
@@ -463,10 +389,48 @@ module.exports = {
         }
     },
 
+    getOneEvnglsmReports: async (req, res) => {
+        try {
+
+            let evglsmReports = await Evangelism.find({
+                author: req.params.id,
+                date: {$gte: req.params.start, $lt: moment(req.params.end).add(24, "hour")}
+            }).populate({path: "author", select: "firstname surname fellowship"});
+            
+            console.log("///", evglsmReports);
+            // let data = JSON.stringify(allSouls);
+            // fs.writeFileSync(`souls_won_${req.params.fellowship.trim()}_${req.params.start}_${req.params.end}.json`, data);
+            res.json(evglsmReports);
+        } catch (e) {
+            console.log(e)
+        }
+    },
+
     goFix: async (req, res) => {
         try {
-            // let foundEvglsmReport = await Evangelism.find().populate({path: "author", select: "firstname surname"}).sort({date: -1}).limit(1);
-            // res.json(foundEvglsmReport);
+            let newGarage = {
+                name: "New Garage",
+                type: "fellowship"
+            }
+            let obj1 = {
+                name: "New Garage 1",
+                type: "cell",
+            }
+            let obj2 = {
+                name: "New Garage 2",
+                type: "cell",
+            }
+            newGarage = await Church.create(newGarage);
+            let newChurch1 = await Church.create(obj1);
+            let id1 = newChurch1._id;
+            let newChurch2 = await Church.create(obj2);
+            let id2 = newChurch2._id;
+            console.log(newGarage);
+            console.log("ids", id1, id2)
+
+            newGarage.churchUnder.push(id1);
+            newGarage.churchUnder.push(id2);
+            res.json({newGarage, newChurch1, newChurch2});
         } catch (e) {
             console.log(e);
         }

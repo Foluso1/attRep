@@ -87,10 +87,11 @@ module.exports = {
             let foundWorker = await Worker.findById({ _id: req.body.coordinator });
             let coordId = foundWorker._id;
             let code = req.body.code;
-            if(foundWorker && foundWorker.prayerCode == code){
+            console.log(new Date(foundWorker.prayerCodeExpires).getTime(), Date.now())
+            if(foundWorker && foundWorker.prayerCode == code && Date.now() <= new Date(foundWorker.prayerCodeExpires)){
                 return next(); 
             } else {
-            req.flash("error", "The credentials are invalid");
+                req.flash("error", "The credentials are invalid or code has expired");
                 res.redirect("/prayergroup");
             }
         } catch (e) {

@@ -10,10 +10,12 @@
     <div class="container">
         <div class="container form-group">
             <ol>
-                <% list = foundPrayerGroup.attendance[0] %> 
-                <% console.log("list", list) %> 
                 <% foundPrayerGroup.attendance.forEach((item)=>{ %>
-                    <li><%= item.firstname %> <%= item.surname %> (<%= item.status %>) | <%= item.arrivalTime %> | <%= item.zone %> </li>
+                    <li><%= item.firstname %> <%= item.surname %> (<%= item.status %>) | <%= item.arrivalTime %> | <%= item.zone %> 
+                        <% if(item.prayerGroup){ %>
+                            | <%= item.prayerGroup %> 
+                        <% } %>
+                    </li>
                 <% }) %> 
             </ol>
         </div>

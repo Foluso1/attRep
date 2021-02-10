@@ -60,6 +60,7 @@ const prayerGroupCoord = document.querySelector("#prayer-group-coord");
 const numReached = document.querySelector("#reached");
 const prayerGroupReport = document.querySelector("#prayer-group-report");
 const prayerChainNew = document.querySelector("#prayer-chain-new");
+const delPrayerGroup = document.querySelector("#del-prayer-group");
 let list = "";
 let list2 = "";
 
@@ -283,6 +284,10 @@ if (prayerTable) {
     }
   });
 }
+
+
+
+
 
 if (prayerTable) {
   prayerTable.addEventListener("mouseover", (e) => {
@@ -919,8 +924,8 @@ if (weekChooserAllLMA) {
 //THIS WEEK CHOOSER
 if(thisWeekPrCh){
   thisWeekPrCh.addEventListener("click", function (e) {
-    weekChooserAllLMA.value = moment().locale("en-us").week();
-    prChFunction(moment().locale("en-us").week()); 
+    weekChooserAllLMA.value = moment().locale("en-gb").week();
+    prChFunction(moment().locale("en-gb").week()); 
   });
 }
 
@@ -1150,6 +1155,83 @@ if(dateChooser){
 
 //////////////////////////// EVANGELISM //////////////////////////////
 
+// const evangelismAllFunc = (fellowship, start, end) => {
+//   $('tbody').html('');
+//   $('tbody').append('<tr><td colspan="10">Please wait...</td></tr>');
+//   $(noReport).html('');
+//   $(noReport).append('<li><em>Please wait...</em></li>')
+//   $.ajax({
+//     url: `/api/evangelism/${fellowship}/${start}/${end}`,
+//     type: 'GET',
+//     success: (data) => {
+//       console.log(data)
+//       // let data = result.present
+//       $('tbody').html('');
+//       $(noReport).html('');
+//       if(data && Array.isArray(data) && data.length > 0){
+//         list = "";
+//         let count = 1;
+//         let reached = 0;
+//         let saved = 0;
+//         let filled = 0;
+//         let prophesied = 0;
+//         let healed = 0;
+//         // let elemCount = 0;
+//         data.forEach((elem) => {
+//             let thisRow = $('tbody');
+//             if(elem.data){
+//               let thisData = JSON.parse(elem.data);
+//               console.log(thisData)
+//                 reached = reached + Number(thisData.stats[0]);
+//                 saved = saved + Number(thisData.stats[1]);
+//                 filled = filled + Number(thisData.stats[2]);
+//                 prophesied = prophesied + Number(thisData.stats[3]);
+//                 healed = healed + Number(thisData.stats[4]);
+//                 thisRow.append(`<tr>
+//                   <td>${count}</td>
+//                   <td>${elem.author.firstname} ${elem.author.surname}</td>
+//                   <td>${thisData.stats[0]}</td>
+//                   <td>${thisData.stats[1]}</td>
+//                   <td>${thisData.stats[2]}</td>
+//                   <td>${thisData.stats[3]}</td>
+//                   <td>${thisData.stats[4]}</td>
+//                   <td>${thisData.details}</td>
+//                   <td>${thisData.healing}</td>
+//                 </tr>`)
+//                 list = list + `\n${thisData.details}`
+//             } else {
+//             }
+//             count++;
+//             document.querySelector("#reached").textContent = reached
+//             document.querySelector("#saved").textContent = saved
+//             document.querySelector("#filled").textContent = filled
+//             document.querySelector("#prophesied").textContent = prophesied
+//             document.querySelector("#healed").textContent = healed
+//         })
+//         $('tbody').append(`<tr>
+//                   <td>Total</td>
+//                   <td></td>
+//                   <td>${reached}</td>
+//                   <td>${saved}</td>
+//                   <td>${filled}</td>
+//                   <td>${prophesied}</td>
+//                   <td>${healed}</td>
+//                   <td></td>
+//                 </tr>`)
+//         list2 = "";
+//         console.log(list2)
+//       } else {
+//         $('tbody').append('<tr><td colspan="10">Nothing to show here</td></tr>');
+//         $(noReport).append(`<li><em>Nothing to show here</em></li>`)
+//       }
+//     },
+//     error: (e) => {
+//       console.log(e);
+//     }
+//   })
+// }
+
+////////NEW
 const evangelismAllFunc = (fellowship, start, end) => {
   $('tbody').html('');
   $('tbody').append('<tr><td colspan="10">Please wait...</td></tr>');
@@ -1163,7 +1245,7 @@ const evangelismAllFunc = (fellowship, start, end) => {
       // let data = result.present
       $('tbody').html('');
       $(noReport).html('');
-      if(data && Array.isArray(data) && data.length > 0){
+      if(data && typeof(data) == "object"){
         list = "";
         let count = 1;
         let reached = 0;
@@ -1172,37 +1254,48 @@ const evangelismAllFunc = (fellowship, start, end) => {
         let prophesied = 0;
         let healed = 0;
         // let elemCount = 0;
-        data.forEach((elem) => {
-            let thisRow = $('tbody');
-            if(elem.data){
-              let thisData = JSON.parse(elem.data);
-              console.log(thisData)
-                reached = reached + Number(thisData.stats[0]);
-                saved = saved + Number(thisData.stats[1]);
-                filled = filled + Number(thisData.stats[2]);
-                prophesied = prophesied + Number(thisData.stats[3]);
-                healed = healed + Number(thisData.stats[4]);
-                thisRow.append(`<tr>
-                  <td>${count}</td>
-                  <td>${elem.author.firstname} ${elem.author.surname}</td>
-                  <td>${thisData.stats[0]}</td>
-                  <td>${thisData.stats[1]}</td>
-                  <td>${thisData.stats[2]}</td>
-                  <td>${thisData.stats[3]}</td>
-                  <td>${thisData.stats[4]}</td>
-                  <td>${thisData.details}</td>
-                  <td>${thisData.healing}</td>
-                </tr>`)
-                list = list + `\n${thisData.details}`
-            } else {
-            }
-            count++;
-            document.querySelector("#reached").textContent = reached
-            document.querySelector("#saved").textContent = saved
-            document.querySelector("#filled").textContent = filled
-            document.querySelector("#prophesied").textContent = prophesied
-            document.querySelector("#healed").textContent = healed
+        let keysArr = Object.keys(data)
+        keysArr.forEach((item)=>{
+          let splitted = item.split(" ");
+          let thisUser = `${splitted[0]} ${splitted[1]}`;
+          let thisReached = 0;
+          let thisSaved = 0;
+          let thisFilled = 0;
+          let thisProphesied = 0;
+          let thisHealed = 0;
+          console.log(item);
+          data[item].forEach((eachReport)=>{
+            eachReport = JSON.parse(eachReport.data);
+            thisReached += Number(eachReport.stats[0]);
+            thisSaved += Number(eachReport.stats[1]);
+            thisFilled += Number(eachReport.stats[2]);
+            thisProphesied += Number(eachReport.stats[3]);
+            thisHealed += Number(eachReport.stats[4]);
+            list = list + `\n${eachReport.healing} (${thisUser})`
+          })
+          $('tbody').append(`<tr>
+            <td>${count}</td>
+            <td><a href="/lma/${splitted[2]}/evangelism">${thisUser}</a></td>
+            <td>${thisReached}</td>
+            <td>${thisSaved}</td>
+            <td>${thisFilled}</td>
+            <td>${thisProphesied}</td>
+            <td>${thisHealed}</td>
+            <td> </td>
+            <td> </td>
+          </tr>`);
+          reached += thisReached;
+          saved += thisSaved;
+          filled += thisFilled;
+          prophesied += thisProphesied;
+          healed += thisHealed;
+          count++;
         })
+        document.querySelector("#reached").textContent = reached
+        document.querySelector("#saved").textContent = saved
+        document.querySelector("#filled").textContent = filled
+        document.querySelector("#prophesied").textContent = prophesied
+        document.querySelector("#healed").textContent = healed
         $('tbody').append(`<tr>
                   <td>Total</td>
                   <td></td>
@@ -1212,9 +1305,10 @@ const evangelismAllFunc = (fellowship, start, end) => {
                   <td>${prophesied}</td>
                   <td>${healed}</td>
                   <td></td>
+                  <td></td>
                 </tr>`)
         list2 = "";
-        console.log(list2)
+        console.log(list2);
       } else {
         $('tbody').append('<tr><td colspan="10">Nothing to show here</td></tr>');
         $(noReport).append(`<li><em>Nothing to show here</em></li>`)
@@ -1375,7 +1469,10 @@ window.addEventListener("load", function(e){
     console.log(status.value);
     if(status.value == "Member"){
       let zone = prayerGroupReport.querySelector("select[name='zone']");
+      let prayerGroup = prayerGroupReport.querySelector("select[name='prayer-group']");
+      console.log(prayerGroup);
       zone.required = false;
+      prayerGroup.required = false;
     }
   }
 })
@@ -1456,8 +1553,8 @@ if(elementPlayground){
 
 
 if(prayerGroupCoord){
-  console.log("prayer-group Coord");
   prayerGroupCoord.addEventListener("click", (e) => {
+    console.log(e.target.tagName);
     if(e.target.tagName == "A" && e.target.getAttribute("id") == "gen-code"){
       e.preventDefault();
       const ranNum = () => {
@@ -1487,6 +1584,14 @@ if(prayerGroupCoord){
           prayerGroupCoord.querySelector("#code").value = "Try Again...";
         }
       })
+    } else if (e.target.tagName == "SPAN") {
+        let url = e.target.getAttribute("link");
+        $.ajax({
+          type: "DELETE",
+          url: url,
+          success: (data) => {},
+        });
+        e.target.parentNode.remove();
     }
   })
 }
@@ -1498,14 +1603,21 @@ if(prayerGroupReport){
   console.log(status.value);
   if(status.value == "Member"){
     let zone = prayerGroupReport.querySelector("select[name='zone']");
+    let prayerGroup = prayerGroupReport.querySelector("select[name='prayer-group']");
+    console.log(prayerGroup)
     zone.required = false;
+    prayerGroup.required = false;
   }
   status.addEventListener("change", (e)=>{
     let zone = prayerGroupReport.querySelector("select[name='zone']");
+    let prayerGroup = prayerGroupReport.querySelector("select[name='prayer-group']");
+    console.log(prayerGroup);
     if(e.target.value == "Member"){
       zone.required = false;
-    } else {
+      prayerGroup.required = false;
+  } else {
       zone.required = true;
+      prayerGroup.required = true;
     }
   })
 }

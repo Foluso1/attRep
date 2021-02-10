@@ -10,16 +10,17 @@ const prayerChainSchema = new mongoose.Schema({
 
     start: {
         type: Date,
-        required: true
+        default: null 
     },
 
     end: {
-        type: Date
+        type: Date,
+        default: null
     },
     
-    date: {
-        type: Date,
-        default: Date.now
+    duration: {
+        type: Number,
+        default: 0
     }
 });
 

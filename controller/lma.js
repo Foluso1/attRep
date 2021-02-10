@@ -501,7 +501,7 @@ module.exports = {
             };
             let foundPrayerChainArr = await newPrayerChain.find({
                 prayor: owner.id,
-                week: moment().locale("en-us").week(),
+                week: moment().locale("en-gb").week(),
             });
 
             const weekPrChain = foundPrayerChainArr[0];

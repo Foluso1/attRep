@@ -15,7 +15,7 @@
         <div class="container">
             <ol>
                 <% foundPrayerGroup.forEach((item) => { %>
-                    <li><a href="/prayergroup/<%= item._id %>"><%= moment(item.date).format("YYYY/MM/DD")%></a></li>
+                    <li><a href="/prayergroup/<%= item._id %>"><%= moment(item.date).format("YYYY/MM/DD")%></a>    <span link="/prayergroup/<%= item._id %>" class="prayer-del-btn">X</span></li>
                 <% }) %> 
             </ol>
         </div>

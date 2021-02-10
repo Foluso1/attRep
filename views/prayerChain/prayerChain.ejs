@@ -10,10 +10,10 @@
             <h3>My Prayer Chain Report</h3>
         <div>
             <label>Choose a Week Number: </label>
-            <input type="number" name="week-number" id="week-chooser" min="1" max="<%= moment().weeksInYear()%>" value="<%= moment().locale("en-us").week() %>""/>
+            <input type="number" name="week-number" id="week-chooser" min="1" max="<%= moment().weeksInYear()%>" value="<%= moment().locale("en-gb").week() %>""/>
         </div>
         </br>
-        <h5>Week <span id="prayer-week-number"><%= weekPrChain.week %></span>: <span id="week-span"><%= moment().locale("en-us").startOf('week').format('ddd MMM Do') %> - <%= moment().locale("en-us").endOf('week').format('ddd MMM Do') %></span></h5>
+        <h5>Week <span id="prayer-week-number"><%= weekPrChain.week %></span>: <span id="week-span"><%= moment().locale("en-gb").startOf('week').format('ddd MMM Do') %> - <%= moment().locale("en-gb").endOf('week').format('ddd MMM Do') %></span></h5>
         <h5>Prayer Ratio: <span id="prayer-ratio"><%= weekPrChain.frequency %></span>/7</h5>
         <table class="prayer-chain-table">
             <thead>

@@ -10,7 +10,7 @@ module.exports = {
         try {
             // req.body should have day number, and start / end time
             //Does prayer chain for that week exist?
-            let thisWeekNumber = moment().locale("en-us").week();
+            let thisWeekNumber = moment().locale("en-gb").week();
 
             let foundPrayerChainArr = await newPrayerChain.find({
                 prayor: req.user.id,
@@ -57,13 +57,13 @@ module.exports = {
         try {
             let foundPrayerChainArr = await newPrayerChain.find({
                 prayor: req.user.id,
-                week: moment().locale("en-us").week(),
+                week: moment().locale("en-gb").week(),
             });
             let weekPrChain = foundPrayerChainArr[0];
             if(!weekPrChain){
                 weekPrChain = await newPrayerChain.create({
                     prayor: req.user.id,
-                    week: moment().locale("en-us").week(),
+                    week: moment().locale("en-gb").week(),
                 })
             }
             res.render("prayerChain/prayerChain", {weekPrChain});
@@ -79,7 +79,7 @@ module.exports = {
             let starttime = {};
             let foundPrayerChainArr = await newPrayerChain.find({
                 prayor: req.user.id,
-                week: moment().locale("en-us").week(),
+                week: moment().locale("en-gb").week(),
             });
 
             let shouldSendReport = {};

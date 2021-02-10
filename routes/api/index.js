@@ -4,7 +4,7 @@ const   express         =   require("express")
     ,   middleware      =   require("./../../middleware/index")
     ;
 
-router.route("/workers").get(helper.workersDetails);
+router.route("/workers").get(middleware.isLoggedIn, helper.workersDetails);
 router.route("/prayerchain/:id/:weekNum").get(middleware.isLoggedIn, helper.getPrayerChainReportsforOne);
 router.route("/prayerchain/:weekNum").get(middleware.isLoggedIn, helper.getAllPrayerChain);
 router.route("/expected/:meetingName").get(middleware.isLoggedIn, helper.getAllSpecialMeetingsExpected);
@@ -15,10 +15,11 @@ router.route("/attendance/date/:date/for/:for/fellowship/:fellowship").get(middl
 router.route("/attendance/cumulative/:meetingName").get(middleware.isLoggedIn, helper.getCumulativeAttendance);
 // router.route("/evangelism/date/:date").get(middleware.isLoggedIn, helper.getAllEvangelismWithDate);
 router.route("/evangelism/all/:fellowship/:start/:end").get(middleware.isLoggedIn, helper.getAllEvnglsmReports);
+router.route("/evangelism/one/:id/:start/:end").get(middleware.isLoggedIn, helper.getOneEvnglsmReports);
 router.route("/evangelism/:fellowship/:start/:end").get(middleware.isLoggedIn, helper.getAllEvangelismWithDate);
 router.route("/evangelism/:start/:end").get(middleware.isLoggedIn, helper.getOneEvangelismWithDate);
 router.route("/reporttopastor/:reportId/lma/:lmaId").get(middleware.isLoggedIn, helper.addOrRemoveLMA);
-// router.route("/gofix").get(helper.goFix);
+router.route("/gofix").get(middleware.isLoggedIn, helper.goFix);
 
 
 module.exports = router;

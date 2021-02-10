@@ -25,12 +25,15 @@ const prayerGroupSchema = new mongoose.Schema({
             zone: {
                 type: String,
             },
+            prayerGroup: {
+                type: String,
+            },
         }
     ],
     date: {
         type: Date,
         default: Date.now(),
-    },
+    }
 });
 
 
