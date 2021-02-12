@@ -436,3 +436,17 @@ module.exports = {
         }
     }
 };
+
+const allCellsUnder = (churchId) => {
+    let ids = []
+    let church = Church.findById({ _id: churchId });
+    let churchUnder = church.churchUnder;
+    if(churchUnder && Array.isArray(churchUnder) && churchUnder.length != 0){
+        churchUnder.forEach((item) => {
+            allCellsUnder(item._id);
+        })
+    } else if (Array.isArray(churchUnder) && churchUnder.length == 0){
+        ids = [ids, ...churchUnder]
+    }
+    return(ids);
+}
