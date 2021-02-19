@@ -13,7 +13,7 @@ prayerChainRouter.route("/new")
 
 prayerChainRouter.route("/")
     .get(middleware.isLoggedIn, controller.getPrayerReports)
-    .post(middleware.isLoggedIn, controller.postPrayerReport);
+    .post(controller.postPrayerReport);
 
 prayerChainRouter.route("/:weekNum")
     .get(middleware.isLoggedIn, controller.getPrayerReportbyWeekNum);

@@ -8,33 +8,8 @@
     <div class="col-md-12">
         <h3 class="pt-3">Report Prayer Chain</h3>
         <br>
-        <form id="prChform" action="" method="POST">
-            <% if (shouldSendReport['0']) { %>
-                <div class="row mydiv p-1">
-                    <div>
-                        <button id="startPrBtn" class="btn btn-success btn-sm">Start Praying</button>
-                    </div>
-                </div>
-            <% } else if (!shouldSendReport['0'] && shouldSendReport['1']) { %>
-                <div class="mydiv p-1">
-                    <div class="container">
-                        <p>Good day sir/ma,</br>
-                        I have started praying</br>
-                        <%= moment(starttime).locale("en-gb").format("LT") %> 
-                    </p>
-                    </div>
-                    <div class="">
-                        <button id="endPrBtn" class="btn btn-success btn-sm">End Praying</button>
-                    </div>
-                </div>
-            <% } else { %>
-                <div class="container">
-                    <p>
-                        Sorry, you cannot send a report now.</br>
-                        Thank you.
-                    </p>
-                </div>
-            <% } %>
+        <form id="prChform" action="" method="POST"> 
+            <%= foundPrayerChain %> 
         </form>
     </div>
 </main>
