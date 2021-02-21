@@ -2,13 +2,6 @@ const route = window.location.pathname;
 const specialMeeting = document.querySelector("#special-meeting");
 const specialMeetingAtt = document.querySelector("#special-meeting-attendance");
 const info = document.querySelector("#info");
-const thisWeekPrCh = document.querySelector("#this-week-pr-ch");
-const hoverAppear = document.querySelectorAll(".hover-appear"); 
-const weekChooser = document.querySelector("#week-chooser");
-const weekChooserLMA = document.querySelector("#week-chooser-lma");
-const weekChooserAllLMA = document.querySelector("#week-chooser-all-lma");
-const prayerChainTable = document.querySelector("#prayer-chain-table");
-const prayerRatio = document.querySelector("#prayer-ratio");
 const prWeekNumber = document.querySelector("#prayer-week-number");
 const weekSpan = document.querySelector("#week-span");
 const meeting = document.querySelector("#for");
@@ -20,7 +13,6 @@ const discipleList = document.querySelector(".disciple-list");
 const editReport = document.querySelector(".edit-report");
 const showPassword = document.querySelectorAll(".password-visible");
 const editReportRemove = document.querySelector(".edit-report-remove");
-const prChform = document.querySelector("#prChform");
 const noDisp = document.querySelector(".nodisplay");
 const startPr = document.querySelector("#startPr");
 const starttimeInput = document.querySelector("#starttime");
@@ -57,7 +49,6 @@ const editPlayground = document.querySelector("#edit-playground");
 const prayerGroupCoord = document.querySelector("#prayer-group-coord");
 const numReached = document.querySelector("#reached");
 const prayerGroupReport = document.querySelector("#prayer-group-report");
-const prayerChainNew = document.querySelector("#prayer-chain-new");
 const delPrayerGroup = document.querySelector("#del-prayer-group");
 let list = "";
 let list2 = "";
@@ -632,13 +623,6 @@ if (formAttendance) {
 } 
 
 
-//THIS WEEK CHOOSER
-if(thisWeekPrCh){
-  thisWeekPrCh.addEventListener("click", function (e) {
-    weekChooserAllLMA.value = moment().locale("en-gb").week();
-    prChFunction(moment().locale("en-gb").week()); 
-  });
-}
 
 
 // HOVER APPEAR

@@ -1,5 +1,79 @@
-const startPrBtn = document.querySelector("#startPrBtn");
-const endPrBtn = document.querySelector("#endPrBtn");
+const startPrBtn          = document.querySelector("#startPrBtn");
+const endPrBtn            = document.querySelector("#endPrBtn");
+const prChform            = document.querySelector("#prChform");
+const weekChooser         = document.querySelector("#week-chooser");
+const weekChooserLMA      = document.querySelector("#week-chooser-lma");
+const weekChooserAllLMA   = document.querySelector("#week-chooser-all-lma");
+const prayerChainTable    = document.querySelector("#prayer-chain-table");
+const prayerChainNew      = document.querySelector("#prayer-chain-new");
+const thisWeekPrCh        = document.querySelector("#this-week-pr-ch");
+const hoverAppear         = document.querySelectorAll(".hover-appear"); 
+const dateChooserPrCh     = document.querySelectorAll(".date-chooser-pr-chain");
+const prayerRatio         = document.querySelector("#prayer-ratio");
+
+
+
+const prChIndividual = () => {
+  let start = dateChooserPrCh[0].value;
+  let end = dateChooserPrCh[1].value;
+  let id = dateChooserPrCh[0].dataset.id;
+  $("tbody").html("");
+  $("tbody").append(`<td colspan="10">Please wait...</td>`);
+  $.ajax({
+    type: "GET",
+    url: `/api/prayerchain/${id}/${start}/${end}`,
+    success: (data) => {
+      console.log(data)
+      prayerRatio.textContent = 0;
+      let length = data.length;
+      let dayQueryLength = moment(end).diff(moment(start), "days") + 1;
+      let greaterThanToday = moment(end).diff(moment(), "days");
+      if(greaterThanToday > 0){
+        dayQueryLength = moment().add(1, "day").diff(moment(start), "days") + 1;
+      }
+      if(Array.isArray(data) && length != 0){
+        $("tbody").html("");
+        data.forEach((row) => {
+          let timeStart = new Date(row.start).getTime();
+          let timeEnd = new Date(row.end).getTime();
+          let duration = timeEnd - timeStart;
+          if (duration >= 60 * 60 * 1000){
+            prayerRatio.textContent++;
+          }
+          $("tbody").append(`<tr>
+            <td>${moment(row.start).format("ddd, Do MMM")}</td>
+            <td>${moment(row.start).format("HH:mm")}</td>
+            <td>${ row.end ? moment(row.end).format("HH:mm") : "--"}</td>
+          </tr>`);
+        })
+        prayerRatio.textContent = `${prayerRatio.textContent}/${dayQueryLength}`
+      } else {
+        prayerRatio.textContent = 0;
+        $("tbody").html("");
+        $("tbody").append(`<td colspan="10">Nothing to show here.</td>`);
+      }
+    },
+    error: (err) => {
+      console.log(err);
+      $("tbody").html("");
+      $("tbody").append(`<td colspan="10">There was a problem. Please re-login.</td>`)
+      console.log(window.location);
+      console.log(window.location.replace("/login"));
+    }
+  })
+}
+
+// 
+
+if(dateChooserPrCh && dateChooserPrCh[0]){
+  prChIndividual();
+}
+
+dateChooserPrCh.forEach((prCh) => {
+  prCh.addEventListener("change", prChIndividual)
+})
+
+
 
 
 // Prayer Chain
@@ -318,4 +392,13 @@ if(hoverAppear){
       }
     });
   }
+}
+
+
+//THIS WEEK CHOOSER
+if(thisWeekPrCh){
+  thisWeekPrCh.addEventListener("click", function (e) {
+    weekChooserAllLMA.value = moment().locale("en-gb").week();
+    prChFunction(moment().locale("en-gb").week()); 
+  });
 }

@@ -5,7 +5,7 @@ const   express         =   require("express")
     ;
 
 router.route("/workers").get(middleware.isLoggedIn, helper.workersDetails);
-router.route("/prayerchain/:id/:weekNum").get(middleware.isLoggedIn, helper.getPrayerChainReportsforOne);
+router.route("/prayerchain/:id/:start/:end").get(middleware.isLoggedIn, helper.getPrayerChainReportsforOne);
 router.route("/prayerchain/:weekNum").get(middleware.isLoggedIn, helper.getAllPrayerChain);
 router.route("/expected/:meetingName").get(middleware.isLoggedIn, helper.getAllSpecialMeetingsExpected);
 router.route("/expected/date/:date/for/:for/fellowship/:fellowship").get(middleware.isLoggedIn, helper.getAllExpectedAttendanceWithDate);

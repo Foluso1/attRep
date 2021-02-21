@@ -8,13 +8,6 @@ const Worker        =   require("../models/worker")
 module.exports = {
     postPrayerReport: async (req, res) => {
         try {
-            
-            let req = {
-                user: {
-                    id: "5f4630df8172fd1f741a92f4"
-                }
-            }
-
             let foundPrayerChain = await PrayerChain.findOne({
                 prayor: req.user.id,
                 start: { $gte: moment().startOf("day").format() },
@@ -24,15 +17,17 @@ module.exports = {
                 foundPrayerChain.end = Date.now();
                 await foundPrayerChain.save();
             } else if (!foundPrayerChain) {
-                let newPrayerChain = PrayerChain.create({
+                let newPrayerChain = await PrayerChain.create({
                     prayor: req.user.id,
                     start: Date.now(),
                 })            
             } else {
                 req.flash("error", "You have reported your prayer chain today");
-                return res.redirect("/prayerchain")
             }
-            res.status(201).json(foundPrayerChain);
+            return res.redirect("/prayerchain")
+            // }
+            // console.log(foundPrayerChain)
+            // res.status(201).json(foundPrayerChain);
         } catch (err) {
             console.log(err);
             req.flash("error", "There was a problem");
@@ -42,13 +37,11 @@ module.exports = {
 
     getPrayerReports: async (req, res) => {
         try {
-            let foundPrayerChainArr = await PrayerChain.find({
+            let foundPrayerChain = await PrayerChain.findOne({
                 prayor: req.user.id,
-                start: { $gte: moment().startOf("week").format() },
+                start: { $gte: moment().startOf("day").format() }
             });
-            console.log(foundPrayerChainArr);
-            res.json(foundPrayerChainArr);
-            // res.render("prayerChain/prayerChain", {weekPrChain});
+            res.render("prayerChain/prayerChain", {foundPrayerChain});
         } catch (err) {
             console.log(err);
             req.flash("error", "There was a problem!")
@@ -58,34 +51,10 @@ module.exports = {
 
     newPrayerReport: async (req, res) => {
         try {
-            // let starttime = {};
-            console.log(req.user.id);
             let foundPrayerChain = await PrayerChain.findOne({
                 prayor: req.user.id,
                 start: { $gte: moment().startOf("day").format() }
             });
-
-            // let shouldSendReport = {};
-            // if(foundPrayerChain){
-            //     shouldSendReport['1'] = false;
-            // }
-            // let shouldSendReport = {};
-            // shouldSendReport['0'] = true;
-            // shouldSendReport['1'] = true;
-
-            // if (foundPrayerChainArr && foundPrayerChainArr.length > 0){
-            //     foundPrayerChain = foundPrayerChainArr[0];
-            //     let day = moment().day();
-            //     starttime = foundPrayerChain[day].start;
-            //     if(starttime){
-            //         shouldSendReport['0'] = false;
-            //         if(foundPrayerChain[day].end){
-            //             // Both start and end reports sent already;
-            //             shouldSendReport['1'] = false;
-            //         }
-            //     }
-            // }
-            // res.json(foundPrayerChain);
             res.render("prayerChain/prayerChainNew", {foundPrayerChain});
         } catch (err) {
             console.log(err);

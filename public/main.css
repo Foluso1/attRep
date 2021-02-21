@@ -371,11 +371,9 @@ only screen and (max-width: 760px),
     #evangelism td:nth-of-type(8):before { content: "Evangelism Details"; }
     #evangelism td:nth-of-type(9):before { content: "Healing Cases"; }
 
-    .prayer-chain-table td:nth-of-type(1):before { content: "Day"; }
-    .prayer-chain-table td:nth-of-type(2):before { content: "Start"; }
-    .prayer-chain-table td:nth-of-type(3):before { content: "End"; }
-
-	
+    #prayer-chain-table td:nth-of-type(1):before { content: "Day"; }
+    #prayer-chain-table td:nth-of-type(2):before { content: "Start"; }
+    #prayer-chain-table td:nth-of-type(3):before { content: "End"; }
 }
 
 
@@ -403,6 +401,7 @@ only screen and (max-width: 760px),
 .prayer-del-btn {
     color: rgb(255, 37, 37);
     margin: auto;
+    visibility: hidden;
 }
 
 .del-element {
@@ -414,6 +413,7 @@ only screen and (max-width: 760px),
     font-weight: 900px;
     text-decoration: none;
     cursor: pointer;
+    visibility: visible;
 }
 
 .del-btn {

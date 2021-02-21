@@ -8,8 +8,19 @@
     <div class="col-md-12">
         <h3 class="pt-3">Report Prayer Chain</h3>
         <br>
-        <form id="prChform" action="" method="POST"> 
-            <%= foundPrayerChain %> 
+        <form  action="/prayerchain" method="POST"> 
+            <% if(foundPrayerChain){ %>
+                <p>Good morning sir,</br>I have started praying</br><%= moment(foundPrayerChain.start).format("HH:mm") %></p>
+                <% if(foundPrayerChain.end){ %>
+                    <p>Good morning sir,</br>I am done praying</br><%= moment(foundPrayerChain.end).format("HH:mm") %></p>
+                <% } else { %>
+                    <button href="/prayerchain" class="btn btn-sm btn-primary">End Praying</button>
+                <% } %>
+            <% } else if (Date.now() < moment("08:00","HH:mm").valueOf()) { %>
+                <button href="/prayerchain" class="btn btn-sm btn-primary">Start Praying</button>
+            <% } else { %>
+                <p>Sorry, you are trying to pray at a late time!</p>
+            <% } %>
         </form>
     </div>
 </main>

@@ -1,43 +1,38 @@
 <% include ./../partials/header %>
 </div>
 
-    <div class="heading">
-        <a class="btn btn-primary btn-sm" href="/prayerchain/new">New Prayer Chain Report</a>
-    </div>
-
 <main class="container">
     <div class="col-md-12">
-            <h3>My Prayer Chain Report</h3>
-        <div>
-            <label>Choose a Week Number: </label>
-            <input type="number" name="week-number" id="week-chooser" min="1" max="<%= moment().weeksInYear()%>" value="<%= moment().locale("en-gb").week() %>""/>
+        <h3>My Prayer Chain Report</h3>
+        <div class="container">
+            <% if(foundPrayerChain){ %>
+                <% if(foundPrayerChain.start && foundPrayerChain.end == null){ %>
+                    <a class="btn btn-primary btn-sm" href="/prayerchain/new">End Praying</a>
+                <% } else if (foundPrayerChain.end) { %>
+                <% } %>
+            <% } else { %>
+                <a class="btn btn-primary btn-sm" href="/prayerchain/new">Start Praying</a>
+            <% } %>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label class="m-2 pl-2">Start Date: </label>
+                <input type="date" name="" data-id="<%= loggedInWorker._id %>" class="date-chooser-pr-chain form-control mx-2" value="<%= moment().startOf('week').format('YYYY-MM-DD')%>" min="<%= moment('2021-02-21').format('YYYY-MM-DD')%>" max="<%= moment().format('YYYY-MM-DD')%>" />
+            </div>
+            <div class="col-sm-6">
+                <label class="m-2 pl-2">End Date: </label>
+                <input type="date" name="" data-id="<%= loggedInWorker._id %>" class="date-chooser-pr-chain form-control mx-2" value="<%= moment().format('YYYY-MM-DD')%>" min="<%= moment('2021-02-21').format('YYYY-MM-DD')%>" max="<%= moment().format('YYYY-MM-DD')%>" />
+            </div>
         </div>
         </br>
-        <h5>Week <span id="prayer-week-number"><%= weekPrChain.week %></span>: <span id="week-span"><%= moment().locale("en-gb").startOf('week').format('ddd MMM Do') %> - <%= moment().locale("en-gb").endOf('week').format('ddd MMM Do') %></span></h5>
-        <h5>Prayer Ratio: <span id="prayer-ratio"><%= weekPrChain.frequency %></span>/7</h5>
-        <table class="prayer-chain-table">
+        <h5>Prayer Ratio: <span id="prayer-ratio"></span></h5>
+        <table id="prayer-chain-table">
             <thead>
                 <td><b>Day</b></td>
                 <td><b>Start</b></td>
                 <td><b>End</b></td>
             </thead>
             <tbody>
-            <% for(let i = 0; i <= 6; i++){ %>
-                <tr>
-                    <% if(weekPrChain[i].start){ %>
-                        <td><%= moment(weekPrChain[i].start).format('ddd') %> </td>
-                        <td><%= moment(weekPrChain[i].start).format('LT') %> </td>
-                    <% } else { %>
-                        <td><%= moment().day(i).format('ddd') %></td>
-                        <td> - </td>
-                    <% } %>
-                    <% if(weekPrChain[i].end){ %>
-                        <td><%= moment(weekPrChain[i].end).format('LT') %> </td>
-                    <% } else { %>
-                        <td> - </td>
-                    <% } %>
-                </tr>
-            <% } %>
             </tbody>
         </table>
     </div>

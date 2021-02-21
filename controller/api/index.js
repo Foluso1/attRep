@@ -1,6 +1,6 @@
-const           newPrayerChain  = require("../../models/newPrayerChain");
+const           PrayerChain     = require("../../models/prayerChain");
 const           Worker          = require("../../models/worker");
-const           Disciple          = require("../../models/disciple");
+const           Disciple        = require("../../models/disciple");
 const           Expected        = require("../../models/expected_attendance_model");
 const           Evangelism      = require("../../models/evangelism");
 const           BelConv         = require("../../models/believers_convention_model");
@@ -8,8 +8,8 @@ const           Attendance      = require("../../models/attendance_model");
 const           moment          = require("moment");
 const           fs              = require("fs");
 const           Church          = require("../../models/church");
-const reportToPastor = require("../../models/reportToPastor");
-const { create } = require("../../models/disciple");
+const           reportToPastor  = require("../../models/reportToPastor");
+// const { create } = require("../../models/disciple");
 
 
 module.exports = {
@@ -32,14 +32,19 @@ module.exports = {
 
     getPrayerChainReportsforOne: async (req, res) => {
         try {
-            let foundPrayerChainArr = await newPrayerChain.find({
+            let weekPrChain = await PrayerChain.find({
                 prayor: req.params.id,
-                week: req.params.weekNum,
+                start: {
+                    $gte: req.params.start,
+                    $lte: moment(req.params.end).add(1, "day")
+                },
             });
-            let weekPrChain = null;
-            if (foundPrayerChainArr && foundPrayerChainArr.length > 0){
-                weekPrChain = foundPrayerChainArr[0];
-            }
+            weekPrChain = weekPrChain.sort((a,b)=>{
+                let aDate = new Date(b.start).getTime();
+                let bDate = new Date(a.start).getTime();
+                console.log(bDate - aDate);
+                return aDate - bDate;
+            })
             res.status(201).json(weekPrChain);
         } catch (e) {
             console.log(e);
