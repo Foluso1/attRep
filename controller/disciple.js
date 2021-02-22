@@ -45,6 +45,7 @@ module.exports = {
                 email: req.body.email,
                 mobileNumber: req.body.mobile,
                 address: req.body.address,
+                accommType: req.body['accommodation-type'],
                 believersConventionAccommodation: req.body['believers-convention-accommodation'],
                 charisCampmeetingAccommodation: req.body['charis-campmeeting-accommodation']
             };
@@ -69,6 +70,7 @@ module.exports = {
                 email: req.body.email,
                 mobileNumber: req.body.mobile,
                 address: req.body.address,
+                accommType: req.body['accommodation-type'],
                 believersConventionAccommodation: req.body['believers-convention-accommodation'],
                 charisCampmeetingAccommodation: req.body['charis-campmeeting-accommodation']
             };

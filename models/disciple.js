@@ -37,6 +37,10 @@ discipleSchema = new mongoose.Schema({
         default: false
     },
 
+    accommType: {
+        type: String,
+    },
+
     type: {
         type: String,
         default: "Disciple"

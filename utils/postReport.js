@@ -1,5 +1,6 @@
 const       Disciple    = require("../models/disciple"),
-            Worker      = require("../models/worker")
+            Worker      = require("../models/worker"),
+            moment      = require("moment")
 ;
 
 module.exports = async (req, res, report, userType, reportType)  => {

@@ -364,6 +364,7 @@ function exporter(buttonId) {
     objIds = { _id: ids };
     idsArray.push(objIds);
   });
+  // Check for empty report
   if (idsArray && idsArray.length == 0 && info.value == "") {
     console.log("info", info.value);
     console.log(idsArray && idsArray.length == 0 && info.value == "");
@@ -399,25 +400,44 @@ function exporter(buttonId) {
         }
       );
     } else if (buttonId == "export-expected-attendance") {
-      $.post(
-        "/expected",
-        {
+      console.log({
+        ids: idsArray,
+        title: title.innerText,
+        for: meeting.value,
+        info: info.value,
+      })
+      $.ajax({
+        url: "/expected", 
+        type: "POST", 
+        data: {
           ids: idsArray,
           title: title.innerText,
           for: meeting.value,
           info: info.value,
+        }, 
+        success: (data) => {
+          console.log(data);
         },
+      })
+      // $.post(
+      //   "/expected",
+      //   {
+      //     ids: idsArray,
+      //     title: title.innerText,
+      //     for: meeting.value,
+      //     info: info.value,
+      //   },
         
-        function () {
-          console.log({
-            ids: idsArray,
-            title: title.innerText,
-            for: meeting.value,
-            info: info.value,
-          })
-          window.location.replace(`${window.location.origin}/expected`);
-        }
-      );
+      //   // function () {
+      //   //   console.log({
+      //   //     ids: idsArray,
+      //   //     title: title.innerText,
+      //   //     for: meeting.value,
+      //   //     info: info.value,
+      //   //   })
+      //   //   // window.location.replace(`${window.location.origin}/expected`);
+      //   // }
+      // );
     }
   }
 }

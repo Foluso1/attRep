@@ -60,6 +60,17 @@
                         <option value="true">Yes</option>
                     <% } %>
                 </select>
+                <label>What type of accommodation does he / she need: </label>
+                <select class="form-control m-2" name="accommodation-type">
+                    <% if(foundDisciple.accommType){ %>
+                        <option value="<%= foundDisciple.accommType %>"><%= foundDisciple.accommType %></option>
+                        <option value="Chalet">Chalet</option>
+                        <option value="Dormitory">Dormitory</option>
+                    <% } else { %>
+                        <option value="Chalet">Chalet</option>
+                        <option value="Dormitory" selected>Dormitory</option>
+                    <% } %>
+                </select>
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
                         <button class="btn btn-md btn-primary btn-block m-2">Submit</button>
