@@ -131,15 +131,7 @@ router.get("/logout", function (req, res) {
 router.get("/profile", middleWare.isLoggedIn, async (req, res) => {
     try {
         let foundWorker = await Worker.findById({ _id: req.user._id })
-        let profile = {
-            username: foundWorker.username,
-            firstname: foundWorker.firstname,
-            surname: foundWorker.surname,
-            church: foundWorker.church,
-            fellowship: foundWorker.fellowship,
-            department: foundWorker.department,
-            prayerGroup: foundWorker.prayerGroup
-        }
+        let profile = foundWorker;
         res.render("profile", { profile });
     } catch (err) {
         console.log(err);
@@ -160,6 +152,7 @@ router.put("/profile", middleWare.isLoggedIn, async (req, res) => {
             dateOfBirth: req.body['date-of-birth'],
             address: req.body.address,
             mobileNumber: req.body['mobile-number'],
+            accommType: req.body['accommodation-type'],
             maritalStatus: req.body['marital-status'],
             employmentStatus: req.body['employment-status']
         }

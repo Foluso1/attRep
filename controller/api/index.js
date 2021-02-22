@@ -3,12 +3,13 @@ const           Worker          = require("../../models/worker");
 const           Disciple        = require("../../models/disciple");
 const           Expected        = require("../../models/expected_attendance_model");
 const           Evangelism      = require("../../models/evangelism");
-const           BelConv         = require("../../models/believers_convention_model");
+const           SpecialMeeting  = require("../../models/special_meeting_model");
 const           Attendance      = require("../../models/attendance_model");
 const           moment          = require("moment");
 const           fs              = require("fs");
 const           Church          = require("../../models/church");
 const           reportToPastor  = require("../../models/reportToPastor");
+const { findOneAndDelete } = require("../../models/prayerChain");
 // const { create } = require("../../models/disciple");
 
 
@@ -101,17 +102,17 @@ module.exports = {
         try {
             let accomm = "";
             if (req.params.meetingName == "Believer's Convention") {
-                accomm = "believersConventionAccommodation"
+                accomm = "name gender mobileNumber address email believersConventionAccommodation"
             } else {
-                accomm = "charisCampmeeetingAccommodation"
+                accomm = "name gender mobileNumber address email charisCampmeeetingAccommodation"
             }
             let foundBC = await Expected.find({
                 for: req.params.meetingName,
             })
-            .populate({path: "disciples", select:`name gender mobileNumber address email ${accomm}`})
+            .populate("disciples")
             .populate({path: "summoner", select:"firstname surname fellowship church"})
             let data = JSON.stringify(foundBC);
-            fs.writeFileSync("disciples_details.json", data);
+            // fs.writeFileSync("disciples_details.json", data);
             res.json(foundBC);
         } catch (e) {
             console.log(e);
@@ -137,7 +138,7 @@ module.exports = {
             })
             let data = JSON.stringify(thisWorkers);
             console.log(data)
-            fs.writeFileSync("workers_details2.json", data);
+            // fs.writeFileSync("workers_details2.json", data);
         } catch (e) {
             console.log(e);
         }
@@ -161,7 +162,7 @@ module.exports = {
             .populate({path: "disciples", select:"name gender mobileNumber address email believersConventionAccommodation"})
             .populate({path: "summoner", select:"firstname surname fellowship church"})
             let data = JSON.stringify(foundBC);
-            fs.writeFileSync("disciples_details.json", data);
+            // fs.writeFileSync("disciples_details.json", data);
             res.json(foundBC);
         } catch (e) {
             console.log(e)
@@ -387,7 +388,7 @@ module.exports = {
             
             // console.log("///", evglsmReports);
             let data = JSON.stringify(allSouls);
-            fs.writeFileSync(`souls_won_${req.params.fellowship.trim()}_${req.params.start}_${req.params.end}.json`, data);
+            // fs.writeFileSync(`souls_won_${req.params.fellowship.trim()}_${req.params.start}_${req.params.end}.json`, data);
             res.json(allSouls);
         } catch (e) {
             console.log(e)
@@ -413,29 +414,38 @@ module.exports = {
 
     goFix: async (req, res) => {
         try {
-            let newGarage = {
-                name: "New Garage",
-                type: "fellowship"
-            }
-            let obj1 = {
-                name: "New Garage 1",
-                type: "cell",
-            }
-            let obj2 = {
-                name: "New Garage 2",
-                type: "cell",
-            }
-            newGarage = await Church.create(newGarage);
-            let newChurch1 = await Church.create(obj1);
-            let id1 = newChurch1._id;
-            let newChurch2 = await Church.create(obj2);
-            let id2 = newChurch2._id;
-            console.log(newGarage);
-            console.log("ids", id1, id2)
+            // let newGarage = {
+            //     name: "New Garage",
+            //     type: "fellowship"
+            // }
+            // let obj1 = {
+            //     name: "New Garage 1",
+            //     type: "cell",
+            // }
+            // let obj2 = {
+            //     name: "New Garage 2",
+            //     type: "cell",
+            // }
+            // newGarage = await Church.create(newGarage);
+            // let newChurch1 = await Church.create(obj1);
+            // let id1 = newChurch1._id;
+            // let newChurch2 = await Church.create(obj2);
+            // let id2 = newChurch2._id;
+            // console.log(newGarage);
+            // console.log("ids", id1, id2)
 
-            newGarage.churchUnder.push(id1);
-            newGarage.churchUnder.push(id2);
-            res.json({newGarage, newChurch1, newChurch2});
+            // newGarage.churchUnder.push(id1);
+            // newGarage.churchUnder.push(id2);
+            // res.json({newGarage, newChurch1, newChurch2});
+
+        // SPECIAL MEETINGS
+        let cCM2021 = await SpecialMeeting.findOneAndDelete({
+            name: "Charis Campmeeting",
+            day: 0,
+            session: 0,
+        })
+        console.log(cCM2021);
+        res.json(cCM2021);
         } catch (e) {
             console.log(e);
         }

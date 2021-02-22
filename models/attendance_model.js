@@ -16,6 +16,11 @@ const attendanceSchema = new mongoose.Schema({
         }
     ],
 
+    inAttendance: {
+        type: Boolean,
+        default: true,
+    },
+
     title: {
         type: String,
     },

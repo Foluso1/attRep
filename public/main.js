@@ -419,24 +419,6 @@ function exporter(buttonId) {
           window.location.replace(`${window.location.origin}/expected`);
         },
       })
-      // $.post(
-      //   "/expected",
-      //   {
-      //     ids: idsArray,
-      //     title: title.innerText,
-      //     for: meeting.value,
-      //     info: info.value,
-      //   },
-        
-      //   // function () {
-      //   //   console.log({
-      //   //     ids: idsArray,
-      //   //     title: title.innerText,
-      //   //     for: meeting.value,
-      //   //     info: info.value,
-      //   //   })
-      //   // }
-      // );
     }
   }
 }
@@ -669,20 +651,18 @@ const specMeetingFunc = (meetingName, url) => {
     url: `${url}/${meetingName}`,
     type: 'GET',
     success: (data) => {
-      console.log(data)
       if(data && Array.isArray(data) && data.length > 0) {
         let list = "";
         $('tbody').html('');
         data.forEach((item) => {
           list = list + `\n${item.summoner.firstname} ${item.summoner.surname}`
           let thisRow = $('tbody');
-          console.log(item);
           item.disciples.forEach((elem) => {
             list = list + `\n\t${elem.name}`
-            thisRow.append(`<tr><td>${item.summoner.firstname} ${item.summoner.surname}</td><td>${elem.name}</td><td>${elem.gender}</td><td>${elem.mobileNumber}</td><td>${elem.address}</td><td>${elem.email}</td><td>${elem.believersConventionAccommodation}</td><td>${item.summoner.fellowship}</td><td>${item.summoner.church}</td><td></td></tr>`);
+            thisRow.append(`<tr><td>${item.summoner.firstname} ${item.summoner.surname}</td><td>${elem.name}</td><td>${elem.gender}</td><td>${elem.mobileNumber}</td><td>${elem.address}</td><td>${elem.email}</td><td>${meetingName == "Charis Campmeeting" ? elem.charisCampmeetingAccommodation : elem.believersConventionAccommodation}</td><td>${elem.accommType}</td><td>${item.summoner.fellowship}</td><td>${item.summoner.church}</td><td></td></tr>`);
           });
           list = list + `\n\tINFO:${item.info}`;
-          thisRow.append(`<tr><td>${item.summoner.firstname} ${item.summoner.surname}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>${item.info}</td></tr>`);
+          thisRow.append(`<tr><td>${item.summoner.firstname} ${item.summoner.surname}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>${item.info}</td></tr>`);
         })
         console.log(list);
       } else {

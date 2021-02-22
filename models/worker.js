@@ -214,10 +214,19 @@ workerSchema = new mongoose.Schema({
         }
     ],
 
-    belConv: [
+    specialMeetingAccommodation: {
+        type: Boolean,
+        default: false
+    },
+
+    accommType: {
+        type: String,
+    },
+
+    specialMeeting: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'BelConv'
+            ref: 'SpecialMeeting'
         }
     ],
 

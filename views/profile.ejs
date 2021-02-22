@@ -135,6 +135,19 @@
                         </select>
                     </div>
                     <div class="d-flex m-2 flex-column align-items-start">
+                        <label>Accommodation for Special Meetings:</label>
+                        <select class="form-control" name="accommodation-type">
+                            <% if(loggedInWorker.accommType){ %>
+                                <option value="<%= loggedInWorker.accommType %>"><%= loggedInWorker.accommType %></option>
+                                <option value="Chalet">Chalet</option>
+                                <option value="Dormitory">Dormitory</option>
+                            <% } else { %>
+                                <option value="Chalet">Chalet</option>
+                                <option value="Dormitory" selected>Dormitory</option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="d-flex m-2 flex-column align-items-start">
                         <label>Employment Status:</label>
                         <select name="employment-status" class="form-control" required>
                             <option value="<%= loggedInWorker.employmentStatus %>"><%= loggedInWorker.employmentStatus %></option>

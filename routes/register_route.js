@@ -133,6 +133,7 @@ router.post("/regmail/:token", async (req, res) => {
             dateOfBirth: new Date(req.body['date-of-birth']),
             address: req.body.address,
             mobileNumber: req.body['mobile-number'],
+            accommType: req.body['accommodation-type'],
             maritalStatus: req.body['marital-status'],
             employmentStatus: req.body['employment-status']
         });
@@ -148,7 +149,7 @@ router.post("/regmail/:token", async (req, res) => {
     } catch (e) {
         console.log(e)
         if(e.code == "11000"){
-            req.flash("error", "Provide a different username OR Your TRCN is probably in use by another user")
+            req.flash("error", "Provide a different username")
             res.redirect(`/regmail/${token}`);
         } else {
             req.flash("error", "There was a problem");
