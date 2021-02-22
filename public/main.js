@@ -416,7 +416,7 @@ function exporter(buttonId) {
           info: info.value,
         }, 
         success: (data) => {
-          console.log(data);
+          window.location.replace(`${window.location.origin}/expected`);
         },
       })
       // $.post(
@@ -435,7 +435,6 @@ function exporter(buttonId) {
       //   //     for: meeting.value,
       //   //     info: info.value,
       //   //   })
-      //   //   // window.location.replace(`${window.location.origin}/expected`);
       //   // }
       // );
     }
