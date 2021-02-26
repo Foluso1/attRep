@@ -86,7 +86,25 @@ module.exports = {
     let id = req.params.id
     let oneReport = await PrayerGroup.findById({ _id: id });
     let thisUser = req.user;
-    res.render("prayerGroupCoord/onePrayerGroup", {oneReport, thisUser});
+    // console.log(oneReport);
+    oneReport.attendance.sort((a,b) => {
+      return a.zone - b.zone;
+    })
+    const sortToObject = (arr, zone) => {
+      let obj = {};
+      arr.forEach((item) => {
+        if(!obj[item[zone]]){
+          obj[item[zone]] = [item];
+        } else {
+          obj[item[zone]].push(item);
+        }
+      })
+      return obj;
+    }
+    let total = oneReport.attendance.length;
+    oneReport = sortToObject(oneReport.attendance, "status");
+
+    res.render("prayerGroupCoord/onePrayerGroup", {oneReport, total, thisUser});
   },
 
   deleteReport: async (req, res) => {

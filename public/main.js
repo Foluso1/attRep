@@ -50,10 +50,35 @@ const prayerGroupCoord = document.querySelector("#prayer-group-coord");
 const numReached = document.querySelector("#reached");
 const prayerGroupReport = document.querySelector("#prayer-group-report");
 const delPrayerGroup = document.querySelector("#del-prayer-group");
+const hideDelBtn = document.querySelector(".hide-del-btn");
+const copyInnerText = document.querySelector(".copy-inner-text");
 let list = "";
 let list2 = "";
 
 
+if(hideDelBtn){
+  hideDelBtn.addEventListener("click", (e) => {
+    let delBtn = document.querySelectorAll(".del-btn");
+    delBtn.forEach((btn) => {
+      btn.classList.toggle("del-btn-vis");
+    })
+  })
+}
+
+if(copyInnerText){
+  let pre = `Good day Sir,\n\nKindly find detailed below the attendance at the prayer meeting held today, ${moment().format("dddd, Do MMMM YYYY")}.\n\n`
+  let post = `Thank you for the privilege to serve Sir.`;
+  // list = pre + copyInnerText.innerText + `Thank you for the privilege to serve Sir.`;
+
+  let lMA = copyInnerText.querySelector(".LMA");
+  let cellLeaders = copyInnerText.querySelector(".Cell");
+  let workers = copyInnerText.querySelector(".Worker");
+  let members = copyInnerText.querySelector(".Member");
+  let total = copyInnerText.querySelector("#total");
+
+  list = `${pre}${total.innerText}\n${lMA.innerText}${cellLeaders.innerText}${workers.innerText}${members.innerText}${post}`;
+  list2 = `${pre}${total.innerText}\n${lMA.innerText}${cellLeaders.innerText}${post}`;
+}
 
 // Associate Disciples
 if (assocDisc) {
@@ -1248,7 +1273,6 @@ if(elementPlayground){
 
 if(prayerGroupCoord){
   prayerGroupCoord.addEventListener("click", (e) => {
-    console.log(e.target.tagName);
     if(e.target.tagName == "A" && e.target.getAttribute("id") == "gen-code"){
       e.preventDefault();
       const ranNum = () => {
@@ -1315,3 +1339,4 @@ if(prayerGroupReport){
     }
   })
 }
+

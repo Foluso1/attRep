@@ -19,10 +19,10 @@ prayerGroupRouter.route("/all")
     .get(controller.getAllReports);
 
 prayerGroupRouter.route("/:id")
-    .get(controller.getOneReport)                  
-    .delete(controller.deleteReport);
+    .get(middleware.isLoggedIn, controller.getOneReport)                  
+    .delete(middleware.isLoggedIn, controller.deleteReport);
 
 prayerGroupRouter.route("/:id/delete/:id2")
-    .delete(controller.deleteOneAttendee);
+    .delete(middleware.isLoggedIn, controller.deleteOneAttendee);
     
 module.exports = prayerGroupRouter;

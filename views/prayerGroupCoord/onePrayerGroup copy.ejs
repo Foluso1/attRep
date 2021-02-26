@@ -1,0 +1,220 @@
+<% include ./../partials/header %>
+
+<div class="heading">
+    <h1 class="text-center">Prayer Group Report</h1>
+    <hr/>
+    <p class="text-center">Code: <%= thisUser.prayerCode %> </p>
+    <a href="/prayergroup/admin" class="btn btn-sm">Back</a>
+</div>
+
+<main class="container" id="prayer-group-coord">
+    <div class="container">
+        <div class="container">
+            <ol>
+                <h4>LMA</h4>
+                <hr>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "LMA"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %> 
+                <br>
+                <h4>Cell Leaders</h4>
+                <hr>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Cell Leader"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %>
+                <br>
+                
+                <h4>Workers</h4>
+                <hr>
+                <h5>Akoka</h5>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Worker" && item.zone == "Akoka"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %>
+                <br/>
+                <h5>Bariga</h5>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Worker" && item.zone == "Bariga"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %>
+                <br/>
+                <h5>Ketu</h5>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Worker" && item.zone == "Ketu"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %>
+                <br/>
+                <br/>
+                <h5>Mushin</h5>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Worker" && item.zone == "Mushin"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %>
+                <br/>
+                <h5>Sabo</h5>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Worker" && item.zone == "Sabo"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %>
+                <br/>
+                <h5>Somolu</h5>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Worker" && item.zone == "Somolu"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %>
+                <br/>
+                <h5>Surulere</h5>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Worker" && item.zone == "Surulere"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %> 
+                <br>
+
+                <h4>Members</h4>
+                <hr>
+                <h5>Akoka</h5>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Member" && item.zone == "Akoka"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %>
+                <br/>
+                <h5>Bariga</h5>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Member" && item.zone == "Bariga"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %>
+                <br/>
+                <h5>Ketu</h5>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Member" && item.zone == "Ketu"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %>
+                <br/>
+                <br/>
+                <h5>Mushin</h5>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Member" && item.zone == "Mushin"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %>
+                <br/>
+                <h5>Sabo</h5>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Member" && item.zone == "Sabo"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %>
+                <br/>
+                <h5>Somolu</h5>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Member" && item.zone == "Somolu"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %>
+                <br/>
+                <h5>Surulere</h5>
+                <% oneReport.attendance.forEach((item) => { %>
+                    <% if(item.status == "Member" && item.zone == "Surulere"){ %>
+                        <li><%= item.firstname %> <%= item.surname %> | <%= item.arrivalTime %> | <%= item.zone %> 
+                            <% if(item.prayerGroup){ %>
+                                | <%= item.prayerGroup %> 
+                            <% } %>
+                            <span class="del-btn" link="/prayergroup/<%= oneReport._id %>/delete/<%= item._id %>">X</span>
+                        </li>
+                    <% } %>
+                <% }) %> 
+                <br> 
+            </ol>
+        </div>
+    </div>
+</main>
+<% include ./../partials/footer %>

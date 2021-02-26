@@ -23,7 +23,8 @@ module.exports = {
             })
             let allWorkers = await Worker.find({
                 _id: {$in: workersUnder}
-            }).select("firstname surname church fellowship department prayerGroup email address dateOfBirth employementStatus gender maritalStatus membershipClass mobileNumber");
+            // }).select("firstname surname church fellowship department prayerGroup email address dateOfBirth employementStatus gender maritalStatus membershipClass mobileNumber");
+            }).select("firstname surname church fellowship accommodation accommType");
         ;
         res.json(allWorkers);
         } catch (e) {
