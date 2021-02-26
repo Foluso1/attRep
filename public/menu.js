@@ -84,6 +84,10 @@ obj = {
             1: "/lma/all/prayer"
         },
         {
+            0: "Report Prayer Group",
+            1: "/prayergroup"
+        },
+        {
             0: "Prayer Group Leader",
             1: "/prayergroup/admin"
         }

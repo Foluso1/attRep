@@ -76,8 +76,8 @@ if(copyInnerText){
   let members = copyInnerText.querySelector(".Member");
   let total = copyInnerText.querySelector("#total");
 
-  list = `${pre}${total.innerText}\n${lMA.innerText}${cellLeaders.innerText}${workers.innerText}${members.innerText}${post}`;
-  list2 = `${pre}${total.innerText}\n${lMA.innerText}${cellLeaders.innerText}${post}`;
+  list = `${pre}${total.innerText}\n${lMA ? lMA.innerText : ""}${cellLeaders ? cellLeaders.innerText : ""}${workers ? workers.innerText: ""}${members ? members.innerText : ""}${post}`;
+  list2 = `${pre}${total.innerText}\n${lMA ? lMA.innerText : ""}${cellLeaders ? cellLeaders.innerText : ""}${post}`;
 }
 
 // Associate Disciples
@@ -1294,8 +1294,17 @@ if(prayerGroupCoord){
         data: {userId, thisRanNum},
         success: (data) => {
           console.log(data);
-          prayerGroupCoord.querySelector("#code").value = data;
+          prayerGroupCoord.querySelector("#code").value = data.code;
+          let item = data.prayerGroup
+          let thisNode = prayerGroupCoord.querySelector("#prayer-list")
+          $(thisNode).append(`<li>
+            <a href="/prayergroup/${item._id}">${moment(item.date).format("dddd, Do MMMM YYYY")}</a>&nbsp;&nbsp;<span link="/prayergroup/${item._id}" class="del-btn">X</span>
+          </li>`)
           // Say code expires in one hour;
+          let cautionNode = prayerGroupCoord.querySelector("#code").parentNode;
+          $(cautionNode).append(`<p>
+            &#x26A0; This generated code becomes invalid in 1 hour.
+          </p>`)
         },
         error: (e) => {
           console.log("There was a problem");

@@ -50,24 +50,20 @@ module.exports = {
 
   admin: async (req, res) => {
     let userId = req.user.id;
-    console.log("userId", userId);
     let foundPrayerGroup = await PrayerGroup.find({ coordinator: userId });
-    console.log(foundPrayerGroup);
     res.render("prayerGroupCoord/genCode", {foundPrayerGroup});
   },
 
   genCode: async (req, res) => {
     try {
-      console.log(req.body);
-      let prayerG = await PrayerGroup.create({
+      let prayerGroup = await PrayerGroup.create({
         coordinator: req.user.id,
       })
-      console.log(prayerG);
       let foundWorker = await Worker.findById({ _id: req.body.userId });
       foundWorker.prayerCode = req.body.thisRanNum;
       foundWorker.prayerCodeExpires = Date.now() + (60 * 60 * 1000);
       foundWorker.save();
-      res.json(foundWorker.prayerCode);
+      res.json({prayerGroup, code: foundWorker.prayerCode});
     } catch (e) {
       console.log(e);
     }
@@ -86,7 +82,6 @@ module.exports = {
     let id = req.params.id
     let oneReport = await PrayerGroup.findById({ _id: id });
     let thisUser = req.user;
-    // console.log(oneReport);
     oneReport.attendance.sort((a,b) => {
       return a.zone - b.zone;
     })
@@ -110,7 +105,6 @@ module.exports = {
   deleteReport: async (req, res) => {
     try {
       let id = req.params.id;
-      console.log("id///////", id)
       let thisReport = await PrayerGroup.findByIdAndDelete({ _id: id });
       console.log(thisReport);
       res.json("deleted");
@@ -126,7 +120,6 @@ module.exports = {
       let thisReport = await PrayerGroup.findById({ _id: id });
       let thisAttendee = thisReport.attendance;
       thisAttendee.forEach((obj, i) => {
-        console.log(obj._id == id2)
         if(obj._id == req.params.id2){
           thisAttendee.splice(i, 1);
           return

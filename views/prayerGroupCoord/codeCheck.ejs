@@ -12,7 +12,9 @@
             <select class="form-control my-1 col-md-6 mx-auto" name="coordinator" required>
                 <option value="">-Select prayer group leader-</option>
                 <% foundLMA.forEach((item)=>{ %>
-                    <option value="<%= item._id %>"><%= item.firstname %> <%= item.surname %></option>
+                    <% if(item._id != "5fdc479494f075001760ca6d"){ %>
+                        <option value="<%= item._id %>"><%= item.firstname %> <%= item.surname %></option>
+                    <% } %>
                 <% }) %> 
             </select>
             <input class="form-control my-1 col-md-6 mx-auto" type="text" name="firstname" placeholder="Your firstname" required />

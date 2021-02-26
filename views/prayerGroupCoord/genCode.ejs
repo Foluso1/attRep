@@ -4,6 +4,7 @@
     <h1 class="text-center">Welcome</h1>
     <hr/>
     <p class="text-center">Generate code for prayer group here!</p>
+    <a class="hide-del-btn btn btn-sm">Show/Hide "X"</a>
 </div>
 
 <main class="container" id="prayer-group-coord">
@@ -13,9 +14,9 @@
             <input class="form-control col-md-3 my-3" data-user-id="<%= loggedInWorker._id %>" id="code" readonly />
         </div>
         <div class="container">
-            <ol>
+            <ol id="prayer-list">
                 <% foundPrayerGroup.forEach((item) => { %>
-                    <li><a href="/prayergroup/<%= item._id %>"><%= moment(item.date).format("LLLL")%></a>&nbsp;&nbsp;<span link="/prayergroup/<%= item._id %>" class="prayer-del-btn">X</span></li>
+                    <li><a href="/prayergroup/<%= item._id %>"><%= moment(item.date).format("dddd, Do MMMM YYYY")%></a>&nbsp;&nbsp;<span link="/prayergroup/<%= item._id %>" class="del-btn">X</span></li>
                 <% }) %> 
             </ol>
         </div>
